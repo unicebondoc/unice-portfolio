@@ -1,0 +1,29 @@
+.label {
+  text-align: center;
+  transition: opacity 250ms ease, transform 250ms ease;
+  will-change: opacity, transform;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.title {
+  font-family: 'Sora', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--orb-color, #fff);
+  letter-spacing: 0.04em;
+  text-shadow:
+    0 0 12px var(--orb-color, transparent),
+    0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.subtitle {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(232, 234, 240, 0.55);
+  letter-spacing: 0.06em;
+}

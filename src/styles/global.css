@@ -1,0 +1,90 @@
+/* ─── Reset & Base ─────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Core palette — Inside Out memory vault */
+  --color-void:       #060914;
+  --color-deep:       #0a0f1e;
+  --color-surface:    #111828;
+  --color-border:     rgba(255, 255, 255, 0.06);
+  --color-text:       #e8eaf0;
+  --color-muted:      rgba(232, 234, 240, 0.45);
+
+  /* Orb accent colors */
+  --orb-joy:          #ffd700;
+  --orb-sadness:      #4a90d9;
+  --orb-anger:        #e84545;
+  --orb-fear:         #9b59b6;
+  --orb-disgust:      #2ecc71;
+  --orb-curiosity:    #00d4ff;
+  --orb-wonder:       #ff6eb4;
+
+  /* Glow strengths */
+  --glow-soft:        0 0 40px rgba(0, 212, 255, 0.15);
+  --glow-medium:      0 0 60px rgba(0, 212, 255, 0.30);
+  --glow-strong:      0 0 100px rgba(0, 212, 255, 0.50);
+
+  /* Typography */
+  --font-sans:        'Sora', system-ui, sans-serif;
+  --font-mono:        'Space Mono', monospace;
+
+  /* Spacing scale */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+
+  /* Transitions */
+  --ease-spring:      cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out:         cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast:         200ms;
+  --dur-base:         350ms;
+  --dur-slow:         600ms;
+}
+
+html, body {
+  height: 100%;
+  background: var(--color-void);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden; /* scene handles scrolling */
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+/* ─── Utility ───────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 2px;
+}
