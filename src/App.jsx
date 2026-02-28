@@ -1,5 +1,4 @@
 import { Suspense } from 'react'
-import Scene from './components/scene/Scene'
 import OrbLabels from './components/ui/OrbLabel'
 import ProjectModal from './components/ui/ProjectModal'
 import HUD from './components/ui/HUD'
