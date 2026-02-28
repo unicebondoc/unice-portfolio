@@ -10,7 +10,7 @@ export default function HUD() {
       {/* ── Top-left: identity ────────────────────────────── */}
       <header className={styles.header}>
         <span className={styles.name}>Unice Bondoc</span>
-        <span className={styles.role}>Creative Developer</span>
+        <span className={styles.role}>AI Engineer</span>
       </header>
 
       {/* ── Bottom-center: hint ───────────────────────────── */}

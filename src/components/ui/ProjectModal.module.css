@@ -5,142 +5,174 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(6, 9, 20, 0.72);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(6, 9, 20, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   padding: 24px;
 }
 
+/* ── Panel ──────────────────────────────────────────────────────── */
 .panel {
   position: relative;
   width: 100%;
-  max-width: 480px;
-  background: rgba(17, 24, 40, 0.95);
+  max-width: 500px;
+  background: rgba(14, 18, 34, 0.96);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
   overflow: hidden;
   box-shadow:
     0 0 0 1px rgba(255,255,255,0.04),
-    0 24px 64px rgba(0, 0, 0, 0.7),
-    0 0 60px -10px var(--orb-color, transparent);
+    0 32px 80px rgba(0, 0, 0, 0.75),
+    0 0 70px -8px var(--orb-color, transparent);
 }
 
+/* Future / dream variant — faint white glow instead of color */
+.futurePanelMod {
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.06),
+    0 32px 80px rgba(0, 0, 0, 0.75),
+    0 0 80px -10px rgba(180, 180, 255, 0.25);
+}
+
+/* ── Close button ───────────────────────────────────────────────── */
 .close {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 14px;
+  right: 14px;
   z-index: 2;
   background: rgba(255,255,255,0.07);
   border: none;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(232, 234, 240, 0.6);
-  font-size: 13px;
+  color: rgba(232, 234, 240, 0.55);
+  font-size: 12px;
   cursor: pointer;
-  transition: background 200ms, color 200ms;
+  transition: background 180ms, color 180ms;
+  line-height: 1;
 }
 .close:hover {
   background: rgba(255,255,255,0.14);
   color: #fff;
 }
 
+/* ── Accent bar ─────────────────────────────────────────────────── */
 .accent {
   height: 3px;
   width: 100%;
-  opacity: 0.9;
+  opacity: 0.85;
 }
 
+/* ── Content area ───────────────────────────────────────────────── */
 .content {
-  padding: 28px 32px 32px;
+  padding: 26px 30px 30px;
 }
 
-.meta {
+/* ── Meta row ───────────────────────────────────────────────────── */
+.metaRow {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
 .year {
   font-family: 'Space Mono', monospace;
   font-size: 11px;
-  color: rgba(232, 234, 240, 0.45);
-  letter-spacing: 0.08em;
+  color: rgba(232, 234, 240, 0.4);
+  letter-spacing: 0.1em;
 }
 
-.emotion {
+.emotionBadge {
   font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  color: var(--orb-color);
-  background: color-mix(in srgb, var(--orb-color) 15%, transparent);
-  border: 1px solid color-mix(in srgb, var(--orb-color) 40%, transparent);
-  padding: 2px 8px;
-  border-radius: 20px;
-  letter-spacing: 0.06em;
+  font-size: 9px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--orb-color, #fff);
+  background: color-mix(in srgb, var(--orb-color) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--orb-color) 38%, transparent);
+  padding: 2px 9px;
+  border-radius: 20px;
 }
 
+.dreamBadge {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: rgba(200, 200, 255, 0.55);
+  border: 1px solid rgba(200, 200, 255, 0.18);
+  padding: 2px 9px;
+  border-radius: 20px;
+}
+
+/* ── Title & subtitle ───────────────────────────────────────────── */
 .title {
   font-family: 'Sora', sans-serif;
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
   color: #f0f2f8;
   line-height: 1.2;
   margin-bottom: 4px;
+  letter-spacing: -0.01em;
 }
 
 .subtitle {
   font-family: 'Sora', sans-serif;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 400;
-  color: rgba(232, 234, 240, 0.5);
-  margin-bottom: 20px;
+  color: var(--orb-color, rgba(232, 234, 240, 0.45));
+  opacity: 0.75;
+  margin-bottom: 18px;
   letter-spacing: 0.02em;
 }
 
+/* ── Description ────────────────────────────────────────────────── */
 .description {
-  font-size: 14px;
-  line-height: 1.7;
-  color: rgba(232, 234, 240, 0.75);
-  margin-bottom: 24px;
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: rgba(232, 234, 240, 0.72);
+  margin-bottom: 22px;
 }
 
+/* ── Tags ───────────────────────────────────────────────────────── */
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 28px;
+  gap: 7px;
+  margin-bottom: 26px;
 }
 
 .tag {
   font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  color: rgba(232, 234, 240, 0.6);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 4px 10px;
+  font-size: 9.5px;
+  color: rgba(232, 234, 240, 0.52);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  padding: 3px 10px;
   border-radius: 4px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
 }
 
+/* ── CTA ────────────────────────────────────────────────────────── */
 .cta {
   display: inline-block;
   font-family: 'Sora', sans-serif;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
-  color: #fff;
-  background: var(--orb-color);
+  color: #060914;
+  background: var(--orb-color, #fff);
   padding: 10px 22px;
   border-radius: 8px;
   text-decoration: none;
   letter-spacing: 0.03em;
-  transition: opacity 200ms, transform 200ms;
+  transition: opacity 180ms, transform 180ms;
 }
 .cta:hover {
-  opacity: 0.85;
+  opacity: 0.82;
   transform: translateY(-1px);
 }

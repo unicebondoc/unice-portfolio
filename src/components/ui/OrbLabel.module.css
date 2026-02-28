@@ -1,12 +1,32 @@
-.label {
-  text-align: center;
-  transition: opacity 250ms ease, transform 250ms ease;
-  will-change: opacity, transform;
-  white-space: nowrap;
+.tooltip {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
+  text-align: center;
+  white-space: nowrap;
+  /* transition driven by inline style opacity/transform */
+  transition: opacity 220ms ease, transform 220ms ease;
+  will-change: opacity, transform;
+  /* glass pill background */
+  background: rgba(6, 9, 20, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 8px 14px 9px;
+}
+
+.year {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  border-radius: 20px;
+  padding: 1px 7px;
+  opacity: 0.85;
+  margin-bottom: 1px;
 }
 
 .title {
@@ -14,16 +34,22 @@
   font-size: 13px;
   font-weight: 600;
   color: var(--orb-color, #fff);
-  letter-spacing: 0.04em;
-  text-shadow:
-    0 0 12px var(--orb-color, transparent),
-    0 1px 3px rgba(0, 0, 0, 0.8);
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 14px var(--orb-color, transparent);
 }
 
 .subtitle {
   font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  font-weight: 400;
-  color: rgba(232, 234, 240, 0.55);
-  letter-spacing: 0.06em;
+  font-size: 9.5px;
+  color: rgba(232, 234, 240, 0.45);
+  letter-spacing: 0.04em;
+}
+
+.hint {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  color: rgba(232, 234, 240, 0.22);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 2px;
 }
