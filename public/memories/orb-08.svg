@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400">
+  <defs>
+    <radialGradient id="glow" cx="52%" cy="50%" r="56%">
+      <stop offset="0%" stop-color="#AABBCC" stop-opacity="0.85"/>
+      <stop offset="42%" stop-color="#8892B0" stop-opacity="0.38"/>
+      <stop offset="80%" stop-color="#334466" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#010608" stop-opacity="1"/>
+    </radialGradient>
+    <radialGradient id="shine" cx="36%" cy="30%" r="26%">
+      <stop offset="0%" stop-color="#E0E8F0" stop-opacity="0.65"/>
+      <stop offset="100%" stop-color="#E0E8F0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="50%">
+      <stop offset="60%" stop-color="#010608" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#010608" stop-opacity="0.90"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="400" fill="#010608"/>
+  <circle cx="200" cy="200" r="192" fill="url(#glow)"/>
+  <circle cx="200" cy="200" r="48" fill="#8892B0" fill-opacity="0.28"/>
+  <circle cx="200" cy="200" r="18" fill="#DDDDEE" fill-opacity="0.60"/>
+  <circle cx="200" cy="200" r="180" fill="url(#shine)"/>
+  <circle cx="200" cy="200" r="192" fill="url(#vignette)"/>
+  <!-- Grid lines — corporate feel -->
+  <line x1="60" y1="200" x2="340" y2="200" stroke="#8892B0" stroke-opacity="0.06" stroke-width="1"/>
+  <line x1="200" y1="60" x2="200" y2="340" stroke="#8892B0" stroke-opacity="0.06" stroke-width="1"/>
+  <circle cx="200" cy="200" r="187" fill="none" stroke="#8892B0" stroke-opacity="0.15" stroke-width="1.5"/>
+</svg>

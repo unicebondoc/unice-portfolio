@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="54%" r="58%">
+      <stop offset="0%" stop-color="#FF8080" stop-opacity="0.92"/>
+      <stop offset="35%" stop-color="#FF6B6B" stop-opacity="0.50"/>
+      <stop offset="72%" stop-color="#AA2222" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#010608" stop-opacity="1"/>
+    </radialGradient>
+    <radialGradient id="shine" cx="37%" cy="32%" r="26%">
+      <stop offset="0%" stop-color="#FFE8E8" stop-opacity="0.68"/>
+      <stop offset="100%" stop-color="#FFE8E8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="50%">
+      <stop offset="60%" stop-color="#010608" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#010608" stop-opacity="0.85"/>
+    </radialGradient>
+    <!-- Hot core -->
+    <radialGradient id="hotcore" cx="50%" cy="50%" r="18%">
+      <stop offset="0%" stop-color="#FFEE44" stop-opacity="0.70"/>
+      <stop offset="100%" stop-color="#FF6B6B" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="400" fill="#010608"/>
+  <circle cx="200" cy="200" r="192" fill="url(#glow)"/>
+  <circle cx="200" cy="200" r="192" fill="url(#hotcore)"/>
+  <circle cx="200" cy="200" r="48" fill="#FF6B6B" fill-opacity="0.35"/>
+  <circle cx="200" cy="200" r="18" fill="#FFEE44" fill-opacity="0.80"/>
+  <circle cx="200" cy="200" r="180" fill="url(#shine)"/>
+  <circle cx="200" cy="200" r="192" fill="url(#vignette)"/>
+  <circle cx="200" cy="200" r="187" fill="none" stroke="#FF6B6B" stroke-opacity="0.18" stroke-width="1.5"/>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400">
+  <defs>
+    <radialGradient id="glow" cx="46%" cy="50%" r="56%">
+      <stop offset="0%" stop-color="#00FF88" stop-opacity="0.90"/>
+      <stop offset="38%" stop-color="#00CC66" stop-opacity="0.40"/>
+      <stop offset="78%" stop-color="#005533" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#010608" stop-opacity="1"/>
+    </radialGradient>
+    <radialGradient id="shine" cx="34%" cy="28%" r="28%">
+      <stop offset="0%" stop-color="#CCFFF0" stop-opacity="0.70"/>
+      <stop offset="100%" stop-color="#CCFFF0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="50%">
+      <stop offset="60%" stop-color="#010608" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#010608" stop-opacity="0.85"/>
+    </radialGradient>
+    <!-- Wave ripple suggestion -->
+    <radialGradient id="wave" cx="50%" cy="68%" r="35%">
+      <stop offset="0%" stop-color="#00FF88" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#00FF88" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="400" fill="#010608"/>
+  <circle cx="200" cy="200" r="192" fill="url(#glow)"/>
+  <circle cx="200" cy="200" r="192" fill="url(#wave)"/>
+  <circle cx="200" cy="200" r="50" fill="#00FF88" fill-opacity="0.28"/>
+  <circle cx="200" cy="200" r="20" fill="#FFFFFF" fill-opacity="0.55"/>
+  <circle cx="200" cy="200" r="180" fill="url(#shine)"/>
+  <circle cx="200" cy="200" r="192" fill="url(#vignette)"/>
+  <circle cx="200" cy="200" r="187" fill="none" stroke="#00FF88" stroke-opacity="0.15" stroke-width="1.5"/>
+</svg>
