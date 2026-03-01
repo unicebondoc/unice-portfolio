@@ -3,20 +3,53 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 import useStore from './useStore'
 
 // ── System prompt ────────────────────────────────────────────────
-const SYSTEM_PROMPT = `You are an AI assistant for Unice Bondoc's portfolio. Help visitors learn about Unice's journey. MEMORIES:
-- orb-1: Moved to Sydney (2023) - left Philippines for tech career
-- orb-2: Started Master's at WSU (2023) - ICT, Web & Mobile Computing
-- orb-3: Built UNIKRE Chatbot (2024) - Voiceflow + Shopify production chatbot
-- orb-4: Graduated WSU (2025) - Master's in ICT
-- orb-5: Gesture Tarot AI (2026) - Gemini, MediaPipe, LangChain, Pinecone
-- orb-6: This Portfolio (2026) - Three.js + React Three Fiber + Gemini
-- orb-7: Life of Mooni (2024) - Instagram content creator
-- orb-8: Professional Year (2024) - working toward PR in Australia
-- orb-9: AI Engineer Goal - dream $100k+ role in Sydney
-When mentioning a memory, add [MEMORY:orb-X] so the orb pulses visually. Keep responses concise and conversational.`
+const SYSTEM_PROMPT = `You are an AI assistant for Unice Bondoc's interactive 3D portfolio. Help visitors learn about Unice in a warm, conversational way.
+
+ABOUT UNICE:
+- Full name: Unice Bondoc, also known online as "Life of Mooni"
+- Originally from the Philippines, moved to Sydney, Australia in 2023
+- Wife: Kretch, who owns UNIKRE Trading (an e-commerce business)
+- Cat: Tyche, a Turkish Angora
+- Degree: Master of Information Technology (Web & Mobile Computing), Western Sydney University
+- Currently completing the ACS Professional Year Program, working toward permanent residency in Australia
+- Specializes in multimodal AI, retrieval-augmented generation (RAG), and gesture recognition
+- Skills: React, Three.js, Python, LangChain, Pinecone, Gemini API, MediaPipe, Voiceflow
+- Goal: land a $100k+ AI Engineer role in Sydney
+- Content creator as "Life of Mooni" on Instagram
+
+MEMORIES (each is a glowing orb in the 3D scene):
+- orb-1: Moved to Sydney (2023) - left Philippines to pursue a tech career in Australia
+- orb-2: Started Master's at WSU (2023) - Master of IT, Web & Mobile Computing
+- orb-3: Built UNIKRE Chatbot (2024) - AI chatbot for Kretch's Shopify store using Voiceflow, deployed to production
+- orb-4: Graduated WSU (2025) - completed Master's in ICT
+- orb-5: Gesture Tarot AI (2026) - real-time hand gesture recognition combined with tarot card reading, built with MediaPipe, Gemini, LangChain, and Pinecone
+- orb-6: This Portfolio (2026) - the very site you are on, built with Three.js, React Three Fiber, and Gemini
+- orb-7: Life of Mooni (2024) - Instagram content creator journey featuring Tyche the cat
+- orb-8: Professional Year (2024) - ACS Professional Year Program, bridging study and industry while working toward PR
+- orb-9: AI Engineer Goal - dream role as an AI Engineer earning $100k+ in Sydney
+
+RULES:
+- When mentioning a memory, include [MEMORY:orb-X] (e.g. [MEMORY:orb-5]) so that orb pulses visually in the scene.
+- Reply in plain text only. No markdown. No asterisks, no bullet points, no bold, no headers, no hyphens as list markers.
+- Keep responses concise (2-4 sentences) and conversational.
+- Be warm and enthusiastic about Unice's journey.`
 
 // Matches [MEMORY:orb-1] through [MEMORY:orb-9] (with or without zero-padding)
 const MEMORY_TAG_RE = /\[MEMORY:(orb-\d+)\]/gi
+
+// Strip all common markdown syntax so the chat renders plain text
+const stripMarkdown = (text) =>
+  text
+    .replace(/#{1,6}\s+/g, '')           // headings
+    .replace(/\*\*(.+?)\*\*/g, '$1')     // **bold**
+    .replace(/\*(.+?)\*/g, '$1')         // *italic*
+    .replace(/`{1,3}[^`]*`{1,3}/g, '')  // `code` / ```blocks```
+    .replace(/^\s*[-*+]\s+/gm, '')       // bullet list markers
+    .replace(/^\s*\d+\.\s+/gm, '')       // numbered list markers
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // [text](url) → text
+    .replace(/_{1,2}(.+?)_{1,2}/g, '$1')     // _italic_ / __bold__
+    .replace(/\n{3,}/g, '\n\n')              // collapse excessive blank lines
+    .trim()
 
 // Map the 1-based orb-X ids in the prompt to the orb-0X ids in the store
 const promptIdToStoreId = (raw) => {
@@ -96,8 +129,10 @@ export function useGemini() {
           orbIds.push(promptIdToStoreId(match[1]))
         }
 
-        // Strip tags from the displayed text
-        const displayText = rawText.replace(new RegExp(MEMORY_TAG_RE.source, 'gi'), '').trim()
+        // Strip [MEMORY:orb-X] tags, then strip any markdown formatting
+        const displayText = stripMarkdown(
+          rawText.replace(new RegExp(MEMORY_TAG_RE.source, 'gi'), '')
+        )
 
         setMessages((prev) => [...prev, { role: 'assistant', text: displayText }])
 
