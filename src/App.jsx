@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import OrbLabels from './components/ui/OrbLabel'
 import ProjectModal from './components/ui/ProjectModal'
 import HUD from './components/ui/HUD'
+import ChatBot from './components/ui/ChatBot'
 import { Canvas } from '@react-three/fiber'
 import { MEMORIES } from './data/memories'
 import MemoryOrb from './components/scene/MemoryOrb'
@@ -96,6 +97,7 @@ export default function App() {
       {/* ── HTML Overlays ─────────────────────────────────────── */}
       <HUD />
       <ProjectModal />
+      <ChatBot />
     </div>
   )
 }

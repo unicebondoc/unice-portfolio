@@ -16,6 +16,23 @@ const useStore = create((set) => ({
   // Camera scroll progress (0 → 1)
   scrollProgress: 0,
   setScrollProgress: (v) => set({ scrollProgress: v }),
+
+  // Active AI-triggered pulse animations  { 'orb-01': triggerTimestamp, ... }
+  // Entries are added on pulseOrb() and removed automatically after 2.4 s.
+  pulsingOrbs: {},
+  pulseOrb: (id) => {
+    set((state) => ({
+      pulsingOrbs: { ...state.pulsingOrbs, [id]: Date.now() },
+    }))
+    // Auto-remove after the animation completes
+    setTimeout(() => {
+      set((state) => {
+        const next = { ...state.pulsingOrbs }
+        delete next[id]
+        return { pulsingOrbs: next }
+      })
+    }, 2400)
+  },
 }))
 
 export default useStore
