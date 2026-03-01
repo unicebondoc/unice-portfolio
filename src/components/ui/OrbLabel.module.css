@@ -1,3 +1,9 @@
+.icon {
+  font-size: 18px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
 .tooltip {
   display: flex;
   flex-direction: column;

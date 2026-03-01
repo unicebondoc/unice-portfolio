@@ -3,36 +3,62 @@ import { useFrame } from '@react-three/fiber'
 import { Sphere, MeshDistortMaterial } from '@react-three/drei'
 import * as THREE from 'three'
 import useStore from '../../hooks/useStore'
+import { MEMORIES, TIER_RADIUS } from '../../data/memories'
 
 /**
- * MemoryOrb — a single glowing, pulsing memory sphere.
+ * MemoryOrb — one glowing bioluminescent memory sphere.
  *
- * index        — stagger offset for the entrance animation
- * isFuture     — ghostly white shell styling
- * pulsingOrbs  — Gemini-triggered brightness burst
+ * Tiers:
+ *   core       → radius 1.2, emissive ~2.0, fast breathe, front z
+ *   supporting → radius 0.7, emissive ~0.8, slow breathe, back z
+ *
+ * Dimming: when a core orb is hovered, all supporting orbs drop
+ *   emissiveIntensity to 0.3 of normal.
+ *
+ * Pulse: Gemini chat pulses the orb via pulsingOrbs store key.
  */
 export default function MemoryOrb({ memory, index = 0 }) {
-  const { id, color, glowColor, position, isFuture } = memory
+  const { id, color, glowColor, position, isFuture, tier } = memory
+
+  const isCore = tier === 'core'
+
+  // Sizing by tier
+  const RADIUS     = TIER_RADIUS[tier] ?? 1.0
+  const BASE_EMIT  = isCore ? 2.0  : 0.8
+  const DISTORT    = isCore ? 0.42 : 0.28
+  const DIST_SPEED = isCore ? 2.4  : 1.5
+  const BREATHE_AMP   = isCore ? 0.040 : 0.022
+  const BREATHE_FREQ  = isCore ? 1.5   : 0.9
+  const FLOAT_AMP     = isCore ? 0.14  : 0.09
+  const FLOAT_SPEED   = isCore ? 0.55  : 0.38
 
   const groupRef = useRef()
   const meshRef  = useRef()
   const glowRef  = useRef()
   const outerRef = useRef()
 
-  const { hoveredOrb, setHoveredOrb, selectedOrb, setSelectedOrb, pulsingOrbs } =
-    useStore()
+  const {
+    hoveredOrb, setHoveredOrb,
+    selectedOrb, setSelectedOrb,
+    pulsingOrbs,
+  } = useStore()
 
   const isHovered  = hoveredOrb  === id
   const isSelected = selectedOrb === id
   const isActive   = isHovered || isSelected
   const isPulsing  = id in pulsingOrbs
 
-  // Entrance animation state
-  const birthRef      = useRef(null)   // clock time of first frame
-  const INTRO_DELAY   = index * 0.16   // stagger per orb
-  const INTRO_RISE    = 0.75           // seconds to scale from 0 → 1
+  // When hovering a core orb → dim supporting orbs
+  const hoveredMemory  = MEMORIES.find((m) => m.id === hoveredOrb)
+  const hoveredIsCore  = hoveredMemory?.tier === 'core'
+  const isDimmed       = hoveredIsCore && !isCore && !isActive
 
-  // Pulse animation state
+  // Entrance stagger
+  const birthRef     = useRef(null)
+  const INTRO_DELAY  = index * 0.14
+  const INTRO_RISE   = 0.80
+
+  // Pulse
   const pulseStartRef = useRef(null)
   const wasPulsingRef = useRef(false)
   const PULSE_DUR     = 1.8
@@ -45,97 +71,95 @@ export default function MemoryOrb({ memory, index = 0 }) {
     const t = clock.getElapsedTime()
     if (!groupRef.current) return
 
-    // ── Birth timestamp (set once on first frame) ──────────────
+    // ── Birth / entrance ──────────────────────────────────────
     if (birthRef.current === null) birthRef.current = t
+    const age       = t - birthRef.current
+    const introRaw  = Math.max(0, (age - INTRO_DELAY) / INTRO_RISE)
+    const intro     = Math.min(1, introRaw)
+    const introEase = 1 - Math.pow(1 - intro, 3)  // cubic ease-out
 
-    // ── Entrance: cubic ease-out, 0 → 1 ───────────────────────
-    const born    = t - birthRef.current
-    const raw     = Math.max(0, (born - INTRO_DELAY) / INTRO_RISE)
-    const intro   = Math.min(1, raw)
-    const introEased = 1 - Math.pow(1 - intro, 3)
-
-    // ── Pulse: rising-edge detection ──────────────────────────
+    // ── Pulse (Gemini trigger) ────────────────────────────────
     if (isPulsing && !wasPulsingRef.current) pulseStartRef.current = t
     wasPulsingRef.current = isPulsing
     let pulseFactor = 0
     if (pulseStartRef.current !== null) {
-      const e = t - pulseStartRef.current
-      if (e < PULSE_DUR) pulseFactor = Math.sin((e / PULSE_DUR) * Math.PI)
+      const pe = t - pulseStartRef.current
+      if (pe < PULSE_DUR) pulseFactor = Math.sin((pe / PULSE_DUR) * Math.PI)
       else if (!isPulsing) pulseStartRef.current = null
     }
 
     // ── Float ─────────────────────────────────────────────────
-    const floatAmp   = isFuture ? 0.20 : 0.12
-    const floatSpeed = isFuture ? 0.40 : 0.60
     groupRef.current.position.y =
-      position[1] + Math.sin(t * floatSpeed + seed) * floatAmp
+      position[1] + Math.sin(t * FLOAT_SPEED + seed) * FLOAT_AMP
 
     // ── Rotation ──────────────────────────────────────────────
-    groupRef.current.rotation.y = t * (isFuture ? 0.08 : 0.15)
-    groupRef.current.rotation.z = Math.sin(t * 0.3 + seed) * (isFuture ? 0.08 : 0.05)
+    groupRef.current.rotation.y = t * (isCore ? 0.14 : 0.08)
+    groupRef.current.rotation.z = Math.sin(t * 0.28 + seed) * 0.05
 
-    // ── Scale: entrance × breathe × hover × pulse ────────────
-    const breathe     = 1 + Math.sin(t * 1.2 + seed) * 0.018
-    const hoverMult   = isActive ? 1.18 : 1.0
-    const pulseMult   = 1 + pulseFactor * 0.40
-    const targetScale = introEased * breathe * hoverMult * pulseMult
+    // ── Scale ─────────────────────────────────────────────────
+    const breathe  = 1 + Math.sin(t * BREATHE_FREQ + seed) * BREATHE_AMP
+    const hoverMul = isActive ? 1.18 : isDimmed ? 0.90 : 1.0
+    const pulseMul = 1 + pulseFactor * (isCore ? 0.45 : 0.30)
+    const target   = introEase * breathe * hoverMul * pulseMul
 
     groupRef.current.scale.setScalar(
-      THREE.MathUtils.lerp(groupRef.current.scale.x, targetScale, 0.10)
+      THREE.MathUtils.lerp(groupRef.current.scale.x, target, 0.10)
     )
 
-    // ── Material emissive flash on pulse ──────────────────────
+    // ── Emissive ──────────────────────────────────────────────
     if (meshRef.current) {
-      const base   = isFuture ? 0.15 : 0.38
-      const active = isActive ? 0.70 : base
-      const target = active + pulseFactor * 1.2
+      const dimFactor   = isDimmed ? 0.3 : 1.0
+      const activeMul   = isActive ? 1.35 : 1.0
+      const targetEmit  = BASE_EMIT * dimFactor * activeMul + pulseFactor * 1.5
       meshRef.current.material.emissiveIntensity = THREE.MathUtils.lerp(
         meshRef.current.material.emissiveIntensity,
-        target,
-        0.10
+        targetEmit,
+        0.08
       )
     }
 
-    // ── Inner glow ────────────────────────────────────────────
+    // ── Inner glow opacity ────────────────────────────────────
     if (glowRef.current) {
-      const base  = isActive ? 0.60 : isFuture ? 0.20 : 0.35
+      const baseOp  = isCore ? 0.45 : 0.25
+      const activeO = isActive ? 0.70 : baseOp
+      const dimO    = isDimmed ? baseOp * 0.3 : activeO
       glowRef.current.material.opacity =
-        (base + pulseFactor * 0.35) * (0.85 + Math.sin(t * 1.8 + seed) * 0.15)
+        (dimO + pulseFactor * 0.30) * (0.85 + Math.sin(t * 1.8 + seed) * 0.15)
     }
 
-    // ── Outer halo ────────────────────────────────────────────
+    // ── Outer halo opacity ────────────────────────────────────
     if (outerRef.current) {
-      const base   = isActive ? 0.12 : isFuture ? 0.03 : 0.04
-      const target = base + pulseFactor * 0.22
+      const baseH   = isCore ? (isActive ? 0.15 : 0.06) : (isActive ? 0.08 : 0.025)
+      const targetH = (isDimmed ? baseH * 0.2 : baseH) + pulseFactor * 0.18
       outerRef.current.material.opacity = THREE.MathUtils.lerp(
         outerRef.current.material.opacity,
-        target,
+        targetH,
         0.06
       )
     }
   })
 
-  const handleClick        = () => setSelectedOrb(isSelected ? null : id)
-  const handlePointerOver  = (e) => {
+  const handleClick = () => setSelectedOrb(isSelected ? null : id)
+  const handlePointerOver = (e) => {
     e.stopPropagation()
     setHoveredOrb(id)
     document.body.style.cursor = 'pointer'
   }
-  const handlePointerOut   = () => {
+  const handlePointerOut = () => {
     setHoveredOrb(null)
     document.body.style.cursor = 'auto'
   }
 
-  const shellOpacity = isFuture ? 0.30 : 0.88
-  const distort      = isFuture ? 0.55 : 0.38
-  const distortSpeed = isFuture ? 1.40 : 2.20
+  const shellOpacity = isFuture ? 0.28 : isCore ? 0.92 : 0.80
+  const innerRadius  = RADIUS * 0.55
+  const outerRadius  = RADIUS * 1.16
 
   return (
-    // scale={[0,0,0]} ensures no flash on first frame before useFrame takes over
     <group position={position} ref={groupRef} scale={[0, 0, 0]}>
+      {/* ── Main distorted shell ──────────────────────────────── */}
       <Sphere
         ref={meshRef}
-        args={[1, 64, 64]}
+        args={[RADIUS, isCore ? 64 : 48, isCore ? 64 : 48]}
         onClick={handleClick}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
@@ -143,30 +167,32 @@ export default function MemoryOrb({ memory, index = 0 }) {
         <MeshDistortMaterial
           color={orbColor}
           emissive={orbColor}
-          emissiveIntensity={isFuture ? 0.15 : 0.38}
-          distort={distort}
-          speed={distortSpeed}
+          emissiveIntensity={BASE_EMIT}
+          distort={DISTORT}
+          speed={DIST_SPEED}
           roughness={0}
-          metalness={isFuture ? 0 : 0.1}
+          metalness={isFuture ? 0 : 0.05}
           transparent
           opacity={shellOpacity}
         />
       </Sphere>
 
-      <Sphere ref={glowRef} args={[0.65, 32, 32]}>
+      {/* ── Inner glow core ───────────────────────────────────── */}
+      <Sphere ref={glowRef} args={[innerRadius, 32, 32]}>
         <meshBasicMaterial
           color={glowTHREE}
           transparent
-          opacity={isFuture ? 0.20 : 0.35}
+          opacity={isFuture ? 0.18 : isCore ? 0.45 : 0.25}
           side={THREE.BackSide}
         />
       </Sphere>
 
-      <Sphere ref={outerRef} args={[1.38, 32, 32]}>
+      {/* ── Outer soft halo ───────────────────────────────────── */}
+      <Sphere ref={outerRef} args={[outerRadius, 32, 32]}>
         <meshBasicMaterial
           color={glowTHREE}
           transparent
-          opacity={isFuture ? 0.03 : 0.04}
+          opacity={isFuture ? 0.02 : isCore ? 0.06 : 0.025}
           side={THREE.BackSide}
           depthWrite={false}
         />

@@ -9,7 +9,7 @@ import styles from './OrbLabel.module.css'
  * Positioned in 3D world-space via drei <Html>.
  */
 function SingleLabel({ memory }) {
-  const { id, title, subtitle, year, color, position, isFuture } = memory
+  const { id, title, subtitle, year, color, position, isFuture, icon } = memory
 
   const hoveredOrb  = useStore((s) => s.hoveredOrb)
   const selectedOrb = useStore((s) => s.selectedOrb)
@@ -30,6 +30,9 @@ function SingleLabel({ memory }) {
           '--orb-color': color,
         }}
       >
+        {/* Icon */}
+        {icon && <span className={styles.icon}>{icon}</span>}
+
         {/* Year pill */}
         <span
           className={styles.year}

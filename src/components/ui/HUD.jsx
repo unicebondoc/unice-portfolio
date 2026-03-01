@@ -19,30 +19,21 @@ const InstagramIcon = () => (
 )
 
 const SOCIALS = [
-  {
-    label: 'LinkedIn',
-    href: 'https://linkedin.com/in/unicebondoc',
-    Icon: LinkedInIcon,
-  },
-  {
-    label: 'GitHub',
-    href: 'https://github.com/unicebondoc',
-    Icon: GitHubIcon,
-  },
-  {
-    label: 'Instagram',
-    href: 'https://instagram.com/lifeofmooni',
-    Icon: InstagramIcon,
-  },
+  { label: 'LinkedIn',  href: 'https://linkedin.com/in/unicebondoc',    Icon: LinkedInIcon  },
+  { label: 'GitHub',    href: 'https://github.com/unicebondoc',          Icon: GitHubIcon    },
+  { label: 'Instagram', href: 'https://instagram.com/lifeofmooni',       Icon: InstagramIcon },
 ]
 
 export default function HUD() {
   return (
     <>
-      {/* ── Top-left: identity + social links ─────────────────── */}
+      {/* ── Top-left: identity + tagline + social links ────────── */}
       <header className={styles.header}>
         <span className={styles.name}>Unice Bondoc</span>
         <span className={styles.role}>AI Engineer</span>
+        <span className={styles.tagline}>
+          This is my story. Every orb is a moment that made me.
+        </span>
 
         <nav className={styles.socials} aria-label="Social links">
           {SOCIALS.map(({ label, href, Icon }) => (
@@ -61,12 +52,12 @@ export default function HUD() {
         </nav>
       </header>
 
-      {/* ── Bottom-center: hint ───────────────────────────────── */}
+      {/* ── Bottom-center: interaction hint ──────────────────── */}
       <div className={styles.hint}>
-        <span>hover an orb · click to explore</span>
+        <span>hover · click · explore</span>
       </div>
 
-      {/* ── Bottom-right: version tag ─────────────────────────── */}
+      {/* ── Bottom-right: brand tag ───────────────────────────── */}
       <div className={styles.badge}>
         <span>Core Memories</span>
       </div>

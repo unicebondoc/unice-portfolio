@@ -63,13 +63,21 @@ export default function ProjectModal() {
               <div className={styles.metaRow}>
                 <span className={styles.year}>{memory.year}</span>
                 <span className={styles.emotionBadge}>{memory.emotion}</span>
+                {memory.tier === 'core' && (
+                  <span className={styles.coreBadge}>✦ Core Memory</span>
+                )}
                 {memory.isFuture && (
                   <span className={styles.dreamBadge}>✦ dream</span>
                 )}
               </div>
 
               {/* Title & subtitle */}
-              <h2 className={styles.title}>{memory.title}</h2>
+              <h2 className={styles.title}>
+                {memory.icon && (
+                  <span className={styles.titleIcon}>{memory.icon}</span>
+                )}
+                {memory.title}
+              </h2>
               <p  className={styles.subtitle}>{memory.subtitle}</p>
 
               {/* Description */}

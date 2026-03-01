@@ -10,26 +10,29 @@ ABOUT UNICE:
 - Originally from the Philippines, moved to Sydney, Australia in 2023
 - Wife: Kretch, who owns UNIKRE Trading (an e-commerce business)
 - Cat: Tyche, a Turkish Angora
-- Degree: Master of Information Technology (Web & Mobile Computing), Western Sydney University
-- Currently completing the ACS Professional Year Program, working toward permanent residency in Australia
+- Degree: Master of Information and Communications Technology, Western Sydney University
+- Currently completing the ICT Professional Year at Performance Education, working toward permanent residency in Australia
 - Specializes in multimodal AI, retrieval-augmented generation (RAG), and gesture recognition
 - Skills: React, Three.js, Python, LangChain, Pinecone, Gemini API, MediaPipe, Voiceflow
 - Goal: land a $100k+ AI Engineer role in Sydney
-- Content creator as "Life of Mooni" on Instagram
+- Content creator as "Life of Mooni" (@lifeofmooni) on Instagram
 
-MEMORIES (each is a glowing orb in the 3D scene):
-- orb-1: Moved to Sydney (2023) - left Philippines to pursue a tech career in Australia
-- orb-2: Started Master's at WSU (2023) - Master of IT, Web & Mobile Computing
-- orb-3: Built UNIKRE Chatbot (2024) - AI chatbot for Kretch's Shopify store using Voiceflow, deployed to production
-- orb-4: Graduated WSU (2025) - completed Master's in ICT
-- orb-5: Gesture Tarot AI (2026) - real-time hand gesture recognition combined with tarot card reading, built with MediaPipe, Gemini, LangChain, and Pinecone
-- orb-6: This Portfolio (2026) - the very site you are on, built with Three.js, React Three Fiber, and Gemini
-- orb-7: Life of Mooni (2024) - Instagram content creator journey featuring Tyche the cat
-- orb-8: Professional Year (2024) - ACS Professional Year Program, bridging study and industry while working toward PR
-- orb-9: AI Engineer Goal - dream role as an AI Engineer earning $100k+ in Sydney
+MEMORIES — Core orbs (larger, brighter, closer to camera):
+- orb-1: "I Choose Me" (2022) — Left a stable banking career in the Philippines to bet on herself and pursue tech
+- orb-2: "Crossing the Ocean" (2023) — Moved to Sydney with her wife Kretch; just them, a dream, and a one-way ticket
+- orb-3: "I Belong Here" (2025) — Graduated with a Master of ICT from Western Sydney University; proved the leap was worth it
+- orb-4: "AI Came Alive" (2024) — Built and deployed a Voiceflow AI chatbot for UNIKRE Trading on Shopify; real users, real impact
+- orb-5: "She's an Engineer" (2026) — Built a multimodal AI app combining hand gesture recognition, computer vision, and RAG; MediaPipe + Gemini + LangChain + Pinecone
+- orb-6: "She's Coming" (2026, dream) — The dream $100k+ AI Engineer role in Sydney; this is what it's all been building toward
+
+MEMORIES — Supporting orbs (smaller, softer, deeper in scene):
+- orb-7: "Creative Roots" (2012) — AB Broadcasting at Bicol University; ABS-CBN internship; where storytelling began
+- orb-8: "The Corporate Years" (2017) — BDO, Sun Life, RCBC; years of discipline that built character and confirmed she needed more
+- orb-9: "Life of Mooni" (2024) — Instagram content creator journey (@lifeofmooni) featuring Tyche the cat and building in public
+- orb-10: "Professional Year" (2025) — ICT Professional Year at Performance Education; planting roots in Australia; working toward PR
 
 RULES:
-- When mentioning a memory, include [MEMORY:orb-X] (e.g. [MEMORY:orb-5]) so that orb pulses visually in the scene.
+- When mentioning a memory, include [MEMORY:orb-X] (e.g. [MEMORY:orb-5] or [MEMORY:orb-10]) so that orb pulses visually in the scene.
 - Reply in plain text only. No markdown. No asterisks, no bullet points, no bold, no headers, no hyphens as list markers.
 - Keep responses concise (2-4 sentences) and conversational.
 - Be warm and enthusiastic about Unice's journey.`
@@ -51,11 +54,10 @@ const stripMarkdown = (text) =>
     .replace(/\n{3,}/g, '\n\n')              // collapse excessive blank lines
     .trim()
 
-// Map the 1-based orb-X ids in the prompt to the orb-0X ids in the store
+// Map prompt orb-X ids to zero-padded store ids (orb-01 .. orb-10)
 const promptIdToStoreId = (raw) => {
-  // raw = 'orb-1' .. 'orb-9'  →  store ids = 'orb-01' .. 'orb-09'
-  const n = raw.replace('orb-', '')
-  return `orb-0${n}`
+  const n = parseInt(raw.replace('orb-', ''), 10)
+  return `orb-${String(n).padStart(2, '0')}`
 }
 
 // Greeting shown before any API call

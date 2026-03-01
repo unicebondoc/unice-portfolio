@@ -24,6 +24,17 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   pointer-events: none;
+  margin-bottom: 4px;
+}
+
+.tagline {
+  font-family: 'Space Mono', monospace;
+  font-size: 8.5px;
+  color: rgba(232, 234, 240, 0.22);
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  max-width: 260px;
+  pointer-events: none;
   margin-bottom: 6px;
 }
 
@@ -108,7 +119,11 @@
 
   .role {
     font-size: 8.5px;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
+  }
+
+  .tagline {
+    display: none;
   }
 
   .socialLabel {
