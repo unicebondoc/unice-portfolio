@@ -1,21 +1,26 @@
 import React, { useRef, useMemo, Suspense } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Sphere, MeshDistortMaterial, useTexture } from '@react-three/drei'
+import { Sphere, useTexture } from '@react-three/drei'
 import * as THREE from 'three'
 import useStore from '../../hooks/useStore'
 import { MEMORIES, TIER_RADIUS } from '../../data/memories'
 
 /**
- * MemoryOrb — one glowing bioluminescent memory sphere.
+ * MemoryOrb — Glass Soul Crystal Orb.
  *
- * Tiers:
- *   core       → radius 1.2, emissive ~1.2 (reduced 40% from 2.0)
- *   supporting → radius 0.7, emissive ~0.48 (reduced 40% from 0.8)
+ * Structure (outer → inner):
+ *   1. Outer halo      MeshBasicMaterial  — soft colored bloom ring
+ *   2. Glass shell     MeshPhysicalMaterial — transmission 0.95, IOR 1.5
+ *   3. Photo sphere    (optional) — texture inside the crystal
+ *   4. Inner core      MeshStandardMaterial  — emissive soul glow
+ *   5. PointLight      — lights surrounding scene/particles in orb color
  *
- * Photo texture:
- *   If memory.image is set, an inner sphere shows the texture through
- *   the semi-transparent outer distorted shell (crystal orb effect).
- *   Wrapped in OrbImageErrorBoundary + Suspense — missing images are silent.
+ * Animations:
+ *   - Breathing: slow scale 0.97 ↔ 1.03
+ *   - Float: gentle Y sine drift
+ *   - Rotation: very slow Y + subtle Z wobble
+ *   - Hover: core 3× brighter, glass more transparent, scale boost
+ *   - Pulse: Gemini-triggered bell-curve scale + emissive burst
  */
 
 // ── Error boundary — silently drops texture if image 404s ────────
@@ -25,7 +30,7 @@ class OrbImageErrorBoundary extends React.Component {
   render() { return this.state.hasError ? null : this.props.children }
 }
 
-// ── Inner photo sphere — called only when image URL is truthy ─────
+// ── Inner photo sphere ────────────────────────────────────────────
 function TexturedInner({ radius, url }) {
   const texture = useTexture(url)
   texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping
@@ -33,7 +38,7 @@ function TexturedInner({ radius, url }) {
     <Sphere args={[radius, 40, 40]}>
       <meshStandardMaterial
         map={texture}
-        roughness={0.12}
+        roughness={0.15}
         metalness={0}
         toneMapped={false}
       />
@@ -47,20 +52,25 @@ export default function MemoryOrb({ memory, index = 0 }) {
 
   const isCore = tier === 'core'
 
-  // Tier-dependent constants (emissive reduced 40% vs Phase 5)
   const RADIUS      = TIER_RADIUS[tier] ?? 1.0
-  const BASE_EMIT   = isCore ? 1.2  : 0.48
-  const DISTORT     = isCore ? 0.42 : 0.28
-  const DIST_SPEED  = isCore ? 2.4  : 1.5
-  const BREATHE_AMP  = isCore ? 0.040 : 0.022
-  const BREATHE_FREQ = isCore ? 1.5   : 0.9
-  const FLOAT_AMP    = isCore ? 0.14  : 0.09
-  const FLOAT_SPEED  = isCore ? 0.55  : 0.38
+  const CORE_RADIUS = RADIUS * (isCore ? 0.38 : 0.35)  // inner soul
+  const PHOTO_RADIUS = RADIUS * 0.82                    // photo inside shell
+  const OUTER_RADIUS = RADIUS * 1.14                    // halo ring
 
-  const groupRef = useRef()
-  const meshRef  = useRef()
-  const glowRef  = useRef()
-  const outerRef = useRef()
+  // Per-tier constants
+  const BASE_CORE_EMIT  = isCore ? 1.2  : 0.48
+  const BREATHE_SPEED   = isCore ? 0.75 : 0.52
+  const FLOAT_AMP       = isCore ? 0.13 : 0.08
+  const FLOAT_SPEED     = isCore ? 0.50 : 0.36
+  const POINT_INTENSITY = isCore ? 0.85 : 0.24
+  const POINT_DISTANCE  = isCore ? 6.0  : 3.5
+
+  // Refs for the group and each material/light
+  const groupRef  = useRef()
+  const glassMat  = useRef()   // MeshPhysicalMaterial
+  const coreMat   = useRef()   // inner core MeshStandardMaterial
+  const outerMat  = useRef()   // halo MeshBasicMaterial
+  const pointRef  = useRef()   // PointLight
 
   const {
     hoveredOrb, setHoveredOrb,
@@ -73,7 +83,7 @@ export default function MemoryOrb({ memory, index = 0 }) {
   const isActive   = isHovered || isSelected
   const isPulsing  = id in pulsingOrbs
 
-  // When hovering a core orb → dim supporting orbs
+  // Supporting orbs dim when any core orb is hovered
   const hoveredMemory = MEMORIES.find((m) => m.id === hoveredOrb)
   const hoveredIsCore = hoveredMemory?.tier === 'core'
   const isDimmed      = hoveredIsCore && !isCore && !isActive
@@ -83,7 +93,7 @@ export default function MemoryOrb({ memory, index = 0 }) {
   const INTRO_DELAY = index * 0.14
   const INTRO_RISE  = 0.80
 
-  // Pulse (Gemini-triggered)
+  // Pulse
   const pulseStartRef = useRef(null)
   const wasPulsingRef = useRef(false)
   const PULSE_DUR     = 1.8
@@ -98,10 +108,9 @@ export default function MemoryOrb({ memory, index = 0 }) {
 
     // ── Birth / entrance ──────────────────────────────────────
     if (birthRef.current === null) birthRef.current = t
-    const age      = t - birthRef.current
-    const introRaw = Math.max(0, (age - INTRO_DELAY) / INTRO_RISE)
-    const intro    = Math.min(1, introRaw)
-    const introEase = 1 - Math.pow(1 - intro, 3)
+    const age       = t - birthRef.current
+    const introRaw  = Math.max(0, (age - INTRO_DELAY) / INTRO_RISE)
+    const introEase = 1 - Math.pow(1 - Math.min(1, introRaw), 3)
 
     // ── Pulse (Gemini trigger) ────────────────────────────────
     if (isPulsing && !wasPulsingRef.current) pulseStartRef.current = t
@@ -113,133 +122,147 @@ export default function MemoryOrb({ memory, index = 0 }) {
       else if (!isPulsing) pulseStartRef.current = null
     }
 
-    // ── Float ─────────────────────────────────────────────────
+    // ── Float & rotate ────────────────────────────────────────
     groupRef.current.position.y =
       position[1] + Math.sin(t * FLOAT_SPEED + seed) * FLOAT_AMP
+    groupRef.current.rotation.y = t * (isCore ? 0.07 : 0.04)
+    groupRef.current.rotation.z = Math.sin(t * 0.20 + seed) * 0.03
 
-    // ── Rotation ──────────────────────────────────────────────
-    groupRef.current.rotation.y = t * (isCore ? 0.14 : 0.08)
-    groupRef.current.rotation.z = Math.sin(t * 0.28 + seed) * 0.05
-
-    // ── Scale ─────────────────────────────────────────────────
-    const breathe  = 1 + Math.sin(t * BREATHE_FREQ + seed) * BREATHE_AMP
-    const hoverMul = isActive ? 1.18 : isDimmed ? 0.90 : 1.0
-    const pulseMul = 1 + pulseFactor * (isCore ? 0.45 : 0.30)
+    // ── Breathing scale (0.97 ↔ 1.03) ────────────────────────
+    const breathe  = 0.97 + (Math.sin(t * BREATHE_SPEED + seed) * 0.5 + 0.5) * 0.06
+    const hoverMul = isActive ? 1.12 : isDimmed ? 0.88 : 1.0
+    const pulseMul = 1 + pulseFactor * (isCore ? 0.28 : 0.18)
     const target   = introEase * breathe * hoverMul * pulseMul
 
     groupRef.current.scale.setScalar(
-      THREE.MathUtils.lerp(groupRef.current.scale.x, target, 0.10)
+      THREE.MathUtils.lerp(groupRef.current.scale.x, target, 0.08)
     )
 
-    // ── Emissive ──────────────────────────────────────────────
-    if (meshRef.current) {
-      const dimFactor  = isDimmed ? 0.3 : 1.0
-      const activeMul  = isActive ? 1.35 : 1.0
-      const targetEmit = BASE_EMIT * dimFactor * activeMul + pulseFactor * 0.90
-      meshRef.current.material.emissiveIntensity = THREE.MathUtils.lerp(
-        meshRef.current.material.emissiveIntensity,
-        targetEmit,
-        0.08
+    // ── Glass material ────────────────────────────────────────
+    if (glassMat.current) {
+      // Hover → glass becomes more transparent (higher transmission)
+      const tgt_tx = isDimmed ? 0.82 : isActive ? 0.98 : 0.95
+      const tgt_op = isDimmed ? 0.60 : isActive ? 0.94 : 0.88
+      glassMat.current.transmission = THREE.MathUtils.lerp(
+        glassMat.current.transmission, tgt_tx, 0.06
+      )
+      glassMat.current.opacity = THREE.MathUtils.lerp(
+        glassMat.current.opacity, tgt_op, 0.06
       )
     }
 
-    // ── Inner glow opacity ────────────────────────────────────
-    if (glowRef.current) {
-      const baseOp  = isCore ? 0.40 : 0.22
-      const activeO = isActive ? 0.65 : baseOp
-      const dimO    = isDimmed ? baseOp * 0.3 : activeO
-      glowRef.current.material.opacity =
-        (dimO + pulseFactor * 0.28) * (0.85 + Math.sin(t * 1.8 + seed) * 0.15)
+    // ── Inner core emissive (×3 on hover) ────────────────────
+    if (coreMat.current) {
+      const dimF      = isDimmed ? 0.20 : 1.0
+      const hoverBright = isActive ? 3.0 : 1.0
+      const tgt = BASE_CORE_EMIT * dimF * hoverBright + pulseFactor * 0.80
+      coreMat.current.emissiveIntensity = THREE.MathUtils.lerp(
+        coreMat.current.emissiveIntensity, tgt, 0.10
+      )
     }
 
-    // ── Outer halo opacity ────────────────────────────────────
-    if (outerRef.current) {
-      const baseH   = isCore ? (isActive ? 0.14 : 0.055) : (isActive ? 0.07 : 0.022)
-      const targetH = (isDimmed ? baseH * 0.2 : baseH) + pulseFactor * 0.16
-      outerRef.current.material.opacity = THREE.MathUtils.lerp(
-        outerRef.current.material.opacity,
-        targetH,
-        0.06
+    // ── PointLight ────────────────────────────────────────────
+    if (pointRef.current) {
+      const hoverBoost = isActive ? 2.4 : isDimmed ? 0.15 : 1.0
+      const tgt = POINT_INTENSITY * hoverBoost + pulseFactor * 0.55
+      pointRef.current.intensity = THREE.MathUtils.lerp(
+        pointRef.current.intensity, tgt, 0.10
+      )
+    }
+
+    // ── Outer halo ────────────────────────────────────────────
+    if (outerMat.current) {
+      const base = isCore ? 0.052 : 0.020
+      const tgt  = (isDimmed ? base * 0.15 : isActive ? base * 2.6 : base)
+        + pulseFactor * 0.10
+      outerMat.current.opacity = THREE.MathUtils.lerp(
+        outerMat.current.opacity, tgt, 0.06
       )
     }
   })
 
-  const handleClick = () => setSelectedOrb(isSelected ? null : id)
+  const handleClick       = () => setSelectedOrb(isSelected ? null : id)
   const handlePointerOver = (e) => {
     e.stopPropagation()
     setHoveredOrb(id)
     document.body.style.cursor = 'pointer'
   }
-  const handlePointerOut = () => {
+  const handlePointerOut  = () => {
     setHoveredOrb(null)
     document.body.style.cursor = 'auto'
   }
 
-  // Shell becomes more transparent when a photo is present,
-  // so the image shows through the "crystal" surface
-  const hasImage    = Boolean(image)
-  const shellOpacity = isFuture
-    ? 0.28
-    : hasImage
-      ? (isCore ? 0.52 : 0.46)
-      : (isCore ? 0.88 : 0.78)
-
-  const innerRadius = RADIUS * 0.55
-  const photoRadius = RADIUS * 0.82   // inside the shell
-  const outerRadius = RADIUS * 1.16
+  const hasImage = Boolean(image)
 
   return (
     <group position={position} ref={groupRef} scale={[0, 0, 0]}>
-      {/* ── Photo texture (inner sphere, shows through shell) ──── */}
-      {hasImage && (
-        <OrbImageErrorBoundary>
-          <Suspense fallback={null}>
-            <TexturedInner radius={photoRadius} url={image} />
-          </Suspense>
-        </OrbImageErrorBoundary>
-      )}
 
-      {/* ── Main distorted shell ──────────────────────────────── */}
+      {/* ── Point light at orb center ─────────────────────────── */}
+      <pointLight
+        ref={pointRef}
+        position={[0, 0, 0]}
+        color={color}
+        intensity={POINT_INTENSITY}
+        distance={POINT_DISTANCE}
+        decay={2}
+      />
+
+      {/* ── Outer halo ring ───────────────────────────────────── */}
+      <Sphere args={[OUTER_RADIUS, 32, 32]}>
+        <meshBasicMaterial
+          ref={outerMat}
+          color={glowTHREE}
+          transparent
+          opacity={isFuture ? 0.018 : isCore ? 0.052 : 0.020}
+          side={THREE.BackSide}
+          depthWrite={false}
+        />
+      </Sphere>
+
+      {/* ── Glass crystal shell ───────────────────────────────── */}
       <Sphere
-        ref={meshRef}
         args={[RADIUS, isCore ? 64 : 48, isCore ? 64 : 48]}
         onClick={handleClick}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
       >
-        <MeshDistortMaterial
+        <meshPhysicalMaterial
+          ref={glassMat}
+          color={orbColor}
+          transmission={isFuture ? 0.98 : 0.95}
+          roughness={0}
+          metalness={0.05}
+          thickness={RADIUS * 2}
+          ior={1.5}
+          transparent
+          opacity={isFuture ? 0.92 : 0.88}
+          envMapIntensity={2.0}
+          side={THREE.FrontSide}
+        />
+      </Sphere>
+
+      {/* ── Photo texture (inside glass) ──────────────────────── */}
+      {hasImage && (
+        <OrbImageErrorBoundary>
+          <Suspense fallback={null}>
+            <TexturedInner radius={PHOTO_RADIUS} url={image} />
+          </Suspense>
+        </OrbImageErrorBoundary>
+      )}
+
+      {/* ── Inner soul glow ───────────────────────────────────── */}
+      <Sphere args={[CORE_RADIUS, 24, 24]}>
+        <meshStandardMaterial
+          ref={coreMat}
           color={orbColor}
           emissive={orbColor}
-          emissiveIntensity={BASE_EMIT}
-          distort={DISTORT}
-          speed={DIST_SPEED}
+          emissiveIntensity={BASE_CORE_EMIT}
           roughness={0}
-          metalness={isFuture ? 0 : 0.05}
-          transparent
-          opacity={shellOpacity}
+          metalness={0}
+          toneMapped={false}
         />
       </Sphere>
 
-      {/* ── Inner glow core ───────────────────────────────────── */}
-      <Sphere ref={glowRef} args={[innerRadius, 32, 32]}>
-        <meshBasicMaterial
-          color={glowTHREE}
-          transparent
-          opacity={isFuture ? 0.16 : isCore ? 0.40 : 0.22}
-          side={THREE.BackSide}
-        />
-      </Sphere>
-
-      {/* ── Outer soft halo ───────────────────────────────────── */}
-      <Sphere ref={outerRef} args={[outerRadius, 32, 32]}>
-        <meshBasicMaterial
-          color={glowTHREE}
-          transparent
-          opacity={isFuture ? 0.018 : isCore ? 0.055 : 0.022}
-          side={THREE.BackSide}
-          depthWrite={false}
-        />
-      </Sphere>
     </group>
   )
 }

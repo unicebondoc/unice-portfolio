@@ -1,24 +1,26 @@
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { MEMORIES } from '../../data/memories'
+import useStore from '../../hooks/useStore'
 
 /**
  * Particles — bioluminescent underwater spores / fireflies.
  *
  * Three separate point clouds:
  *   WARM    — amber/ember tones  (firefly, forest spore)
- *   COOL    — deep ocean blue/teal (no green galaxy)
- *   CAUSTIC — large, very slow, faint bright shimmer (light through water)
+ *   COOL    — deep ocean blue/teal (no green)
+ *   CAUSTIC — large, very slow, faint shimmer (light through water)
  *
- * All particles drift slowly with organic sine oscillation.
- * Global opacity pulses gently for a "breathing" feel.
+ * On hover: whole cloud gently drifts toward the hovered orb,
+ * creating a "particles drawn to it" pull effect. Bias fades
+ * out smoothly when hover ends.
  */
 
 const WARM_COUNT    = 140
 const COOL_COUNT    = 100
 const CAUSTIC_COUNT = 28
 
-// Deep ocean palette — blue/teal only, no bright green
 const COOL_PALETTE = [
   new THREE.Color('#00AACC'),
   new THREE.Color('#0077AA'),
@@ -27,7 +29,6 @@ const COOL_PALETTE = [
   new THREE.Color('#22AABB'),
 ]
 
-// Warm ember/firefly — amber & gold, no harsh yellow
 const WARM_PALETTE = [
   new THREE.Color('#FFB800'),
   new THREE.Color('#FF8C00'),
@@ -36,7 +37,6 @@ const WARM_PALETTE = [
   new THREE.Color('#E87800'),
 ]
 
-// Caustic: faint white-cyan suggests light filtering through water
 const CAUSTIC_PALETTE = [
   new THREE.Color('#88EEFF'),
   new THREE.Color('#AAFFEE'),
@@ -60,7 +60,6 @@ function makeCrowd(count, palette, spread) {
     colors[i * 3 + 1] = c.g
     colors[i * 3 + 2] = c.b
 
-    // Very slow organic movement
     speeds[i] = 0.08 + Math.random() * 0.18
     phases[i] = Math.random() * Math.PI * 2
   }
@@ -68,7 +67,8 @@ function makeCrowd(count, palette, spread) {
   return { positions, colors, speeds, phases }
 }
 
-function ParticleCloud({ count, palette, spread, size, opacity, isCaustic = false }) {
+// ── Single particle cloud ─────────────────────────────────────────
+function ParticleCloud({ count, palette, spread, size, opacity, isCaustic = false, hoveredPos }) {
   const ref    = useRef()
   const matRef = useRef()
 
@@ -90,25 +90,42 @@ function ParticleCloud({ count, palette, spread, size, opacity, isCaustic = fals
     return arr
   }, [count, positions])
 
+  // Attraction bias — shared cloud drift toward hovered orb
+  const bias = useRef({ x: 0, y: 0, z: 0 })
+
+  // Keep latest hoveredPos readable inside useFrame without re-render cost
+  const hoveredPosRef = useRef(null)
+  hoveredPosRef.current = hoveredPos
+
   useFrame(({ clock }) => {
     if (!ref.current || !matRef.current) return
     const t   = clock.getElapsedTime()
     const pos = ref.current.geometry.attributes.position
+    const hpos = hoveredPosRef.current
 
+    // ── Attraction bias — ease toward hovered orb, else return to 0 ──
+    if (hpos) {
+      bias.current.x = THREE.MathUtils.lerp(bias.current.x, hpos[0] * 0.10, 0.018)
+      bias.current.y = THREE.MathUtils.lerp(bias.current.y, hpos[1] * 0.07, 0.018)
+      bias.current.z = THREE.MathUtils.lerp(bias.current.z, hpos[2] * 0.05, 0.018)
+    } else {
+      bias.current.x = THREE.MathUtils.lerp(bias.current.x, 0, 0.018)
+      bias.current.y = THREE.MathUtils.lerp(bias.current.y, 0, 0.018)
+      bias.current.z = THREE.MathUtils.lerp(bias.current.z, 0, 0.018)
+    }
+
+    // ── Update particle positions ──────────────────────────────────
     for (let i = 0; i < count; i++) {
       const s = speeds[i]
       const p = phases[i]
 
       if (isCaustic) {
-        // Very slow Lissajous-like drift — caustic light shimmer
-        pos.array[i * 3]     = originX[i] + Math.sin(t * s * 0.5 + p) * 1.8
-        pos.array[i * 3 + 1] = originY[i] + Math.cos(t * s * 0.35 + p * 1.4) * 1.2
+        pos.array[i * 3]     = originX[i] + bias.current.x + Math.sin(t * s * 0.5 + p) * 1.8
+        pos.array[i * 3 + 1] = originY[i] + bias.current.y + Math.cos(t * s * 0.35 + p * 1.4) * 1.2
       } else {
-        // Slow vertical oscillation + gentle lateral sway
-        pos.array[i * 3 + 1] =
-          originY[i] + Math.sin(t * s * 0.30 + p) * 0.28
-        pos.array[i * 3] =
-          originX[i] + Math.sin(t * s * 0.08 + p * 1.5) * 0.14
+        pos.array[i * 3]     = originX[i] + bias.current.x + Math.sin(t * s * 0.08 + p * 1.5) * 0.14
+        pos.array[i * 3 + 1] = originY[i] + bias.current.y + Math.sin(t * s * 0.30 + p) * 0.28
+        pos.array[i * 3 + 2] = (positions[i * 3 + 2]) + bias.current.z
       }
     }
     pos.needsUpdate = true
@@ -139,28 +156,34 @@ function ParticleCloud({ count, palette, spread, size, opacity, isCaustic = fals
   )
 }
 
+// ── Root export — subscribes to store once, passes down ───────────
 export default function Particles() {
+  const hoveredOrb = useStore((s) => s.hoveredOrb)
+
+  // Derive hovered orb position (null when nothing hovered)
+  const hoveredPos = useMemo(() => {
+    if (!hoveredOrb) return null
+    return MEMORIES.find((m) => m.id === hoveredOrb)?.position ?? null
+  }, [hoveredOrb])
+
   return (
     <>
-      {/* Warm embers — slow organic firefly spores */}
       <ParticleCloud
         count={WARM_COUNT}
         palette={WARM_PALETTE}
         spread={{ x: 26, y: 14, z: 14 }}
         size={0.082}
         opacity={0.60}
+        hoveredPos={hoveredPos}
       />
-
-      {/* Cool ocean bio-particles — deep teal/blue, no green */}
       <ParticleCloud
         count={COOL_COUNT}
         palette={COOL_PALETTE}
         spread={{ x: 22, y: 12, z: 16 }}
         size={0.068}
         opacity={0.45}
+        hoveredPos={hoveredPos}
       />
-
-      {/* Caustic shimmer — large, very slow, like light through water */}
       <ParticleCloud
         count={CAUSTIC_COUNT}
         palette={CAUSTIC_PALETTE}
@@ -168,6 +191,7 @@ export default function Particles() {
         size={0.18}
         opacity={0.12}
         isCaustic
+        hoveredPos={hoveredPos}
       />
     </>
   )

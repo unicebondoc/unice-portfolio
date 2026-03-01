@@ -4,11 +4,11 @@ import ProjectModal from './components/ui/ProjectModal'
 import HUD from './components/ui/HUD'
 import ChatBot from './components/ui/ChatBot'
 import { Canvas, useThree, useFrame } from '@react-three/fiber'
-import { MEMORIES } from './data/memories'
 import MemoryOrb from './components/scene/MemoryOrb'
 import Particles from './components/scene/Particles'
-import { OrbitControls } from '@react-three/drei'
+import { OrbitControls, Environment } from '@react-three/drei'
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
+import { MEMORIES } from './data/memories'
 import useStore from './hooks/useStore'
 
 // ── Responsive camera FOV ────────────────────────────────────────
@@ -39,9 +39,9 @@ function CausticLights() {
     const t = clock.getElapsedTime() * 0.15
     if (l1.current) {
       l1.current.position.set(
-        Math.sin(t)         * 7,
-        Math.cos(t * 0.65)  * 5 + 4,
-        Math.sin(t * 0.42)  * 4,
+        Math.sin(t)        * 7,
+        Math.cos(t * 0.65) * 5 + 4,
+        Math.sin(t * 0.42) * 4,
       )
     }
     if (l2.current) {
@@ -60,35 +60,25 @@ function CausticLights() {
   )
 }
 
-// ── Scene lighting ────────────────────────────────────────────────
+// ── Scene-wide ambient lighting (not per-orb) ────────────────────
+// Per-orb PointLights now live inside each MemoryOrb component.
 function Lights() {
   return (
     <>
-      {/* Very dim ambient — orbs light themselves */}
-      <ambientLight intensity={0.10} color="#0a1520" />
+      {/* Dim ambient — orbs light themselves via PointLight */}
+      <ambientLight intensity={0.08} color="#0a1520" />
 
-      {/* Warm amber wash from above — filtered sunlight */}
-      <pointLight position={[0, 14, 3]} intensity={0.18} color="#3a1e00" distance={30} />
+      {/* Warm amber wash from above — like sunlight through water */}
+      <pointLight position={[0, 14, 3]} intensity={0.16} color="#3a1e00" distance={30} />
 
       {/* Cool deep bioluminescent glow from below */}
-      <pointLight position={[0, -10, -4]} intensity={0.28} color="#002a44" distance={28} />
+      <pointLight position={[0, -10, -4]} intensity={0.24} color="#002a44" distance={28} />
 
       {/* Subtle teal rim from far back */}
-      <pointLight position={[0, 2, -12]} intensity={0.22} color="#003322" distance={25} />
+      <pointLight position={[0, 2, -12]} intensity={0.18} color="#003322" distance={25} />
 
       {/* Animated caustic light shimmer */}
       <CausticLights />
-
-      {/* Per-orb colored point lights — toned down 40% */}
-      {MEMORIES.map((m) => (
-        <pointLight
-          key={m.id}
-          position={[m.position[0], m.position[1], m.position[2] + 0.8]}
-          intensity={m.tier === 'core' ? 0.8 : 0.22}
-          distance={m.tier === 'core' ? 5.0 : 2.8}
-          color={m.color}
-        />
-      ))}
     </>
   )
 }
@@ -101,7 +91,7 @@ function LoadingScreen({ visible }) {
         position: 'fixed',
         inset: 0,
         zIndex: 1000,
-        background: '#020811',
+        background: 'var(--color-void)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -133,19 +123,26 @@ export default function App() {
 
   return (
     <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
-      {/* ── 3D Canvas ─────────────────────────────────────────── */}
+      {/* ── 3D Canvas — transparent so Midjourney bg shows through ── */}
       <Canvas
         dpr={[1, 2]}
         camera={{ position: [0, 0, 9], fov: 52 }}
-        gl={{ antialias: true, alpha: false }}
-        style={{ background: '#020811', position: 'absolute', inset: 0 }}
+        gl={{ antialias: true, alpha: true }}
+        style={{ background: 'transparent', position: 'absolute', inset: 0 }}
       >
         <Suspense fallback={null}>
           <SceneReadyNotifier />
           <CameraRig />
           <Lights />
 
-          {/* Bioluminescent particles — replaces cold Stars */}
+          {/*
+            Environment provides reflection/refraction data for
+            MeshPhysicalMaterial (glass transmission + envMapIntensity).
+            background={false} keeps the scene transparent.
+          */}
+          <Environment preset="studio" background={false} />
+
+          {/* Bioluminescent particles */}
           <Particles />
 
           {MEMORIES.map((memory, i) => (
