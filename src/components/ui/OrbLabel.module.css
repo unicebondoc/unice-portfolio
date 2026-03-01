@@ -45,6 +45,22 @@
   letter-spacing: 0.04em;
 }
 
+/* ── Mobile: smaller tooltip ────────────────────────────────────── */
+@media (max-width: 640px) {
+  .tooltip {
+    padding: 6px 10px 7px;
+  }
+
+  .title {
+    font-size: 11px;
+  }
+
+  .subtitle,
+  .hint {
+    display: none;
+  }
+}
+
 .hint {
   font-family: 'Space Mono', monospace;
   font-size: 8px;

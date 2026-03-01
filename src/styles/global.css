@@ -77,6 +77,31 @@ html, body {
   white-space: nowrap;
 }
 
+/* ─── Loading orb animation ─────────────────────────────────────── */
+@keyframes orbPulse {
+  0%, 100% { transform: scale(1);    opacity: 0.55; }
+  50%       { transform: scale(1.35); opacity: 1;    }
+}
+
+.loading-orb {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 38%, #C77DFF 0%, #060914 100%);
+  box-shadow: 0 0 32px rgba(199, 125, 255, 0.7);
+  animation: orbPulse 1.6s ease-in-out infinite;
+}
+
+/* ─── Touch / mobile base fixes ─────────────────────────────────── */
+* {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+canvas {
+  touch-action: none; /* let drei handle all touch for the 3D scene */
+}
+
 /* ─── Scrollbar ─────────────────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 4px;

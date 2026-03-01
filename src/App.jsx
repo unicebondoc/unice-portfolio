@@ -1,24 +1,37 @@
-import { Suspense } from 'react'
+import { Suspense, useEffect } from 'react'
 import OrbLabels from './components/ui/OrbLabel'
 import ProjectModal from './components/ui/ProjectModal'
 import HUD from './components/ui/HUD'
 import ChatBot from './components/ui/ChatBot'
-import { Canvas } from '@react-three/fiber'
+import { Canvas, useThree } from '@react-three/fiber'
 import { MEMORIES } from './data/memories'
 import MemoryOrb from './components/scene/MemoryOrb'
 import Particles from './components/scene/Particles'
-import { OrbitControls, Stars, Html } from '@react-three/drei'
+import { OrbitControls, Stars } from '@react-three/drei'
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import useStore from './hooks/useStore'
 
-/**
- * App — root component.
- *
- * Composes the full-screen 3D canvas (Scene) with HTML UI overlays.
- * The OrbLabels live inside the Canvas via <Html>; everything else
- * sits in normal DOM above the canvas.
- */
+// ── Responsive camera FOV ────────────────────────────────────────
+function CameraRig() {
+  const { camera, size } = useThree()
+  useEffect(() => {
+    camera.fov = size.width < 768 ? 72 : 50
+    camera.updateProjectionMatrix()
+  }, [camera, size.width])
+  return null
+}
 
+// ── Fires setSceneReady after Suspense resolves ──────────────────
+function SceneReadyNotifier() {
+  const setSceneReady = useStore((s) => s.setSceneReady)
+  useEffect(() => {
+    const t = setTimeout(() => setSceneReady(), 80)
+    return () => clearTimeout(t)
+  }, [setSceneReady])
+  return null
+}
+
+// ── Per-orb tinted point lights ──────────────────────────────────
 function Lights() {
   return (
     <>
@@ -38,20 +51,57 @@ function Lights() {
   )
 }
 
+// ── Loading overlay ───────────────────────────────────────────────
+function LoadingScreen({ visible }) {
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 1000,
+        background: '#060914',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 18,
+        opacity: visible ? 1 : 0,
+        pointerEvents: visible ? 'all' : 'none',
+        transition: 'opacity 1.1s ease',
+      }}
+    >
+      <div className="loading-orb" />
+      <p
+        style={{
+          fontFamily: 'Space Mono, monospace',
+          fontSize: 10,
+          color: 'rgba(232, 234, 240, 0.35)',
+          letterSpacing: '0.16em',
+          textTransform: 'uppercase',
+        }}
+      >
+        Loading Memories
+      </p>
+    </div>
+  )
+}
+
 export default function App() {
+  const sceneReady    = useStore((s) => s.sceneReady)
   const setSceneReady = useStore((s) => s.setSceneReady)
 
   return (
     <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
-      {/* ── 3D Canvas ────────────────────────────────────────── */}
+      {/* ── 3D Canvas ─────────────────────────────────────────── */}
       <Canvas
         dpr={[1, 2]}
         camera={{ position: [0, 0, 9], fov: 50 }}
         gl={{ antialias: true, alpha: false }}
         style={{ background: '#060914', position: 'absolute', inset: 0 }}
-        onCreated={() => setSceneReady()}
       >
         <Suspense fallback={null}>
+          <SceneReadyNotifier />
+          <CameraRig />
           <Lights />
 
           <Stars
@@ -66,11 +116,10 @@ export default function App() {
 
           <Particles />
 
-          {MEMORIES.map((memory) => (
-            <MemoryOrb key={memory.id} memory={memory} />
+          {MEMORIES.map((memory, i) => (
+            <MemoryOrb key={memory.id} memory={memory} index={i} />
           ))}
 
-          {/* HTML labels in 3D space */}
           <OrbLabels />
 
           <EffectComposer>
@@ -94,10 +143,13 @@ export default function App() {
         </Suspense>
       </Canvas>
 
-      {/* ── HTML Overlays ─────────────────────────────────────── */}
+      {/* ── HTML overlays ─────────────────────────────────────── */}
       <HUD />
       <ProjectModal />
       <ChatBot />
+
+      {/* ── Loading screen ────────────────────────────────────── */}
+      <LoadingScreen visible={!sceneReady} />
     </div>
   )
 }

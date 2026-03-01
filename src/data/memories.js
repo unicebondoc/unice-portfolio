@@ -13,7 +13,7 @@ export const MEMORIES = [
     emotion: 'courage',
     color: '#00FF88',
     glowColor: '#00FF88',
-    position: [-4.5, 2.2, 0.5],
+    position: [-4.0, 2.2, 0.5],
     description:
       'Left everything familiar behind and moved to Sydney, Australia — a leap into the unknown that sparked a new chapter of growth, independence, and discovery. The city became my canvas.',
     tags: ['Life Change', 'Australia', 'New Beginnings', 'Courage'],
@@ -103,7 +103,7 @@ export const MEMORIES = [
     emotion: 'love',
     color: '#C77DFF',
     glowColor: '#C77DFF',
-    position: [4.0, 2.5, 0.5],
+    position: [3.8, 2.5, 0.5],
     description:
       'A passion project centered around Mooni — a character brought to life through design, illustration, and storytelling. A personal creative escape and labor of love that lives somewhere between art and code.',
     tags: ['Character Design', 'Illustration', 'Storytelling', 'Creative', 'Personal'],
@@ -133,7 +133,7 @@ export const MEMORIES = [
     emotion: 'hope',
     color: '#FFFFFF',
     glowColor: '#DDDDFF',
-    position: [-1.0, 0.0, -4.0],
+    position: [-1.0, 0.0, -3.0],
     description:
       'The future memory — still forming, still glowing faintly in the distance. A vision of becoming a full AI Engineer: building intelligent systems, contributing to open-source AI, and creating tools that genuinely matter.',
     tags: ['AI Engineering', 'Future', 'Dream', 'Vision', 'LLMs', 'Agentic AI'],

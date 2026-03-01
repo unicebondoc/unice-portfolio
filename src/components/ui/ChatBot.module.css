@@ -257,6 +257,19 @@
   line-height: 1;
 }
 
+/* ── Mobile ─────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .wrapper {
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .panel {
+    width: calc(100vw - 32px);
+    height: 400px;
+  }
+}
+
 /* ── Unread notification dot ────────────────────────────────────── */
 .unreadDot {
   position: absolute;
