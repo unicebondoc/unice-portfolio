@@ -52,18 +52,12 @@
 
 html, body {
   height: 100%;
-  /*
-   * BACKGROUND — set your Midjourney image here.
-   * The 3D canvas is fully transparent so this shows through the glass orbs.
-   *
-   * Example:
-   *   background-image: url('/bg.jpg');
-   *   background-size: cover;
-   *   background-position: center;
-   *
-   * The dark fallback below keeps the site usable before an image is added.
-   */
-  background: var(--color-void);
+  background-image: url('/background.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-color: #020811; /* fallback while image loads */
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: 16px;

@@ -123,12 +123,23 @@ export default function App() {
 
   return (
     <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
-      {/* ── 3D Canvas — transparent so Midjourney bg shows through ── */}
+      {/* ── Dark overlay — sits on top of bg image, behind the 3D scene ── */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'rgba(0, 0, 0, 0.20)',
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* ── 3D Canvas — transparent so background image shows through ── */}
       <Canvas
         dpr={[1, 2]}
         camera={{ position: [0, 0, 9], fov: 52 }}
         gl={{ antialias: true, alpha: true }}
-        style={{ background: 'transparent', position: 'absolute', inset: 0 }}
+        style={{ background: 'transparent', position: 'absolute', inset: 0, zIndex: 1 }}
       >
         <Suspense fallback={null}>
           <SceneReadyNotifier />
