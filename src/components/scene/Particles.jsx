@@ -115,16 +115,29 @@ function ParticleCloud({ count, palette, spread, size, opacity, isCaustic = fals
     }
 
     // ── Update particle positions ──────────────────────────────────
+    const halfY = spread.y / 2
+    const wrapY = spread.y
+    // Phase offset maps each particle to a different starting point in Y range
+    const phaseOffsetScale = wrapY / (Math.PI * 2)
+
     for (let i = 0; i < count; i++) {
       const s = speeds[i]
       const p = phases[i]
 
       if (isCaustic) {
+        // Caustic: slow upward drift + gentle horizontal sway
+        const drift   = (t * s * 1.0 + p * phaseOffsetScale) % wrapY
+        const rawY    = originY[i] + drift
+        const wrapped = ((rawY + halfY) % wrapY + wrapY) % wrapY - halfY
         pos.array[i * 3]     = originX[i] + bias.current.x + Math.sin(t * s * 0.5 + p) * 1.8
-        pos.array[i * 3 + 1] = originY[i] + bias.current.y + Math.cos(t * s * 0.35 + p * 1.4) * 1.2
+        pos.array[i * 3 + 1] = wrapped + bias.current.y
       } else {
+        // Regular: upward drift with gentle horizontal micro-wobble
+        const drift   = (t * s * 2.0 + p * phaseOffsetScale) % wrapY
+        const rawY    = originY[i] + drift
+        const wrapped = ((rawY + halfY) % wrapY + wrapY) % wrapY - halfY
         pos.array[i * 3]     = originX[i] + bias.current.x + Math.sin(t * s * 0.08 + p * 1.5) * 0.14
-        pos.array[i * 3 + 1] = originY[i] + bias.current.y + Math.sin(t * s * 0.30 + p) * 0.28
+        pos.array[i * 3 + 1] = wrapped + bias.current.y
         pos.array[i * 3 + 2] = (positions[i * 3 + 2]) + bias.current.z
       }
     }

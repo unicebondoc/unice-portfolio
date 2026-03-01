@@ -42,8 +42,8 @@ export const MEMORIES = [
     image: '/memories/orb-02.svg',
     position: [3.2, 1.5, 1.0],
     description:
-      'Moved to Sydney with my wife Kretch, leaving everything familiar behind. Just us, a dream, and a one-way ticket.',
-    tags: ['Sydney', 'Immigration', 'Kretch', 'New Chapter'],
+      'Packed up my life in the Philippines and moved to Sydney to pursue something bigger. Left comfort for uncertainty. Best decision I ever made.',
+    tags: ['Sydney', 'Immigration', 'New Chapter'],
     link: '',
     isFuture: false,
   },
