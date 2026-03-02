@@ -4,6 +4,7 @@ import ProjectModal from './components/ui/ProjectModal'
 import HUD from './components/ui/HUD'
 import ChatBot from './components/ui/ChatBot'
 import { Canvas, useThree, useFrame } from '@react-three/fiber'
+import * as THREE from 'three'
 import MemoryOrb from './components/scene/MemoryOrb'
 import Particles from './components/scene/Particles'
 import { OrbitControls } from '@react-three/drei'
@@ -33,10 +34,12 @@ function SceneReadyNotifier() {
 
 // ── Animated caustic lights — simulate light through water ───────
 function CausticLights() {
-  const l1 = useRef()
-  const l2 = useRef()
-  useFrame(({ clock }) => {
-    const t = clock.getElapsedTime() * 0.15
+  const l1       = useRef()
+  const l2       = useRef()
+  const timerRef = useRef(new THREE.Timer())
+  useFrame(() => {
+    timerRef.current.update()
+    const t = timerRef.current.getElapsed() * 0.15
     if (l1.current) {
       l1.current.position.set(
         Math.sin(t)        * 7,

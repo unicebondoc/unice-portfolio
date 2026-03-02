@@ -69,8 +69,9 @@ function makeCrowd(count, palette, spread) {
 
 // ── Single particle cloud ─────────────────────────────────────────
 function ParticleCloud({ count, palette, spread, size, opacity, isCaustic = false, hoveredPos }) {
-  const ref    = useRef()
-  const matRef = useRef()
+  const ref      = useRef()
+  const matRef   = useRef()
+  const timerRef = useRef(new THREE.Timer())
 
   const { positions, colors, speeds, phases } = useMemo(
     () => makeCrowd(count, palette, spread),
@@ -97,9 +98,10 @@ function ParticleCloud({ count, palette, spread, size, opacity, isCaustic = fals
   const hoveredPosRef = useRef(null)
   hoveredPosRef.current = hoveredPos
 
-  useFrame(({ clock }) => {
+  useFrame(() => {
     if (!ref.current || !matRef.current) return
-    const t   = clock.getElapsedTime()
+    timerRef.current.update()
+    const t = timerRef.current.getElapsed()
     const pos = ref.current.geometry.attributes.position
     const hpos = hoveredPosRef.current
 

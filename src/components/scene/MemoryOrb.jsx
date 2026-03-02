@@ -1,44 +1,25 @@
-import React, { useRef, useMemo, Suspense } from 'react'
+import { useRef, useMemo, useState, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Sphere, useTexture } from '@react-three/drei'
+import { Sphere } from '@react-three/drei'
 import * as THREE from 'three'
 import useStore from '../../hooks/useStore'
 import { MEMORIES, TIER_RADIUS } from '../../data/memories'
 
 /**
- * OrbWithTexture — renders ONLY the meshStandardMaterial with the loaded
- * texture map.  Always called with a valid image string (checked by parent).
- * Suspends via useTexture until the asset is ready; the parent Suspense
- * fallback shows a plain-color material in the meantime.
+ * MemoryOrb — 2 meshes per orb:
+ *
+ *   renderOrder 0 — outer halo  RADIUS * 1.15, opacity 0.20, depthWrite false
+ *   renderOrder 1 — main body   RADIUS * 1.00, emissive glow + optional photo
+ *
+ * renderOrder forces halo → body draw order so transparent surfaces never
+ * z-fight and the dark ring artifact is eliminated.
+ *
+ * Texture loading uses THREE.TextureLoader in a useEffect, completely
+ * bypassing React Suspense. The material switches from plain-color to
+ * photo-mapped as soon as the asset resolves.
+ *
+ * THREE.Timer (new per r183) replaces the deprecated THREE.Clock.
  */
-function OrbWithTexture({ image, orbColor, matRef }) {
-  const texture = useTexture(image)
-  return (
-    <meshStandardMaterial
-      ref={matRef}
-      map={texture}
-      color="white"
-      emissive={orbColor}
-      emissiveIntensity={0.3}
-      roughness={0.1}
-      metalness={0.2}
-      transparent
-      opacity={0.85}
-    />
-  )
-}
-
-// Silent error boundary — if the image truly can't load, falls back to the
-// plain-color material without crashing the scene.
-class OrbErrorBoundary extends React.Component {
-  constructor(props) { super(props); this.state = { failed: false } }
-  static getDerivedStateFromError() { return { failed: true } }
-  render() {
-    return this.state.failed ? this.props.fallback : this.props.children
-  }
-}
-
-// ── All animation + rendering ──────────────────────────────────────
 function OrbInner({ memory, index = 0 }) {
   const { id, color, position, isFuture, tier, image } = memory
 
@@ -56,6 +37,7 @@ function OrbInner({ memory, index = 0 }) {
   const bodyMat   = useRef()
   const pointRef  = useRef()
   const corePtRef = useRef()
+  const timerRef  = useRef(new THREE.Timer())
 
   const { hoveredOrb, setHoveredOrb, selectedOrb, setSelectedOrb, pulsingOrbs } = useStore()
 
@@ -78,8 +60,24 @@ function OrbInner({ memory, index = 0 }) {
   const seed     = useMemo(() => Math.random() * Math.PI * 2, [])
   const orbColor = useMemo(() => new THREE.Color(color), [color])
 
-  useFrame(({ clock }) => {
-    const t = clock.getElapsedTime()
+  // ── Texture loading via plain TextureLoader ────────────────────
+  // No Suspense, no useTexture. The load happens asynchronously;
+  // bodyMat.current.map is updated imperatively when ready.
+  // Cancelled flag prevents setTexture on an unmounted component.
+  const [texture, setTexture] = useState(null)
+  useEffect(() => {
+    if (!image) return
+    let cancelled = false
+    new THREE.TextureLoader().load(image, (tex) => {
+      if (!cancelled) setTexture(tex)
+    })
+    return () => { cancelled = true }
+  }, [image])
+
+  // ── Animation loop ─────────────────────────────────────────────
+  useFrame(() => {
+    timerRef.current.update()
+    const t = timerRef.current.getElapsed()
     if (!groupRef.current) return
 
     // Entrance stagger
@@ -119,8 +117,7 @@ function OrbInner({ memory, index = 0 }) {
       haloMat.current.opacity = THREE.MathUtils.lerp(haloMat.current.opacity, tgt, 0.05)
     }
 
-    // Body opacity + emissive — bodyMat always points to whichever material
-    // is currently mounted (textured or plain fallback)
+    // Body opacity + emissive glow
     if (bodyMat.current) {
       const opTgt = isDimmed ? 0.30 : isActive ? 0.95 : (isFuture ? 0.55 : 0.85)
       bodyMat.current.opacity = THREE.MathUtils.lerp(bodyMat.current.opacity, opTgt, 0.05)
@@ -153,26 +150,10 @@ function OrbInner({ memory, index = 0 }) {
   const handlePointerOver = (e) => { e.stopPropagation(); setHoveredOrb(id); document.body.style.cursor = 'pointer' }
   const handlePointerOut  = () => { setHoveredOrb(null); document.body.style.cursor = 'auto' }
 
-  // Plain-color material used while texture loads (Suspense fallback)
-  // and for orbs that have no image.  bodyMat ref is placed here so
-  // animations always have a target even before the texture arrives.
-  const plainMaterial = (
-    <meshStandardMaterial
-      ref={bodyMat}
-      color={orbColor}
-      emissive={orbColor}
-      emissiveIntensity={0.8}
-      roughness={0.1}
-      metalness={0.2}
-      transparent
-      opacity={0.85}
-    />
-  )
-
   return (
     <group position={position} ref={groupRef} scale={[0, 0, 0]}>
 
-      {/* ── Main ambient point light (all orbs) ─────────────────── */}
+      {/* ── Per-orb point light ─────────────────────────────────── */}
       <pointLight
         ref={pointRef}
         position={[0, 0, 0]}
@@ -194,8 +175,8 @@ function OrbInner({ memory, index = 0 }) {
         />
       )}
 
-      {/* ── Outer halo ──────────────────────────────────────────── */}
-      <Sphere args={[RADIUS * 1.15, 32, 32]}>
+      {/* ── Outer halo — renderOrder 0, renders first ───────────── */}
+      <Sphere args={[RADIUS * 1.15, 32, 32]} renderOrder={0}>
         <meshStandardMaterial
           ref={haloMat}
           color={orbColor}
@@ -208,23 +189,25 @@ function OrbInner({ memory, index = 0 }) {
         />
       </Sphere>
 
-      {/* ── Main body ───────────────────────────────────────────── */}
+      {/* ── Main body — renderOrder 1, renders on top of halo ───── */}
       <Sphere
         args={[RADIUS, isCore ? 64 : 48, isCore ? 64 : 48]}
+        renderOrder={1}
         onClick={handleClick}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
       >
-        {image
-          ? (
-            <OrbErrorBoundary fallback={plainMaterial}>
-              <Suspense fallback={plainMaterial}>
-                <OrbWithTexture image={image} orbColor={color} matRef={bodyMat} />
-              </Suspense>
-            </OrbErrorBoundary>
-          )
-          : plainMaterial
-        }
+        <meshStandardMaterial
+          ref={bodyMat}
+          map={texture || undefined}
+          color={texture ? 'white' : orbColor}
+          emissive={orbColor}
+          emissiveIntensity={0.8}
+          roughness={0.1}
+          metalness={0.2}
+          transparent
+          opacity={0.85}
+        />
       </Sphere>
 
     </group>
