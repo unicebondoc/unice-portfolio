@@ -50,9 +50,15 @@
   --dur-slow:         600ms;
 }
 
-html, body {
+html {
   height: 100%;
-  background-color: #020811; /* fallback while background div loads */
+  /* Ultimate fallback when background.png fails to load */
+  background-color: #010a0f;
+}
+
+body {
+  height: 100%;
+  background: transparent;  /* background div in App.jsx handles the image */
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: 16px;

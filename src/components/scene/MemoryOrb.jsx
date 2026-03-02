@@ -1,4 +1,4 @@
-import { useRef, useMemo, Suspense } from 'react'
+import React, { useRef, useMemo, Suspense } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Sphere, useTexture } from '@react-three/drei'
 import * as THREE from 'three'
@@ -6,22 +6,38 @@ import useStore from '../../hooks/useStore'
 import { MEMORIES, TIER_RADIUS } from '../../data/memories'
 
 /**
- * MemoryOrb — exactly 2 meshes per orb:
+ * MemoryOrb — 2 meshes per orb:
  *
  *   [outer halo]  RADIUS * 1.1 — orb color, opacity 0.15, no depth write
- *   [main body]   RADIUS * 1.0 — self-emissive + optional photo texture
+ *   [main body]   RADIUS * 1.0 — emissive orb color + optional photo texture
  *
- * No inner sphere. No dark ring. No donut.
- *
- * Texture: useTexture is called inside OrbInner (which lives in its own
- * per-orb <Suspense>). When memory.image is a real photo the map is applied
- * with color="white"; for SVGs the map is still applied so each orb can
- * have custom art. Either way color="white" lets the texture read true.
+ * Texture loading is isolated in OrbTextureLoader so a 404 (e.g. belong.png
+ * not yet uploaded) is caught by OrbErrorBoundary and falls back to a plain
+ * colored orb — the rest of the scene stays intact.
  */
 
-// ── All logic + rendering in one component ────────────────────────
-function OrbInner({ memory, index = 0 }) {
-  const { id, color, position, isFuture, tier, image } = memory
+// ── Catches texture 404s per-orb; scene never crashes ─────────────
+class OrbErrorBoundary extends React.Component {
+  constructor(props) { super(props); this.state = { failed: false } }
+  static getDerivedStateFromError() { return { failed: true } }
+  render() {
+    // On texture failure render the same orb without a photo
+    return this.state.failed
+      ? <OrbInner memory={this.props.memory} index={this.props.index} texture={null} />
+      : this.props.children
+  }
+}
+
+// ── Suspends while texture loads; parent Suspense / ErrorBoundary ──
+// catches loading state and errors respectively.
+function OrbTextureLoader({ memory, index }) {
+  const texture = useTexture(memory.image)
+  return <OrbInner memory={memory} index={index} texture={texture} />
+}
+
+// ── All animation + rendering; texture is injected as a prop ───────
+function OrbInner({ memory, index = 0, texture = null }) {
+  const { id, color, position, isFuture, tier } = memory
 
   const isCore  = tier === 'core'
   const RADIUS  = TIER_RADIUS[tier] ?? 1.0
@@ -58,12 +74,6 @@ function OrbInner({ memory, index = 0 }) {
   const seed     = useMemo(() => Math.random() * Math.PI * 2, [])
   const orbColor = useMemo(() => new THREE.Color(color), [color])
 
-  // Load texture — suspends until ready; per-orb <Suspense> handles the wait.
-  // Called unconditionally so hook order never changes between renders.
-  // When memory.image is set this loads the asset; set color="white" so the
-  // texture shows true colours instead of being multiplied by orbColor.
-  const texture = useTexture(image)
-
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime()
     if (!groupRef.current) return
@@ -74,7 +84,7 @@ function OrbInner({ memory, index = 0 }) {
     const introRaw  = Math.max(0, (age - INTRO_DELAY) / INTRO_RISE)
     const introEase = 1 - Math.pow(1 - Math.min(1, introRaw), 3)
 
-    // Gemini pulse
+    // Pulse
     if (isPulsing && !wasPulsingRef.current) pulseStartRef.current = t
     wasPulsingRef.current = isPulsing
     let pulseFactor = 0
@@ -84,7 +94,7 @@ function OrbInner({ memory, index = 0 }) {
       else if (!isPulsing) pulseStartRef.current = null
     }
 
-    // Float & slow rotation
+    // Float & rotation
     groupRef.current.position.y =
       position[1] + Math.sin(t * FLOAT_SPEED + seed) * FLOAT_AMP
     groupRef.current.rotation.y  = t * (isCore ? 0.07 : 0.04)
@@ -105,7 +115,7 @@ function OrbInner({ memory, index = 0 }) {
       haloMat.current.opacity = THREE.MathUtils.lerp(haloMat.current.opacity, tgt, 0.05)
     }
 
-    // Main body opacity + emissive glow
+    // Body opacity + emissive glow
     if (bodyMat.current) {
       const opTgt = isDimmed ? 0.30 : isActive ? 0.95 : (isFuture ? 0.55 : 0.85)
       bodyMat.current.opacity = THREE.MathUtils.lerp(bodyMat.current.opacity, opTgt, 0.05)
@@ -143,7 +153,7 @@ function OrbInner({ memory, index = 0 }) {
         decay={2}
       />
 
-      {/* ── Outer halo — soft color glow ────────────────────────── */}
+      {/* ── Outer halo ──────────────────────────────────────────── */}
       <Sphere args={[RADIUS * 1.1, 32, 32]}>
         <meshStandardMaterial
           ref={haloMat}
@@ -157,7 +167,7 @@ function OrbInner({ memory, index = 0 }) {
         />
       </Sphere>
 
-      {/* ── Main body — self-emissive with texture map ──────────── */}
+      {/* ── Main body — photo texture or plain emissive color ───── */}
       <Sphere
         args={[RADIUS, isCore ? 64 : 48, isCore ? 64 : 48]}
         onClick={handleClick}
@@ -166,8 +176,8 @@ function OrbInner({ memory, index = 0 }) {
       >
         <meshStandardMaterial
           ref={bodyMat}
-          map={texture}
-          color="white"
+          map={texture || undefined}
+          color={texture ? 'white' : orbColor}
           emissive={orbColor}
           emissiveIntensity={0.4}
           roughness={0.2}
@@ -181,11 +191,15 @@ function OrbInner({ memory, index = 0 }) {
   )
 }
 
-// ── Per-orb Suspense so each orb loads its texture independently ──
+// ── Per-orb Suspense + error boundary ─────────────────────────────
+// Each orb loads its texture independently.
+// 404s (e.g. belong.png not yet uploaded) fall back to plain orb.
 export default function MemoryOrb({ memory, index }) {
   return (
-    <Suspense fallback={null}>
-      <OrbInner memory={memory} index={index} />
-    </Suspense>
+    <OrbErrorBoundary memory={memory} index={index}>
+      <Suspense fallback={null}>
+        <OrbTextureLoader memory={memory} index={index} />
+      </Suspense>
+    </OrbErrorBoundary>
   )
 }
