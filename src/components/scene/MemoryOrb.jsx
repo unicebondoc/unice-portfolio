@@ -8,34 +8,42 @@ import { MEMORIES, TIER_RADIUS } from '../../data/memories'
 /**
  * MemoryOrb — 2 meshes per orb:
  *
- *   [outer halo]  RADIUS * 1.1 — orb color, opacity 0.15, no depth write
- *   [main body]   RADIUS * 1.0 — emissive orb color + optional photo texture
+ *   [outer halo]  RADIUS * 1.15 — orb color, opacity 0.20, depthWrite false
+ *   [main body]   RADIUS * 1.00 — emissive 0.8 + optional photo texture
  *
- * Texture loading is isolated in OrbTextureLoader so a 404 (e.g. belong.png
- * not yet uploaded) is caught by OrbErrorBoundary and falls back to a plain
- * colored orb — the rest of the scene stays intact.
+ * Texture loading is isolated in OrbTextureLoader so a 404 (belong.png not
+ * yet in public/memories/) is caught by OrbErrorBoundary without crashing
+ * the rest of the scene.
  */
 
-// ── Catches texture 404s per-orb; scene never crashes ─────────────
+// ── Catches texture 404s per-orb; logs which orb/url failed ───────
 class OrbErrorBoundary extends React.Component {
   constructor(props) { super(props); this.state = { failed: false } }
   static getDerivedStateFromError() { return { failed: true } }
+  componentDidCatch(error) {
+    console.error(
+      `[OrbErrorBoundary] texture load FAILED for ${this.props.memory?.id}`,
+      `(${this.props.memory?.image})`,
+      '— file missing from public/memories/ ?',
+      error.message
+    )
+  }
   render() {
-    // On texture failure render the same orb without a photo
     return this.state.failed
       ? <OrbInner memory={this.props.memory} index={this.props.index} texture={null} />
       : this.props.children
   }
 }
 
-// ── Suspends while texture loads; parent Suspense / ErrorBoundary ──
-// catches loading state and errors respectively.
+// ── Loads texture; suspends until ready, throws on 404 ────────────
 function OrbTextureLoader({ memory, index }) {
+  console.log('[OrbTextureLoader] loading texture for', memory.id, memory.image)
   const texture = useTexture(memory.image)
+  console.log('[OrbTextureLoader] texture LOADED for', memory.id, texture)
   return <OrbInner memory={memory} index={index} texture={texture} />
 }
 
-// ── All animation + rendering; texture is injected as a prop ───────
+// ── All animation + rendering; texture injected as prop ───────────
 function OrbInner({ memory, index = 0, texture = null }) {
   const { id, color, position, isFuture, tier } = memory
 
@@ -48,10 +56,11 @@ function OrbInner({ memory, index = 0, texture = null }) {
   const POINT_INTENSITY = isCore ? 0.85 : 0.24
   const POINT_DISTANCE  = isCore ? 6.0  : 3.5
 
-  const groupRef = useRef()
-  const haloMat  = useRef()
-  const bodyMat  = useRef()
-  const pointRef = useRef()
+  const groupRef    = useRef()
+  const haloMat     = useRef()
+  const bodyMat     = useRef()
+  const pointRef    = useRef()
+  const corePtRef   = useRef()  // second close-range light, core orbs only
 
   const { hoveredOrb, setHoveredOrb, selectedOrb, setSelectedOrb, pulsingOrbs } = useStore()
 
@@ -111,7 +120,7 @@ function OrbInner({ memory, index = 0, texture = null }) {
 
     // Halo opacity
     if (haloMat.current) {
-      const tgt = isDimmed ? 0.04 : isActive ? 0.35 : 0.15
+      const tgt = isDimmed ? 0.05 : isActive ? 0.40 : 0.20
       haloMat.current.opacity = THREE.MathUtils.lerp(haloMat.current.opacity, tgt, 0.05)
     }
 
@@ -120,18 +129,26 @@ function OrbInner({ memory, index = 0, texture = null }) {
       const opTgt = isDimmed ? 0.30 : isActive ? 0.95 : (isFuture ? 0.55 : 0.85)
       bodyMat.current.opacity = THREE.MathUtils.lerp(bodyMat.current.opacity, opTgt, 0.05)
 
-      const emTgt = 0.4 * (isDimmed ? 0.10 : isActive ? 2.5 : 1.0) + pulseFactor * 0.80
+      const emTgt = 0.8 * (isDimmed ? 0.10 : isActive ? 2.5 : 1.0) + pulseFactor * 0.80
       bodyMat.current.emissiveIntensity = THREE.MathUtils.lerp(
         bodyMat.current.emissiveIntensity, emTgt, 0.06
       )
     }
 
-    // PointLight
+    // Main point light
     if (pointRef.current) {
       const tgt = POINT_INTENSITY * (isActive ? 2.4 : isDimmed ? 0.15 : 1.0)
                + pulseFactor * 0.55
       pointRef.current.intensity = THREE.MathUtils.lerp(
         pointRef.current.intensity, tgt, 0.08
+      )
+    }
+
+    // Close-range core point light
+    if (corePtRef.current) {
+      const tgt = 0.5 * (isActive ? 2.0 : isDimmed ? 0.1 : 1.0)
+      corePtRef.current.intensity = THREE.MathUtils.lerp(
+        corePtRef.current.intensity, tgt, 0.08
       )
     }
   })
@@ -143,7 +160,7 @@ function OrbInner({ memory, index = 0, texture = null }) {
   return (
     <group position={position} ref={groupRef} scale={[0, 0, 0]}>
 
-      {/* ── Per-orb point light ─────────────────────────────────── */}
+      {/* ── Main ambient point light (all orbs) ─────────────────── */}
       <pointLight
         ref={pointRef}
         position={[0, 0, 0]}
@@ -153,13 +170,25 @@ function OrbInner({ memory, index = 0, texture = null }) {
         decay={2}
       />
 
+      {/* ── Close-range glow light (core orbs only) ─────────────── */}
+      {isCore && (
+        <pointLight
+          ref={corePtRef}
+          position={[0, 0, 0]}
+          color={color}
+          intensity={0.5}
+          distance={3}
+          decay={2}
+        />
+      )}
+
       {/* ── Outer halo ──────────────────────────────────────────── */}
-      <Sphere args={[RADIUS * 1.1, 32, 32]}>
+      <Sphere args={[RADIUS * 1.15, 32, 32]}>
         <meshStandardMaterial
           ref={haloMat}
           color={orbColor}
           transparent
-          opacity={0.15}
+          opacity={0.20}
           roughness={1}
           metalness={0}
           depthWrite={false}
@@ -179,9 +208,9 @@ function OrbInner({ memory, index = 0, texture = null }) {
           map={texture || undefined}
           color={texture ? 'white' : orbColor}
           emissive={orbColor}
-          emissiveIntensity={0.4}
-          roughness={0.2}
-          metalness={0.1}
+          emissiveIntensity={0.8}
+          roughness={0.1}
+          metalness={0.2}
           transparent
           opacity={0.85}
         />
@@ -192,9 +221,8 @@ function OrbInner({ memory, index = 0, texture = null }) {
 }
 
 // ── Per-orb Suspense + error boundary ─────────────────────────────
-// Each orb loads its texture independently.
-// 404s (e.g. belong.png not yet uploaded) fall back to plain orb.
 export default function MemoryOrb({ memory, index }) {
+  console.log('[MemoryOrb] rendering', memory.id, '| image:', memory.image)
   return (
     <OrbErrorBoundary memory={memory} index={index}>
       <Suspense fallback={null}>
