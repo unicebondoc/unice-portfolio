@@ -6,7 +6,7 @@ import ChatBot from './components/ui/ChatBot'
 import { Canvas, useThree, useFrame } from '@react-three/fiber'
 import MemoryOrb from './components/scene/MemoryOrb'
 import Particles from './components/scene/Particles'
-import { OrbitControls, Environment } from '@react-three/drei'
+import { OrbitControls } from '@react-three/drei'
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import { MEMORIES } from './data/memories'
 import useStore from './hooks/useStore'
@@ -148,9 +148,6 @@ export default function App() {
           <SceneReadyNotifier />
           <CameraRig />
           <Lights />
-
-          {/* Environment provides subtle HDRI reflections for metalness on orbs */}
-          <Environment preset="studio" background={false} />
 
           {/* Bioluminescent particles */}
           <Particles />

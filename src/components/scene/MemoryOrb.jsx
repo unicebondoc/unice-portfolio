@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, Suspense } from 'react'
+import { useRef, useMemo, Suspense } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Sphere, useTexture } from '@react-three/drei'
 import * as THREE from 'three'
@@ -6,78 +6,27 @@ import useStore from '../../hooks/useStore'
 import { MEMORIES, TIER_RADIUS } from '../../data/memories'
 
 /**
- * MemoryOrb — 3-sphere stack, MeshStandardMaterial only.
+ * MemoryOrb — exactly 2 meshes per orb:
  *
- *   [outer halo]  scale 1.1 — same color, opacity 0.15, soft glow
- *   [main body]   scale 1.0 — texture map (or orb color fallback), opacity 0.75
- *   [inner core]  scale 0.45 — pure emissive, creates glowing center
+ *   [outer halo]  RADIUS * 1.1 — orb color, opacity 0.15, no depth write
+ *   [main body]   RADIUS * 1.0 — self-emissive + optional photo texture
  *
- * Texture is applied directly on the main body sphere so it's visible.
- * The inner core is kept smaller (0.45) so it doesn't cover the photo.
+ * No inner sphere. No dark ring. No donut.
+ *
+ * Texture: useTexture is called inside OrbInner (which lives in its own
+ * per-orb <Suspense>). When memory.image is a real photo the map is applied
+ * with color="white"; for SVGs the map is still applied so each orb can
+ * have custom art. Either way color="white" lets the texture read true.
  */
 
-// ── Error boundary — silently drops texture if image 404s ─────────
-class OrbImageErrorBoundary extends React.Component {
-  constructor(props) { super(props); this.state = { hasError: false } }
-  static getDerivedStateFromError() { return { hasError: true } }
-  render() { return this.state.hasError ? this.props.fallback : this.props.children }
-}
-
-// ── Textured main-body sphere ─────────────────────────────────────
-// Separate component so useTexture (which suspends) is isolated here.
-// The bodyMat ref is forwarded so the parent's useFrame can animate opacity.
-function OrbBody({ radius, isCore, url, bodyMat, onClick, onPointerOver, onPointerOut }) {
-  const texture = useTexture(url)
-  return (
-    <Sphere
-      args={[radius, isCore ? 64 : 48, isCore ? 64 : 48]}
-      onClick={onClick}
-      onPointerOver={onPointerOver}
-      onPointerOut={onPointerOut}
-    >
-      <meshStandardMaterial
-        ref={bodyMat}
-        map={texture}
-        color="white"
-        transparent
-        opacity={0.75}
-        roughness={0.1}
-        metalness={0.2}
-      />
-    </Sphere>
-  )
-}
-
-// ── Colored fallback — shown while texture is loading ─────────────
-function OrbBodyFallback({ radius, isCore, orbColor, bodyMat, onClick, onPointerOver, onPointerOut }) {
-  return (
-    <Sphere
-      args={[radius, isCore ? 64 : 48, isCore ? 64 : 48]}
-      onClick={onClick}
-      onPointerOver={onPointerOver}
-      onPointerOut={onPointerOut}
-    >
-      <meshStandardMaterial
-        ref={bodyMat}
-        color={orbColor}
-        transparent
-        opacity={0.75}
-        roughness={0.1}
-        metalness={0.3}
-      />
-    </Sphere>
-  )
-}
-
-// ── Main orb component ────────────────────────────────────────────
-export default function MemoryOrb({ memory, index = 0 }) {
+// ── All logic + rendering in one component ────────────────────────
+function OrbInner({ memory, index = 0 }) {
   const { id, color, position, isFuture, tier, image } = memory
 
   const isCore  = tier === 'core'
   const RADIUS  = TIER_RADIUS[tier] ?? 1.0
 
   const BREATHE_SPEED   = isCore ? 1.80 : 1.55
-  const BASE_CORE_EMIT  = isCore ? 1.6  : 0.90
   const FLOAT_AMP       = isCore ? 0.13 : 0.08
   const FLOAT_SPEED     = isCore ? 0.50 : 0.36
   const POINT_INTENSITY = isCore ? 0.85 : 0.24
@@ -86,7 +35,6 @@ export default function MemoryOrb({ memory, index = 0 }) {
   const groupRef = useRef()
   const haloMat  = useRef()
   const bodyMat  = useRef()
-  const coreMat  = useRef()
   const pointRef = useRef()
 
   const { hoveredOrb, setHoveredOrb, selectedOrb, setSelectedOrb, pulsingOrbs } = useStore()
@@ -110,15 +58,23 @@ export default function MemoryOrb({ memory, index = 0 }) {
   const seed     = useMemo(() => Math.random() * Math.PI * 2, [])
   const orbColor = useMemo(() => new THREE.Color(color), [color])
 
+  // Load texture — suspends until ready; per-orb <Suspense> handles the wait.
+  // Called unconditionally so hook order never changes between renders.
+  // When memory.image is set this loads the asset; set color="white" so the
+  // texture shows true colours instead of being multiplied by orbColor.
+  const texture = useTexture(image)
+
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime()
     if (!groupRef.current) return
 
+    // Entrance stagger
     if (birthRef.current === null) birthRef.current = t
     const age       = t - birthRef.current
     const introRaw  = Math.max(0, (age - INTRO_DELAY) / INTRO_RISE)
     const introEase = 1 - Math.pow(1 - Math.min(1, introRaw), 3)
 
+    // Gemini pulse
     if (isPulsing && !wasPulsingRef.current) pulseStartRef.current = t
     wasPulsingRef.current = isPulsing
     let pulseFactor = 0
@@ -128,11 +84,13 @@ export default function MemoryOrb({ memory, index = 0 }) {
       else if (!isPulsing) pulseStartRef.current = null
     }
 
+    // Float & slow rotation
     groupRef.current.position.y =
       position[1] + Math.sin(t * FLOAT_SPEED + seed) * FLOAT_AMP
     groupRef.current.rotation.y  = t * (isCore ? 0.07 : 0.04)
     groupRef.current.rotation.z  = Math.sin(t * 0.20 + seed) * 0.03
 
+    // Breathing scale
     const breathe  = 0.97 + (Math.sin(t * BREATHE_SPEED + seed) * 0.5 + 0.5) * 0.06
     const hoverMul = isActive ? 1.12 : isDimmed ? 0.88 : 1.0
     const pulseMul = 1 + pulseFactor * (isCore ? 0.28 : 0.18)
@@ -141,24 +99,24 @@ export default function MemoryOrb({ memory, index = 0 }) {
       THREE.MathUtils.lerp(groupRef.current.scale.x, target, 0.06)
     )
 
+    // Halo opacity
     if (haloMat.current) {
-      const tgt = isDimmed ? 0.05 : isActive ? 0.28 : 0.15
+      const tgt = isDimmed ? 0.04 : isActive ? 0.35 : 0.15
       haloMat.current.opacity = THREE.MathUtils.lerp(haloMat.current.opacity, tgt, 0.05)
     }
 
+    // Main body opacity + emissive glow
     if (bodyMat.current) {
-      const tgt = isDimmed ? 0.35 : isActive ? 0.92 : (isFuture ? 0.55 : 0.75)
-      bodyMat.current.opacity = THREE.MathUtils.lerp(bodyMat.current.opacity, tgt, 0.05)
-    }
+      const opTgt = isDimmed ? 0.30 : isActive ? 0.95 : (isFuture ? 0.55 : 0.85)
+      bodyMat.current.opacity = THREE.MathUtils.lerp(bodyMat.current.opacity, opTgt, 0.05)
 
-    if (coreMat.current) {
-      const tgt = BASE_CORE_EMIT * (isDimmed ? 0.20 : 1.0) * (isActive ? 2.0 : 1.0)
-               + pulseFactor * 0.80
-      coreMat.current.emissiveIntensity = THREE.MathUtils.lerp(
-        coreMat.current.emissiveIntensity, tgt, 0.06
+      const emTgt = 0.4 * (isDimmed ? 0.10 : isActive ? 2.5 : 1.0) + pulseFactor * 0.80
+      bodyMat.current.emissiveIntensity = THREE.MathUtils.lerp(
+        bodyMat.current.emissiveIntensity, emTgt, 0.06
       )
     }
 
+    // PointLight
     if (pointRef.current) {
       const tgt = POINT_INTENSITY * (isActive ? 2.4 : isDimmed ? 0.15 : 1.0)
                + pulseFactor * 0.55
@@ -172,22 +130,10 @@ export default function MemoryOrb({ memory, index = 0 }) {
   const handlePointerOver = (e) => { e.stopPropagation(); setHoveredOrb(id); document.body.style.cursor = 'pointer' }
   const handlePointerOut  = () => { setHoveredOrb(null); document.body.style.cursor = 'auto' }
 
-  const bodyFallback = (
-    <OrbBodyFallback
-      radius={RADIUS}
-      isCore={isCore}
-      orbColor={orbColor}
-      bodyMat={bodyMat}
-      onClick={handleClick}
-      onPointerOver={handlePointerOver}
-      onPointerOut={handlePointerOut}
-    />
-  )
-
   return (
     <group position={position} ref={groupRef} scale={[0, 0, 0]}>
 
-      {/* ── PointLight at orb center ───────────────────────────── */}
+      {/* ── Per-orb point light ─────────────────────────────────── */}
       <pointLight
         ref={pointRef}
         position={[0, 0, 0]}
@@ -197,7 +143,7 @@ export default function MemoryOrb({ memory, index = 0 }) {
         decay={2}
       />
 
-      {/* ── Outer halo — soft color glow aura ──────────────────── */}
+      {/* ── Outer halo — soft color glow ────────────────────────── */}
       <Sphere args={[RADIUS * 1.1, 32, 32]}>
         <meshStandardMaterial
           ref={haloMat}
@@ -211,38 +157,35 @@ export default function MemoryOrb({ memory, index = 0 }) {
         />
       </Sphere>
 
-      {/* ── Main body — texture map on the sphere surface ──────── */}
-      {image ? (
-        <OrbImageErrorBoundary fallback={bodyFallback}>
-          <Suspense fallback={bodyFallback}>
-            <OrbBody
-              radius={RADIUS}
-              isCore={isCore}
-              url={image}
-              bodyMat={bodyMat}
-              onClick={handleClick}
-              onPointerOver={handlePointerOver}
-              onPointerOut={handlePointerOut}
-            />
-          </Suspense>
-        </OrbImageErrorBoundary>
-      ) : (
-        bodyFallback
-      )}
-
-      {/* ── Inner core — pure emissive glow (smaller so photo shows) */}
-      <Sphere args={[RADIUS * 0.45, 24, 24]}>
+      {/* ── Main body — self-emissive with texture map ──────────── */}
+      <Sphere
+        args={[RADIUS, isCore ? 64 : 48, isCore ? 64 : 48]}
+        onClick={handleClick}
+        onPointerOver={handlePointerOver}
+        onPointerOut={handlePointerOut}
+      >
         <meshStandardMaterial
-          ref={coreMat}
-          color={orbColor}
+          ref={bodyMat}
+          map={texture}
+          color="white"
           emissive={orbColor}
-          emissiveIntensity={BASE_CORE_EMIT}
-          roughness={0}
-          metalness={0}
-          toneMapped={false}
+          emissiveIntensity={0.4}
+          roughness={0.2}
+          metalness={0.1}
+          transparent
+          opacity={0.85}
         />
       </Sphere>
 
     </group>
+  )
+}
+
+// ── Per-orb Suspense so each orb loads its texture independently ──
+export default function MemoryOrb({ memory, index }) {
+  return (
+    <Suspense fallback={null}>
+      <OrbInner memory={memory} index={index} />
+    </Suspense>
   )
 }
