@@ -163,10 +163,9 @@ export default function App() {
 
           <EffectComposer>
             <Bloom
-              intensity={1.0}
-              luminanceThreshold={0.10}
-              luminanceSmoothing={0.90}
-              mipmapBlur
+              intensity={0.7}
+              luminanceThreshold={0.30}
+              luminanceSmoothing={0.85}
             />
           </EffectComposer>
 
