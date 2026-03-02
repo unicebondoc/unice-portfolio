@@ -146,11 +146,7 @@ export default function App() {
           <CameraRig />
           <Lights />
 
-          {/*
-            Environment provides reflection/refraction data for
-            MeshPhysicalMaterial (glass transmission + envMapIntensity).
-            background={false} keeps the scene transparent.
-          */}
+          {/* Environment provides subtle HDRI reflections for metalness on orbs */}
           <Environment preset="studio" background={false} />
 
           {/* Bioluminescent particles */}
