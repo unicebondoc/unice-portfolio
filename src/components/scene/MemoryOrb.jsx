@@ -61,18 +61,21 @@ function OrbInner({ memory, index = 0 }) {
   const orbColor = useMemo(() => new THREE.Color(color), [color])
 
   // ── Texture loading via plain TextureLoader ────────────────────
-  // No Suspense, no useTexture. The load happens asynchronously;
-  // bodyMat.current.map is updated imperatively when ready.
-  // Cancelled flag prevents setTexture on an unmounted component.
   const [texture, setTexture] = useState(null)
   useEffect(() => {
-    if (!image) return
-    let cancelled = false
-    new THREE.TextureLoader().load(image, (tex) => {
-      if (!cancelled) setTexture(tex)
-    })
-    return () => { cancelled = true }
-  }, [image])
+    console.log('Loading texture for:', memory.id, memory.image)
+    if (!memory.image) return
+    const loader = new THREE.TextureLoader()
+    loader.load(
+      memory.image,
+      (tex) => {
+        console.log('SUCCESS texture loaded for:', memory.id)
+        setTexture(tex)
+      },
+      undefined,
+      (err) => { console.error('FAILED texture for:', memory.id, err) }
+    )
+  }, [memory.image])
 
   // ── Animation loop ─────────────────────────────────────────────
   useFrame(() => {
