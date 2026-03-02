@@ -71,6 +71,11 @@ function OrbInner({ memory, index = 0 }) {
       (tex) => {
         console.log('SUCCESS texture loaded for:', memory.id)
         setTexture(tex)
+        if (bodyMat.current) {
+          bodyMat.current.map = tex
+          bodyMat.current.color.set('#ffffff')
+          bodyMat.current.needsUpdate = true
+        }
       },
       undefined,
       (err) => { console.error('FAILED texture for:', memory.id, err) }
