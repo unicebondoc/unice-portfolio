@@ -186,16 +186,6 @@ export default function App() {
       {/* ── Loading screen ────────────────────────────────────── */}
       <LoadingScreen visible={!sceneReady} />
 
-      {/* ── DEBUG: remove once belong.png is confirmed present ── */}
-      <img
-        src="/memories/belong.png"
-        alt="debug"
-        style={{ position: 'fixed', bottom: 8, right: 8, width: 56, height: 56,
-                 zIndex: 9999, border: '2px solid red', borderRadius: 4,
-                 objectFit: 'cover', background: '#111' }}
-        onLoad={() => console.log('✅ belong.png loaded OK — texture should appear on orb-03')}
-        onError={() => console.error('❌ belong.png MISSING from public/memories/ — upload the file there')}
-      />
     </div>
   )
 }
