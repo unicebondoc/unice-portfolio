@@ -123,21 +123,24 @@ export default function App() {
 
   return (
     <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
-      {/* ── Dark overlay — sits on top of bg image, behind the 3D scene ── */}
+      {/* ── Background image — blurred separately so canvas stays sharp ── */}
       <div
         style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'rgba(0, 0, 0, 0.20)',
+          position: 'fixed',
+          inset: '-4px',          /* extend past edges to hide blur fringe */
+          backgroundImage: "url('/background.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          filter: 'blur(1px)',
           zIndex: 0,
           pointerEvents: 'none',
         }}
       />
 
-      {/* ── 3D Canvas — transparent so background image shows through ── */}
+      {/* ── 3D Canvas — transparent so background div shows through ── */}
       <Canvas
         dpr={[1, 2]}
-        camera={{ position: [0, 0, 9], fov: 52 }}
+        camera={{ position: [0, 0, 13], fov: 52 }}
         gl={{ antialias: true, alpha: true }}
         style={{ background: 'transparent', position: 'absolute', inset: 0, zIndex: 1 }}
       >
@@ -169,8 +172,8 @@ export default function App() {
 
           <OrbitControls
             enablePan={false}
-            minDistance={5}
-            maxDistance={15}
+            minDistance={7}
+            maxDistance={22}
             enableDamping
             dampingFactor={0.06}
             maxPolarAngle={Math.PI * 0.68}

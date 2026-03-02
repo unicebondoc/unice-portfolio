@@ -21,7 +21,7 @@ export const MEMORIES = [
     color: '#FFD700',
     glowColor: '#FFD700',
     image: '/memories/orb-01.svg',
-    position: [-3.8, 2.0, 0.8],
+    position: [-5.7, 3.0, 1.2],
     description:
       'After years in banking, I chose to bet on myself. Left a stable career in the Philippines to pursue something that actually lit me up.',
     tags: ['Career Change', 'Philippines', 'Self-Belief', 'Turning Point'],
@@ -40,7 +40,7 @@ export const MEMORIES = [
     color: '#00FF88',
     glowColor: '#00FF88',
     image: '/memories/orb-02.svg',
-    position: [3.2, 1.5, 1.0],
+    position: [4.8, 2.3, 1.5],
     description:
       'Packed up my life in the Philippines and moved to Sydney to pursue something bigger. Left comfort for uncertainty. Best decision I ever made.',
     tags: ['Sydney', 'Immigration', 'New Chapter'],
@@ -58,8 +58,8 @@ export const MEMORIES = [
     category: 'achievement',
     color: '#00D9FF',
     glowColor: '#00D9FF',
-    image: '/memories/orb-03.svg',
-    position: [-1.8, -2.5, 1.2],
+    image: '/memories/belong.png',
+    position: [-2.7, -3.8, 1.8],
     description:
       "Graduated with a Master's in ICT from Western Sydney University. The leap was worth it. I proved it to myself.",
     tags: ['WSU', 'Master of ICT', 'Graduation', 'Achievement'],
@@ -78,7 +78,7 @@ export const MEMORIES = [
     color: '#FF6B6B',
     glowColor: '#FF6B6B',
     image: '/memories/orb-04.svg',
-    position: [2.5, -2.0, 0.0],
+    position: [3.8, -3.0, 0.0],
     description:
       'Built and deployed a real Voiceflow AI chatbot for UNIKRE Trading on Shopify. Real users. Real impact. This is when I knew AI was my calling.',
     tags: ['Voiceflow', 'Shopify', 'AI Chatbot', 'Production', 'UNIKRE'],
@@ -97,7 +97,7 @@ export const MEMORIES = [
     color: '#C77DFF',
     glowColor: '#C77DFF',
     image: '/memories/orb-05.svg',
-    position: [-0.5, 1.2, -1.5],
+    position: [-0.8, 1.8, -2.3],
     description:
       'Built a multimodal AI app combining hand gestures, computer vision, and RAG. Nobody told me I could. I just built it anyway.',
     tags: ['MediaPipe', 'Gemini', 'LangChain', 'Pinecone', 'RAG', 'Computer Vision'],
@@ -116,7 +116,7 @@ export const MEMORIES = [
     color: '#FFFFFF',
     glowColor: '#DDDDFF',
     image: '/memories/orb-06.svg',
-    position: [1.2, -0.8, -2.0],
+    position: [1.8, -1.2, -3.0],
     description:
       "The dream AI Engineer role is close. Building multimodal systems that matter. Sydney's AI scene won't know what hit it.",
     tags: ['AI Engineering', '$100k+', 'Sydney', 'Future', 'Dream'],
@@ -137,7 +137,7 @@ export const MEMORIES = [
     color: '#FFB347',
     glowColor: '#FFB347',
     image: '/memories/orb-07.svg',
-    position: [-3.5, 1.5, -4.5],
+    position: [-5.3, 2.3, -6.8],
     description:
       "AB Broadcasting at Bicol University. ABS-CBN internship at the Philippines' #1 network. Where storytelling began.",
     tags: ['Broadcasting', 'ABS-CBN', 'Philippines', 'Storytelling'],
@@ -156,7 +156,7 @@ export const MEMORIES = [
     color: '#8892B0',
     glowColor: '#8892B0',
     image: '/memories/orb-08.svg',
-    position: [2.8, 0.8, -5.2],
+    position: [4.2, 1.2, -7.8],
     description:
       'BDO, Sun Life, RCBC. Years of discipline, client relations, operations. Built character. Knew it was not forever.',
     tags: ['Banking', 'BDO', 'Sun Life', 'RCBC', 'Finance'],
@@ -175,7 +175,7 @@ export const MEMORIES = [
     color: '#FF69B4',
     glowColor: '#FF69B4',
     image: '/memories/orb-09.svg',
-    position: [-1.2, -2.2, -4.8],
+    position: [-1.8, -3.3, -7.2],
     description:
       'Started documenting the AI journey on Instagram. Building in public. Sharing the real story, not just the highlights.',
     tags: ['Instagram', 'Content Creator', '@lifeofmooni', 'Tyche', 'Building in Public'],
@@ -194,7 +194,7 @@ export const MEMORIES = [
     color: '#00FF88',
     glowColor: '#00FF88',
     image: '/memories/orb-10.svg',
-    position: [3.5, -2.0, -5.5],
+    position: [5.3, -3.0, -8.3],
     description:
       'ICT Professional Year at Performance Education. Working toward permanent residency. Building roots in Australia.',
     tags: ['ACS', 'Professional Year', 'PR', 'Australia', 'Performance Education'],
