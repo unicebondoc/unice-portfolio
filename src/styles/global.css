@@ -29,7 +29,7 @@
   --glow-strong:      0 0 100px rgba(0, 212, 255, 0.50);
 
   /* Typography */
-  --font-sans:        'Sora', system-ui, sans-serif;
+  --font-sans:        'Raleway', system-ui, sans-serif;
   --font-mono:        'Space Mono', monospace;
 
   /* Spacing scale */
@@ -52,25 +52,76 @@
 
 html {
   height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
   /* Ultimate fallback when background.png fails to load */
   background-color: #010a0f;
 }
 
+@media (min-width: 769px) {
+  html {
+    overflow: hidden;
+    min-width: 1200px;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-width: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 body {
   height: 100%;
-  background: transparent;  /* background div in App.jsx handles the image */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  overflow-x: hidden;
+  background: transparent;  /* background handled by Three.js scene */
   color: var(--color-text);
-  font-family: var(--font-sans);
+  font-family: 'Raleway', sans-serif;
+  font-weight: 300;
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  overflow: hidden;
+}
+
+@media (min-width: 769px) {
+  body {
+    overflow: hidden;
+    min-width: 1200px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    overflow-y: auto;
+    min-height: 100%;
+  }
 }
 
 #root {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  #root {
+    position: relative;
+    min-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 }
 
 /* ─── Utility ───────────────────────────────────────────────────── */
@@ -81,6 +132,10 @@ body {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
+}
+.skip-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.6);
 }
 
 /* ─── Loading orb animation ─────────────────────────────────────── */
@@ -104,6 +159,19 @@ body {
   touch-action: manipulation;
 }
 
+/* Prevent double-tap zoom on interactive elements */
+button, a, [role="button"], [tabindex="0"] {
+  touch-action: manipulation;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 canvas {
   touch-action: none; /* let drei handle all touch for the 3D scene */
 }
@@ -118,4 +186,52 @@ canvas {
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.12);
   border-radius: 2px;
+}
+
+@keyframes memoryOrbFlash {
+  0% { opacity: 0; }
+  50% { opacity: 0.15; }
+  100% { opacity: 0; }
+}
+
+/* ─── Onboarding hint animations ───────────────────────────────── */
+@keyframes dotPulse {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.4); }
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.18; }
+  50% { opacity: 0.35; }
+}
+
+/* Custom cursor: hide default on desktop when custom cursor is active */
+@media (pointer: fine) {
+  body.custom-cursor-active,
+  body.custom-cursor-active * {
+    cursor: none !important;
+  }
+}
+@media (pointer: coarse) {
+  body.custom-cursor-active,
+  body.custom-cursor-active * {
+    cursor: auto !important;
+  }
+}
+
+/* ChatBot + Tyche: ensure visible on all screen sizes (desktop and mobile) */
+.chatBotLayer,
+[data-chatbot-layer] {
+  visibility: visible !important;
+  display: block !important;
+}
+
+/* Force visible on desktop: override any hide-on-desktop rules */
+@media (min-width: 769px) {
+  .chatBotLayer,
+  [data-chatbot-layer] {
+    visibility: visible !important;
+    display: block !important;
+    z-index: 60;
+  }
 }

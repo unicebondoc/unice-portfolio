@@ -19,6 +19,11 @@ const panel = {
 }
 
 export default function ProjectModal() {
+  // Replaced by the in-scene FocusPanel (cinematic memory focus).
+  // Keeping this component so it can be restored; rendering nothing for now.
+  return null
+
+  // eslint-disable-next-line no-unreachable
   const { selectedOrb, setSelectedOrb } = useStore()
   const memory = MEMORIES.find((m) => m.id === selectedOrb)
 
@@ -57,6 +62,20 @@ export default function ProjectModal() {
                   : memory.color,
               }}
             />
+
+            {/* Video — shown when the memory has a video source */}
+            {memory.videoSrc && (
+              <video
+                key={memory.videoSrc}
+                className={styles.video}
+                src={memory.videoSrc}
+                autoPlay
+                loop
+                muted={false}
+                controls
+                playsInline
+              />
+            )}
 
             <div className={styles.content}>
               {/* Meta row */}

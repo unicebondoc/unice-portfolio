@@ -1,0 +1,148 @@
+.wrap {
+  --tyche-cyan: 0, 240, 255;
+  position: fixed;
+  bottom: 4vh;
+  right: 3vw;
+  z-index: 60;
+  padding-right: 12px;
+  padding-bottom: 8px;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  will-change: transform;
+  transform: translateZ(0);
+  pointer-events: auto; /* re-enable clicks so Tyche is clickable when parent has pointer-events: none */
+  visibility: visible;
+  display: block;
+}
+
+/* Ensure Tyche is visible on desktop (all breakpoints) */
+@media (min-width: 769px) {
+  .wrap {
+    visibility: visible !important;
+    display: block !important;
+    position: fixed;
+    bottom: 4vh;
+    right: 3vw;
+    z-index: 60;
+  }
+}
+
+.wrap:focus-visible {
+  filter: drop-shadow(0 0 12px rgba(var(--tyche-cyan), 0.6));
+}
+
+.open {
+  filter: drop-shadow(0 0 14px rgba(var(--tyche-cyan), 0.6)) drop-shadow(0 0 30px rgba(168, 85, 247, 0.18));
+}
+
+.aura {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(var(--tyche-cyan), 0.22) 0%,
+    rgba(var(--tyche-cyan), 0.08) 50%,
+    transparent 70%
+  );
+  filter: blur(10px);
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.7;
+  will-change: opacity, transform;
+}
+
+.inner {
+  display: inline-block;
+  transform-origin: center 80%;
+  will-change: transform;
+}
+
+.catSvg {
+  display: block;
+  width: 52px;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 0 10px rgba(var(--tyche-cyan), 0.35));
+  will-change: transform, filter;
+}
+
+.headGroup {
+  transform-origin: 24px 23px;
+  transform-box: fill-box;
+}
+
+.tailGroup {
+  transform-origin: 0 0;
+  transform-box: view-box;
+}
+
+.earLeft,
+.earRight,
+.eyeLeft,
+.eyeRight {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.unreadDot {
+  position: absolute;
+  top: 2px;
+  right: -2px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgb(var(--tyche-cyan));
+  border: 2px solid #050a1e;
+  box-shadow: 0 0 8px rgba(var(--tyche-cyan), 0.9);
+  pointer-events: none;
+}
+
+/* Tyche whisper bubble — once per session after 15s */
+.whisperBubble {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  padding: 8px 14px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: rgba(0, 240, 255, 0.95);
+  background: rgba(5, 20, 35, 0.9);
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  border-radius: 20px;
+  white-space: nowrap;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+  animation: whisperFade 4s ease-in-out forwards;
+  pointer-events: none;
+}
+@keyframes whisperFade {
+  0% { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+  15% { opacity: 1; transform: translateX(-50%) translateY(-8px); }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-12px); }
+}
+
+@media (max-width: 768px) {
+  .wrap {
+    bottom: 3vh;
+    right: 2vw;
+    padding-right: 8px;
+    padding-bottom: 4px;
+  }
+  .catSvg {
+    width: 40px;
+    height: auto;
+  }
+  .aura {
+    width: 40px;
+    height: 40px;
+  }
+}
+

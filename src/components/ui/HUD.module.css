@@ -1,144 +1,119 @@
-.header {
+/* ── Name overlay — opacity driven by entrance (T+500ms→1.3s) ───── */
+.nameOverlay {
   position: fixed;
-  top: 24px;
-  left: 28px;
-  z-index: 50;
+  top: 30px;
+  left: 40px;
+  z-index: 10;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 6px;
+  width: auto;
+  max-width: none;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 120ms ease-out;
 }
 
-.name {
-  font-family: 'Sora', sans-serif;
-  font-size: 15px;
+@keyframes nameReveal {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+.nameMain {
+  font-family: 'Cinzel', serif;
+  font-size: 48px;
   font-weight: 700;
-  color: #f0f2f8;
-  letter-spacing: 0.01em;
-  pointer-events: none;
+  color: rgba(160, 220, 240, 0.95);
+  letter-spacing: 8px;
+  line-height: 1;
+  text-shadow: 0 0 20px rgba(100, 200, 240, 0.3), 0 2px 8px rgba(0, 0, 0, 0.5);
+  animation: titleReveal 2.5s ease-out forwards;
 }
 
-.role {
-  font-family: 'Space Mono', monospace;
-  font-size: 9.5px;
-  color: rgba(232, 234, 240, 0.4);
-  letter-spacing: 0.1em;
+@keyframes titleReveal {
+  0%   { opacity: 0; text-shadow: 0 0 0 transparent; }
+  50%  { opacity: 1; text-shadow: 0 0 40px rgba(100, 200, 255, 0.5), 0 2px 8px rgba(0, 0, 0, 0.5); }
+  100% { opacity: 1; text-shadow: 0 0 20px rgba(100, 200, 240, 0.3), 0 2px 8px rgba(0, 0, 0, 0.5); }
+}
+.nameSub {
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(140, 190, 220, 0.7);
+  letter-spacing: 5px;
   text-transform: uppercase;
-  pointer-events: none;
-  margin-bottom: 4px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
 }
 
-.tagline {
-  font-family: 'Space Mono', monospace;
-  font-size: 8.5px;
-  color: rgba(232, 234, 240, 0.22);
-  letter-spacing: 0.06em;
-  line-height: 1.5;
-  max-width: 260px;
-  pointer-events: none;
-  margin-bottom: 6px;
-}
-
-/* ── Social links ──────────────────────────────────────────────── */
-.socials {
+/* ── Social icons when used inside bottom bar (no position) ── */
+.socialsBar {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 12px;
+  transition: opacity 120ms ease-out;
 }
 
+/* Social: small glowing circle (Instagram, LinkedIn, GitHub, Contact) */
 .socialLink {
   display: flex;
   align-items: center;
-  gap: 5px;
-  color: rgba(232, 234, 240, 0.35);
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(150, 200, 230, 0.06);
+  border: 1px solid rgba(150, 200, 230, 0.2);
+  color: rgba(150, 200, 230, 0.6);
+  box-shadow: 0 0 12px rgba(100, 180, 255, 0.08);
   text-decoration: none;
-  padding: 4px 8px;
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background: rgba(255, 255, 255, 0.03);
-  transition: color 200ms, border-color 200ms, background 200ms;
+  transition: all 0.4s ease;
+  animation: runeGlow 4s ease-in-out infinite;
 }
-
+.socialLink:nth-child(1) { animation-delay: 0s; }
+.socialLink:nth-child(2) { animation-delay: 0.8s; }
+.socialLink:nth-child(3) { animation-delay: 1.6s; }
+.socialLink:nth-child(4) { animation-delay: 2.4s; }
 .socialLink:hover {
-  color: rgba(232, 234, 240, 0.85);
-  border-color: rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(150, 200, 230, 0.12);
+  border-color: rgba(150, 200, 230, 0.4);
+  color: rgba(200, 230, 255, 0.95);
+  box-shadow: 0 0 15px rgba(150, 200, 230, 0.12);
+}
+.socialLink:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.6);
+}
+.socialLink svg {
+  width: 20px;
+  height: 20px;
 }
 
-.socialLabel {
-  font-family: 'Space Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 0.06em;
+@keyframes runeGlow {
+  0%, 100% { box-shadow: 0 0 12px rgba(100, 180, 255, 0.06); }
+  50%      { box-shadow: 0 0 16px rgba(100, 180, 255, 0.12); }
 }
 
-/* ── Hint ──────────────────────────────────────────────────────── */
+/* ── Bottom-center hint: EXPLORE THE MEMORIES — viewport units ── */
 .hint {
   position: fixed;
-  bottom: 24px;
+  bottom: 3vh;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 50;
+  z-index: 10;
   pointer-events: none;
   white-space: nowrap;
+  animation: fadeHint 5s ease-in forwards;
 }
-
 .hint span {
-  font-family: 'Space Mono', monospace;
-  font-size: 9.5px;
-  color: rgba(232, 234, 240, 0.25);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-/* ── Badge ─────────────────────────────────────────────────────── */
-.badge {
-  position: fixed;
-  bottom: 20px;
-  right: 28px;
-  z-index: 50;
-  pointer-events: none;
-}
-
-.badge span {
-  font-family: 'Space Mono', monospace;
+  font-family: 'Raleway', sans-serif;
   font-size: 9px;
-  color: rgba(232, 234, 240, 0.18);
-  letter-spacing: 0.14em;
+  letter-spacing: 4px;
+  color: rgba(150, 190, 220, 0.3);
   text-transform: uppercase;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* ── Mobile ─────────────────────────────────────────────────────── */
-@media (max-width: 640px) {
-  .header {
-    top: 16px;
-    left: 16px;
-  }
-
-  .name {
-    font-size: 13px;
-  }
-
-  .role {
-    font-size: 8.5px;
-    margin-bottom: 2px;
-  }
-
-  .tagline {
-    display: none;
-  }
-
-  .socialLabel {
-    display: none; /* icon-only on small screens */
-  }
-
-  .socialLink {
-    padding: 5px 7px;
-  }
-
-  .hint {
-    display: none; /* hidden on mobile — tap hint is self-evident */
-  }
-
-  .badge {
-    display: none;
-  }
+@keyframes fadeHint {
+  0%, 70% { opacity: 1; }
+  100%    { opacity: 0; }
 }

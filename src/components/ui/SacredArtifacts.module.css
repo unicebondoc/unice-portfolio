@@ -1,0 +1,159 @@
+/* Sacred artifacts — left vertical menu (game HUD) */
+
+.sacredArtifacts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+  flex-shrink: 0;
+}
+
+.artifact {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 16px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  border-left: 2px solid rgba(255, 255, 255, 0);
+}
+.artifact:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px rgba(0, 229, 255, 0.5);
+  border-radius: 0 8px 8px 0;
+}
+.artifact::before {
+  display: none;
+}
+
+.artifact:hover::before {
+  height: 0;
+}
+
+/* Skills — #7b68ee */
+.artifactSkills .artifactIcon {
+  border-color: rgba(123, 104, 238, 0.4);
+  background: rgba(123, 104, 238, 0.08);
+  box-shadow: 0 0 12px rgba(123, 104, 238, 0.15);
+}
+.artifactSkills .artifactLabel {
+  color: rgba(255, 255, 255, 0.55);
+}
+.artifactSkills:hover {
+  border-left-color: rgba(123, 104, 238, 0.9);
+  background: rgba(123, 104, 238, 0.08);
+  border-radius: 0 8px 8px 0;
+  padding-left: 20px;
+}
+.artifactSkills:hover .artifactIcon {
+  background: rgba(123, 104, 238, 0.2);
+  box-shadow: 0 0 20px rgba(123, 104, 238, 0.4);
+  border-color: rgba(123, 104, 238, 0.8);
+}
+.artifactSkills:hover .artifactLabel {
+  color: rgba(255, 255, 255, 0.9);
+}
+.artifactSkills.artifactRipple .artifactIcon {
+  box-shadow: 0 0 28px rgba(123, 104, 238, 0.8), 0 0 12px rgba(123, 104, 238, 0.15);
+}
+
+/* Resume — #c4a052 */
+.artifactResume .artifactIcon {
+  border-color: rgba(196, 160, 82, 0.4);
+  background: rgba(196, 160, 82, 0.08);
+  box-shadow: 0 0 12px rgba(196, 160, 82, 0.15);
+}
+.artifactResume .artifactLabel {
+  color: rgba(255, 255, 255, 0.55);
+}
+.artifactResume:hover {
+  border-left-color: rgba(196, 160, 82, 0.9);
+  background: rgba(196, 160, 82, 0.08);
+  border-radius: 0 8px 8px 0;
+  padding-left: 20px;
+}
+.artifactResume:hover .artifactIcon {
+  background: rgba(196, 160, 82, 0.2);
+  box-shadow: 0 0 20px rgba(196, 160, 82, 0.4);
+  border-color: rgba(196, 160, 82, 0.8);
+}
+.artifactResume:hover .artifactLabel {
+  color: rgba(255, 255, 255, 0.9);
+}
+.artifactResume.artifactRipple .artifactIcon {
+  box-shadow: 0 0 28px rgba(196, 160, 82, 0.8), 0 0 12px rgba(196, 160, 82, 0.15);
+}
+
+/* Writings — #2ea8a0 */
+.artifactWritings .artifactIcon {
+  border-color: rgba(46, 168, 160, 0.4);
+  background: rgba(46, 168, 160, 0.08);
+  box-shadow: 0 0 12px rgba(46, 168, 160, 0.15);
+}
+.artifactWritings .artifactLabel {
+  color: rgba(255, 255, 255, 0.55);
+}
+.artifactWritings:hover {
+  border-left-color: rgba(46, 168, 160, 0.9);
+  background: rgba(46, 168, 160, 0.08);
+  border-radius: 0 8px 8px 0;
+  padding-left: 20px;
+}
+.artifactWritings:hover .artifactIcon {
+  background: rgba(46, 168, 160, 0.2);
+  box-shadow: 0 0 20px rgba(46, 168, 160, 0.4);
+  border-color: rgba(46, 168, 160, 0.8);
+}
+.artifactWritings:hover .artifactLabel {
+  color: rgba(255, 255, 255, 0.9);
+}
+.artifactWritings.artifactRipple .artifactIcon {
+  box-shadow: 0 0 28px rgba(46, 168, 160, 0.8), 0 0 12px rgba(46, 168, 160, 0.15);
+}
+
+.artifactIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.artifactIcon span {
+  font-size: 14px;
+}
+
+.artifactText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+
+.artifactLabel {
+  font-family: 'Raleway', sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.artifactSubLabel {
+  font-family: 'Raleway', sans-serif;
+  font-size: 7px;
+  letter-spacing: 2px;
+  text-transform: lowercase;
+  opacity: 1;
+  color: rgba(255, 255, 255, 0.25);
+}

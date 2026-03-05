@@ -90,6 +90,16 @@
   opacity: 0.85;
 }
 
+/* ── Video player ───────────────────────────────────────────────── */
+.video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  object-fit: cover;
+  /* no extra border-radius — panel overflow:hidden clips it */
+}
+
 /* ── Content area ───────────────────────────────────────────────── */
 .content {
   padding: 26px 30px 30px;

@@ -1,0 +1,598 @@
+/* ── Panel: fixed center, small circular glass ─────────────────────────────── */
+
+.anchor {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 100;
+}
+.anchorCenter {
+  /* centered */
+}
+.anchorBottomSheet {
+  left: 0 !important;
+  right: 0 !important;
+  top: auto !important;
+  bottom: 0 !important;
+  transform: none !important;
+  width: 100%;
+  max-height: 70vh;
+  pointer-events: auto;
+  z-index: 100;
+}
+.anchorBottomSheet .parallaxWrap {
+  transform: none !important;
+  width: 100%;
+  height: 100%;
+}
+.anchorBottomSheet .driftWrap {
+  width: 100%;
+  height: 100%;
+}
+.anchorBottomSheet .panel {
+  width: 100%;
+  height: 100%;
+  max-height: 70vh;
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.anchorBottomSheet .scroll {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  width: 100%;
+  max-height: none;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.anchorBottomSheet .contentWrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.anchorBottomSheet .content {
+  padding-bottom: 24px;
+}
+.panelEnter {
+  opacity: 0;
+}
+.panelVisible {
+  opacity: 1;
+  transition: opacity 0.25s ease-out;
+}
+.anchor > * {
+  pointer-events: auto;
+}
+
+.parallaxWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 120ms ease-out;
+  pointer-events: none;
+  transform-origin: center center;
+}
+
+.driftWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* ── Orb container: circular, glass, organic breathing shape ───────────────────────────── */
+.panel {
+  --orb-color: rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 1);
+  --panel-size: var(--panel-diameter, min(380px, 44vw));
+  width: var(--panel-size);
+  height: var(--panel-size);
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  animation: breatheShape 4s ease-in-out infinite;
+
+  background: radial-gradient(
+    ellipse at 30% 25%,
+    rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.18) 0%,
+    rgba(8, 20, 45, 0.72) 45%,
+    rgba(3, 10, 25, 0.82) 100%
+  );
+  border: 1px solid rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.5);
+  box-shadow:
+    0 0 60px rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.2),
+    0 0 120px rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.08),
+    inset 0 0 60px rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.06),
+    inset 0 2px 0 rgba(255, 255, 255, 0.15);
+
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  pointer-events: none;
+  user-select: none;
+  transform-origin: center center;
+  transition: border-color 400ms ease, box-shadow 400ms ease;
+}
+
+/* Mobile bottom sheet overrides */
+.panelBottomSheet {
+  border-radius: 20px 20px 0 0;
+  animation: none;
+}
+.bottomSheetHandle {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+}
+.bottomSheetClose {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 16px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  transition: background 0.2s ease;
+}
+.bottomSheetClose:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+.bottomSheetClose:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+@keyframes breatheShape {
+  0%, 100% { border-radius: 50%; }
+  25% { border-radius: 48% 52% 51% 49% / 49% 51% 50% 50%; }
+  50% { border-radius: 51% 49% 48% 52% / 52% 48% 51% 49%; }
+  75% { border-radius: 49% 51% 52% 48% / 51% 49% 48% 52%; }
+}
+
+/* Top highlight (light reflection on glass) */
+.panel::before {
+  content: '';
+  position: absolute;
+  top: 8%;
+  left: 20%;
+  width: 40%;
+  height: 18%;
+  background: radial-gradient(
+    ellipse,
+    rgba(255, 255, 255, 0.12) 0%,
+    transparent 100%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+  transform: rotate(-20deg);
+  z-index: 1;
+}
+
+/* Bottom rim light */
+.panel::after {
+  content: '';
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 8%;
+  background: radial-gradient(
+    ellipse,
+    rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.15) 0%,
+    transparent 100%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.panelTopLight {
+  display: none;
+}
+
+.panelShimmerLayer {
+  display: none;
+}
+
+.panelParticle {
+  display: none;
+}
+
+/* Wrapper for crossfade when swapping memory; content has pointer-events for interaction */
+.contentWrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: auto;
+}
+
+/* Thumbnail badge: 48px circle at top-right edge of panel */
+.thumbnailBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 3;
+}
+.thumbnailMedia {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Profile orb (root): vignette so photo blends into orb */
+.thumbnailBadgeVignette::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.35) 100%);
+  pointer-events: none;
+}
+
+/* FIX 6: hint that orbs are interactive */
+.touchHint {
+  position: absolute;
+  bottom: 28px;
+  left: 0;
+  right: 0;
+  font-size: 7px;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.2);
+  text-align: center;
+  margin: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.releaseHint {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  font-size: 7px;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.2);
+  text-align: center;
+  margin: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.readMore {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+  color: rgba(100, 220, 200, 0.7);
+  cursor: pointer;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+.readMore:hover {
+  color: rgba(100, 220, 200, 0.95);
+}
+
+.panelClosing {
+  animation: panelScaleOut 200ms ease-in forwards;
+}
+
+@keyframes panelScaleOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+/* ── Content area: 70% width, 72% max-height ──────────── */
+.scroll {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  max-height: 65vh;
+  overflow: hidden;
+  text-align: center;
+  z-index: 2;
+}
+
+.content {
+  padding: 8px 0 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: contentFadeIn 0.25s ease-out;
+}
+@keyframes contentFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── Symbol: 18px, orb color, slow spin ────────────────────────────────────── */
+.panelSymbol {
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 4px;
+  pointer-events: none;
+  z-index: 2;
+  position: relative;
+}
+.panelSymbolInner {
+  display: inline-block;
+  animation: symbolSpin 8s linear infinite;
+  filter: drop-shadow(0 0 8px rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.6));
+}
+
+@keyframes symbolSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ── Meta, title, description: compact for smaller panel ─────────────────────────────────── */
+.metaLine {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 400;
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(140, 180, 220, 0.55);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  margin: 0 0 4px 0;
+}
+
+.title {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  margin: 0 0 4px 0;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.subtitle {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 400;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(100, 220, 200, 0.6);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  margin: 0 0 6px 0;
+}
+
+.desc {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(210, 225, 240, 0.8);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  margin: 0 0 8px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.desc.expanded,
+.descExpanded {
+  -webkit-line-clamp: unset;
+  overflow: visible;
+}
+
+/* ── Tags: compact 8px ─────────────────────────────────────────────── */
+.tags {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 400;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: rgba(170, 200, 230, 0.6);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  margin: 0 0 8px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2px 6px;
+}
+
+.sectionLabel {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 400;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: rgba(140, 170, 210, 0.5);
+  text-transform: uppercase;
+  margin: 10px 0 4px 0;
+  width: 100%;
+  text-align: center;
+}
+.toolsWrap,
+.toolsContent {
+  text-align: center;
+}
+.toolsContent {
+  font-family: 'Raleway', sans-serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: rgba(170, 200, 230, 0.6);
+  margin: 0 0 10px 0;
+}
+
+.exploreWrap {
+  margin-top: 8px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.exploreWrap .sectionLabel {
+  color: rgba(100, 200, 180, 0.3);
+}
+.exploreLinks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.exploreLink {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: rgba(100, 220, 200, 0.5);
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+.exploreLink:hover {
+  color: rgba(100, 220, 200, 0.9);
+}
+
+.ctaWrap {
+  margin-top: 12px;
+}
+.cta {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(100, 220, 200, 0.5);
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+.cta:hover {
+  color: rgba(100, 220, 200, 0.8);
+}
+
+/* ── Nav: removed; siblings + dots are navigation ───────────────────────────── */
+.navBar {
+  display: none;
+}
+.navBtn {
+  display: none;
+}
+
+/* ── Dots indicator: below main orb ─────────────────────────────────────────── */
+.dotsWrap {
+  position: fixed;
+  top: calc(50% + min(265px, 43vw) + 15px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+  pointer-events: auto;
+}
+.dotsWrapDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.dotsWrapDot:hover {
+  transform: scale(1.2);
+}
+.navDots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.navDot {
+  height: 6px;
+  border-radius: 3px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+.navDot:hover {
+  background: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* ── Exit pill: removed — close via outside click, ESC, or same orb ───────────────────────────────── */
+.exitWrap {
+  display: none;
+}
+.exitPill {
+  display: none;
+}
+
+/* Video / photo: full-width blocks removed; thumbnail badge only ────────────────────────────────────────── */
+.videoWrap {
+  display: none;
+}
+.video {
+  display: none;
+}
+.videoOverlay {
+  display: none;
+}
+
+.photoWrap {
+  display: none;
+}
+.photo {
+  display: none;
+}
+
+.future {
+  filter: drop-shadow(0 0 24px rgba(120, 100, 255, 0.06));
+}
+
+.stickyHeader {
+  display: none;
+}
+.close {
+  display: none;
+}
+
+.navHint,
+.navHintBtn {
+  display: none;
+}
+
+.panelScanlineTop,
+.panelEdgeGlow,
+.panelCaustic,
+.panelShimmer,
+.panelScanlines,
+.glyphRow,
+.shimmer,
+.energyLine {
+  display: none !important;
+}

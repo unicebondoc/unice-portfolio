@@ -1,0 +1,8 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: black;
+  transition: opacity 150ms ease-out;
+  pointer-events: auto;
+}

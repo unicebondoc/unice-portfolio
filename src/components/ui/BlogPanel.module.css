@@ -1,0 +1,100 @@
+/* BlogPanel — small glass panel, left side */
+
+.anchor {
+  position: fixed;
+  left: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  pointer-events: auto;
+}
+
+.panel {
+  width: min(260px, calc(100vw - 80px));
+  padding: 20px 24px 24px;
+  background: rgba(8, 15, 30, 0.25);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  animation: panelFadeIn 0.5s ease-out;
+}
+@keyframes panelFadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.6;
+  padding: 0;
+}
+.close::before,
+.close::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.7);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.close:hover {
+  opacity: 1;
+}
+.close:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.6);
+  opacity: 1;
+}
+
+.title {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: rgba(46, 168, 160, 0.9);
+  margin: 0 0 2px;
+  text-shadow: 0 0 10px rgba(46, 168, 160, 0.2);
+}
+
+.subtitle {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: rgba(200, 210, 255, 0.5);
+  margin: 0 0 14px;
+  font-family: 'Raleway', sans-serif;
+}
+
+.link {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: rgba(46, 168, 160, 0.9);
+  text-decoration: none;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(46, 168, 160, 0.3);
+  transition: color 0.2s, border-color 0.2s;
+}
+.link:hover {
+  color: rgba(100, 220, 210, 1);
+  border-color: rgba(46, 168, 160, 0.5);
+}
+
+.hint {
+  font-size: 10px;
+  color: rgba(200, 210, 255, 0.4);
+  margin: 12px 0 0;
+  font-family: 'Raleway', sans-serif;
+}
