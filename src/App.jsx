@@ -2,7 +2,6 @@ import { Suspense, useEffect, useRef } from 'react'
 import OrbLabels from './components/ui/OrbLabel'
 import ProjectModal from './components/ui/ProjectModal'
 import HUD from './components/ui/HUD'
-import ChatBot from './components/ui/ChatBot'
 import { Canvas, useThree, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import MemoryOrb from './components/scene/MemoryOrb'
@@ -64,23 +63,13 @@ function CausticLights() {
 }
 
 // ── Scene-wide ambient lighting (not per-orb) ────────────────────
-// Per-orb PointLights now live inside each MemoryOrb component.
 function Lights() {
   return (
     <>
-      {/* Dim ambient — orbs light themselves via PointLight */}
       <ambientLight intensity={0.08} color="#0a1520" />
-
-      {/* Warm amber wash from above — like sunlight through water */}
       <pointLight position={[0, 14, 3]} intensity={0.16} color="#3a1e00" distance={30} />
-
-      {/* Cool deep bioluminescent glow from below */}
       <pointLight position={[0, -10, -4]} intensity={0.24} color="#002a44" distance={28} />
-
-      {/* Subtle teal rim from far back */}
       <pointLight position={[0, 2, -12]} intensity={0.18} color="#003322" distance={25} />
-
-      {/* Animated caustic light shimmer */}
       <CausticLights />
     </>
   )
@@ -126,11 +115,11 @@ export default function App() {
 
   return (
     <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
-      {/* ── Background image — blurred separately so canvas stays sharp ── */}
+      {/* ── Background image ── */}
       <div
         style={{
           position: 'fixed',
-          inset: '-4px',          /* extend past edges to hide blur fringe */
+          inset: '-4px',
           backgroundImage: "url('/background.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
@@ -140,7 +129,7 @@ export default function App() {
         }}
       />
 
-      {/* ── 3D Canvas — transparent so background div shows through ── */}
+      {/* ── 3D Canvas ── */}
       <Canvas
         dpr={[1, 2]}
         camera={{ position: [0, 0, 13], fov: 52 }}
@@ -151,8 +140,6 @@ export default function App() {
           <SceneReadyNotifier />
           <CameraRig />
           <Lights />
-
-          {/* Bioluminescent particles */}
           <Particles />
 
           {MEMORIES.map((memory, i) => (
@@ -181,14 +168,33 @@ export default function App() {
         </Suspense>
       </Canvas>
 
-      {/* ── HTML overlays ─────────────────────────────────────── */}
+      {/* ── HTML overlays ── */}
       <HUD />
       <ProjectModal />
-      <ChatBot />
 
-      {/* ── Loading screen ────────────────────────────────────── */}
+      {/* ── TEST: plain fixed button — no portal, no CSS module, inline styles only ── */}
+      <button
+        style={{
+          position: 'fixed',
+          right: 24,
+          bottom: 24,
+          zIndex: 999999,
+          background: 'red',
+          color: 'white',
+          padding: '12px 16px',
+          borderRadius: 12,
+          border: 'none',
+          fontSize: 16,
+          fontWeight: 'bold',
+          cursor: 'pointer',
+        }}
+        onClick={() => alert('TEST button works!')}
+      >
+        TEST
+      </button>
+
+      {/* ── Loading screen ── */}
       <LoadingScreen visible={!sceneReady} />
-
     </div>
   )
 }
