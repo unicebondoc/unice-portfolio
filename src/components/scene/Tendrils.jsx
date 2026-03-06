@@ -15,17 +15,17 @@ import useStore from '../../hooks/useStore'
 const Z_OFFSET = -3.5
 const TRUNK_ROOT = new THREE.Vector3(0, 0.5, Z_OFFSET)
 
-// Moonlight silk threads — more visible, mystical
-const TUBE_RADIUS = 0.005
-const TUBE_GLOW_RADIUS = 0.012
+// Moonlight silk threads — clearly visible delicate threads catching moonlight
+const TUBE_RADIUS = 0.0035
+const TUBE_GLOW_RADIUS = 0.007
 const TUBE_TUBULAR_SEGMENTS = 20
 const TUBE_RADIAL_SEGMENTS = 6
-const TUBE_OPACITY = 0.38
-const TUBE_GLOW_OPACITY = 0.24
+const TUBE_OPACITY = 0.25
+const TUBE_GLOW_OPACITY = 0.14
 const MOONLIGHT_COLOR = new THREE.Color(220 / 255, 215 / 255, 200 / 255)
-const ENERGY_DOT_RADIUS = 0.014
+const ENERGY_DOT_RADIUS = 0.01
 const ENERGY_DOT_LOOP_SEC = 2.5
-const ENERGY_DOT_OPACITY = 0.88
+const ENERGY_DOT_OPACITY = 0.38
 const ENERGY_DOT_OFFSET_PER_ORB = 0.4
 
 const sr = (seed, n) => {
@@ -38,7 +38,10 @@ function Tendril({ memory, index, position }) {
   const hoveredOrb = useStore((st) => st.hoveredOrb)
   const selectedOrb = useStore((st) => st.selectedOrb)
 
-  const { tubeMesh, tubeGlowMesh, curve } = useMemo(() => {
+  const tubeMeshRef = useRef(null)
+  const tubeGlowRef = useRef(null)
+
+  const { start, baseMid, orbBasePos, perp, tubeMesh, tubeGlowMesh } = useMemo(() => {
     const [x, y, z] = position
     const orbBasePos = new THREE.Vector3(x, y, z + Z_OFFSET)
 
@@ -60,7 +63,7 @@ function Tendril({ memory, index, position }) {
     const curve = new THREE.CatmullRomCurve3([start, mid, orbBasePos], false)
     const tubeGeom = new THREE.TubeGeometry(curve, TUBE_TUBULAR_SEGMENTS, TUBE_RADIUS, TUBE_RADIAL_SEGMENTS, false)
     const tubeGlowGeom = new THREE.TubeGeometry(curve, TUBE_TUBULAR_SEGMENTS, TUBE_GLOW_RADIUS, TUBE_RADIAL_SEGMENTS, false)
-    const mat = new THREE.MeshBasicMaterial({
+    const tubeMat = new THREE.MeshBasicMaterial({
       color: MOONLIGHT_COLOR,
       transparent: true,
       opacity: TUBE_OPACITY,
@@ -76,25 +79,44 @@ function Tendril({ memory, index, position }) {
       blending: THREE.AdditiveBlending,
       side: THREE.DoubleSide,
     })
-    const tube = new THREE.Mesh(tubeGeom, mat)
-    const tubeGlow = new THREE.Mesh(tubeGlowGeom, glowMat)
-    return { tubeMesh: tube, tubeGlowMesh: tubeGlow, curve }
+    const tubeMesh = new THREE.Mesh(tubeGeom, tubeMat)
+    const tubeGlowMesh = new THREE.Mesh(tubeGlowGeom, glowMat)
+    tubeMeshRef.current = tubeMesh
+    tubeGlowRef.current = tubeGlowMesh
+    return { start, baseMid: mid.clone(), orbBasePos, perp, tubeMesh, tubeGlowMesh }
   }, [position[0], position[1], position[2], s])
 
   const energyDotRef = useRef()
-  const curveRef = useRef(curve)
+  const curveRef = useRef(null)
 
   useFrame((state) => {
     const elapsed = state.clock.elapsedTime
+    const tubeMesh = tubeMeshRef.current
+    const tubeGlowMesh = tubeGlowRef.current
+
+    // Wave: sway the middle control point perpendicular to the chord
+    const wavePhase = elapsed * 0.9 + index * 0.6
+    const waveAmount = Math.sin(wavePhase) * 0.06 + Math.sin(wavePhase * 2.1) * 0.02
+    const midWaved = baseMid.clone().add(perp.clone().multiplyScalar(waveAmount))
+    const curve = new THREE.CatmullRomCurve3([start, midWaved, orbBasePos], false)
     curveRef.current = curve
+
+    if (tubeMesh?.geometry && tubeGlowMesh?.geometry) {
+      tubeMesh.geometry.dispose()
+      tubeGlowMesh.geometry.dispose()
+    }
+    const tubeGeom = new THREE.TubeGeometry(curve, TUBE_TUBULAR_SEGMENTS, TUBE_RADIUS, TUBE_RADIAL_SEGMENTS, false)
+    const glowGeom = new THREE.TubeGeometry(curve, TUBE_TUBULAR_SEGMENTS, TUBE_GLOW_RADIUS, TUBE_RADIAL_SEGMENTS, false)
+    if (tubeMesh) tubeMesh.geometry = tubeGeom
+    if (tubeGlowMesh) tubeGlowMesh.geometry = glowGeom
 
     const isHov = hoveredOrb === memory.id
     const isSel = selectedOrb === memory.id
     const visualTier = memory.visualTier || 'primary'
     const isAmbient = memory.orbType === 'ambient'
     const tierMult = visualTier === 'hero' ? 1.1 : visualTier === 'secondary' ? 0.6 : 1
-    const opacity = (isSel ? 0.52 : (isHov && !isAmbient) ? 0.45 : TUBE_OPACITY) * tierMult
-    if (tubeMesh.material.opacity !== opacity) {
+    const opacity = (isSel ? 0.35 : (isHov && !isAmbient) ? 0.3 : TUBE_OPACITY) * tierMult
+    if (tubeMesh?.material?.opacity !== opacity) {
       tubeMesh.material.opacity = THREE.MathUtils.lerp(tubeMesh.material.opacity, opacity, 0.12)
     }
 
@@ -106,7 +128,7 @@ function Tendril({ memory, index, position }) {
       const pos = curve.getPointAt(along)
       energyDotRef.current.position.copy(pos)
       energyDotRef.current.visible = true
-      energyDotRef.current.material.opacity = ((isHov && !isAmbient) ? 0.75 : ENERGY_DOT_OPACITY) * tierMult
+      energyDotRef.current.material.opacity = ((isHov && !isAmbient) ? 0.5 : ENERGY_DOT_OPACITY) * tierMult
     }
   })
 

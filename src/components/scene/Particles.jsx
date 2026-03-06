@@ -15,57 +15,70 @@ const RING_COUNT    = 80
 const MIST_COUNT    = 100
 const SIDE_SPRITE_COUNT = 120
 const FAR_SIDE_COUNT = 85
+const CANOPY_SPARSE_COUNT = 35
+const CANOPY_EDGE_COUNT = 22
 
+/* Background-like: soft purple and cyan glow */
 const BLOSSOM_PALETTE = [
-  new THREE.Color('#9060ff'),
-  new THREE.Color('#cc60ff'),
-  new THREE.Color('#ff60cc'),
-  new THREE.Color('#FFB7C5'),
-  new THREE.Color('#FF9AB5'),
-  new THREE.Color('#d4b8ff'),
+  new THREE.Color('#6060b0'),
+  new THREE.Color('#8060cc'),
+  new THREE.Color('#5080c8'),
+  new THREE.Color('#22a0aa'),
+  new THREE.Color('#a070e0'),
+  new THREE.Color('#7090d0'),
 ]
 
-/* Soft purple (no teal in ambient particles) */
+/* Soft purple + cyan, background glow */
 const SPORE_PALETTE = [
-  new THREE.Color('#9060ff'),
-  new THREE.Color('#cc60ff'),
-  new THREE.Color('#a070e8'),
-  new THREE.Color('#c4a0ff'),
-  new THREE.Color('#b080ff'),
+  new THREE.Color('#6050a8'),
+  new THREE.Color('#5080c0'),
+  new THREE.Color('#22a4aa'),
+  new THREE.Color('#8068c8'),
+  new THREE.Color('#7088cc'),
 ]
 
-// Purple/lavender for circle ring
+// Ring: purple/cyan ambient
 const RING_PALETTE = [
-  new THREE.Color('#9060ff'),
-  new THREE.Color('#c4a0ff'),
-  new THREE.Color('#d4b8ff'),
-  new THREE.Color('#a070e8'),
-  new THREE.Color('#e8d4ff'),
+  new THREE.Color('#6050a8'),
+  new THREE.Color('#5080c0'),
+  new THREE.Color('#22a0aa'),
+  new THREE.Color('#8068c8'),
+  new THREE.Color('#7090d0'),
 ]
 
-/* Ground mist: deep purple-blue #6040b0 */
+/* Ground mist: deep purple-blue, background */
 const MIST_PALETTE = [
-  new THREE.Color('#6040b0'),
-  new THREE.Color('#7050c0'),
-  new THREE.Color('#5544a0'),
+  new THREE.Color('#4040a0'),
+  new THREE.Color('#5050b8'),
+  new THREE.Color('#3060aa'),
 ]
 
-/* Water-to-tree drift: purple + cyan for left orbs (from water at tree) */
+/* Water–tree: purple + cyan glow */
 const WATER_TREE_PALETTE = [
-  new THREE.Color('#5060dd'),
-  new THREE.Color('#4080ff'),
-  new THREE.Color('#6040cc'),
+  new THREE.Color('#4050b0'),
+  new THREE.Color('#3080c0'),
   new THREE.Color('#22aacc'),
-  new THREE.Color('#a070e8'),
+  new THREE.Color('#6060cc'),
+  new THREE.Color('#5090b8'),
 ]
 
-/* Left/right sprite columns — brighter purple/cyan, more visible */
+/* Sides: purple glow + cyan glow like background */
 const SIDE_SPRITE_PALETTE = [
-  new THREE.Color('#7080ff'),
-  new THREE.Color('#22c4dd'),
-  new THREE.Color('#a060ff'),
-  new THREE.Color('#c4a0ff'),
-  new THREE.Color('#40a0cc'),
+  new THREE.Color('#5060b8'),
+  new THREE.Color('#22b4cc'),
+  new THREE.Color('#7060c8'),
+  new THREE.Color('#5090c0'),
+  new THREE.Color('#4080b0'),
+]
+
+/* Canopy + high drift: sparse, pink/magenta + cyan/blue mix (whole forest alive) */
+const CANOPY_PALETTE = [
+  new THREE.Color('#f472b6'),
+  new THREE.Color('#22d3ee'),
+  new THREE.Color('#a78bfa'),
+  new THREE.Color('#22a0aa'),
+  new THREE.Color('#e879f9'),
+  new THREE.Color('#2dd4bf'),
 ]
 
 // ── GLSL — vertex ──────────────────────────────────────────────────
@@ -322,9 +335,9 @@ function ParticleCloud({ count, palette, spread, uSize, baseOpacity, hoveredPos,
     }
     posA.needsUpdate = true
 
-    // Gentle flicker — higher cap for mystical visibility
+    // Gentle flicker — soft background glow (purple/cyan)
     matRef.current.uniforms.uOpacity.value =
-      Math.min(0.52, baseOpacity * (0.75 + Math.sin(t * 0.16) * 0.25))
+      Math.min(0.3, baseOpacity * (0.6 + Math.sin(t * 0.16) * 0.18))
   })
 
   return (
@@ -378,7 +391,7 @@ function RingCloud({ count, palette, radiusMin, radiusMax, yMin, yMax, zOffset, 
     }
     ptsRef.current.geometry.attributes.position.needsUpdate = true
     matRef.current.uniforms.uOpacity.value =
-      Math.min(0.48, baseOpacity * (0.78 + Math.sin(t * 0.12) * 0.22))
+      Math.min(0.28, baseOpacity * (0.62 + Math.sin(t * 0.12) * 0.18))
   })
 
   return (
@@ -430,7 +443,7 @@ function MistCloud({ count, palette, xMin, xMax, yMin, yMax, zMin, zMax, uSize, 
     }
     ptsRef.current.geometry.attributes.position.needsUpdate = true
     matRef.current.uniforms.uOpacity.value =
-      Math.min(additive ? 0.58 : 0.4, baseOpacity * (0.78 + Math.sin(t * 0.08) * 0.22))
+      Math.min(additive ? 0.34 : 0.24, baseOpacity * (0.62 + Math.sin(t * 0.08) * 0.18))
   })
 
   return (
@@ -471,16 +484,18 @@ export default function Particles() {
   const waterTreeCount = Math.max(40, Math.floor(80 * mult))
   const sideSpriteCount = Math.max(50, Math.floor(SIDE_SPRITE_COUNT * mult))
   const farSideCount = Math.max(40, Math.floor(FAR_SIDE_COUNT * mult))
+  const canopySparseCount = Math.max(12, Math.floor(CANOPY_SPARSE_COUNT * mult))
+  const canopyEdgeCount = Math.max(8, Math.floor(CANOPY_EDGE_COUNT * mult))
 
   return (
     <>
-      {/* Blossoms — full scene width, more visible mystical */}
+      {/* Blossoms — full scene, purple/cyan background glow */}
       <ParticleCloud
         count={blossomCount}
         palette={BLOSSOM_PALETTE}
         spread={{ x: 28, y: 20, z: 12, zOffset: -8 }}
-        uSize={1.35}
-        baseOpacity={0.36}
+        uSize={1.2}
+        baseOpacity={0.28}
         hoveredPos={hoveredPos}
         selectedOrbWorldPos={selectedOrbWorldPos}
       />
@@ -489,8 +504,8 @@ export default function Particles() {
         count={Math.max(20, Math.floor(48 * mult))}
         palette={BLOSSOM_PALETTE}
         spread={{ x: 14, y: 10, z: 2.5, zOffset: -3.5 }}
-        uSize={1.15}
-        baseOpacity={0.32}
+        uSize={1.05}
+        baseOpacity={0.26}
         hoveredPos={hoveredPos}
         selectedOrbWorldPos={selectedOrbWorldPos}
       />
@@ -503,16 +518,16 @@ export default function Particles() {
         yMin={-1.5}
         yMax={2.5}
         zOffset={-3.5}
-        uSize={1.15}
-        baseOpacity={0.32}
+        uSize={1.05}
+        baseOpacity={0.26}
       />
-      {/* Spores — more visible */}
+      {/* Spores — soft purple/cyan glow */}
       <ParticleCloud
         count={sporeCount}
         palette={SPORE_PALETTE}
         spread={{ x: 24, y: 16, z: 8, zOffset: -9 }}
-        uSize={1.1}
-        baseOpacity={0.3}
+        uSize={1.0}
+        baseOpacity={0.24}
         hoveredPos={hoveredPos}
         selectedOrbWorldPos={selectedOrbWorldPos}
       />
@@ -598,6 +613,45 @@ export default function Particles() {
         uSize={1.5}
         baseOpacity={0.38}
         additive
+      />
+      {/* Canopy: sparse particles higher up (20% density feel), smaller, more transparent, pink + cyan */}
+      <MistCloud
+        count={canopySparseCount}
+        palette={CANOPY_PALETTE}
+        xMin={-10}
+        xMax={10}
+        yMin={1.5}
+        yMax={5.5}
+        zMin={-5}
+        zMax={0}
+        uSize={0.72}
+        baseOpacity={0.16}
+      />
+      {/* Canopy left edge — sparse drift */}
+      <MistCloud
+        count={canopyEdgeCount}
+        palette={CANOPY_PALETTE}
+        xMin={-9}
+        xMax={-4}
+        yMin={1.2}
+        yMax={5}
+        zMin={-5}
+        zMax={-0.5}
+        uSize={0.68}
+        baseOpacity={0.14}
+      />
+      {/* Canopy right edge — sparse drift */}
+      <MistCloud
+        count={canopyEdgeCount}
+        palette={CANOPY_PALETTE}
+        xMin={4}
+        xMax={9}
+        yMin={1.2}
+        yMax={5}
+        zMin={-5}
+        zMax={-0.5}
+        uSize={0.68}
+        baseOpacity={0.14}
       />
     </>
   )

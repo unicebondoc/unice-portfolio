@@ -158,8 +158,8 @@
 
 .artifactLabel {
   font-family: 'Raleway', sans-serif;
-  font-size: 10px;
-  letter-spacing: 3px;
+  font-size: 11px;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   transition: color 0.3s ease;
 }
