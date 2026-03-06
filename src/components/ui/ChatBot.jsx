@@ -1,14 +1,41 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function ChatBot() {
   const [open, setOpen] = useState(false)
 
-  // Phase 1: styling + layout only (no real chat UX yet)
-  const placeholderMessages = [
-    { role: 'assistant', text: "Hi — this is a minimal chat shell. We'll wire real chat next." },
-    { role: 'assistant', text: 'For now, this panel is just a layout + click-layer sanity check.' },
-    { role: 'user', text: 'Got it.' },
-  ]
+  // Phase 2: basic local chat UX (still no API integration)
+  const [input, setInput] = useState('')
+  const [messages, setMessages] = useState(() => ([
+    { role: 'assistant', text: "Hi — this is a minimal local chat. We'll wire AI later." },
+    { role: 'assistant', text: 'Try typing a message and pressing Enter.' },
+  ]))
+
+  const listRef = useRef(null)
+  const inputRef = useRef(null)
+
+  useEffect(() => {
+    if (!open) return
+    const t = setTimeout(() => inputRef.current?.focus(), 50)
+    return () => clearTimeout(t)
+  }, [open])
+
+  useEffect(() => {
+    if (!open) return
+    const el = listRef.current
+    if (!el) return
+    el.scrollTop = el.scrollHeight
+  }, [open, messages.length])
+
+  const send = () => {
+    const text = input.trim()
+    if (!text) return
+    setMessages((prev) => ([
+      ...prev,
+      { role: 'user', text },
+      { role: 'assistant', text: `Echo: ${text}` },
+    ]))
+    setInput('')
+  }
 
   return (
     <div
@@ -94,6 +121,7 @@ export default function ChatBot() {
 
           {/* Body (scrollable) */}
           <div
+            ref={listRef}
             style={{
               flex: '1 1 auto',
               minHeight: 0,
@@ -104,7 +132,7 @@ export default function ChatBot() {
               gap: 10,
             }}
           >
-            {placeholderMessages.map((m, idx) => (
+            {messages.map((m, idx) => (
               <div
                 key={idx}
                 style={{
@@ -138,8 +166,9 @@ export default function ChatBot() {
             }}
           >
             <input
-              value=""
-              readOnly
+              ref={inputRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
               placeholder="Type a message…"
               style={{
                 pointerEvents: 'auto',
@@ -154,27 +183,37 @@ export default function ChatBot() {
                 fontFamily: 'Raleway, system-ui, -apple-system, sans-serif',
                 fontSize: 13,
               }}
-              aria-label="Message input (disabled in Phase 1)"
+              aria-label="Message input"
               onMouseDown={() => console.log('[ChatBot] input mouse down')}
               onPointerDown={() => console.log('[ChatBot] input pointer down')}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  send()
+                }
+              }}
             />
             <button
               type="button"
-              disabled
+              onClick={() => {
+                console.log('[ChatBot] send clicked')
+                send()
+              }}
+              disabled={!input.trim()}
               style={{
                 pointerEvents: 'auto',
                 height: 40,
                 padding: '0 14px',
                 borderRadius: 12,
                 border: '1px solid rgba(255,255,255,0.12)',
-                background: 'rgba(255,255,255,0.06)',
-                color: 'rgba(230,250,250,0.45)',
-                cursor: 'not-allowed',
+                background: input.trim() ? 'rgba(0, 220, 255, 0.18)' : 'rgba(255,255,255,0.06)',
+                color: input.trim() ? 'rgba(235, 250, 255, 0.92)' : 'rgba(230,250,250,0.45)',
+                cursor: input.trim() ? 'pointer' : 'not-allowed',
                 fontFamily: 'Raleway, system-ui, -apple-system, sans-serif',
                 fontSize: 13,
                 letterSpacing: 1,
               }}
-              aria-label="Send (disabled in Phase 1)"
+              aria-label="Send"
               onMouseDown={() => console.log('[ChatBot] send mouse down')}
               onPointerDown={() => console.log('[ChatBot] send pointer down')}
             >
