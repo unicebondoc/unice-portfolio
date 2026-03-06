@@ -46,6 +46,7 @@ const panelVariants = {
  * - Strips [MEMORY:orb-X] from displayed text; those trigger 3D pulses
  */
 export default function ChatBot() {
+  console.log('[ChatBot] rendering')
   const [isOpen, setIsOpen]   = useState(false)
   const [input,  setInput]    = useState('')
   const messagesEndRef        = useRef(null)

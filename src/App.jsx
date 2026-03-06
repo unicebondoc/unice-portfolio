@@ -14,10 +14,25 @@ import useStore from './hooks/useStore'
 
 // ── Error boundary so a ChatBot crash never kills the whole scene ──
 class ChatBotErrorBoundary extends Component {
-  state = { failed: false }
-  static getDerivedStateFromError() { return { failed: true } }
+  state = { failed: false, errorMsg: '' }
+  static getDerivedStateFromError(err) { return { failed: true, errorMsg: err?.message ?? String(err) } }
+  componentDidCatch(err, info) {
+    console.error('[ChatBotErrorBoundary] caught:', err, info)
+  }
   render() {
-    if (this.state.failed) return null  // silently hide; don't crash the scene
+    if (this.state.failed) {
+      // Show a minimal fallback bubble so the error is visible in the UI
+      return (
+        <div style={{
+          position: 'fixed', bottom: 28, right: 28, zIndex: 200,
+          background: '#ff4444', color: '#fff', borderRadius: 8,
+          padding: '8px 12px', fontSize: 11, fontFamily: 'monospace',
+          maxWidth: 220, wordBreak: 'break-word',
+        }}>
+          ChatBot error: {this.state.errorMsg}
+        </div>
+      )
+    }
     return this.props.children
   }
 }
