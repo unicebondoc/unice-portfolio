@@ -219,18 +219,3 @@ canvas {
   }
 }
 
-/* ChatBot + Tyche: visible on all screen sizes (desktop and mobile) */
-.chatBotLayer,
-[data-chatbot-layer] {
-  visibility: visible !important;
-  display: block !important;
-}
-
-@media (min-width: 769px) {
-  .chatBotLayer,
-  [data-chatbot-layer] {
-    visibility: visible !important;
-    display: block !important;
-    z-index: 9999;
-  }
-}

@@ -29,11 +29,11 @@ import hudStyles from './components/ui/HUD.module.css'
 import LoadingScreen from './components/ui/LoadingScreen'
 import SoundToggle from './components/ui/SoundToggle'
 import CustomCursor from './components/ui/CustomCursor'
-import SimpleChat from './components/ui/SimpleChat'
+import ChatBot from './components/ui/ChatBot'
 
 const LERP = 0.08
 
-// ── Parallax: mouse-normalized -1..1, lerped; desktop only; drives background / orbs / Tyche ──
+// ── Parallax: mouse-normalized -1..1, lerped; desktop only; drives background / orbs ──
 function ParallaxDriver() {
   const isMobile = useStore((s) => s.isMobile)
   const setParallaxMouse = useStore((s) => s.setParallaxMouse)
@@ -923,7 +923,7 @@ export default function App() {
           <SacredArtifacts />
         </div>
 
-        <SimpleChat />
+        <ChatBot />
 
       {/* ── Bottom bar: socials only, fades when memory panel open ── */}
       <div
