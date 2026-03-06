@@ -225,16 +225,10 @@ function ParticleCloud({ count, palette, spread, uSize, baseOpacity, hoveredPos,
       burstCenterRef.current = null
     }
 
-    // Whole-cloud subtle drift toward hovered orb
-    if (hpos) {
-      bias.current.x = THREE.MathUtils.lerp(bias.current.x, hpos[0] * 0.04, 0.010)
-      bias.current.y = THREE.MathUtils.lerp(bias.current.y, hpos[1] * 0.024, 0.010)
-      bias.current.z = THREE.MathUtils.lerp(bias.current.z, hpos[2] * 0.020, 0.010)
-    } else {
-      bias.current.x = THREE.MathUtils.lerp(bias.current.x, 0, 0.010)
-      bias.current.y = THREE.MathUtils.lerp(bias.current.y, 0, 0.010)
-      bias.current.z = THREE.MathUtils.lerp(bias.current.z, 0, 0.010)
-    }
+    // No hover-driven drift: keep scene stable; only the hovered orb responds (Part 2/4).
+    bias.current.x = 0
+    bias.current.y = 0
+    bias.current.z = 0
 
     const halfY = spread.y / 2
     const wrapY = spread.y
@@ -251,27 +245,10 @@ function ParticleCloud({ count, palette, spread, uSize, baseOpacity, hoveredPos,
       // Per-particle horizontal drift (reduces uniformity)
       const horizDrift = Math.sin(t * dSpeed + dPhase) * dAmp
 
-      // Per-particle proximity pull
-      if (hpos) {
-        const dx = hpos[0] - originX[i]
-        const dy = hpos[1] - originY[i]
-        const dz = hpos[2] - pos[i * 3 + 2]
-        const dSq = dx * dx + dy * dy + dz * dz
-        if (dSq < ATTR_R_SQ) {
-          const pull = (1 - dSq / ATTR_R_SQ) * ATTR_STR
-          att[i * 3]     = THREE.MathUtils.lerp(att[i * 3],     dx * pull, ATTR_LERP)
-          att[i * 3 + 1] = THREE.MathUtils.lerp(att[i * 3 + 1], dy * pull, ATTR_LERP)
-          att[i * 3 + 2] = THREE.MathUtils.lerp(att[i * 3 + 2], dz * pull, ATTR_LERP)
-        } else {
-          att[i * 3]     = THREE.MathUtils.lerp(att[i * 3],     0, ATTR_LERP)
-          att[i * 3 + 1] = THREE.MathUtils.lerp(att[i * 3 + 1], 0, ATTR_LERP)
-          att[i * 3 + 2] = THREE.MathUtils.lerp(att[i * 3 + 2], 0, ATTR_LERP)
-        }
-      } else {
-        att[i * 3]     = THREE.MathUtils.lerp(att[i * 3],     0, ATTR_LERP)
-        att[i * 3 + 1] = THREE.MathUtils.lerp(att[i * 3 + 1], 0, ATTR_LERP)
-        att[i * 3 + 2] = THREE.MathUtils.lerp(att[i * 3 + 2], 0, ATTR_LERP)
-      }
+      // No per-particle pull toward hovered orb — one-orb-one-response; scene stays quiet (Part 2/4).
+      att[i * 3]     = THREE.MathUtils.lerp(att[i * 3],     0, ATTR_LERP)
+      att[i * 3 + 1] = THREE.MathUtils.lerp(att[i * 3 + 1], 0, ATTR_LERP)
+      att[i * 3 + 2] = THREE.MathUtils.lerp(att[i * 3 + 2], 0, ATTR_LERP)
 
       posA.array[i * 3]     = originX[i] + bias.current.x + Math.sin(t * s * 0.55 + p) * sw
                              + Math.sin(t * 0.22 + p * 0.5) * sw * 0.5 + horizDrift + att[i * 3]

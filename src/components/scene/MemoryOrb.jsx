@@ -144,18 +144,18 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
   const isActive   = isHovered || isSelected
   const isPulsing  = id in pulsingOrbs
 
-  const isHoverDimmed  = !!hoveredOrb && hoveredOrb !== id && !isActive
+  const isHoverDimmed  = !!hoveredOrb && hoveredOrb !== id && !isActive && isInteractive
   const isFocusDimmed  = activePanel?.type === 'memory' && activePanel.id !== id
   const isDimmed       = isHoverDimmed || isFocusDimmed
 
-  // Nearby hovered orb (within 1.5 units) — dim slightly for "spotlight" effect (FIX 2e)
+  // Nearby hovered orb (interactive orbs only): dim slightly for spotlight (Part 5: ambient stays stable).
   const hoveredMem = hoveredOrb && memories.length ? memories.find((m) => m.id === hoveredOrb) : null
-  const isNearHovered = !!hoveredMem && hoveredMem.id !== id && (() => {
+  const isNearHovered = isInteractive && !!hoveredMem && hoveredMem.id !== id && (() => {
     const [x, y, z] = position
     const [ox, oy, oz] = hoveredMem.position
     return Math.hypot(x - ox, y - oy, z - oz) < 1.5
   })()
-  const nearHoveredDim = isNearHovered ? 0.7 : 1
+  const nearHoveredDim = !isInteractive ? 1 : (isNearHovered ? 0.7 : 1)
 
   // Constellation base position (never moves)
   const basePosition = useMemo(() => new THREE.Vector3(position[0], position[1], position[2]), [position[0], position[1], position[2]])
@@ -496,22 +496,9 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
     // Gentle floating sway: base position + tiny sine/cosine offset (barely perceptible, dreamlike).
     const swayX = Math.sin(t * 0.3 + index * 1.5) * 0.03
     const swayY = Math.cos(t * 0.4 + index * 0.8) * 0.02
-    // When another orb is hovered, drift slightly away from it (gravity field)
-    let driftX = 0, driftY = 0
-    if (hoveredMem && hoveredMem.id !== id && groupRef.current) {
-      const [hx, hy, hz] = hoveredMem.position
-      const dx = basePosition.x - hx
-      const dy = basePosition.y - hy
-      const dist = Math.hypot(dx, dy) || 0.001
-      const maxDist = 2.2
-      if (dist < maxDist) {
-        const strength = 0.07 * (1 - dist / maxDist)
-        driftX = (dx / dist) * strength
-        driftY = (dy / dist) * strength
-      }
-    }
-    groupRef.current.position.x = basePosition.x + swayX + driftX
-    groupRef.current.position.y = basePosition.y + swayY + driftY
+    // No drift of other orbs toward/away from hovered orb — one-orb-one-response; rest stay stable.
+    groupRef.current.position.x = basePosition.x + swayX
+    groupRef.current.position.y = basePosition.y + swayY
     groupRef.current.position.z = basePosition.z
 
     // Report screen position when this orb is hovered (for glow overlay)
@@ -1030,7 +1017,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       }
     }
 
-    // Ripple ring: 1 cycle only, low opacity — subtle ring, not a second orb (Part 3)
+    // Ripple ring: very subtle on hover — thin accent only, not a second orb (Part 3)
     if (rippleRingRef.current && rippleRingMatRef.current) {
       if (isHovered) {
         if (rippleCycleCountRef.current >= 1) {
@@ -1044,8 +1031,8 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
             rippleCycleCountRef.current += 1
           }
           const ease = 1 - Math.pow(1 - rippleProgressRef.current, 2)
-          rippleRingRef.current.scale.setScalar(1 + ease * 1.4)
-          rippleRingMatRef.current.opacity = 0.35 * (1 - ease)
+          rippleRingRef.current.scale.setScalar(1 + ease * 0.2)
+          rippleRingMatRef.current.opacity = 0.12 * (1 - ease)
         }
       } else {
         rippleCycleCountRef.current = 0

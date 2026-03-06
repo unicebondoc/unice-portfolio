@@ -291,7 +291,9 @@ export default function OrbPanel({
                       muted
                       playsInline
                       preload="auto"
-                      onCanPlay={(e) => e.currentTarget.play?.().catch?.(() => {})}
+                      disablePictureInPicture
+                      onCanPlay={(e) => e.currentTarget.play?.().catch(() => {})}
+                      onLoadedData={(e) => e.currentTarget.play?.().catch(() => {})}
                     />
                   </div>
                 )}

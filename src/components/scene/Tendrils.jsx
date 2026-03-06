@@ -91,21 +91,23 @@ function Tendril({ memory, index, position }) {
     const isHov = hoveredOrb === memory.id
     const isSel = selectedOrb === memory.id
     const visualTier = memory.visualTier || 'primary'
+    const isAmbient = memory.orbType === 'ambient'
     const tierMult = visualTier === 'hero' ? 1.1 : visualTier === 'secondary' ? 0.6 : 1
-    const opacity = (isSel ? 0.22 : isHov ? 0.25 : TUBE_OPACITY) * tierMult
+    // Only hovered orb's line may brighten; ambient tendrils stay at base (Part 4/5).
+    const opacity = (isSel ? 0.22 : (isHov && !isAmbient) ? 0.18 : TUBE_OPACITY) * tierMult
     if (tubeMesh.material.opacity !== opacity) {
       tubeMesh.material.opacity = THREE.MathUtils.lerp(tubeMesh.material.opacity, opacity, 0.12)
     }
 
-    // When this orb is hovered: faster energy flow (pulse of light along tendril)
-    const loopSec = isHov ? ENERGY_DOT_LOOP_SEC * 0.5 : ENERGY_DOT_LOOP_SEC
+    // Energy dot: same speed whether hovered or not — no extra line activity.
+    const loopSec = ENERGY_DOT_LOOP_SEC
     const energyPhase = (elapsed + index * ENERGY_DOT_OFFSET_PER_ORB) % loopSec
     const along = energyPhase / loopSec
     if (energyDotRef.current && curve) {
       const pos = curve.getPointAt(along)
       energyDotRef.current.position.copy(pos)
       energyDotRef.current.visible = true
-      energyDotRef.current.material.opacity = (isHov ? 0.95 : ENERGY_DOT_OPACITY) * tierMult
+      energyDotRef.current.material.opacity = ((isHov && !isAmbient) ? 0.5 : ENERGY_DOT_OPACITY) * tierMult
     }
   })
 

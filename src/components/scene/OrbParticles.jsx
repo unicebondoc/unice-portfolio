@@ -62,10 +62,11 @@ export default function OrbParticles({ position, color, isHovered = false, isSel
     if (!pointsRef.current?.geometry?.attributes?.position) return
     const t = clock.elapsedTime
     const posArray = pointsRef.current.geometry.attributes.position.array
-    const speedMult = (isHovered || isSelected) ? 1.4 : 1
-    const baseRadius = (isHovered || isSelected) ? 0.40 : 0.35
+    // Minimal hover response: slight speed only; no opacity boost (Part 2 — no extra orb-like dots).
+    const speedMult = (isHovered || isSelected) ? 1.1 : 1
+    const baseRadius = 0.35
     const baseOpacity = dim ? 0.18 : 0.5
-    const opacityTgt = baseOpacity * ((isHovered || isSelected) ? 1.08 : 1)
+    const opacityTgt = baseOpacity
     opacityRef.current = THREE.MathUtils.lerp(opacityRef.current, opacityTgt, Math.min(1, delta * 5))
     if (pointsRef.current.material?.uniforms?.uOpacity) {
       pointsRef.current.material.uniforms.uOpacity.value = opacityRef.current

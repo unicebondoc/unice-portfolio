@@ -1025,31 +1025,8 @@ export default function App() {
         }}
       />
 
-      {/* ── Hovered orb glow on forest: subtle spot only; no extra orb-like disc (Part 3) ───────────────────────────── */}
-      {hoveredOrb && hoveredOrbScreenPos && (() => {
-        const mem = MEMORIES.find((m) => m.id === hoveredOrb)
-        if (!mem?.color) return null
-        const hex = mem.color
-        const r = parseInt(hex.slice(1, 3), 16)
-        const g = parseInt(hex.slice(3, 5), 16)
-        const b = parseInt(hex.slice(5, 7), 16)
-        return (
-          <div
-            aria-hidden
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100vw',
-              height: '100vh',
-              zIndex: 0,
-              pointerEvents: 'none',
-              background: `radial-gradient(circle 100px at ${hoveredOrbScreenPos[0]}px ${hoveredOrbScreenPos[1]}px, rgba(${r},${g},${b},0.10) 0%, transparent 55%)`,
-              transition: 'opacity 0.2s ease',
-            }}
-          />
-        )
-      })()}
+      {/* ── No hover glow overlay: one-orb-one-response; no extra disc (Part 2) ───────────────────────────── */}
+      {/* Hover glow removed so hovered orb is the only focal response. */}
 
         {/* ── 3D Canvas — above background, fixed so it doesn’t drift on resize ── */}
         <div
