@@ -929,13 +929,13 @@ export default function App() {
 
       {/* Right side intentionally empty (no fixed elements) */}
 
-        {/* ── Left-bottom menu (artifacts) — desktop only; mobile uses FAB ── */}
+        {/* ── Left menu (artifacts) — just below title / mid-way to footer; desktop only ── */}
         <div
           data-entrance="artifacts"
           style={{
             position: 'fixed',
             left: '2.5vw',
-            bottom: '12vh',
+            top: '22vh',
             zIndex: 20,
             display: isMobile ? 'none' : 'flex',
             flexDirection: 'column',
