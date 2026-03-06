@@ -154,8 +154,13 @@ export default function ChatBot() {
             ))}
           </div>
 
-          {/* Input row (visual only in Phase 1) */}
-          <div
+          {/* Input row */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault()
+              console.log('[ChatBot] submit')
+              send()
+            }}
             style={{
               flex: '0 0 auto',
               padding: 12,
@@ -187,18 +192,11 @@ export default function ChatBot() {
               onMouseDown={() => console.log('[ChatBot] input mouse down')}
               onPointerDown={() => console.log('[ChatBot] input pointer down')}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault()
-                  send()
-                }
+                if (e.key === 'Enter') console.log('[ChatBot] enter keydown')
               }}
             />
             <button
-              type="button"
-              onClick={() => {
-                console.log('[ChatBot] send clicked')
-                send()
-              }}
+              type="submit"
               disabled={!input.trim()}
               style={{
                 pointerEvents: 'auto',
@@ -219,7 +217,7 @@ export default function ChatBot() {
             >
               Send
             </button>
-          </div>
+          </form>
         </div>
       )}
 
