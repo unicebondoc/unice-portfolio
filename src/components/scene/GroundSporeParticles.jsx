@@ -1,18 +1,15 @@
 /**
  * GroundSporeParticles — Zone B: spores rising from forest floor.
- * 60 particles, y(-2.5 to -1.5), purple-magenta, very slow upward drift, reset when y > -1.5.
+ * Mostly purple (70%) with some amber (30%). AdditiveBlending for glow.
  */
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
 const COUNT = 60
-const PALETTE = [
-  new THREE.Color('#9060ff'),
-  new THREE.Color('#cc40aa'),
-  new THREE.Color('#a050cc'),
-  new THREE.Color('#b050bb'),
-]
+const PURPLE = new THREE.Color('#c084fc')
+const AMBER = new THREE.Color('#f0b840')
+const PALETTE = [PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, AMBER, AMBER, AMBER]
 
 const VERT = /* glsl */`
 attribute vec3 aColor;
@@ -102,7 +99,7 @@ export default function GroundSporeParticles() {
         uniforms={uniforms}
         transparent
         depthWrite={false}
-        blending={THREE.NormalBlending}
+        blending={THREE.AdditiveBlending}
       />
     </points>
   )

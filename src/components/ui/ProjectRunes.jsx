@@ -1,30 +1,58 @@
 /**
  * ProjectRunes — floating rune stones on the right: Unice's projects as ancient glowing tablets.
- * Fixed right edge, vertically centered; hidden when memory panel is open or on mobile.
+ * Parallax with cursor; faint vine connecting to tree/heart.
  */
 
 import { useState } from 'react'
+import useStore from '../../hooks/useStore'
 import styles from './ProjectRunes.module.css'
 
 const PROJECTS = [
-  { id: 'core-memories', name: 'Core Memories', desc: 'Interactive 3D portfolio', tech: 'React · Three.js · AI' },
-  { id: 'project-2', name: 'Project Two', desc: 'Coming soon', tech: '—' },
-  { id: 'project-3', name: 'Project Three', desc: 'Coming soon', tech: '—' },
+  {
+    id: 'gesture-tarot',
+    name: 'Gesture Tarot',
+    desc: 'Hand-tracking AI that draws and reads tarot cards via webcam',
+    tech: 'MediaPipe · TensorFlow.js · React',
+    status: 'in progress',
+  },
+  {
+    id: 'clawbot',
+    name: 'ClawBot',
+    desc: 'AI desktop agent that automates tasks from natural language commands',
+    tech: 'Python · LLM · Desktop Automation',
+    status: 'in progress',
+  },
+  {
+    id: 'ar-vision',
+    name: 'AR Vision',
+    desc: 'Real-time AI object recognition through Rayneo X2 AR glasses',
+    tech: 'Rayneo X2 · Computer Vision · AI',
+    status: 'in progress',
+  },
 ]
+
+const PARALLAX_PX = 5
 
 export default function ProjectRunes() {
   const [hoveredId, setHoveredId] = useState(null)
+  const parallaxMouse = useStore((s) => s.parallaxMouse)
 
   const handleClick = (e, id) => {
     e.preventDefault()
     if (import.meta.env?.DEV) console.log('[ProjectRunes] click', id)
   }
 
+  const parallaxStyle = {
+    transform: `translateY(-50%) translate(${parallaxMouse.x * PARALLAX_PX}px, ${parallaxMouse.y * PARALLAX_PX}px)`,
+  }
+
   return (
     <div
       className={styles.wrapper}
+      style={parallaxStyle}
       aria-label="Projects"
     >
+      <div className={styles.vine} aria-hidden />
       <div className={styles.stack}>
         {PROJECTS.map((project, i) => (
           <div
@@ -46,6 +74,10 @@ export default function ProjectRunes() {
           >
             <span className={styles.cornerDot} aria-hidden />
             <span className={styles.cornerDot} aria-hidden />
+            <div className={styles.statusBadge} data-status={project.status || 'in progress'} aria-hidden>
+              <span className={styles.statusDot} />
+              <span className={styles.statusText}>building</span>
+            </div>
             <div className={styles.runeContent}>
               <span className={styles.runeName}>{project.name}</span>
               {hoveredId === project.id && (

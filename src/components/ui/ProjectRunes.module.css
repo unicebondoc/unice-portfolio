@@ -2,20 +2,38 @@
 
 .wrapper {
   position: fixed;
-  right: 2.5vw;
+  right: 3vw;
   top: 50%;
-  transform: translateY(-50%);
   z-index: 20;
   pointer-events: auto;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  transition: transform 0.12s ease-out;
+}
+
+.vine {
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28vw;
+  max-width: 420px;
+  height: 1px;
+  margin-right: 8px;
+  background: linear-gradient(
+    to left,
+    rgba(220, 215, 200, 0.08) 0%,
+    rgba(220, 215, 200, 0.03) 40%,
+    transparent 100%
+  );
+  pointer-events: none;
 }
 
 .stack {
   display: flex;
   flex-direction: column;
-  gap: 90px;
+  gap: 70px;
   align-items: flex-end;
 }
 
@@ -50,6 +68,42 @@
 .runeHover .cornerDot {
   background: rgba(0, 229, 255, 0.7);
   box-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
+}
+
+/* Status: pulsing dot + "building" (in progress = amber, live = cyan) */
+.statusBadge {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  pointer-events: none;
+}
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f0b840;
+  animation: statusPulse 2s ease-in-out infinite;
+}
+.statusBadge[data-status='live'] .statusDot {
+  background: #22d3ee;
+}
+.statusText {
+  font-family: 'Raleway', sans-serif;
+  font-size: 7px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(240, 184, 64, 0.5);
+}
+.statusBadge[data-status='live'] .statusText {
+  color: rgba(34, 211, 238, 0.5);
+}
+
+@keyframes statusPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
 }
 
 @keyframes runeBob {

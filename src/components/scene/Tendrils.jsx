@@ -46,10 +46,7 @@ function Tendril({ memory, index, position }) {
     const orbBasePos = new THREE.Vector3(x, y, z + Z_OFFSET)
 
     const start = TRUNK_ROOT.clone()
-    start.x += sr(s, 1) * 0.1
-    start.y += sr(s, 2) * 0.1
-    start.z += sr(s, 3) * 0.1
-
+    // No random offset — all tendrils converge at the Heart of the Tree
     const chord = new THREE.Vector3().subVectors(orbBasePos, start)
     const len = chord.length()
     const tangent = chord.clone().normalize()
@@ -115,7 +112,7 @@ function Tendril({ memory, index, position }) {
     const visualTier = memory.visualTier || 'primary'
     const isAmbient = memory.orbType === 'ambient'
     const tierMult = visualTier === 'hero' ? 1.1 : visualTier === 'secondary' ? 0.6 : 1
-    const opacity = (isSel ? 0.35 : (isHov && !isAmbient) ? 0.3 : TUBE_OPACITY) * tierMult
+    const opacity = (isSel ? 0.35 : (isHov && !isAmbient) ? 0.42 : TUBE_OPACITY) * tierMult
     if (tubeMesh?.material?.opacity !== opacity) {
       tubeMesh.material.opacity = THREE.MathUtils.lerp(tubeMesh.material.opacity, opacity, 0.12)
     }

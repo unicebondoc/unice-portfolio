@@ -1,18 +1,16 @@
 /**
  * CanopyParticles — Zone C: glowing pollen falling from tree canopy.
- * 70 particles, y(2.5 to 5.5), cyan-teal, gentle fall + sway, reset when y < 2.5.
+ * Mostly cyan (70%), some purple and amber. AdditiveBlending for glow.
  */
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
 const COUNT = 70
-const PALETTE = [
-  new THREE.Color('#00ddff'),
-  new THREE.Color('#40ffcc'),
-  new THREE.Color('#20eedd'),
-  new THREE.Color('#30ffdd'),
-]
+const CYAN = new THREE.Color('#22d3ee')
+const PURPLE = new THREE.Color('#c084fc')
+const AMBER = new THREE.Color('#f0b840')
+const PALETTE = [CYAN, CYAN, CYAN, CYAN, CYAN, CYAN, CYAN, PURPLE, PURPLE, AMBER]
 
 const VERT = /* glsl */`
 attribute vec3 aColor;
@@ -106,7 +104,7 @@ export default function CanopyParticles() {
         uniforms={uniforms}
         transparent
         depthWrite={false}
-        blending={THREE.NormalBlending}
+        blending={THREE.AdditiveBlending}
       />
     </points>
   )

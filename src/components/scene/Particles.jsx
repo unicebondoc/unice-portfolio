@@ -18,68 +18,36 @@ const FAR_SIDE_COUNT = 85
 const CANOPY_SPARSE_COUNT = 35
 const CANOPY_EDGE_COUNT = 22
 
-/* Background-like: soft purple and cyan glow */
-const BLOSSOM_PALETTE = [
-  new THREE.Color('#6060b0'),
-  new THREE.Color('#8060cc'),
-  new THREE.Color('#5080c8'),
-  new THREE.Color('#22a0aa'),
-  new THREE.Color('#a070e0'),
-  new THREE.Color('#7090d0'),
+/* Forest bioluminescent palette: 60% purple/violet, 30% cyan, 10% amber — soft glow */
+const PURPLE = new THREE.Color('#c084fc')  // rgba(192, 132, 252, 0.6)
+const CYAN   = new THREE.Color('#22d3ee')  // rgba(34, 211, 238, 0.5)
+const AMBER  = new THREE.Color('#f0b840')  // rgba(240, 184, 64, 0.3)
+const BIOLUMINESCENT_PALETTE = [
+  PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, // 60%
+  CYAN, CYAN, CYAN,                               // 30%
+  AMBER,                                          // 10%
 ]
 
-/* Soft purple + cyan, background glow */
-const SPORE_PALETTE = [
-  new THREE.Color('#6050a8'),
-  new THREE.Color('#5080c0'),
-  new THREE.Color('#22a4aa'),
-  new THREE.Color('#8068c8'),
-  new THREE.Color('#7088cc'),
-]
+/* Background-like: bioluminescent mix (was soft purple/cyan) */
+const BLOSSOM_PALETTE = BIOLUMINESCENT_PALETTE
 
-// Ring: purple/cyan ambient
-const RING_PALETTE = [
-  new THREE.Color('#6050a8'),
-  new THREE.Color('#5080c0'),
-  new THREE.Color('#22a0aa'),
-  new THREE.Color('#8068c8'),
-  new THREE.Color('#7090d0'),
-]
+/* Soft purple + cyan + amber glow */
+const SPORE_PALETTE = BIOLUMINESCENT_PALETTE
 
-/* Ground mist: deep purple-blue, background */
-const MIST_PALETTE = [
-  new THREE.Color('#4040a0'),
-  new THREE.Color('#5050b8'),
-  new THREE.Color('#3060aa'),
-]
+// Ring: bioluminescent ambient
+const RING_PALETTE = BIOLUMINESCENT_PALETTE
 
-/* Water–tree: purple + cyan glow */
-const WATER_TREE_PALETTE = [
-  new THREE.Color('#4050b0'),
-  new THREE.Color('#3080c0'),
-  new THREE.Color('#22aacc'),
-  new THREE.Color('#6060cc'),
-  new THREE.Color('#5090b8'),
-]
+/* Ground mist: bioluminescent purple/cyan/amber */
+const MIST_PALETTE = BIOLUMINESCENT_PALETTE
 
-/* Sides: purple glow + cyan glow like background */
-const SIDE_SPRITE_PALETTE = [
-  new THREE.Color('#5060b8'),
-  new THREE.Color('#22b4cc'),
-  new THREE.Color('#7060c8'),
-  new THREE.Color('#5090c0'),
-  new THREE.Color('#4080b0'),
-]
+/* Water–tree: bioluminescent glow */
+const WATER_TREE_PALETTE = BIOLUMINESCENT_PALETTE
 
-/* Canopy + high drift: sparse, pink/magenta + cyan/blue mix (whole forest alive) */
-const CANOPY_PALETTE = [
-  new THREE.Color('#f472b6'),
-  new THREE.Color('#22d3ee'),
-  new THREE.Color('#a78bfa'),
-  new THREE.Color('#22a0aa'),
-  new THREE.Color('#e879f9'),
-  new THREE.Color('#2dd4bf'),
-]
+/* Sides: bioluminescent like rest of forest */
+const SIDE_SPRITE_PALETTE = BIOLUMINESCENT_PALETTE
+
+/* Canopy + high drift: bioluminescent (purple/cyan/amber) */
+const CANOPY_PALETTE = BIOLUMINESCENT_PALETTE
 
 // ── GLSL — vertex ──────────────────────────────────────────────────
 const VERT = /* glsl */`
@@ -353,7 +321,7 @@ function ParticleCloud({ count, palette, spread, uSize, baseOpacity, hoveredPos,
         uniforms={uniforms}
         transparent
         depthWrite={false}
-        blending={THREE.NormalBlending}
+        blending={THREE.AdditiveBlending}
       />
     </points>
   )
@@ -407,7 +375,7 @@ function RingCloud({ count, palette, radiusMin, radiusMax, yMin, yMax, zOffset, 
         uniforms={uniforms}
         transparent
         depthWrite={false}
-        blending={THREE.NormalBlending}
+        blending={THREE.AdditiveBlending}
       />
     </points>
   )

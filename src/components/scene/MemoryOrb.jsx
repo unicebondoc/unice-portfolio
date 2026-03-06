@@ -26,6 +26,10 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
   const orbCore = memory.orbCore || memory.orbInnerLight || color
   const { camera, size } = useThree()
 
+  if (import.meta.env?.DEV) {
+    console.log('Orb:', id, 'glow:', orbGlow, 'inner:', orbInnerLight)
+  }
+
   const isCore  = tier === 'core' || tier === 'root'
   const isRoot  = tier === 'root' || memory.isRoot
   const orbType = memory.orbType || (memory.isPrimary === false ? 'secondary' : 'primary') // 'primary' | 'secondary' | 'ambient'
@@ -1430,7 +1434,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
               blending={THREE.AdditiveBlending}
             />
           </mesh>
-          {/* LAYER 2 — BODY: colored glass shell (clearly distinguishable per palette) */}
+          {/* LAYER 2 — BODY: colored shell (MeshStandardMaterial so palette is clearly visible) */}
           <mesh
             ref={orbMeshRef}
             renderOrder={1}
@@ -1440,14 +1444,15 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
             onPointerOut={handlePointerOut}
           >
             <sphereGeometry args={[RADIUS, 64, 64]} />
-            <meshPhysicalMaterial
+            <meshStandardMaterial
               ref={orbShellMatRef}
               color={orbColor}
-              transmission={0.5}
-              roughness={0.15}
-              metalness={0.05}
+              emissive={orbColor}
+              emissiveIntensity={0.3}
               transparent
-              opacity={0.5}
+              opacity={0.4}
+              roughness={0.3}
+              metalness={0.1}
               depthWrite={false}
             />
           </mesh>

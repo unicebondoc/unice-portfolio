@@ -10,6 +10,7 @@ import { gsap } from 'gsap'
 import MemoryOrb from './components/scene/MemoryOrb'
 import Particles from './components/scene/Particles'
 import Tendrils from './components/scene/Tendrils'
+import HeartOfTree from './components/scene/HeartOfTree'
 import AwakeningBurst from './components/scene/AwakeningBurst'
 import Fireflies from './components/scene/Fireflies'
 import DustMotes from './components/scene/DustMotes'
@@ -1081,6 +1082,9 @@ export default function App() {
         <FloatingSkills />
 
         <ResponsiveConstellation>
+          <group position={[0, 0, -3.5]}>
+            <HeartOfTree />
+          </group>
           <Tendrils memories={visibleMemories} />
           <AwakeningBurst />
           <SpiralGroup

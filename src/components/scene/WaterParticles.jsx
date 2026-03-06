@@ -1,18 +1,16 @@
 /**
  * WaterParticles — Zone A: mist on water below y -2.5.
- * 80 particles, x(-6 to 6), y(-4 to -2), z(-1 to 2), blue-purple, slow horizontal drift.
+ * Bioluminescent palette (purple/cyan/amber) for consistent forest atmosphere.
  */
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
 const COUNT = 80
-const PALETTE = [
-  new THREE.Color('#4080ff'),
-  new THREE.Color('#6040cc'),
-  new THREE.Color('#5060dd'),
-  new THREE.Color('#4850cc'),
-]
+const PURPLE = new THREE.Color('#c084fc')
+const CYAN = new THREE.Color('#22d3ee')
+const AMBER = new THREE.Color('#f0b840')
+const PALETTE = [PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, CYAN, CYAN, CYAN, AMBER]
 
 const VERT = /* glsl */`
 attribute vec3 aColor;
@@ -99,7 +97,7 @@ export default function WaterParticles() {
         uniforms={uniforms}
         transparent
         depthWrite={false}
-        blending={THREE.NormalBlending}
+        blending={THREE.AdditiveBlending}
       />
     </points>
   )
