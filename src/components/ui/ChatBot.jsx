@@ -24,6 +24,16 @@ export default function ChatBot() {
   const listRef = useRef(null)
   const inputRef = useRef(null)
   const revealEndRef = useRef(false)
+  const setChatPulse = useStore((s) => s.setChatPulse)
+  const prevMsgCountRef = useRef(0)
+
+  useEffect(() => {
+    if (messages.length > prevMsgCountRef.current) {
+      const last = messages[messages.length - 1]
+      if (last?.role === 'assistant') setChatPulse()
+    }
+    prevMsgCountRef.current = messages.length
+  }, [messages, setChatPulse])
 
   useEffect(() => {
     if (!open) return

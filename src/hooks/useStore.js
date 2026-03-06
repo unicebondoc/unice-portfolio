@@ -144,6 +144,10 @@ const useStore = create((set) => ({
   // Section for constellation dots / scroll (0 = main, 1 = skills, 2 = resume, 3 = writings)
   activeSection: 0,
   setActiveSection: (v) => set({ activeSection: v }),
+
+  // Heart of Tree: pulse when chatbot receives a message (timestamp for one-shot animation)
+  lastChatPulseAt: 0,
+  setChatPulse: () => set({ lastChatPulseAt: typeof performance !== 'undefined' ? performance.now() : Date.now() }),
 }))
 
 export default useStore

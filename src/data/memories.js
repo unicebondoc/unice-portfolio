@@ -345,6 +345,9 @@ MEMORIES.forEach((m) => {
     m.orbInnerLight = ORB_PALETTES.softCyan.innerLight
     m.orbCore = ORB_PALETTES.softCyan.core
   }
+  if (import.meta.env?.DEV) {
+    console.log('MEMORY PALETTE:', m.id, 'orbGlow:', m.orbGlow, 'orbInnerLight:', m.orbInnerLight, 'orbFill:', m.orbFill)
+  }
 })
 
 export const MOBILE_POSITIONS = mobilePositionsForMemories(MEMORIES)

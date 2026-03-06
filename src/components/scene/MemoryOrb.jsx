@@ -27,7 +27,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
   const { camera, size } = useThree()
 
   if (import.meta.env?.DEV) {
-    console.log('Orb:', id, 'glow:', orbGlow, 'inner:', orbInnerLight)
+    console.log('ORB RENDER:', memory.id, memory.orbGlow, memory.orbInnerLight)
   }
 
   const isCore  = tier === 'core' || tier === 'root'
@@ -972,7 +972,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         Math.min(1, hoverLerpSpeed * 4)
       )
       orbPointLightRef.current.distance = 3
-      orbPointLightRef.current.color.copy(orbColor)
+      orbPointLightRef.current.color.set(memory.orbGlow || '#67e8f9')
     }
     if (isVideoOrb) {
       const shellEmTgt = isHovered ? 0.12 * 3 : 0.12
@@ -984,21 +984,19 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         )
       }
     } else {
-      // Non-video: bright core (orbInnerLight at full saturation), colored shell, visible aura
-      const coreOpTgt = isHovered ? 1 : 0.95
-      const auraOpTgt = isHovered ? 0.25 : 0.18
-      const auraScaleTgt = isHovered ? 1.5 : 1.35
+      // Non-video: core and aura opacity targets (emissive body is driven by JSX)
+      const coreOpTgt = isHovered ? 1 : 0.85
+      const auraOpTgt = isHovered ? 0.2 : 0.1
       if (orbInnerHazeMatRef.current) {
         orbInnerHazeMatRef.current.opacity = THREE.MathUtils.lerp(
           orbInnerHazeMatRef.current.opacity,
           coreOpTgt * dimMult,
           Math.min(1, hoverLerpSpeed * 4)
         )
-        // Core brightens to full white on hover (brightest element)
         if (isHovered) {
           orbInnerHazeMatRef.current.color.setHex(0xffffff)
         } else {
-          orbInnerHazeMatRef.current.color.copy(coreBrightColor)
+          orbInnerHazeMatRef.current.color.set(memory.orbInnerLight || '#ffffff')
         }
       }
       if (orbAuraMatRef.current) {
@@ -1008,14 +1006,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
           Math.min(1, hoverLerpSpeed * 4)
         )
       }
-      if (orbAuraRef.current) {
-        const s = THREE.MathUtils.lerp(
-          orbAuraRef.current.scale.x,
-          auraScaleTgt,
-          Math.min(1, hoverLerpSpeed * 4)
-        )
-        orbAuraRef.current.scale.setScalar(s)
-      }
+      // Aura scale fixed at 1.4 (no hover scale)
     }
 
     // Idle orb pulse (world breathing): one random orb pulses — video shell only (non-video has no emissive)
@@ -1420,21 +1411,21 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
           </mesh>
         </>
       ) : (
-        /* Non-video orb: 4-layer bioluminescent (core + body + aura + point light above) */
+        /* Non-video orb: emissive body + core + aura (nuclear fix — colors from memory.orbGlow / orbInnerLight) */
         <>
-          {/* LAYER 3 — AURA: outer glow (1.35x radius, additive, 0.15–0.2 opacity) */}
-          <mesh ref={orbAuraRef} renderOrder={0}>
-            <sphereGeometry args={[RADIUS * 1.35, 32, 32]} />
+          {/* AURA: outer glow */}
+          <mesh ref={orbAuraRef} renderOrder={0} scale={1.4}>
+            <sphereGeometry args={[RADIUS, 16, 16]} />
             <meshBasicMaterial
               ref={orbAuraMatRef}
-              color={orbColor}
+              color={memory.orbGlow || '#67e8f9'}
               transparent
-              opacity={0.18}
+              opacity={isHovered ? 0.2 : 0.1}
               depthWrite={false}
               blending={THREE.AdditiveBlending}
             />
           </mesh>
-          {/* LAYER 2 — BODY: colored shell (MeshStandardMaterial so palette is clearly visible) */}
+          {/* BODY: emissive shell so orb generates its own color (immune to env/fog) */}
           <mesh
             ref={orbMeshRef}
             renderOrder={1}
@@ -1446,24 +1437,24 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
             <sphereGeometry args={[RADIUS, 64, 64]} />
             <meshStandardMaterial
               ref={orbShellMatRef}
-              color={orbColor}
-              emissive={orbColor}
-              emissiveIntensity={0.3}
+              color={memory.orbGlow || '#67e8f9'}
+              emissive={memory.orbGlow || '#67e8f9'}
+              emissiveIntensity={isHovered ? 0.6 : 0.35}
               transparent
-              opacity={0.4}
-              roughness={0.3}
-              metalness={0.1}
+              opacity={0.5}
+              roughness={0.4}
+              metalness={0}
               depthWrite={false}
             />
           </mesh>
-          {/* LAYER 1 — CORE: brightest element, orbInnerLight at full saturation, additive */}
+          {/* CORE: bright center */}
           <mesh renderOrder={2}>
-            <sphereGeometry args={[RADIUS * 0.35, 32, 32]} />
+            <sphereGeometry args={[RADIUS * 0.3, 16, 16]} />
             <meshBasicMaterial
               ref={orbInnerHazeMatRef}
-              color={coreBrightColor}
+              color={memory.orbInnerLight || '#ffffff'}
               transparent
-              opacity={0.95}
+              opacity={isHovered ? 1.0 : 0.85}
               depthWrite={false}
               blending={THREE.AdditiveBlending}
             />
