@@ -7,9 +7,7 @@ import * as THREE from 'three'
 import { useProgress } from '@react-three/drei'
 import { gsap } from 'gsap'
 import MemoryOrb from './components/scene/MemoryOrb'
-import OrbParticles from './components/scene/OrbParticles'
 import Particles from './components/scene/Particles'
-import Tendrils  from './components/scene/Tendrils'
 import AwakeningBurst from './components/scene/AwakeningBurst'
 import Fireflies from './components/scene/Fireflies'
 import DustMotes from './components/scene/DustMotes'
@@ -525,20 +523,6 @@ function SpiralGroup({ entranceOrderMap, firstOrbId, memories, visibleMemories, 
             entranceOrder={entranceOrderMap ? entranceOrderMap[memory.id] ?? i : i}
             isFirstOrb={memory.id === firstOrbId}
             memories={memories.map((m) => ({ ...m, position: getMemoryPosition(m, isMobile) }))}
-          />
-        )
-      })}
-      {visibleMemories.map((memory) => {
-        const pos = getMemoryPosition(memory, isMobile)
-        if (memory.orbType === 'ambient') return null
-        return (
-          <OrbParticles
-            key={`particles-${memory.id}`}
-            position={pos}
-            color={memory.glowColor || memory.color}
-            isHovered={hoveredOrb === memory.id}
-            isSelected={activePanel?.type === 'memory' && activePanel.id === memory.id}
-            dim={!memory.isPrimary}
           />
         )
       })}
@@ -1094,7 +1078,6 @@ export default function App() {
         <FloatingSkills />
 
         <ResponsiveConstellation>
-          <Tendrils memories={visibleMemories} />
           <AwakeningBurst />
           <SpiralGroup
             entranceOrderMap={entranceOrderMap}
