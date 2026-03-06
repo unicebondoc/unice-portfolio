@@ -48,6 +48,15 @@ const MIST_PALETTE = [
   new THREE.Color('#5544a0'),
 ]
 
+/* Water-to-tree drift: purple + cyan for left orbs (from water at tree) */
+const WATER_TREE_PALETTE = [
+  new THREE.Color('#5060dd'),
+  new THREE.Color('#4080ff'),
+  new THREE.Color('#6040cc'),
+  new THREE.Color('#22aacc'),
+  new THREE.Color('#a070e8'),
+]
+
 // ── GLSL — vertex ──────────────────────────────────────────────────
 const VERT = /* glsl */`
 attribute vec3 aColor;
@@ -443,13 +452,12 @@ export default function Particles() {
     return MEMORIES.find((m) => m.id === hoveredOrb)?.position ?? null
   }, [hoveredOrb])
 
-  const mult = reducedMotion ? 0 : isMobile ? 0.5 : 1
+  const mult = reducedMotion ? 0.35 : isMobile ? 0.5 : 1
   const blossomCount = Math.max(20, Math.floor(BLOSSOM_COUNT * mult))
   const sporeCount = Math.max(10, Math.floor(SPORE_COUNT * mult))
   const ringCount = Math.max(12, Math.floor(RING_COUNT * mult))
   const mistCount = Math.max(15, Math.floor(MIST_COUNT * mult))
-
-  if (reducedMotion) return null
+  const waterTreeCount = Math.max(25, Math.floor(55 * mult))
 
   return (
     <>
@@ -507,6 +515,19 @@ export default function Particles() {
         zMax={1}
         uSize={0.8}
         baseOpacity={0.12}
+      />
+      {/* Water–tree drift: purple/cyan particles floating around orbs on the left from water at tree */}
+      <MistCloud
+        count={waterTreeCount}
+        palette={WATER_TREE_PALETTE}
+        xMin={-5.5}
+        xMax={0.5}
+        yMin={-1.5}
+        yMax={3}
+        zMin={-4.2}
+        zMax={-2}
+        uSize={0.7}
+        baseOpacity={0.13}
       />
     </>
   )
