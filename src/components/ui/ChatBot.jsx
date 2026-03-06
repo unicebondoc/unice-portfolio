@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import { useGemini } from '../../hooks/useGemini'
 import styles from './ChatBot.module.css'
 
@@ -52,7 +53,7 @@ export default function ChatBot() {
 
   const hasNewMessage = !isOpen && messages.length > 1
 
-  return (
+  return createPortal(
     <div className={styles.wrapper}>
       {/* ── Chat panel ──────────────────────────────────────── */}
       {isOpen && (
@@ -114,6 +115,7 @@ export default function ChatBot() {
         <span className={styles.bubbleIcon}>{isOpen ? '✕' : '✦'}</span>
         {hasNewMessage && <span className={styles.unreadDot} />}
       </button>
-    </div>
+    </div>,
+    document.body
   )
 }
