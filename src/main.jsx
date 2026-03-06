@@ -14,21 +14,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 // If this red dot appears on desktop → React/portal is the issue.
 // If it does NOT appear → something is physically covering the viewport.
 setTimeout(() => {
+  // Big red block covering bottom-right quarter of screen
   const probe = document.createElement('div')
   probe.id = 'chatbot-probe'
-  probe.style.cssText = [
-    'position:fixed',
-    'bottom:120px',
-    'right:40px',
-    'width:40px',
-    'height:40px',
-    'background:#ff0044',
-    'border-radius:50%',
-    'z-index:2147483647',
-    'pointer-events:none',
-    'border:3px solid white',
-  ].join(';')
+  probe.innerHTML = '<span style="color:white;font-size:24px;font-weight:bold">PROBE</span>'
+  probe.style.cssText = 'position:fixed;bottom:0;right:0;width:40vw;height:40vh;background:rgba(255,0,68,0.85);z-index:2147483647;display:flex;align-items:center;justify-content:center;pointer-events:none;'
   document.body.appendChild(probe)
-  console.log('[PROBE] red dot appended to body', probe)
-}, 1500)
+  console.error('[PROBE] injected — if you see this in console but not on screen, a browser extension is covering the page')
+}, 800)
 
