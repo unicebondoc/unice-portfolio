@@ -8,6 +8,7 @@ import { useProgress } from '@react-three/drei'
 import { gsap } from 'gsap'
 import MemoryOrb from './components/scene/MemoryOrb'
 import Particles from './components/scene/Particles'
+import Tendrils from './components/scene/Tendrils'
 import AwakeningBurst from './components/scene/AwakeningBurst'
 import Fireflies from './components/scene/Fireflies'
 import DustMotes from './components/scene/DustMotes'
@@ -565,10 +566,9 @@ export default function App() {
   const openPanelTimestamp = useStore((s) => s.openPanelTimestamp)
   const setLoadingExited = useStore((s) => s.setLoadingExited)
   const loadingExited = useStore((s) => s.loadingExited)
-  const showSecondaryOrbs = isMobile || !!hoveredOrb || activePanel?.type === 'memory'
   const visibleMemories = useMemo(
-    () => (showSecondaryOrbs ? MEMORIES : MEMORIES.filter((m) => m.isPrimary !== false)),
-    [showSecondaryOrbs]
+    () => MEMORIES.filter((m) => m.isPrimary !== false).slice(0, 7),
+    []
   )
 
   // Viewport: isMobile (<768px) and prefers-reduced-motion
@@ -1078,6 +1078,7 @@ export default function App() {
         <FloatingSkills />
 
         <ResponsiveConstellation>
+          <Tendrils memories={visibleMemories} />
           <AwakeningBurst />
           <SpiralGroup
             entranceOrderMap={entranceOrderMap}

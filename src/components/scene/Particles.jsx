@@ -13,7 +13,8 @@ const BLOSSOM_COUNT = 200
 const SPORE_COUNT   = 140
 const RING_COUNT    = 80
 const MIST_COUNT    = 100
-const SIDE_SPRITE_COUNT = 90  // left and right sprite columns
+const SIDE_SPRITE_COUNT = 120
+const FAR_SIDE_COUNT = 85
 
 const BLOSSOM_PALETTE = [
   new THREE.Color('#9060ff'),
@@ -321,9 +322,9 @@ function ParticleCloud({ count, palette, spread, uSize, baseOpacity, hoveredPos,
     }
     posA.needsUpdate = true
 
-    // Gentle flicker — higher cap so sprites are more visible
+    // Gentle flicker — higher cap for mystical visibility
     matRef.current.uniforms.uOpacity.value =
-      Math.min(0.32, baseOpacity * (0.7 + Math.sin(t * 0.16) * 0.3))
+      Math.min(0.52, baseOpacity * (0.75 + Math.sin(t * 0.16) * 0.25))
   })
 
   return (
@@ -377,7 +378,7 @@ function RingCloud({ count, palette, radiusMin, radiusMax, yMin, yMax, zOffset, 
     }
     ptsRef.current.geometry.attributes.position.needsUpdate = true
     matRef.current.uniforms.uOpacity.value =
-      Math.min(0.28, baseOpacity * (0.7 + Math.sin(t * 0.12) * 0.3))
+      Math.min(0.48, baseOpacity * (0.78 + Math.sin(t * 0.12) * 0.22))
   })
 
   return (
@@ -429,7 +430,7 @@ function MistCloud({ count, palette, xMin, xMax, yMin, yMax, zMin, zMax, uSize, 
     }
     ptsRef.current.geometry.attributes.position.needsUpdate = true
     matRef.current.uniforms.uOpacity.value =
-      Math.min(additive ? 0.38 : 0.22, baseOpacity * (0.65 + Math.sin(t * 0.08) * 0.3))
+      Math.min(additive ? 0.58 : 0.4, baseOpacity * (0.78 + Math.sin(t * 0.08) * 0.22))
   })
 
   return (
@@ -468,31 +469,32 @@ export default function Particles() {
   const ringCount = Math.max(24, Math.floor(RING_COUNT * mult))
   const mistCount = Math.max(30, Math.floor(MIST_COUNT * mult))
   const waterTreeCount = Math.max(40, Math.floor(80 * mult))
-  const sideSpriteCount = Math.max(35, Math.floor(SIDE_SPRITE_COUNT * mult))
+  const sideSpriteCount = Math.max(50, Math.floor(SIDE_SPRITE_COUNT * mult))
+  const farSideCount = Math.max(40, Math.floor(FAR_SIDE_COUNT * mult))
 
   return (
     <>
-      {/* Blossoms — full scene width, ground to branches */}
+      {/* Blossoms — full scene width, more visible mystical */}
       <ParticleCloud
         count={blossomCount}
         palette={BLOSSOM_PALETTE}
         spread={{ x: 28, y: 20, z: 12, zOffset: -8 }}
-        uSize={1.2}
-        baseOpacity={0.22}
+        uSize={1.35}
+        baseOpacity={0.36}
         hoveredPos={hoveredPos}
         selectedOrbWorldPos={selectedOrbWorldPos}
       />
-      {/* Blossoms near orbs — spread into orb constellation area */}
+      {/* Blossoms near orbs */}
       <ParticleCloud
         count={Math.max(20, Math.floor(48 * mult))}
         palette={BLOSSOM_PALETTE}
         spread={{ x: 14, y: 10, z: 2.5, zOffset: -3.5 }}
-        uSize={1.0}
-        baseOpacity={0.2}
+        uSize={1.15}
+        baseOpacity={0.32}
         hoveredPos={hoveredPos}
         selectedOrbWorldPos={selectedOrbWorldPos}
       />
-      {/* Circle-form ring — purple/lavender particles orbiting around tree and orbs */}
+      {/* Circle-form ring — more visible */}
       <RingCloud
         count={ringCount}
         palette={RING_PALETTE}
@@ -501,20 +503,20 @@ export default function Particles() {
         yMin={-1.5}
         yMax={2.5}
         zOffset={-3.5}
-        uSize={1.0}
-        baseOpacity={0.2}
+        uSize={1.15}
+        baseOpacity={0.32}
       />
-      {/* Spores — soft purple pinpricks */}
+      {/* Spores — more visible */}
       <ParticleCloud
         count={sporeCount}
         palette={SPORE_PALETTE}
         spread={{ x: 24, y: 16, z: 8, zOffset: -9 }}
-        uSize={0.95}
-        baseOpacity={0.18}
+        uSize={1.1}
+        baseOpacity={0.3}
         hoveredPos={hoveredPos}
         selectedOrbWorldPos={selectedOrbWorldPos}
       />
-      {/* Ground mist — purple-blue, y -2 to -0.5, slow horizontal drift */}
+      {/* Ground mist — more visible */}
       <MistCloud
         count={mistCount}
         palette={MIST_PALETTE}
@@ -524,10 +526,10 @@ export default function Particles() {
         yMax={-0.5}
         zMin={-4}
         zMax={1}
-        uSize={1.0}
-        baseOpacity={0.18}
+        uSize={1.15}
+        baseOpacity={0.3}
       />
-      {/* Water–tree drift: purple/cyan particles floating around orbs on the left from water at tree */}
+      {/* Water–tree drift — more visible */}
       <MistCloud
         count={waterTreeCount}
         palette={WATER_TREE_PALETTE}
@@ -537,11 +539,11 @@ export default function Particles() {
         yMax={3}
         zMin={-4.2}
         zMax={-2}
-        uSize={1.0}
-        baseOpacity={0.2}
+        uSize={1.15}
+        baseOpacity={0.34}
         additive
       />
-      {/* Left sprites — visible purple/cyan column beside left orbs */}
+      {/* Left sprites — more particles, more visible */}
       <MistCloud
         count={sideSpriteCount}
         palette={SIDE_SPRITE_PALETTE}
@@ -551,11 +553,11 @@ export default function Particles() {
         yMax={3.5}
         zMin={-4.5}
         zMax={-1.5}
-        uSize={1.4}
-        baseOpacity={0.26}
+        uSize={1.6}
+        baseOpacity={0.4}
         additive
       />
-      {/* Right sprites — visible purple/cyan column beside right orbs */}
+      {/* Right sprites — more particles, more visible */}
       <MistCloud
         count={sideSpriteCount}
         palette={SIDE_SPRITE_PALETTE}
@@ -565,8 +567,36 @@ export default function Particles() {
         yMax={3.5}
         zMin={-4.5}
         zMax={-1.5}
-        uSize={1.4}
-        baseOpacity={0.26}
+        uSize={1.6}
+        baseOpacity={0.4}
+        additive
+      />
+      {/* Far left — extra mystical column */}
+      <MistCloud
+        count={farSideCount}
+        palette={SIDE_SPRITE_PALETTE}
+        xMin={-9}
+        xMax={-6}
+        yMin={-2.5}
+        yMax={4}
+        zMin={-5}
+        zMax={-1}
+        uSize={1.5}
+        baseOpacity={0.38}
+        additive
+      />
+      {/* Far right — extra mystical column */}
+      <MistCloud
+        count={farSideCount}
+        palette={SIDE_SPRITE_PALETTE}
+        xMin={6}
+        xMax={9}
+        yMin={-2.5}
+        yMax={4}
+        zMin={-5}
+        zMax={-1}
+        uSize={1.5}
+        baseOpacity={0.38}
         additive
       />
     </>

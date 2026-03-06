@@ -15,17 +15,17 @@ import useStore from '../../hooks/useStore'
 const Z_OFFSET = -3.5
 const TRUNK_ROOT = new THREE.Vector3(0, 0.5, Z_OFFSET)
 
-// Moonlight silk threads — 1px feel, ethereal
-const TUBE_RADIUS = 0.004
-const TUBE_GLOW_RADIUS = 0.008
+// Moonlight silk threads — more visible, mystical
+const TUBE_RADIUS = 0.005
+const TUBE_GLOW_RADIUS = 0.012
 const TUBE_TUBULAR_SEGMENTS = 20
 const TUBE_RADIAL_SEGMENTS = 6
-const TUBE_OPACITY = 0.15
-const TUBE_GLOW_OPACITY = 0.08
+const TUBE_OPACITY = 0.38
+const TUBE_GLOW_OPACITY = 0.24
 const MOONLIGHT_COLOR = new THREE.Color(220 / 255, 215 / 255, 200 / 255)
-const ENERGY_DOT_RADIUS = 0.012
+const ENERGY_DOT_RADIUS = 0.014
 const ENERGY_DOT_LOOP_SEC = 2.5
-const ENERGY_DOT_OPACITY = 0.7
+const ENERGY_DOT_OPACITY = 0.88
 const ENERGY_DOT_OFFSET_PER_ORB = 0.4
 
 const sr = (seed, n) => {
@@ -93,8 +93,7 @@ function Tendril({ memory, index, position }) {
     const visualTier = memory.visualTier || 'primary'
     const isAmbient = memory.orbType === 'ambient'
     const tierMult = visualTier === 'hero' ? 1.1 : visualTier === 'secondary' ? 0.6 : 1
-    // Only hovered orb's line may brighten; ambient tendrils stay at base (Part 4/5).
-    const opacity = (isSel ? 0.22 : (isHov && !isAmbient) ? 0.18 : TUBE_OPACITY) * tierMult
+    const opacity = (isSel ? 0.52 : (isHov && !isAmbient) ? 0.45 : TUBE_OPACITY) * tierMult
     if (tubeMesh.material.opacity !== opacity) {
       tubeMesh.material.opacity = THREE.MathUtils.lerp(tubeMesh.material.opacity, opacity, 0.12)
     }
@@ -107,7 +106,7 @@ function Tendril({ memory, index, position }) {
       const pos = curve.getPointAt(along)
       energyDotRef.current.position.copy(pos)
       energyDotRef.current.visible = true
-      energyDotRef.current.material.opacity = ((isHov && !isAmbient) ? 0.5 : ENERGY_DOT_OPACITY) * tierMult
+      energyDotRef.current.material.opacity = ((isHov && !isAmbient) ? 0.75 : ENERGY_DOT_OPACITY) * tierMult
     }
   })
 
