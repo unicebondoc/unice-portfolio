@@ -1,200 +1,57 @@
-import { Suspense, useEffect, useRef } from 'react'
-import OrbLabels from './components/ui/OrbLabel'
-import ProjectModal from './components/ui/ProjectModal'
-import HUD from './components/ui/HUD'
-import { Canvas, useThree, useFrame } from '@react-three/fiber'
-import * as THREE from 'three'
-import MemoryOrb from './components/scene/MemoryOrb'
-import Particles from './components/scene/Particles'
-import { OrbitControls } from '@react-three/drei'
-import { EffectComposer, Bloom } from '@react-three/postprocessing'
-import { MEMORIES } from './data/memories'
-import useStore from './hooks/useStore'
-
-// ── Responsive camera FOV ────────────────────────────────────────
-function CameraRig() {
-  const { camera, size } = useThree()
-  useEffect(() => {
-    camera.fov = size.width < 768 ? 72 : 52
-    camera.updateProjectionMatrix()
-  }, [camera, size.width])
-  return null
-}
-
-// ── Fires setSceneReady after Suspense resolves ──────────────────
-function SceneReadyNotifier() {
-  const setSceneReady = useStore((s) => s.setSceneReady)
-  useEffect(() => {
-    const t = setTimeout(() => setSceneReady(), 80)
-    return () => clearTimeout(t)
-  }, [setSceneReady])
-  return null
-}
-
-// ── Animated caustic lights — simulate light through water ───────
-function CausticLights() {
-  const l1       = useRef()
-  const l2       = useRef()
-  const timerRef = useRef(new THREE.Timer())
-  useFrame(() => {
-    timerRef.current.update()
-    const t = timerRef.current.getElapsed() * 0.15
-    if (l1.current) {
-      l1.current.position.set(
-        Math.sin(t)        * 7,
-        Math.cos(t * 0.65) * 5 + 4,
-        Math.sin(t * 0.42) * 4,
-      )
-    }
-    if (l2.current) {
-      l2.current.position.set(
-        Math.cos(t * 0.80 + 2) * 6,
-        Math.sin(t * 0.52)     * 4 - 3,
-        Math.cos(t * 0.35)     * 5,
-      )
-    }
-  })
-  return (
-    <>
-      <pointLight ref={l1} color="#00AACC" intensity={0.10} distance={22} />
-      <pointLight ref={l2} color="#003344" intensity={0.16} distance={24} />
-    </>
-  )
-}
-
-// ── Scene-wide ambient lighting (not per-orb) ────────────────────
-function Lights() {
-  return (
-    <>
-      <ambientLight intensity={0.08} color="#0a1520" />
-      <pointLight position={[0, 14, 3]} intensity={0.16} color="#3a1e00" distance={30} />
-      <pointLight position={[0, -10, -4]} intensity={0.24} color="#002a44" distance={28} />
-      <pointLight position={[0, 2, -12]} intensity={0.18} color="#003322" distance={25} />
-      <CausticLights />
-    </>
-  )
-}
-
-// ── Loading overlay ───────────────────────────────────────────────
-function LoadingScreen({ visible }) {
-  return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 1000,
-        background: 'var(--color-void)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 18,
-        opacity: visible ? 1 : 0,
-        pointerEvents: visible ? 'all' : 'none',
-        transition: 'opacity 1.2s ease',
-      }}
-    >
-      <div className="loading-orb" />
-      <p
-        style={{
-          fontFamily: 'Space Mono, monospace',
-          fontSize: 10,
-          color: 'rgba(232, 234, 240, 0.30)',
-          letterSpacing: '0.18em',
-          textTransform: 'uppercase',
-        }}
-      >
-        Surfacing Memories
-      </p>
-    </div>
-  )
-}
+// ── DIAGNOSTIC SHELL — no Canvas, no HUD, no CSS, no portal ────
+// Purpose: confirm that React itself can render position:fixed elements.
+// Add components back one-by-one after both probes are visible.
 
 export default function App() {
-  const sceneReady = useStore((s) => s.sceneReady)
-
   return (
-    <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
-      {/* ── Background image ── */}
+    <div style={{ width: '100vw', height: '100vh', background: '#111' }}>
+
+      {/* PROBE A — top-left green */}
       <div
+        id="probe-green"
         style={{
           position: 'fixed',
-          inset: '-4px',
-          backgroundImage: "url('/background.png')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: 'blur(1px)',
-          zIndex: 0,
+          top: 0,
+          left: 0,
+          width: '40vw',
+          height: '40vh',
+          background: 'lime',
+          zIndex: 2147483647,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: 28,
+          fontWeight: 900,
+          color: '#000',
           pointerEvents: 'none',
         }}
-      />
-
-      {/* ── 3D Canvas ── */}
-      <Canvas
-        dpr={[1, 2]}
-        camera={{ position: [0, 0, 13], fov: 52 }}
-        gl={{ antialias: true, alpha: true }}
-        style={{ background: 'transparent', position: 'absolute', inset: 0, zIndex: 1 }}
       >
-        <Suspense fallback={null}>
-          <SceneReadyNotifier />
-          <CameraRig />
-          <Lights />
-          <Particles />
+        GREEN ✓ TOP-LEFT
+      </div>
 
-          {MEMORIES.map((memory, i) => (
-            <MemoryOrb key={memory.id} memory={memory} index={i} />
-          ))}
-
-          <OrbLabels />
-
-          <EffectComposer>
-            <Bloom
-              intensity={0.7}
-              luminanceThreshold={0.30}
-              luminanceSmoothing={0.85}
-            />
-          </EffectComposer>
-
-          <OrbitControls
-            enablePan={false}
-            minDistance={7}
-            maxDistance={22}
-            enableDamping
-            dampingFactor={0.06}
-            maxPolarAngle={Math.PI * 0.68}
-            minPolarAngle={Math.PI * 0.28}
-          />
-        </Suspense>
-      </Canvas>
-
-      {/* ── HTML overlays ── */}
-      <HUD />
-      <ProjectModal />
-
-      {/* ── TEST: plain fixed button — no portal, no CSS module, inline styles only ── */}
-      <button
+      {/* PROBE B — bottom-right red */}
+      <div
+        id="probe-red"
         style={{
           position: 'fixed',
-          right: 24,
-          bottom: 24,
-          zIndex: 999999,
+          bottom: 0,
+          right: 0,
+          width: '40vw',
+          height: '40vh',
           background: 'red',
-          color: 'white',
-          padding: '12px 16px',
-          borderRadius: 12,
-          border: 'none',
-          fontSize: 16,
-          fontWeight: 'bold',
-          cursor: 'pointer',
+          zIndex: 2147483647,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: 28,
+          fontWeight: 900,
+          color: '#fff',
+          pointerEvents: 'none',
         }}
-        onClick={() => alert('TEST button works!')}
       >
-        TEST
-      </button>
+        RED ✓ BOTTOM-RIGHT
+      </div>
 
-      {/* ── Loading screen ── */}
-      <LoadingScreen visible={!sceneReady} />
     </div>
   )
 }
