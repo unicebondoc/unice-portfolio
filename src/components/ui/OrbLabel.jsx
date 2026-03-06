@@ -10,7 +10,7 @@ import styles from './OrbLabel.module.css'
  * Positioned in 3D world-space via drei <Html>.
  */
 function SingleLabel({ memory, focusId }) {
-  const { id, title, subtitle, year, color, position, isFuture, icon, tier } = memory
+  const { id, title, subtitle, year, labelShort, color, position, isFuture, icon, tier } = memory
 
   const hoveredOrb  = useStore((s) => s.hoveredOrb)
   const selectedOrb = useStore((s) => s.selectedOrb)
@@ -44,7 +44,7 @@ function SingleLabel({ memory, focusId }) {
           className={styles.year}
           style={{ borderColor: color, color: isFuture ? 'rgba(255,255,255,0.5)' : color }}
         >
-          {year}
+          {labelShort || year}
         </span>
 
         {/* Title */}
@@ -54,7 +54,7 @@ function SingleLabel({ memory, focusId }) {
         {active && <span className={styles.subtitle}>{subtitle}</span>}
 
         {/* Click hint */}
-        {active && <span className={styles.hint}>click to explore</span>}
+        {active && <span className={styles.hint}>click to open</span>}
       </div>
     </Html>
   )

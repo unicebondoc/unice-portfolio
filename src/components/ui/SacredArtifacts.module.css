@@ -39,12 +39,17 @@
 
 /* Skills — #7b68ee */
 .artifactSkills .artifactIcon {
-  border-color: rgba(123, 104, 238, 0.4);
-  background: rgba(123, 104, 238, 0.08);
-  box-shadow: 0 0 12px rgba(123, 104, 238, 0.15);
+  border-color: rgba(123, 104, 238, 0.55);
+  background: rgba(123, 104, 238, 0.12);
+  box-shadow: 0 0 14px rgba(123, 104, 238, 0.2);
 }
 .artifactSkills .artifactLabel {
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.82);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+}
+.artifactSkills .artifactSubLabel {
+  color: rgba(235, 245, 255, 0.58);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 }
 .artifactSkills:hover {
   border-left-color: rgba(123, 104, 238, 0.9);
@@ -66,12 +71,17 @@
 
 /* Resume — #c4a052 */
 .artifactResume .artifactIcon {
-  border-color: rgba(196, 160, 82, 0.4);
-  background: rgba(196, 160, 82, 0.08);
-  box-shadow: 0 0 12px rgba(196, 160, 82, 0.15);
+  border-color: rgba(196, 160, 82, 0.55);
+  background: rgba(196, 160, 82, 0.12);
+  box-shadow: 0 0 14px rgba(196, 160, 82, 0.2);
 }
 .artifactResume .artifactLabel {
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.82);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+}
+.artifactResume .artifactSubLabel {
+  color: rgba(235, 245, 255, 0.58);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 }
 .artifactResume:hover {
   border-left-color: rgba(196, 160, 82, 0.9);
@@ -93,12 +103,17 @@
 
 /* Writings — #2ea8a0 */
 .artifactWritings .artifactIcon {
-  border-color: rgba(46, 168, 160, 0.4);
-  background: rgba(46, 168, 160, 0.08);
-  box-shadow: 0 0 12px rgba(46, 168, 160, 0.15);
+  border-color: rgba(46, 168, 160, 0.55);
+  background: rgba(46, 168, 160, 0.12);
+  box-shadow: 0 0 14px rgba(46, 168, 160, 0.2);
 }
 .artifactWritings .artifactLabel {
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.82);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+}
+.artifactWritings .artifactSubLabel {
+  color: rgba(235, 245, 255, 0.58);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 }
 .artifactWritings:hover {
   border-left-color: rgba(46, 168, 160, 0.9);
@@ -155,5 +170,6 @@
   letter-spacing: 2px;
   text-transform: lowercase;
   opacity: 1;
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(235, 245, 255, 0.52);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }

@@ -35,10 +35,10 @@ function pastelColor(hex) {
   return c
 }
 
-export default function OrbParticles({ position, color, isHovered = false, isSelected = false }) {
+export default function OrbParticles({ position, color, isHovered = false, isSelected = false, dim = false }) {
   const pointsRef = useRef()
   const colorObj = useMemo(() => pastelColor(color), [color])
-  const opacityRef = useRef(0.5)
+  const opacityRef = useRef(dim ? 0.18 : 0.5)
 
   const positions = useMemo(() => {
     const pos = new Float32Array(COUNT * 3)
@@ -53,18 +53,19 @@ export default function OrbParticles({ position, color, isHovered = false, isSel
   }, [])
 
   const uniforms = useMemo(() => ({
-    uSize: { value: 0.12 },
+    uSize: { value: dim ? 0.09 : 0.12 },
     uColor: { value: new THREE.Vector3(colorObj.r, colorObj.g, colorObj.b) },
-    uOpacity: { value: 0.5 },
+    uOpacity: { value: dim ? 0.18 : 0.5 },
   }), [colorObj])
 
   useFrame(({ clock }, delta) => {
     if (!pointsRef.current?.geometry?.attributes?.position) return
     const t = clock.elapsedTime
     const posArray = pointsRef.current.geometry.attributes.position.array
-    const speedMult = (isHovered || isSelected) ? 2.2 : 1
-    const baseRadius = (isHovered || isSelected) ? 0.45 : 0.35
-    const opacityTgt = 0.5 * ((isHovered || isSelected) ? 1.5 : 1)
+    const speedMult = (isHovered || isSelected) ? 1.4 : 1
+    const baseRadius = (isHovered || isSelected) ? 0.40 : 0.35
+    const baseOpacity = dim ? 0.18 : 0.5
+    const opacityTgt = baseOpacity * ((isHovered || isSelected) ? 1.08 : 1)
     opacityRef.current = THREE.MathUtils.lerp(opacityRef.current, opacityTgt, Math.min(1, delta * 5))
     if (pointsRef.current.material?.uniforms?.uOpacity) {
       pointsRef.current.material.uniforms.uOpacity.value = opacityRef.current

@@ -30,6 +30,7 @@ import LoadingScreen from './components/ui/LoadingScreen'
 import SoundToggle from './components/ui/SoundToggle'
 import CustomCursor from './components/ui/CustomCursor'
 import ChatBot from './components/ui/ChatBot'
+import TycheMascot from './components/ui/TycheMascot'
 
 const LERP = 0.08
 
@@ -509,14 +510,12 @@ function CameraController() {
 }
 
 // ── Orb group — constellation base positions; drift offset when panel open
-function SpiralGroup({ entranceOrderMap, firstOrbId, memories }) {
-  const hoveredOrb = useStore((s) => s.hoveredOrb)
-  const activePanel = useStore((s) => s.activePanel)
+function SpiralGroup({ entranceOrderMap, firstOrbId, memories, visibleMemories, hoveredOrb, activePanel }) {
   const isMobile = useStore((s) => s.isMobile)
 
   return (
     <group position={[0, 0, -3.5]}>
-      {memories.map((memory, i) => {
+      {visibleMemories.map((memory, i) => {
         const position = getMemoryPosition(memory, isMobile)
         return (
           <MemoryOrb
@@ -529,8 +528,9 @@ function SpiralGroup({ entranceOrderMap, firstOrbId, memories }) {
           />
         )
       })}
-      {MEMORIES.map((memory) => {
+      {visibleMemories.map((memory) => {
         const pos = getMemoryPosition(memory, isMobile)
+        if (memory.orbType === 'ambient') return null
         return (
           <OrbParticles
             key={`particles-${memory.id}`}
@@ -538,6 +538,7 @@ function SpiralGroup({ entranceOrderMap, firstOrbId, memories }) {
             color={memory.glowColor || memory.color}
             isHovered={hoveredOrb === memory.id}
             isSelected={activePanel?.type === 'memory' && activePanel.id === memory.id}
+            dim={!memory.isPrimary}
           />
         )
       })}
@@ -579,6 +580,11 @@ export default function App() {
   const hoveredOrb = useStore((s) => s.hoveredOrb)
   const setLoadingExited = useStore((s) => s.setLoadingExited)
   const loadingExited = useStore((s) => s.loadingExited)
+  const showSecondaryOrbs = isMobile || !!hoveredOrb || activePanel?.type === 'memory'
+  const visibleMemories = useMemo(
+    () => (showSecondaryOrbs ? MEMORIES : MEMORIES.filter((m) => m.isPrimary !== false)),
+    [showSecondaryOrbs]
+  )
 
   // Viewport: isMobile (<768px) and prefers-reduced-motion
   useEffect(() => {
@@ -835,6 +841,26 @@ export default function App() {
           pointerEvents: 'none',
         }}
       >
+        {/* ── UI separation lane: left-side readable interface band (above scene, below UI) ── */}
+        <div
+          aria-hidden
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 15,
+            pointerEvents: 'none',
+            background: `
+              radial-gradient(ellipse at 12% 18%, rgba(0, 0, 0, 0.22) 0%, transparent 58%),
+              linear-gradient(90deg,
+                rgba(2, 6, 18, 0.64) 0%,
+                rgba(2, 6, 18, 0.48) 26%,
+                rgba(2, 6, 18, 0.18) 46%,
+                rgba(2, 6, 18, 0.0) 68%
+              )
+            `,
+          }}
+        />
+
         {/* ── Site title: fixed top-left, always on top (z-index above panel) ── */}
         <div
           data-entrance="title"
@@ -854,8 +880,8 @@ export default function App() {
               fontSize: isMobile ? 'clamp(1.6rem, 6vw, 2.2rem)' : 'clamp(2.8rem, 5vw, 4.5rem)',
               fontWeight: 700,
               letterSpacing: '0.15em',
-              color: 'rgba(160, 220, 240, 0.9)',
-              textShadow: '0 0 40px rgba(0, 200, 255, 0.3)',
+              color: 'rgba(245, 252, 255, 0.98)',
+              textShadow: '0 0 40px rgba(0, 200, 255, 0.35), 0 2px 12px rgba(0, 0, 0, 0.5)',
               margin: 0,
               padding: 0,
               lineHeight: 1.2,
@@ -867,13 +893,12 @@ export default function App() {
             style={{
               fontFamily: "'Raleway', sans-serif",
               fontSize: isMobile ? 'clamp(0.5rem, 2vw, 0.7rem)' : 'clamp(0.6rem, 1.1vw, 0.85rem)',
-              fontWeight: 300,
+              fontWeight: 500,
               letterSpacing: '0.4em',
-              color: 'rgba(140, 190, 220, 0.6)',
+              color: 'rgba(200, 235, 255, 0.82)',
               margin: '4px 0 0 0',
               padding: 0,
-              opacity: 0.6,
-              textShadow: '0 0 40px rgba(0, 200, 255, 0.3)',
+              textShadow: '0 1px 8px rgba(0, 0, 0, 0.45)',
             }}
           >
             AI ENGINEER
@@ -884,12 +909,11 @@ export default function App() {
               fontSize: isMobile ? 9 : 7,
               fontWeight: 300,
               letterSpacing: '2px',
-              color: 'rgba(255,255,255,0.25)',
+              color: 'rgba(255,255,255,0.38)',
               margin: '6px 0 0 0',
               padding: 0,
               textTransform: 'uppercase',
-              opacity: 0.9,
-              textShadow: '0 0 40px rgba(0, 200, 255, 0.2)',
+              textShadow: '0 1px 4px rgba(0, 0, 0, 0.4)',
               whiteSpace: isMobile ? 'normal' : 'nowrap',
               overflow: 'visible',
               maxWidth: 'none',
@@ -923,7 +947,19 @@ export default function App() {
           <SacredArtifacts />
         </div>
 
-        <ChatBot />
+        {/* ── Chat + Tyche (bottom-right): wrapper pointer-events none; Tyche has pointer-events auto ── */}
+        <div
+          style={{
+            position: 'fixed',
+            right: 0,
+            bottom: 0,
+            zIndex: 2147483646,
+            pointerEvents: 'none',
+          }}
+        >
+          <ChatBot />
+          <TycheMascot />
+        </div>
 
       {/* ── Bottom bar: socials only, fades when memory panel open ── */}
       <div
@@ -937,7 +973,8 @@ export default function App() {
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '0 3vw',
+          padding: '8px 3vw',
+          background: 'linear-gradient(180deg, rgba(2, 6, 18, 0) 0%, rgba(2, 6, 18, 0.28) 55%, rgba(2, 6, 18, 0.42) 100%)',
           opacity: activePanel?.type === 'memory' ? 0 : 1,
           transition: activePanel?.type === 'memory' ? 'opacity 300ms ease-out' : 'opacity 400ms ease-out',
         }}
@@ -961,7 +998,7 @@ export default function App() {
         <div style={{ flex: 1, minWidth: 0 }} aria-hidden />
       </div>
 
-      {/* ── Subtle vignette: draws eye to center (FIX 6) ───────────────────────────── */}
+      {/* ── Subtle vignette: draws eye to center; softer at bottom so frame breathes (FIX 6) ───────────────────────────── */}
       <div
         role="presentation"
         aria-hidden
@@ -970,11 +1007,11 @@ export default function App() {
           inset: 0,
           zIndex: 1,
           pointerEvents: 'none',
-          background: 'radial-gradient(ellipse at 50% 40%, transparent 40%, rgba(0,0,0,0.25) 100%)',
+          background: 'radial-gradient(ellipse 100% 110% at 50% 38%, transparent 42%, rgba(0,0,0,0.20) 100%)',
         }}
       />
 
-      {/* ── Dark overlay ───────────────────────────── */}
+      {/* ── Dark overlay (reduced ~18% so world keeps depth) ───────────────────────────── */}
       <div
         style={{
           position: 'fixed',
@@ -982,13 +1019,13 @@ export default function App() {
           left: 0,
           width: '100vw',
           height: '100vh',
-          background: 'rgba(0,0,0,0.18)',
+          background: 'rgba(0,0,0,0.14)',
           zIndex: 0,
           pointerEvents: 'none',
         }}
       />
 
-      {/* ── Hovered orb glow on forest (behind orbs) ───────────────────────────── */}
+      {/* ── Hovered orb glow on forest: subtle spot only; no extra orb-like disc (Part 3) ───────────────────────────── */}
       {hoveredOrb && hoveredOrbScreenPos && (() => {
         const mem = MEMORIES.find((m) => m.id === hoveredOrb)
         if (!mem?.color) return null
@@ -1007,7 +1044,7 @@ export default function App() {
               height: '100vh',
               zIndex: 0,
               pointerEvents: 'none',
-              background: `radial-gradient(circle 180px at ${hoveredOrbScreenPos[0]}px ${hoveredOrbScreenPos[1]}px, rgba(${r},${g},${b},0.18) 0%, transparent 65%)`,
+              background: `radial-gradient(circle 100px at ${hoveredOrbScreenPos[0]}px ${hoveredOrbScreenPos[1]}px, rgba(${r},${g},${b},0.10) 0%, transparent 55%)`,
               transition: 'opacity 0.2s ease',
             }}
           />
@@ -1074,15 +1111,35 @@ export default function App() {
         <FloatingSkills />
 
         <ResponsiveConstellation>
-          <Tendrils />
+          <Tendrils memories={visibleMemories} />
           <AwakeningBurst />
-          <SpiralGroup entranceOrderMap={entranceOrderMap} firstOrbId={firstOrbId} memories={MEMORIES} />
+          <SpiralGroup
+            entranceOrderMap={entranceOrderMap}
+            firstOrbId={firstOrbId}
+            memories={MEMORIES}
+            visibleMemories={visibleMemories}
+            hoveredOrb={hoveredOrb}
+            activePanel={activePanel}
+          />
         </ResponsiveConstellation>
 
         <IdleOrbPulseDriver />
         <CameraController />
       </Canvas>
       </div>
+
+      {/* ── Atmospheric UI overlay: soft indigo dimmer (reduced ~17%) ── */}
+      <div
+        role="presentation"
+        aria-hidden
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 2,
+          pointerEvents: 'none',
+          background: 'linear-gradient(180deg, rgba(3, 8, 22, 0.10) 0%, rgba(3, 8, 22, 0.15) 100%)',
+        }}
+      />
 
       {/* ── Memory immersion: vignette overlay (panel owns the moment), 400ms in / 300ms out ── */}
       <div
@@ -1091,7 +1148,7 @@ export default function App() {
         style={{
           position: 'fixed',
           inset: 0,
-          zIndex: 2,
+          zIndex: 4,
           pointerEvents: 'none',
           background: 'radial-gradient(ellipse at center, transparent 30%, rgba(0, 0, 0, 0.65) 100%)',
           opacity: activePanel?.type === 'memory' ? 1 : 0,
@@ -1172,30 +1229,33 @@ export default function App() {
       {/* Intro overlay disabled so orbs/scene are visible from load; re-enable to restore 3s awakening */}
       {/* <IntroOverlay /> */}
       <HUD />
-        {/* ── Bottom hint (clean onboarding, hidden when panel open) ── */}
-        <div
-          data-entrance="bottomhint"
-          aria-hidden
-          style={{
-            position: 'fixed',
-            bottom: '3.5vh',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            pointerEvents: 'none',
-            zIndex: 12,
-            fontSize: 8,
-            letterSpacing: 5,
-            color: 'rgba(255,255,255,0.18)',
-            fontFamily: 'Raleway, sans-serif',
-            textTransform: 'uppercase',
-            opacity: activePanel?.type === 'memory' ? 0 : 1,
-            transition: 'opacity 300ms ease-out',
-            animation: activePanel?.type === 'memory' ? 'none' : 'hintPulse 4s ease-in-out infinite',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {isMobile ? 'TAP · EXPLORE' : 'HOVER · CLICK · EXPLORE'}
-        </div>
+        {/* ── Bottom hint: mobile only (reduce desktop visual fog) ── */}
+        {isMobile && (
+          <div
+            data-entrance="bottomhint"
+            aria-hidden
+            style={{
+              position: 'fixed',
+              bottom: '3.5vh',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              pointerEvents: 'none',
+              zIndex: 12,
+              fontSize: 8,
+              letterSpacing: 5,
+              color: 'rgba(255,255,255,0.22)',
+              fontFamily: 'Raleway, sans-serif',
+              textTransform: 'uppercase',
+              opacity: activePanel?.type === 'memory' ? 0 : 1,
+              transition: 'opacity 300ms ease-out',
+              animation: activePanel?.type === 'memory' ? 'none' : 'hintPulse 4s ease-in-out infinite',
+              whiteSpace: 'nowrap',
+              textShadow: '0 1px 6px rgba(0,0,0,0.45)',
+            }}
+          >
+            TAP · EXPLORE
+          </div>
+        )}
 
       {/* ── Memory panel (at orb position); on mobile: bottom sheet ── */}
       {activePanel?.type === 'memory' && (() => {

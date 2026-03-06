@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
-import { useGemini } from '../../hooks/useGemini'
+import { useChatGPT } from '../../hooks/useChatGPT'
+import useStore from '../../hooks/useStore'
 import styles from './ChatBot.module.css'
 
 export default function ChatBot() {
-  const [open, setOpen] = useState(false)
+  const activePanel = useStore((s) => s.activePanel)
+  const setActivePanel = useStore((s) => s.setActivePanel)
+  const open = activePanel?.type === 'chat'
 
-  // Phase 4: Gemini integration (keep UI + interaction model stable)
+  // ChatGPT (OpenAI) integration
   const [input, setInput] = useState('')
-  const { messages, sendMessage, isLoading, error } = useGemini()
+  const { messages, sendMessage, isLoading, error } = useChatGPT()
 
   const listRef = useRef(null)
   const inputRef = useRef(null)
@@ -37,18 +40,14 @@ export default function ChatBot() {
       className={styles.wrap}
       style={{
         position: 'fixed',
-        right: 24,
+        right: open ? 100 : 24,
         bottom: 24,
-        zIndex: 2147483647,
+        zIndex: 2147483646,
         pointerEvents: 'none',
       }}
     >
       {open && (
-        <div
-          className={styles.panel}
-          onMouseDown={() => console.log('[ChatBot] panel mouse down')}
-          onPointerDown={() => console.log('[ChatBot] panel pointer down')}
-        >
+        <div className={styles.panel}>
           {/* Header */}
           <div
             className={styles.header}
@@ -58,15 +57,9 @@ export default function ChatBot() {
             </div>
             <button
               type="button"
-              onClick={() => {
-                console.log('[ChatBot] close clicked')
-                setOpen(false)
-                console.log('[ChatBot] open:', false)
-              }}
+              onClick={() => setActivePanel(null)}
               className={styles.close}
               aria-label="Close chat"
-              onMouseDown={() => console.log('[ChatBot] close mouse down')}
-              onPointerDown={() => console.log('[ChatBot] close pointer down')}
             >
               ×
             </button>
@@ -99,7 +92,6 @@ export default function ChatBot() {
           <form
             onSubmit={(e) => {
               e.preventDefault()
-              console.log('[ChatBot] submit')
               send()
             }}
             className={styles.inputRow}
@@ -111,11 +103,6 @@ export default function ChatBot() {
               placeholder="Type a message…"
               className={styles.input}
               aria-label="Message input"
-              onMouseDown={() => console.log('[ChatBot] input mouse down')}
-              onPointerDown={() => console.log('[ChatBot] input pointer down')}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') console.log('[ChatBot] enter keydown')
-              }}
               disabled={isLoading}
             />
             <button
@@ -123,8 +110,6 @@ export default function ChatBot() {
               disabled={!input.trim() || isLoading}
               className={`${styles.send} ${input.trim() && !isLoading ? styles.sendEnabled : styles.sendDisabled}`}
               aria-label="Send"
-              onMouseDown={() => console.log('[ChatBot] send mouse down')}
-              onPointerDown={() => console.log('[ChatBot] send pointer down')}
             >
               Send
             </button>
@@ -132,21 +117,6 @@ export default function ChatBot() {
         </div>
       )}
 
-      <button
-        onMouseDown={() => console.log('[ChatBot] mouse down')}
-        onPointerDown={() => console.log('[ChatBot] pointer down')}
-        onClick={() => {
-          console.log('[ChatBot] button clicked')
-          setOpen((v) => {
-            const next = !v
-            console.log('[ChatBot] open:', next)
-            return next
-          })
-        }}
-        className={styles.openBtn}
-      >
-        Open chat
-      </button>
     </div>
   )
 }

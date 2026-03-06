@@ -28,6 +28,10 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
 
   const isCore  = tier === 'core' || tier === 'root'
   const isRoot  = tier === 'root' || memory.isRoot
+  const orbType = memory.orbType || (memory.isPrimary === false ? 'secondary' : 'primary') // 'primary' | 'secondary' | 'ambient'
+  const isInteractive = orbType !== 'ambient'
+  const isPrimary = memory.isPrimary !== false
+  const visualTier = memory.visualTier || (isRoot ? 'primary' : 'primary') // 'hero' | 'primary' | 'secondary'
   const RADIUS  = (TIER_RADIUS[tier] ?? 0.50) * (memory.scaleMult ?? 1.0)
 
   const BREATHE_SPEED   = isCore ? 0.55 : 0.42
@@ -522,12 +526,14 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
     if (mediaTex && videoRef.current && videoRef.current.readyState >= 2) {
       mediaTex.needsUpdate = true
     }
-    // Only play video when visible: root always plays; others pause when panel open for different orb or far from camera
+    // Only play video when visible:
+    // - root orb should keep playing (it's the identity/video orb)
+    // - other orbs play on hover/selection to reduce CPU
     if (videoRef.current && memory.videoSrc) {
       const cam = state.camera
       groupRef.current.getWorldPosition(videoWorldPosRef.current)
       const dist = cam.position.distanceTo(videoWorldPosRef.current)
-      const shouldPlay = isHovered
+      const shouldPlay = isRoot || isHovered || isSelected
       if (shouldPlay && videoRef.current.paused) videoRef.current.play().catch(() => {})
       if (!shouldPlay && !videoRef.current.paused) videoRef.current.pause()
     }
@@ -544,6 +550,15 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
     const ORB_BASE_OPACITY = 0.85 // FIX 6: slightly reduce orb base for hierarchy
     const entranceScaleFinal = entranceComplete ? 1 : entranceScale
     const entranceOpacityFinal = entranceComplete ? ORB_BASE_OPACITY : entranceOpacity * ORB_BASE_OPACITY
+    const visualScaleMult = visualTier === 'hero' ? 1.22 : visualTier === 'secondary' ? 0.86 : 1
+    const ambientScaleMult = orbType === 'ambient' ? 0.62 : 1
+    const ambientOpacityMult = orbType === 'ambient' ? 0.32 : 1
+    const ambientGlowMult = orbType === 'ambient' ? 0.35 : 1
+    const secondaryScaleMult = isPrimary ? 1 : 0.72
+    const secondaryOpacityMult = (isPrimary ? 1 : 0.56) * ambientOpacityMult
+    const visualGlowMult = visualTier === 'hero' ? 1.12 : visualTier === 'secondary' ? 0.75 : 1
+    const secondaryGlowMult = (isPrimary ? 1 : 0.55) * visualGlowMult * ambientGlowMult
+    const effectiveOpacityFinal = entranceOpacityFinal * secondaryOpacityMult
 
     // Ritual: set openRitualStartTime once when this orb becomes selected
     if (isSelected) {
@@ -601,9 +616,9 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
     breathRef.current = THREE.MathUtils.lerp(breathRef.current, breathTarget, Math.min(1, delta * 4))
     const breathFactor = breathRef.current
 
-    // Focus dim: when panel open — active orb 0.15 (nearly invisible), non-active 0.55; on hover non-active → 1 (FIX 1)
+    // Focus dim: keep selected orb visibly present (clarity-first).
     const dimLerp = Math.min(1, delta * 2.0)
-    const focusDimTarget = isSelected ? 0.15 : (isFocusDimmed ? 0.55 : 1)
+    const focusDimTarget = isSelected ? 0.85 : (isFocusDimmed ? 0.55 : 1)
     if (dimMultiplierRef.current === undefined) dimMultiplierRef.current = focusDimTarget
     dimMultiplierRef.current = THREE.MathUtils.lerp(dimMultiplierRef.current, focusDimTarget, dimLerp)
     const dimMultiplier = dimMultiplierRef.current * nearHoveredDim
@@ -686,7 +701,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       const baseOpacity = isHovered ? 0.25 : 0.05
       outerGlowMatRef.current.opacity = THREE.MathUtils.lerp(
         outerGlowMatRef.current.opacity,
-        baseOpacity * dimMultiplier * (isDimmed ? 0.6 : 1) * entranceOpacityFinal,
+        baseOpacity * dimMultiplier * (isDimmed ? 0.6 : 1) * effectiveOpacityFinal,
         lerpK
       )
 
@@ -739,7 +754,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         onboardingStartRef.current = -1
       }
     }
-    // Hover scale pulse: 1.0 → 1.08 → 1.0 over 0.5s (orb "noticed" you)
+    // Hover scale pulse: 1.0 → 1.04 → 1.0 over 0.5s (singular focal response, no extra “orb” feel)
     if (isHovered && hoverPulseStartRef.current === null) hoverPulseStartRef.current = t
     if (!isHovered) hoverPulseStartRef.current = null
     let hoverScalePulse = 1
@@ -747,24 +762,14 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       const el = t - hoverPulseStartRef.current
       if (el < 0.5) {
         const p = el / 0.5
-        hoverScalePulse = p < 0.5 ? 1 + 0.08 * (p * 2) : 1 + 0.08 * (1 - (p - 0.5) * 2)
+        hoverScalePulse = p < 0.5 ? 1 + 0.04 * (p * 2) : 1 + 0.04 * (1 - (p - 0.5) * 2)
       } else {
         hoverScalePulse = 1
       }
     }
     const hoverScaleTgt = isHovered ? hoverScalePulse : 1
     hoverScaleRef.current = THREE.MathUtils.lerp(hoverScaleRef.current, hoverScaleTgt, Math.min(1, delta * 8))
-    let target = entranceScaleFinal * breathe * hoverMul * pulseMul * onboardingMul * hoverScaleRef.current
-    if (isSelected && ritualStartRef.current != null) {
-      const elapsed = t - ritualStartRef.current
-      let implosionMul
-      if (elapsed < 0) implosionMul = 1
-      else if (elapsed < 0.15) implosionMul = 1 + 0.8 * (elapsed / 0.15)
-      else if (elapsed < 0.2) implosionMul = 1.8
-      else if (elapsed < 0.4) implosionMul = 1.8 * (1 - (elapsed - 0.2) / 0.2)
-      else implosionMul = 0
-      target = entranceScaleFinal * implosionMul
-    }
+    let target = entranceScaleFinal * breathe * hoverMul * pulseMul * onboardingMul * hoverScaleRef.current * secondaryScaleMult * visualScaleMult * ambientScaleMult
     const scaleLerp = isSelected ? 0.14 : 0.06
     groupRef.current.scale.setScalar(
       THREE.MathUtils.lerp(groupRef.current.scale.x, target, scaleLerp)
@@ -776,17 +781,19 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       let tgt = isSelected ? baseOp * 1.5
                : baseOp * dimMultiplier * (isHoverDimmed ? 0.45 : isHovered ? 1.3 : 1)
       if (!isSelected) tgt *= 1 + hoverFactor * 0.2
-      tgt *= entranceOpacityFinal
+      tgt *= secondaryGlowMult
+      tgt *= effectiveOpacityFinal
       haloMat.current.opacity = THREE.MathUtils.lerp(haloMat.current.opacity, tgt, dimLerp)
     }
 
-    // Fresnel rim — other orbs dim to 40%; keep opacity low to avoid bloom washout
+    // Fresnel rim
     if (rimMat.current) {
       const rimBase = (hasMedia && videoReady) ? 0.03 : 0.04
       let rimTgt = isSelected ? rimBase * 1.5
                   : rimBase * dimMultiplier * (isHoverDimmed ? 0.35 : isHovered ? 1.5 : 1)
       if (!isSelected) rimTgt *= 1 + hoverFactor * 0.2
-      rimTgt *= entranceOpacityFinal
+      rimTgt *= secondaryGlowMult
+      rimTgt *= effectiveOpacityFinal
       rimMat.current.opacity = THREE.MathUtils.lerp(rimMat.current.opacity, rimTgt, dimLerp)
     }
 
@@ -801,7 +808,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         // Video orbs: outer shell is clear glass — more transparent when hovered so video inside is clearer
         const shellOpacityTgt = isHovered ? 0.15 : 0.3
         const opTgt = (isFocusDimmed ? 0.4 : 1) * dimMultiplier * shellOpacityTgt
-        bodyMat.current.opacity = THREE.MathUtils.lerp(bodyMat.current.opacity, opTgt * entranceOpacityFinal, dimLerp)
+        bodyMat.current.opacity = THREE.MathUtils.lerp(bodyMat.current.opacity, opTgt * effectiveOpacityFinal, dimLerp)
         if (isRoot && bodyMat.current.emissive) {
           const shift = Math.sin(t * 0.4) * 0.5 + 0.5
           bodyMat.current.emissive.setRGB(
@@ -812,7 +819,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         }
       } else if (mediaTex && videoReady) {
         const opTgt = (isFocusDimmed ? 0.4 : 1) * dimMultiplier
-        bodyMat.current.opacity = THREE.MathUtils.lerp(bodyMat.current.opacity, opTgt * entranceOpacityFinal, dimLerp)
+        bodyMat.current.opacity = THREE.MathUtils.lerp(bodyMat.current.opacity, opTgt * effectiveOpacityFinal, dimLerp)
         if (isRoot && bodyMat.current.emissive) {
           const shift = Math.sin(t * 0.4) * 0.5 + 0.5
           bodyMat.current.emissive.setRGB(
@@ -838,7 +845,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
           )
           if (Math.abs(bodyMat.current.emissiveIntensity - 0.12) < 0.02) coreFlashRef.current = null
         }
-        bodyMat.current.opacity = THREE.MathUtils.lerp(bodyMat.current.opacity, shellOpacity * entranceOpacityFinal, 0.05)
+        bodyMat.current.opacity = THREE.MathUtils.lerp(bodyMat.current.opacity, shellOpacity * effectiveOpacityFinal, 0.05)
       } else {
         const pulse    = Math.sin(t * PULSE_SPEED) * 0.5 + 0.5
         const emIdle   = EM_BASE + pulse * EM_BASE * 0.25
@@ -852,7 +859,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
           bodyMat.current.emissiveIntensity, emTgt, dimLerp
         ))
         if (!bodyTexture) {
-          bodyMat.current.opacity = THREE.MathUtils.lerp(bodyMat.current.opacity, shellOpacity * dimMultiplier * entranceOpacityFinal, dimLerp)
+          bodyMat.current.opacity = THREE.MathUtils.lerp(bodyMat.current.opacity, shellOpacity * dimMultiplier * effectiveOpacityFinal, dimLerp)
         }
       }
     }
@@ -875,7 +882,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       const tgt  = isDimmed ? base * 0.4 * dimMultiplier
                  : isHovered ? hoverTgt * dimMultiplier
                  : base * dimMultiplier
-      dustMat.current.opacity = THREE.MathUtils.lerp(dustMat.current.opacity, Math.min(1, tgt * entranceOpacityFinal), dimLerp)
+      dustMat.current.opacity = THREE.MathUtils.lerp(dustMat.current.opacity, Math.min(1, tgt * effectiveOpacityFinal), dimLerp)
     }
 
     // Point lights — capped to prevent scene washout: max intensity 0.2, distance 1.5
@@ -982,10 +989,10 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         )
       }
     } else {
-      // Non-video: core opacity 0.9 → 1, aura opacity 0.12 → 0.2, aura scale 1.4 → 1.6 (scale factor 1 → 1.6/1.4)
-      const coreOpTgt = isHovered ? 1.0 : 0.9
-      const auraOpTgt = isHovered ? 0.2 : 0.12
-      const auraScaleTgt = isHovered ? 1.6 / 1.4 : 1
+      // Non-video: core opacity 0.9 → 0.95, aura opacity 0.12 → 0.16, aura scale 1.4 → 1.45 (singular glow, no second orb)
+      const coreOpTgt = isHovered ? 0.95 : 0.9
+      const auraOpTgt = isHovered ? 0.16 : 0.12
+      const auraScaleTgt = isHovered ? 1.45 / 1.4 : 1
       if (orbInnerHazeMatRef.current) {
         orbInnerHazeMatRef.current.opacity = THREE.MathUtils.lerp(
           orbInnerHazeMatRef.current.opacity,
@@ -1023,10 +1030,10 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       }
     }
 
-    // Ripple ring: scale 1 → 2.8 over 800ms, opacity 0.7 → 0, run 2 cycles while hovered (FIX 2c)
+    // Ripple ring: 1 cycle only, low opacity — subtle ring, not a second orb (Part 3)
     if (rippleRingRef.current && rippleRingMatRef.current) {
       if (isHovered) {
-        if (rippleCycleCountRef.current >= 2) {
+        if (rippleCycleCountRef.current >= 1) {
           rippleRingRef.current.visible = false
           rippleRingMatRef.current.opacity = 0
         } else {
@@ -1037,8 +1044,8 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
             rippleCycleCountRef.current += 1
           }
           const ease = 1 - Math.pow(1 - rippleProgressRef.current, 2)
-          rippleRingRef.current.scale.setScalar(1 + ease * 1.8)
-          rippleRingMatRef.current.opacity = 0.7 * (1 - ease)
+          rippleRingRef.current.scale.setScalar(1 + ease * 1.4)
+          rippleRingMatRef.current.opacity = 0.35 * (1 - ease)
         }
       } else {
         rippleCycleCountRef.current = 0
@@ -1048,7 +1055,8 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       }
     }
     // Hover label opacity: lerp over ~300ms
-    const hoverLabelTgt = isHovered && !isSelected ? 1 : 0
+    const hoverLabelMax = !isInteractive ? 0 : (visualTier === 'secondary' ? 0.6 : 1)
+    const hoverLabelTgt = isHovered && !isSelected ? hoverLabelMax : 0
     setHoverLabelOpacity((prev) =>
       THREE.MathUtils.lerp(prev, hoverLabelTgt, Math.min(1, delta * 4))
     )
@@ -1056,6 +1064,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
 
   const handleClick = (e) => {
     e.stopPropagation()
+    if (!isInteractive) return
     if (isSelected) {
       setActivePanel(null)
     } else {
@@ -1090,14 +1099,16 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
   }
   const handlePointerOver = (e) => {
     e.stopPropagation()
+    if (!isInteractive) return
     sound?.play('orbHover')
     setHoveredOrb(id)
     document.body.style.cursor = (activePanel?.type === 'memory' && activePanel.id !== id) ? 'crosshair' : 'pointer'
   }
   const handlePointerOut  = () => {
+    if (!isInteractive) return
     setHoveredOrb(null)
     setHoveredOrbScreenPos(null)
-    document.body.style.cursor = 'auto'
+    document.body.style.cursor = ''
   }
 
   return (
@@ -1461,76 +1472,10 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         />
       </mesh>
 
-      {/* ── Start-here pulse: 3 expanding rings (once on load, first orb only) ── */}
-      {isOnboardingOrb && (
-        <>
-          {[0, 1, 2].map((i) => (
-            <mesh key={i} ref={startHereRingRefs[i]} visible={false} renderOrder={4}>
-              <ringGeometry args={[RADIUS, RADIUS * 1.02, 32]} />
-              <meshBasicMaterial
-                ref={startHereRingMatRefs[i]}
-                color={orbColor}
-                transparent
-                opacity={0}
-                depthWrite={false}
-                side={THREE.DoubleSide}
-                blending={THREE.AdditiveBlending}
-              />
-            </mesh>
-          ))}
-          <Html
-            position={[0, RADIUS * 2.2, 0]}
-            center
-            distanceFactor={8}
-            zIndexRange={[25, 0]}
-            style={{
-              pointerEvents: 'none',
-              fontSize: '8px',
-              letterSpacing: '3px',
-              textTransform: 'lowercase',
-              color: 'rgba(200, 220, 255, 0.9)',
-              fontFamily: 'Raleway, sans-serif',
-              textAlign: 'center',
-              whiteSpace: 'nowrap',
-              opacity: beginHereOpacity,
-              transition: 'opacity 0.15s ease-out',
-            }}
-          >
-            begin here ↓
-          </Html>
-        </>
-      )}
+      {/* Onboarding pulse removed (clarity-first landing) */}
 
-      {/* ── Orb label: hidden by default; fade in on hover (400ms); visible at 0.5 when selected ── */}
-      {!isRoot && (
-        <Html
-          position={[0, -RADIUS * 1.5, 0]}
-          center
-          zIndexRange={[5, 0]}
-          style={{
-            pointerEvents: 'none',
-            fontSize: '10px',
-            letterSpacing: '3px',
-            textTransform: 'uppercase',
-            color: 'rgba(180, 210, 240, 0.65)',
-            textShadow: '0 0 10px rgba(100, 160, 255, 0.3), 0 1px 4px rgba(0, 0, 0, 0.5)',
-            opacity: isSelected ? 0.5 : isHovered ? 1 : 0,
-            transition: 'opacity 400ms ease',
-            whiteSpace: 'nowrap',
-            fontFamily: 'Space Mono, monospace',
-            textAlign: 'center',
-          }}
-        >
-          <span>
-            {memory.labelShort && memory.labelShort.includes(' · ')
-              ? memory.labelShort.split(' · ').pop().trim()
-              : title}
-          </span>
-        </Html>
-      )}
-
-      {/* ── Hover label: shortTitle whisper above orb, float up 8px + fade in 300ms (FIX 2d) ── */}
-      {!isRoot && (
+      {/* ── Hover label: meta + title (recruiter-readable) ── */}
+      {(
         <Html
           position={[0, RADIUS * 1.75, 0]}
           center
@@ -1538,22 +1483,53 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
           zIndexRange={[20, 0]}
           style={{
             pointerEvents: 'none',
-            fontSize: '9px',
-            letterSpacing: '2px',
-            textTransform: 'uppercase',
-            color: 'rgba(255, 255, 255, 0.7)',
-            textShadow: '0 0 10px rgba(150, 180, 255, 0.3)',
-            fontFamily: 'Raleway, sans-serif',
-            textAlign: 'center',
-            whiteSpace: 'nowrap',
             opacity: hoverLabelOpacity,
             transform: hoverLabelOpacity > 0 ? 'translateY(-8px)' : 'translateY(0)',
             transition: 'opacity 300ms ease, transform 300ms ease',
-            background: 'none',
-            border: 'none',
           }}
         >
-          {shortTitle}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '3px',
+              padding: '8px 12px 9px',
+              borderRadius: '12px',
+              background: 'rgba(6, 9, 20, 0.88)',
+              border: '1px solid rgba(255, 255, 255, 0.18)',
+              boxShadow: '0 16px 50px rgba(0, 0, 0, 0.5)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              textAlign: 'center',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <div
+              style={{
+                fontFamily: 'Space Mono, monospace',
+                fontSize: '9px',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: 'rgba(240, 250, 255, 0.85)',
+                textShadow: '0 1px 4px rgba(0,0,0,0.4)',
+              }}
+            >
+              {memory.labelShort || memory.year}
+            </div>
+            <div
+              style={{
+                fontFamily: 'Cinzel, serif',
+                fontSize: '13px',
+                fontWeight: 650,
+                letterSpacing: '0.02em',
+                color: 'rgba(255, 255, 255, 0.98)',
+                textShadow: '0 1px 10px rgba(0,0,0,0.5)',
+              }}
+            >
+              {title}
+            </div>
+          </div>
         </Html>
       )}
 

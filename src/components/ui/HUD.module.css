@@ -23,10 +23,10 @@
   font-family: 'Cinzel', serif;
   font-size: 48px;
   font-weight: 700;
-  color: rgba(160, 220, 240, 0.95);
+  color: rgba(245, 252, 255, 0.98);
   letter-spacing: 8px;
   line-height: 1;
-  text-shadow: 0 0 20px rgba(100, 200, 240, 0.3), 0 2px 8px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 0 20px rgba(100, 200, 240, 0.35), 0 2px 10px rgba(0, 0, 0, 0.5);
   animation: titleReveal 2.5s ease-out forwards;
 }
 
@@ -38,11 +38,11 @@
 .nameSub {
   font-family: 'Raleway', sans-serif;
   font-size: 14px;
-  font-weight: 300;
-  color: rgba(140, 190, 220, 0.7);
+  font-weight: 500;
+  color: rgba(200, 235, 255, 0.82);
   letter-spacing: 5px;
   text-transform: uppercase;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
 }
 
 /* ── Social icons when used inside bottom bar (no position) ── */
@@ -108,9 +108,9 @@
   font-family: 'Raleway', sans-serif;
   font-size: 9px;
   letter-spacing: 4px;
-  color: rgba(150, 190, 220, 0.3);
+  color: rgba(150, 190, 220, 0.35);
   text-transform: uppercase;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 @keyframes fadeHint {

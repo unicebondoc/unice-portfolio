@@ -85,10 +85,10 @@
   position: relative;
 }
 
-/* ── Orb container: circular, glass, organic breathing shape ───────────────────────────── */
+/* ── Orb container: circular, glass, organic breathing shape (~10% smaller) ───────────────────────────── */
 .panel {
   --orb-color: rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 1);
-  --panel-size: var(--panel-diameter, min(380px, 44vw));
+  --panel-size: var(--panel-diameter, min(352px, 46vw));
   width: var(--panel-size);
   height: var(--panel-size);
   position: relative;
@@ -98,19 +98,19 @@
 
   background: radial-gradient(
     ellipse at 30% 25%,
-    rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.18) 0%,
-    rgba(8, 20, 45, 0.72) 45%,
-    rgba(3, 10, 25, 0.82) 100%
+    rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.16) 0%,
+    rgba(8, 20, 45, 0.74) 45%,
+    rgba(3, 10, 25, 0.84) 100%
   );
-  border: 1px solid rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.5);
+  border: 1px solid rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.48);
   box-shadow:
-    0 0 60px rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.2),
-    0 0 120px rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.08),
-    inset 0 0 60px rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.06),
-    inset 0 2px 0 rgba(255, 255, 255, 0.15);
+    0 0 50px rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.18),
+    0 0 100px rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.06),
+    inset 0 0 50px rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.05),
+    inset 0 2px 0 rgba(255, 255, 255, 0.12);
 
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(36px);
+  -webkit-backdrop-filter: blur(36px);
   pointer-events: none;
   user-select: none;
   transform-origin: center center;
@@ -253,50 +253,19 @@
   pointer-events: none;
 }
 
-/* FIX 6: hint that orbs are interactive */
-.touchHint {
-  position: absolute;
-  bottom: 28px;
-  left: 0;
-  right: 0;
-  font-size: 7px;
-  letter-spacing: 2px;
-  color: rgba(255, 255, 255, 0.2);
-  text-align: center;
-  margin: 0;
-  pointer-events: none;
-  z-index: 3;
-}
-
+/* FIX 6: single refined hint at bottom */
 .releaseHint {
   position: absolute;
-  bottom: 10px;
+  bottom: 12px;
   left: 0;
   right: 0;
-  font-size: 7px;
-  letter-spacing: 1px;
-  color: rgba(255, 255, 255, 0.2);
+  font-size: 6px;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.22);
   text-align: center;
   margin: 0;
   pointer-events: none;
   z-index: 3;
-}
-
-.readMore {
-  display: inline;
-  margin: 0;
-  padding: 0;
-  border: none;
-  background: none;
-  font-family: inherit;
-  font-size: inherit;
-  color: rgba(100, 220, 200, 0.7);
-  cursor: pointer;
-  text-decoration: underline;
-  margin-left: 4px;
-}
-.readMore:hover {
-  color: rgba(100, 220, 200, 0.95);
 }
 
 .panelClosing {
@@ -314,21 +283,21 @@
   }
 }
 
-/* ── Content area: 70% width, 72% max-height ──────────── */
+/* ── Content area: 72% width, tighter vertical rhythm ──────────── */
 .scroll {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 70%;
-  max-height: 65vh;
+  width: 72%;
+  max-height: 62vh;
   overflow: hidden;
   text-align: center;
   z-index: 2;
 }
 
 .content {
-  padding: 8px 0 50px;
+  padding: 4px 0 36px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -339,11 +308,11 @@
   to { opacity: 1; }
 }
 
-/* ── Symbol: 18px, orb color, slow spin ────────────────────────────────────── */
+/* ── Symbol: 16px, orb color, slow spin ────────────────────────────────────── */
 .panelSymbol {
-  font-size: 18px;
+  font-size: 16px;
   text-align: center;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   pointer-events: none;
   z-index: 2;
   position: relative;
@@ -351,7 +320,7 @@
 .panelSymbolInner {
   display: inline-block;
   animation: symbolSpin 8s linear infinite;
-  filter: drop-shadow(0 0 8px rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.6));
+  filter: drop-shadow(0 0 6px rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.5));
 }
 
 @keyframes symbolSpin {
@@ -359,71 +328,77 @@
   to { transform: rotate(360deg); }
 }
 
-/* ── Meta, title, description: compact for smaller panel ─────────────────────────────────── */
+/* ── Meta, title, description: tighter vertical spacing ─────────────────────────────────── */
 .metaLine {
   font-family: 'Raleway', sans-serif;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 8px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: rgba(140, 180, 220, 0.55);
+  color: rgba(210, 235, 255, 0.72);
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
-  margin: 0 0 4px 0;
+  margin: 0 0 2px 0;
 }
 
 .title {
   font-family: 'Cinzel', serif;
-  font-weight: 600;
-  font-size: 20px;
-  color: rgba(255, 255, 255, 0.95);
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
-  margin: 0 0 4px 0;
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  font-weight: 650;
+  font-size: 19px;
+  color: rgba(255, 255, 255, 0.98);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
+  margin: 0 0 2px 0;
+  line-height: 1.2;
 }
 
 .subtitle {
   font-family: 'Raleway', sans-serif;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 9px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: rgba(100, 220, 200, 0.6);
+  color: rgba(120, 235, 220, 0.82);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-  margin: 0 0 6px 0;
+  margin: 0 0 4px 0;
 }
 
 .desc {
   font-family: 'Raleway', sans-serif;
-  font-weight: 300;
-  font-size: 12px;
-  line-height: 1.5;
-  color: rgba(210, 225, 240, 0.8);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  margin: 0 0 8px 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.desc.expanded,
-.descExpanded {
-  -webkit-line-clamp: unset;
-  overflow: visible;
+  font-weight: 450;
+  font-size: 11px;
+  line-height: 1.42;
+  color: rgba(235, 245, 255, 0.9);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  margin: 0 0 6px 0;
 }
 
-/* ── Tags: compact 8px ─────────────────────────────────────────────── */
+/* In-panel video: visible when memory has videoSrc; integrated into artifact */
+.panelVideoWrap {
+  width: 100%;
+  max-width: 140px;
+  margin: 6px auto 6px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+.panelVideo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* ── Tags: compact ─────────────────────────────────────────────── */
 .tags {
   font-family: 'Raleway', sans-serif;
   font-weight: 400;
-  font-size: 8px;
+  font-size: 7px;
   letter-spacing: 2px;
-  color: rgba(170, 200, 230, 0.6);
+  color: rgba(220, 235, 255, 0.68);
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  margin: 0 0 8px 0;
+  margin: 0 0 6px 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -433,11 +408,11 @@
 .sectionLabel {
   font-family: 'Raleway', sans-serif;
   font-weight: 400;
-  font-size: 9px;
-  letter-spacing: 3px;
-  color: rgba(140, 170, 210, 0.5);
+  font-size: 8px;
+  letter-spacing: 2.5px;
+  color: rgba(215, 235, 255, 0.58);
   text-transform: uppercase;
-  margin: 10px 0 4px 0;
+  margin: 6px 0 3px 0;
   width: 100%;
   text-align: center;
 }
@@ -447,44 +422,44 @@
 }
 .toolsContent {
   font-family: 'Raleway', sans-serif;
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: rgba(170, 200, 230, 0.6);
-  margin: 0 0 10px 0;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: rgba(235, 245, 255, 0.78);
+  margin: 0 0 6px 0;
 }
 
 .exploreWrap {
-  margin-top: 8px;
-  margin-bottom: 10px;
+  margin-top: 4px;
+  margin-bottom: 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 .exploreWrap .sectionLabel {
-  color: rgba(100, 200, 180, 0.3);
+  color: rgba(120, 235, 220, 0.5);
 }
 .exploreLinks {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 .exploreLink {
-  font-size: 11px;
-  letter-spacing: 2px;
-  color: rgba(100, 220, 200, 0.5);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: rgba(210, 255, 250, 0.75);
   text-decoration: none;
   transition: color 150ms ease;
 }
 .exploreLink:hover {
-  color: rgba(100, 220, 200, 0.9);
+  color: rgba(210, 255, 250, 0.98);
 }
 
 .ctaWrap {
-  margin-top: 12px;
+  margin-top: 8px;
 }
 .cta {
-  font-size: 9px;
+  font-size: 8px;
   letter-spacing: 2px;
   color: rgba(100, 220, 200, 0.5);
   text-decoration: none;

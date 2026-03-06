@@ -1,0 +1,42 @@
+/* Tyche mascot: bottom-right, pointer-events: auto so click opens chat */
+.wrap {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2147483647;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.aura {
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.5) 0%, transparent 70%);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.catWrap {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.catSvg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.6));
+}
+
+.tail {
+  transform-origin: 0 8px;
+}

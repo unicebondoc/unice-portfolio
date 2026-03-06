@@ -6,7 +6,7 @@ import { useRef, useState, useCallback, useEffect } from 'react'
 import styles from './OrbPanel.module.css'
 
 const IS_PHOTO = /\.(png|jpe?g|webp)$/i
-const PANEL_DIAMETER = 'min(400px, 50vw)'
+const PANEL_DIAMETER = 'min(352px, 46vw)'
 
 function hexToRgb(hex) {
   const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
@@ -48,7 +48,6 @@ export default function OrbPanel({
   const [revealed, setRevealed] = useState(false)
   const [displayMemory, setDisplayMemory] = useState(memory)
   const [contentOpacity, setContentOpacity] = useState(1)
-  const [expandMore, setExpandMore] = useState(false)
   const [panelAnim, setPanelAnim] = useState({ scale: 0.05, opacity: 0, durationMs: 400 })
   const [dragY, setDragY] = useState(0)
   const dragStartY = useRef(0)
@@ -162,8 +161,7 @@ export default function OrbPanel({
   const isPhoto = IS_PHOTO.test(m.image ?? '')
   const tierLabel = m.tier ? String(m.tier).toUpperCase() : ''
   const emotionLabel = m.emotion ? String(m.emotion).toUpperCase().replace(/\s+/g, ' ') : ''
-  const metaParts = [m.year, emotionLabel, tierLabel].filter(Boolean)
-  const metaLine = metaParts.join(' · ')
+  const metaLine = (m.labelShort || m.year || [m.year, emotionLabel, tierLabel].filter(Boolean).join(' · ')).trim()
   const tagsLine = (m.tags || []).join(' · ')
   const hasTools = m.tags && m.tags.length > 0
   const links = m.links && m.links.length
@@ -177,8 +175,6 @@ export default function OrbPanel({
   const orbRgba = (a) => `rgba(${r},${g},${b},${a})`
 
   const desc = (m.description?.trim() ?? '')
-  const descShort = desc.length > 120 ? desc.slice(0, 120).trim() + '...' : desc
-  const showReadMore = desc.length > 120
 
   return (
     <div
@@ -258,6 +254,11 @@ export default function OrbPanel({
                     loop
                     muted
                     playsInline
+                    preload="auto"
+                    onCanPlay={(e) => {
+                      // Some browsers still require an explicit play() call.
+                      e.currentTarget.play?.().catch?.(() => {})
+                    }}
                   />
                 ) : (
                   <img className={styles.thumbnailMedia} src={m.image} alt="" draggable="false" />
@@ -278,18 +279,24 @@ export default function OrbPanel({
                 <p className={styles.metaLine}>{metaLine}</p>
                 <h2 className={styles.title}>{m.title}</h2>
                 <p className={styles.subtitle}>{m.subtitle}</p>
-                <p className={styles.desc + (expandMore ? ' ' + styles.descExpanded : '')}>
-                  {expandMore ? desc : descShort}
-                  {showReadMore && !expandMore && (
-                    <button
-                      type="button"
-                      className={styles.readMore}
-                      onClick={() => setExpandMore(true)}
-                    >
-                      read more
-                    </button>
-                  )}
-                </p>
+
+                {m.videoSrc && (
+                  <div className={styles.panelVideoWrap}>
+                    <video
+                      key={m.videoSrc}
+                      className={styles.panelVideo}
+                      src={m.videoSrc}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="auto"
+                      onCanPlay={(e) => e.currentTarget.play?.().catch?.(() => {})}
+                    />
+                  </div>
+                )}
+
+                <p className={styles.desc}>{desc}</p>
 
                 {tagsLine && !hasTools && <div className={styles.tags}>{tagsLine}</div>}
 
@@ -333,9 +340,8 @@ export default function OrbPanel({
               </div>
             </div>
 
-            {/* FIX 6: hint that orbs are interactive */}
-            <p className={styles.touchHint}>✦ touch any orb to explore ✦</p>
-            <p className={styles.releaseHint}>click outside to release</p>
+            {/* Refined hint: single line, low prominence */}
+            <p className={styles.releaseHint}>click outside to close</p>
             </div>
           </div>
           {/* No exit button — close via outside click, ESC, or same orb */}

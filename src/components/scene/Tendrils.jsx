@@ -90,7 +90,9 @@ function Tendril({ memory, index, position }) {
 
     const isHov = hoveredOrb === memory.id
     const isSel = selectedOrb === memory.id
-    const opacity = isSel ? 0.22 : isHov ? 0.25 : TUBE_OPACITY
+    const visualTier = memory.visualTier || 'primary'
+    const tierMult = visualTier === 'hero' ? 1.1 : visualTier === 'secondary' ? 0.6 : 1
+    const opacity = (isSel ? 0.22 : isHov ? 0.25 : TUBE_OPACITY) * tierMult
     if (tubeMesh.material.opacity !== opacity) {
       tubeMesh.material.opacity = THREE.MathUtils.lerp(tubeMesh.material.opacity, opacity, 0.12)
     }
@@ -103,7 +105,7 @@ function Tendril({ memory, index, position }) {
       const pos = curve.getPointAt(along)
       energyDotRef.current.position.copy(pos)
       energyDotRef.current.visible = true
-      energyDotRef.current.material.opacity = isHov ? 0.95 : ENERGY_DOT_OPACITY
+      energyDotRef.current.material.opacity = (isHov ? 0.95 : ENERGY_DOT_OPACITY) * tierMult
     }
   })
 
@@ -126,11 +128,11 @@ function Tendril({ memory, index, position }) {
   )
 }
 
-export default function Tendrils() {
+export default function Tendrils({ memories = MEMORIES }) {
   const isMobile = useStore((s) => s.isMobile)
   return (
     <>
-      {MEMORIES.map((memory, i) => (
+      {memories.map((memory, i) => (
         <Tendril
           key={memory.id}
           memory={memory}
