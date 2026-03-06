@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useRef, Component } from 'react'
+import { Suspense, useEffect, useRef } from 'react'
 import OrbLabels from './components/ui/OrbLabel'
 import ProjectModal from './components/ui/ProjectModal'
 import HUD from './components/ui/HUD'
@@ -11,31 +11,6 @@ import { OrbitControls } from '@react-three/drei'
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import { MEMORIES } from './data/memories'
 import useStore from './hooks/useStore'
-
-// ── Error boundary so a ChatBot crash never kills the whole scene ──
-class ChatBotErrorBoundary extends Component {
-  state = { failed: false, errorMsg: '' }
-  static getDerivedStateFromError(err) { return { failed: true, errorMsg: err?.message ?? String(err) } }
-  componentDidCatch(err, info) {
-    console.error('[ChatBotErrorBoundary] caught:', err, info)
-  }
-  render() {
-    if (this.state.failed) {
-      // Show a minimal fallback bubble so the error is visible in the UI
-      return (
-        <div style={{
-          position: 'fixed', bottom: 28, right: 28, zIndex: 200,
-          background: '#ff4444', color: '#fff', borderRadius: 8,
-          padding: '8px 12px', fontSize: 11, fontFamily: 'monospace',
-          maxWidth: 220, wordBreak: 'break-word',
-        }}>
-          ChatBot error: {this.state.errorMsg}
-        </div>
-      )
-    }
-    return this.props.children
-  }
-}
 
 // ── Responsive camera FOV ────────────────────────────────────────
 function CameraRig() {
@@ -209,9 +184,7 @@ export default function App() {
       {/* ── HTML overlays ─────────────────────────────────────── */}
       <HUD />
       <ProjectModal />
-      <ChatBotErrorBoundary>
-        <ChatBot />
-      </ChatBotErrorBoundary>
+      <ChatBot />
 
       {/* ── Loading screen ────────────────────────────────────── */}
       <LoadingScreen visible={!sceneReady} />

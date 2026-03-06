@@ -2,7 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import useStore from './useStore'
 
-// ── System prompt ────────────────────────────────────────────────
+// ── System prompt ─────────────────────────────────────────────────
 const SYSTEM_PROMPT = `You are an AI assistant for Unice Bondoc's interactive 3D portfolio. Help visitors learn about Unice in a warm, conversational way.
 
 ABOUT UNICE:
@@ -37,24 +37,21 @@ RULES:
 - Keep responses concise (2-4 sentences) and conversational.
 - Be warm and enthusiastic about Unice's journey.`
 
-// Matches [MEMORY:orb-1] through [MEMORY:orb-9] (with or without zero-padding)
 const MEMORY_TAG_RE = /\[MEMORY:(orb-\d+)\]/gi
 
-// Strip all common markdown syntax so the chat renders plain text
 const stripMarkdown = (text) =>
   text
-    .replace(/#{1,6}\s+/g, '')           // headings
-    .replace(/\*\*(.+?)\*\*/g, '$1')     // **bold**
-    .replace(/\*(.+?)\*/g, '$1')         // *italic*
-    .replace(/`{1,3}[^`]*`{1,3}/g, '')  // `code` / ```blocks```
-    .replace(/^\s*[-*+]\s+/gm, '')       // bullet list markers
-    .replace(/^\s*\d+\.\s+/gm, '')       // numbered list markers
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // [text](url) → text
-    .replace(/_{1,2}(.+?)_{1,2}/g, '$1')     // _italic_ / __bold__
-    .replace(/\n{3,}/g, '\n\n')              // collapse excessive blank lines
+    .replace(/#{1,6}\s+/g, '')
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/\*(.+?)\*/g, '$1')
+    .replace(/`{1,3}[^`]*`{1,3}/g, '')
+    .replace(/^\s*[-*+]\s+/gm, '')
+    .replace(/^\s*\d+\.\s+/gm, '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/_{1,2}(.+?)_{1,2}/g, '$1')
+    .replace(/\n{3,}/g, '\n\n')
     .trim()
 
-// Map prompt orb-X ids to zero-padded store ids (orb-01 .. orb-10)
 const promptIdToStoreId = (raw) => {
   const n = parseInt(raw.replace('orb-', ''), 10)
   return `orb-${String(n).padStart(2, '0')}`
@@ -62,7 +59,6 @@ const promptIdToStoreId = (raw) => {
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY
 
-// Greeting shown before any API call
 const INITIAL_MESSAGE = {
   role: 'assistant',
   text: API_KEY
@@ -70,32 +66,21 @@ const INITIAL_MESSAGE = {
     : "Chat is offline — add VITE_GEMINI_API_KEY to .env.local to enable it.",
 }
 
-/**
- * useGemini — manages a persistent Gemini chat session.
- *
- * Returns:
- *   messages    – array of { role: 'user'|'assistant', text }
- *   sendMessage – async (text: string) => void
- *   isLoading   – boolean
- *   error       – string | null
- */
 export function useGemini() {
   const [messages, setMessages] = useState([INITIAL_MESSAGE])
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError]     = useState(null)
+  const [error, setError] = useState(null)
 
-  const chatRef  = useRef(null)
+  const chatRef = useRef(null)
   const pulseOrb = useStore((s) => s.pulseOrb)
 
-  // Initialise chat once on mount
   useEffect(() => {
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY
-    if (!apiKey) {
+    if (!API_KEY) {
       setError('VITE_GEMINI_API_KEY is not set.')
       return
     }
     try {
-      const genAI = new GoogleGenerativeAI(apiKey)
+      const genAI = new GoogleGenerativeAI(API_KEY)
       const model = genAI.getGenerativeModel({
         model: 'gemini-2.0-flash',
         systemInstruction: SYSTEM_PROMPT,
@@ -114,20 +99,16 @@ export function useGemini() {
       const trimmed = text.trim()
       if (!trimmed || isLoading) return
 
-      // Append user message immediately
       setMessages((prev) => [...prev, { role: 'user', text: trimmed }])
       setIsLoading(true)
       setError(null)
 
       try {
-        if (!chatRef.current) {
-          throw new Error('Chat not initialised — is VITE_GEMINI_API_KEY set?')
-        }
+        if (!chatRef.current) throw new Error('Chat not initialised — is VITE_GEMINI_API_KEY set?')
 
-        const result  = await chatRef.current.sendMessage(trimmed)
+        const result = await chatRef.current.sendMessage(trimmed)
         const rawText = result.response.text()
 
-        // ── Extract [MEMORY:orb-X] tags ──────────────────────
         const orbIds = []
         let match
         const re = new RegExp(MEMORY_TAG_RE.source, 'gi')
@@ -135,26 +116,17 @@ export function useGemini() {
           orbIds.push(promptIdToStoreId(match[1]))
         }
 
-        // Strip [MEMORY:orb-X] tags, then strip any markdown formatting
         const displayText = stripMarkdown(
           rawText.replace(new RegExp(MEMORY_TAG_RE.source, 'gi'), '')
         )
 
         setMessages((prev) => [...prev, { role: 'assistant', text: displayText }])
-
-        // Trigger orb pulses with a small stagger so multiple pulses feel distinct
-        orbIds.forEach((storeId, i) => {
-          setTimeout(() => pulseOrb(storeId), i * 350)
-        })
+        orbIds.forEach((id, i) => setTimeout(() => pulseOrb(id), i * 350))
       } catch (err) {
-        const msg = err.message ?? 'Unknown error'
-        setError(msg)
+        setError(err.message ?? 'Unknown error')
         setMessages((prev) => [
           ...prev,
-          {
-            role: 'assistant',
-            text: "Sorry, I couldn't reach Gemini right now. Please check the API key and try again.",
-          },
+          { role: 'assistant', text: "Sorry, I couldn't reach Gemini right now. Please check the API key and try again." },
         ])
       } finally {
         setIsLoading(false)

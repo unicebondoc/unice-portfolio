@@ -1,4 +1,4 @@
-/* ── Wrapper: anchors panel + bubble at bottom-right ────────────── */
+/* ── Wrapper ─────────────────────────────────────────────────────── */
 .wrapper {
   position: fixed;
   bottom: 28px;
@@ -32,11 +32,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 14px 16px;
-  background: linear-gradient(
-    135deg,
-    rgba(199, 125, 255, 0.12) 0%,
-    rgba(0, 217, 255, 0.08) 100%
-  );
+  background: linear-gradient(135deg, rgba(199,125,255,0.12) 0%, rgba(0,217,255,0.08) 100%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   flex-shrink: 0;
 }
@@ -47,7 +43,6 @@
   gap: 8px;
 }
 
-/* Pulsing green "live" dot */
 .headerDot {
   width: 7px;
   height: 7px;
@@ -105,7 +100,6 @@
 .messages::-webkit-scrollbar-track  { background: transparent; }
 .messages::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.10); border-radius: 2px; }
 
-/* User bubble — right-aligned, purple tint */
 .userMsg {
   align-self: flex-end;
   max-width: 82%;
@@ -119,7 +113,6 @@
   color: rgba(232, 234, 240, 0.92);
 }
 
-/* AI bubble — left-aligned, dark surface */
 .aiMsg {
   align-self: flex-start;
   max-width: 88%;
@@ -133,7 +126,7 @@
   color: rgba(232, 234, 240, 0.80);
 }
 
-/* ── Typing indicator ───────────────────────────────────────────── */
+/* ── Typing dots ────────────────────────────────────────────────── */
 .typingDots {
   display: flex;
   align-items: center;
@@ -165,7 +158,7 @@
   padding: 4px 0;
 }
 
-/* ── Footer / input row ─────────────────────────────────────────── */
+/* ── Footer / input ─────────────────────────────────────────────── */
 .footer {
   display: flex;
   align-items: center;
@@ -187,16 +180,9 @@
   outline: none;
   transition: border-color 180ms;
 }
-.input::placeholder {
-  color: rgba(232, 234, 240, 0.25);
-}
-.input:focus {
-  border-color: rgba(199, 125, 255, 0.45);
-}
-.input:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+.input::placeholder { color: rgba(232, 234, 240, 0.25); }
+.input:focus        { border-color: rgba(199, 125, 255, 0.45); }
+.input:disabled     { opacity: 0.5; cursor: not-allowed; }
 
 .sendBtn {
   width: 34px;
@@ -212,18 +198,11 @@
   transition: opacity 180ms, transform 120ms;
   flex-shrink: 0;
 }
-.sendBtn:hover:not(:disabled) {
-  opacity: 0.85;
-}
-.sendBtn:active:not(:disabled) {
-  transform: scale(0.93);
-}
-.sendBtn:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
+.sendBtn:hover:not(:disabled)  { opacity: 0.85; }
+.sendBtn:active:not(:disabled) { transform: scale(0.93); }
+.sendBtn:disabled              { opacity: 0.35; cursor: not-allowed; }
 
-/* ── Floating trigger bubble ────────────────────────────────────── */
+/* ── Bubble ─────────────────────────────────────────────────────── */
 .bubble {
   position: relative;
   width: 52px;
@@ -249,35 +228,15 @@
     0 10px 28px rgba(0, 0, 0, 0.55),
     0 0 40px -4px rgba(199, 125, 255, 0.75);
 }
-.bubble:active {
-  transform: scale(0.92);
-}
-.bubbleOpen {
-  transform: scale(1);
-}
+.bubble:active { transform: scale(0.92); }
 
 .bubbleIcon {
   font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   line-height: 1;
+  user-select: none;
 }
 
-/* ── Mobile ─────────────────────────────────────────────────────── */
-@media (max-width: 640px) {
-  .wrapper {
-    bottom: 16px;
-    right: 16px;
-  }
-
-  .panel {
-    width: calc(100vw - 32px);
-    height: 400px;
-  }
-}
-
-/* ── Unread notification dot ────────────────────────────────────── */
+/* ── Unread dot ─────────────────────────────────────────────────── */
 .unreadDot {
   position: absolute;
   top: 3px;
@@ -288,4 +247,10 @@
   background: #FF6B6B;
   border: 2px solid #060914;
   box-shadow: 0 0 6px #FF6B6B;
+}
+
+/* ── Mobile ─────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .wrapper { bottom: 16px; right: 16px; }
+  .panel   { width: calc(100vw - 32px); height: 400px; }
 }
