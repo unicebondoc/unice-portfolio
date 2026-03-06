@@ -4,11 +4,18 @@
  */
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { useGemini } from '../../hooks/useGemini'
+
+console.log('[ChatBot] module loaded')
+
+// Minimal stub — confirms portal works before adding useGemini back
+function useGemini() {
+  return { messages: [], sendMessage: () => {}, isLoading: false, error: null }
+}
 
 const Z = 2147483647 // max CSS z-index
 
 export default function ChatBot() {
+  console.log('[ChatBot] render called')
   const [isOpen, setIsOpen] = useState(false)
   const [input, setInput]   = useState('')
   const bottomRef           = useRef(null)
