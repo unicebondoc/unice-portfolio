@@ -9,10 +9,11 @@ import useStore from '../../hooks/useStore'
  * Clouds: Blossom (purple/pink), Ring, Spore (soft purple), Ground Mist.
  */
 
-const BLOSSOM_COUNT = 120
-const SPORE_COUNT   = 80
-const RING_COUNT    = 48   // Circle-form ring around scene (purple/lavender)
-const MIST_COUNT    = 60   // Ground mist near water level
+const BLOSSOM_COUNT = 200
+const SPORE_COUNT   = 140
+const RING_COUNT    = 80
+const MIST_COUNT    = 100
+const SIDE_SPRITE_COUNT = 90  // left and right sprite columns
 
 const BLOSSOM_PALETTE = [
   new THREE.Color('#9060ff'),
@@ -55,6 +56,15 @@ const WATER_TREE_PALETTE = [
   new THREE.Color('#6040cc'),
   new THREE.Color('#22aacc'),
   new THREE.Color('#a070e8'),
+]
+
+/* Left/right sprite columns — brighter purple/cyan, more visible */
+const SIDE_SPRITE_PALETTE = [
+  new THREE.Color('#7080ff'),
+  new THREE.Color('#22c4dd'),
+  new THREE.Color('#a060ff'),
+  new THREE.Color('#c4a0ff'),
+  new THREE.Color('#40a0cc'),
 ]
 
 // ── GLSL — vertex ──────────────────────────────────────────────────
@@ -311,9 +321,9 @@ function ParticleCloud({ count, palette, spread, uSize, baseOpacity, hoveredPos,
     }
     posA.needsUpdate = true
 
-    // Gentle flicker — hard cap at 0.15 so particles never compete with orbs
+    // Gentle flicker — higher cap so sprites are more visible
     matRef.current.uniforms.uOpacity.value =
-      Math.min(0.15, baseOpacity * (0.55 + Math.sin(t * 0.16) * 0.28))
+      Math.min(0.32, baseOpacity * (0.7 + Math.sin(t * 0.16) * 0.3))
   })
 
   return (
@@ -367,7 +377,7 @@ function RingCloud({ count, palette, radiusMin, radiusMax, yMin, yMax, zOffset, 
     }
     ptsRef.current.geometry.attributes.position.needsUpdate = true
     matRef.current.uniforms.uOpacity.value =
-      Math.min(0.14, baseOpacity * (0.6 + Math.sin(t * 0.12) * 0.25))
+      Math.min(0.28, baseOpacity * (0.7 + Math.sin(t * 0.12) * 0.3))
   })
 
   return (
@@ -390,7 +400,7 @@ function RingCloud({ count, palette, radiusMin, radiusMax, yMin, yMax, zOffset, 
 }
 
 // Ground mist: drift slowly horizontally near water level (y -2 to -0.5)
-function MistCloud({ count, palette, xMin, xMax, yMin, yMax, zMin, zMax, uSize, baseOpacity }) {
+function MistCloud({ count, palette, xMin, xMax, yMin, yMax, zMin, zMax, uSize, baseOpacity, additive = false }) {
   const ptsRef = useRef()
   const matRef = useRef()
 
@@ -419,7 +429,7 @@ function MistCloud({ count, palette, xMin, xMax, yMin, yMax, zMin, zMax, uSize, 
     }
     ptsRef.current.geometry.attributes.position.needsUpdate = true
     matRef.current.uniforms.uOpacity.value =
-      Math.min(0.14, baseOpacity * (0.6 + Math.sin(t * 0.08) * 0.25))
+      Math.min(additive ? 0.38 : 0.22, baseOpacity * (0.65 + Math.sin(t * 0.08) * 0.3))
   })
 
   return (
@@ -435,7 +445,7 @@ function MistCloud({ count, palette, xMin, xMax, yMin, yMax, zMin, zMax, uSize, 
         uniforms={uniforms}
         transparent
         depthWrite={false}
-        blending={THREE.NormalBlending}
+        blending={additive ? THREE.AdditiveBlending : THREE.NormalBlending}
       />
     </points>
   )
@@ -452,12 +462,13 @@ export default function Particles() {
     return MEMORIES.find((m) => m.id === hoveredOrb)?.position ?? null
   }, [hoveredOrb])
 
-  const mult = reducedMotion ? 0.35 : isMobile ? 0.5 : 1
-  const blossomCount = Math.max(20, Math.floor(BLOSSOM_COUNT * mult))
-  const sporeCount = Math.max(10, Math.floor(SPORE_COUNT * mult))
-  const ringCount = Math.max(12, Math.floor(RING_COUNT * mult))
-  const mistCount = Math.max(15, Math.floor(MIST_COUNT * mult))
-  const waterTreeCount = Math.max(25, Math.floor(55 * mult))
+  const mult = reducedMotion ? 0.35 : isMobile ? 0.6 : 1
+  const blossomCount = Math.max(40, Math.floor(BLOSSOM_COUNT * mult))
+  const sporeCount = Math.max(20, Math.floor(SPORE_COUNT * mult))
+  const ringCount = Math.max(24, Math.floor(RING_COUNT * mult))
+  const mistCount = Math.max(30, Math.floor(MIST_COUNT * mult))
+  const waterTreeCount = Math.max(40, Math.floor(80 * mult))
+  const sideSpriteCount = Math.max(35, Math.floor(SIDE_SPRITE_COUNT * mult))
 
   return (
     <>
@@ -466,18 +477,18 @@ export default function Particles() {
         count={blossomCount}
         palette={BLOSSOM_PALETTE}
         spread={{ x: 28, y: 20, z: 12, zOffset: -8 }}
-        uSize={0.8}
-        baseOpacity={0.14}
+        uSize={1.2}
+        baseOpacity={0.22}
         hoveredPos={hoveredPos}
         selectedOrbWorldPos={selectedOrbWorldPos}
       />
       {/* Blossoms near orbs — spread into orb constellation area */}
       <ParticleCloud
-        count={Math.max(8, Math.floor(24 * mult))}
+        count={Math.max(20, Math.floor(48 * mult))}
         palette={BLOSSOM_PALETTE}
         spread={{ x: 14, y: 10, z: 2.5, zOffset: -3.5 }}
-        uSize={0.7}
-        baseOpacity={0.12}
+        uSize={1.0}
+        baseOpacity={0.2}
         hoveredPos={hoveredPos}
         selectedOrbWorldPos={selectedOrbWorldPos}
       />
@@ -490,16 +501,16 @@ export default function Particles() {
         yMin={-1.5}
         yMax={2.5}
         zOffset={-3.5}
-        uSize={0.75}
-        baseOpacity={0.12}
+        uSize={1.0}
+        baseOpacity={0.2}
       />
       {/* Spores — soft purple pinpricks */}
       <ParticleCloud
         count={sporeCount}
         palette={SPORE_PALETTE}
         spread={{ x: 24, y: 16, z: 8, zOffset: -9 }}
-        uSize={0.6}
-        baseOpacity={0.11}
+        uSize={0.95}
+        baseOpacity={0.18}
         hoveredPos={hoveredPos}
         selectedOrbWorldPos={selectedOrbWorldPos}
       />
@@ -513,8 +524,8 @@ export default function Particles() {
         yMax={-0.5}
         zMin={-4}
         zMax={1}
-        uSize={0.8}
-        baseOpacity={0.12}
+        uSize={1.0}
+        baseOpacity={0.18}
       />
       {/* Water–tree drift: purple/cyan particles floating around orbs on the left from water at tree */}
       <MistCloud
@@ -526,8 +537,37 @@ export default function Particles() {
         yMax={3}
         zMin={-4.2}
         zMax={-2}
-        uSize={0.7}
-        baseOpacity={0.13}
+        uSize={1.0}
+        baseOpacity={0.2}
+        additive
+      />
+      {/* Left sprites — visible purple/cyan column beside left orbs */}
+      <MistCloud
+        count={sideSpriteCount}
+        palette={SIDE_SPRITE_PALETTE}
+        xMin={-7}
+        xMax={-1.2}
+        yMin={-2}
+        yMax={3.5}
+        zMin={-4.5}
+        zMax={-1.5}
+        uSize={1.4}
+        baseOpacity={0.26}
+        additive
+      />
+      {/* Right sprites — visible purple/cyan column beside right orbs */}
+      <MistCloud
+        count={sideSpriteCount}
+        palette={SIDE_SPRITE_PALETTE}
+        xMin={1.2}
+        xMax={7}
+        yMin={-2}
+        yMax={3.5}
+        zMin={-4.5}
+        zMax={-1.5}
+        uSize={1.4}
+        baseOpacity={0.26}
+        additive
       />
     </>
   )
