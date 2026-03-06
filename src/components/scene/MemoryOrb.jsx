@@ -976,10 +976,10 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         )
       }
     } else {
-      // Non-video: core opacity 0.9 → 0.95, aura opacity 0.12 → 0.16, aura scale 1.4 → 1.45 (singular glow, no second orb)
+      // Non-video: core opacity 0.9 → 0.95, aura stays unified with orb (no second-orb scale)
       const coreOpTgt = isHovered ? 0.95 : 0.9
-      const auraOpTgt = isHovered ? 0.16 : 0.12
-      const auraScaleTgt = isHovered ? 1.45 / 1.4 : 1
+      const auraOpTgt = isHovered ? 0.14 : 0.12
+      const auraScaleTgt = 1 // no hover scale — keep aura visually one with orb
       if (orbInnerHazeMatRef.current) {
         orbInnerHazeMatRef.current.opacity = THREE.MathUtils.lerp(
           orbInnerHazeMatRef.current.opacity,
@@ -1031,8 +1031,8 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
             rippleCycleCountRef.current += 1
           }
           const ease = 1 - Math.pow(1 - rippleProgressRef.current, 2)
-          rippleRingRef.current.scale.setScalar(1 + ease * 0.2)
-          rippleRingMatRef.current.opacity = 0.12 * (1 - ease)
+          rippleRingRef.current.scale.setScalar(1 + ease * 0.15)
+          rippleRingMatRef.current.opacity = 0.07 * (1 - ease)
         }
       } else {
         rippleCycleCountRef.current = 0
@@ -1053,15 +1053,14 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
     e.stopPropagation()
     if (!isInteractive) return
     if (isSelected) {
+      // On mobile, a tap fires pointerdown then a synthetic click; avoid closing immediately after open.
+      const now = typeof performance !== 'undefined' ? performance.now() : Date.now()
+      if (now - lastOpenTimeRef.current < 500) return
       setActivePanel(null)
     } else {
       const now = typeof performance !== 'undefined' ? performance.now() : Date.now()
       if (now - lastOpenTimeRef.current < 400) return
       lastOpenTimeRef.current = now
-      if (import.meta.env?.DEV) {
-        const p = groupRef.current?.position
-        console.log(`[Orb ${id}] before click: pos=(${p?.x?.toFixed(4)},${p?.y?.toFixed(4)},${p?.z?.toFixed(4)}) base=(${basePosition[0]},${basePosition[1]},${basePosition[2]})`)
-      }
       const wp = new THREE.Vector3()
       groupRef.current.getWorldPosition(wp)
       const projected = wp.clone().project(camera)
@@ -1076,6 +1075,10 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         worldPos: [wp.x, wp.y, wp.z],
         screenPos: [clampedX, clampedY],
       })
+      if (import.meta.env?.DEV) {
+        const mobile = useStore.getState().isMobile
+        console.log(`[Orb] opening panel ${id} mobile=${mobile}`)
+      }
       sound?.play('orbOpen')
       setClickPulse({ position: [wp.x, wp.y, wp.z], color, radius: RADIUS })
       coreFlashRef.current = tRef.current
@@ -1083,6 +1086,12 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       // Shell crack (step 2) is triggered at 150ms in useFrame
       seamStartRef.current = tRef.current
     }
+  }
+  const handlePointerDown = (e) => {
+    e.stopPropagation()
+    if (!isInteractive) return
+    // On touch devices, open on pointerdown so we don't rely on delayed click; handleClick does the rest.
+    if (!isSelected) handleClick(e)
   }
   const handlePointerOver = (e) => {
     e.stopPropagation()
@@ -1378,6 +1387,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
             ref={orbMeshRef}
             renderOrder={2}
             onClick={handleClick}
+            onPointerDown={handlePointerDown}
             onPointerOver={handlePointerOver}
             onPointerOut={handlePointerOut}
           >
@@ -1415,6 +1425,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
             ref={orbMeshRef}
             renderOrder={1}
             onClick={handleClick}
+            onPointerDown={handlePointerDown}
             onPointerOver={handlePointerOver}
             onPointerOut={handlePointerOut}
           >

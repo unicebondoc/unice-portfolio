@@ -112,7 +112,7 @@ function Tendril({ memory, index, position }) {
   })
 
   return (
-    <>
+    <group raycast={() => null}>
       <primitive object={tubeGlowMesh} />
       <primitive object={tubeMesh} />
       <mesh ref={energyDotRef} visible={false}>
@@ -126,7 +126,7 @@ function Tendril({ memory, index, position }) {
           toneMapped={false}
         />
       </mesh>
-    </>
+    </group>
   )
 }
 

@@ -578,6 +578,7 @@ export default function App() {
   const reducedMotion = useStore((s) => s.reducedMotion)
   const hoveredOrbScreenPos = useStore((s) => s.hoveredOrbScreenPos)
   const hoveredOrb = useStore((s) => s.hoveredOrb)
+  const openPanelTimestamp = useStore((s) => s.openPanelTimestamp)
   const setLoadingExited = useStore((s) => s.setLoadingExited)
   const loadingExited = useStore((s) => s.loadingExited)
   const showSecondaryOrbs = isMobile || !!hoveredOrb || activePanel?.type === 'memory'
@@ -1049,7 +1050,11 @@ export default function App() {
         camera={{ position: [0, 0, 8], fov: 60, near: 0.1, far: 100 }}
         gl={{ antialias: true, alpha: true }}
         onPointerMissed={() => {
-          if (activePanel?.type === 'memory') requestClosePanel()
+          if (activePanel?.type !== 'memory') return
+          // Don't close on "miss" right after opening (e.g. tap on mobile can fire miss)
+          const now = typeof performance !== 'undefined' ? performance.now() : Date.now()
+          if (openPanelTimestamp != null && now - openPanelTimestamp < 450) return
+          requestClosePanel()
         }}
         resize={{ scroll: false, debounce: { scroll: 50, resize: 0 } }}
         style={{

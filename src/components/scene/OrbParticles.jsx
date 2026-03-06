@@ -88,18 +88,20 @@ export default function OrbParticles({ position, color, isHovered = false, isSel
   )
 
   return (
-    <points ref={pointsRef} position={posVec}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
-      </bufferGeometry>
-      <shaderMaterial
-        vertexShader={VERT}
-        fragmentShader={FRAG}
-        uniforms={uniforms}
-        transparent
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-      />
-    </points>
+    <group raycast={() => null} position={posVec}>
+      <points ref={pointsRef}>
+        <bufferGeometry>
+          <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        </bufferGeometry>
+        <shaderMaterial
+          vertexShader={VERT}
+          fragmentShader={FRAG}
+          uniforms={uniforms}
+          transparent
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </points>
+    </group>
   )
 }
