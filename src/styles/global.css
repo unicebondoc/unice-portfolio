@@ -64,13 +64,15 @@ body {
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  overflow: hidden;
+  /* overflow intentionally NOT set here — body overflow:hidden can clip
+     portal-rendered fixed elements on some browsers. #root handles it. */
 }
 
 #root {
   width: 100vw;
   height: 100vh;
   position: relative;
+  overflow: hidden;
 }
 
 /* ─── Utility ───────────────────────────────────────────────────── */

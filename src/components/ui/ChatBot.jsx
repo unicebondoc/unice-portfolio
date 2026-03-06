@@ -3,6 +3,30 @@ import { createPortal } from 'react-dom'
 import { useGemini } from '../../hooks/useGemini'
 import styles from './ChatBot.module.css'
 
+// Mount a container directly on <html> — bypasses body overflow:hidden entirely
+function usePortalContainer() {
+  const [container] = useState(() => {
+    const el = document.createElement('div')
+    el.setAttribute('data-chatbot', 'true')
+    // Inline styles: fixed full-viewport layer, pointer-events off by default
+    Object.assign(el.style, {
+      position: 'fixed',
+      inset: '0',
+      zIndex: '9999',
+      pointerEvents: 'none',
+      overflow: 'visible',
+    })
+    document.documentElement.appendChild(el)
+    return el
+  })
+  useEffect(() => {
+    return () => {
+      if (container.parentNode) container.parentNode.removeChild(container)
+    }
+  }, [container])
+  return container
+}
+
 function TypingDots() {
   return (
     <div className={styles.aiMsg}>
@@ -22,10 +46,11 @@ function Message({ role, text }) {
 }
 
 export default function ChatBot() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [input, setInput]   = useState('')
-  const messagesEndRef      = useRef(null)
-  const inputRef            = useRef(null)
+  const [isOpen, setIsOpen]   = useState(false)
+  const [input, setInput]     = useState('')
+  const messagesEndRef        = useRef(null)
+  const inputRef              = useRef(null)
+  const container             = usePortalContainer()
 
   const { messages, sendMessage, isLoading, error } = useGemini()
 
@@ -53,8 +78,21 @@ export default function ChatBot() {
 
   const hasNewMessage = !isOpen && messages.length > 1
 
+  // Inline styles on wrapper guarantee positioning even if CSS module fails
+  const wrapperStyle = {
+    position: 'fixed',
+    bottom: 28,
+    right: 28,
+    zIndex: 9999,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    gap: 12,
+    pointerEvents: 'auto',
+  }
+
   return createPortal(
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} style={wrapperStyle}>
       {/* ── Chat panel ──────────────────────────────────────── */}
       {isOpen && (
         <div className={styles.panel} aria-label="Unice's AI assistant">
@@ -116,6 +154,6 @@ export default function ChatBot() {
         {hasNewMessage && <span className={styles.unreadDot} />}
       </button>
     </div>,
-    document.body
+    container
   )
 }
