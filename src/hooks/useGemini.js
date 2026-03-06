@@ -60,10 +60,14 @@ const promptIdToStoreId = (raw) => {
   return `orb-${String(n).padStart(2, '0')}`
 }
 
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY
+
 // Greeting shown before any API call
 const INITIAL_MESSAGE = {
   role: 'assistant',
-  text: "Hi! I'm here to tell you about Unice's journey. Ask me anything — about her projects, her move to Sydney, or her goal of becoming an AI Engineer! ✨",
+  text: API_KEY
+    ? "Hi! I'm here to tell you about Unice's journey. Ask me anything — about her projects, her move to Sydney, or her goal of becoming an AI Engineer! ✨"
+    : "Chat is offline — add VITE_GEMINI_API_KEY to .env.local to enable it.",
 }
 
 /**

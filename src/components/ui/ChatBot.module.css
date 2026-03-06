@@ -4,6 +4,7 @@
   bottom: 28px;
   right: 28px;
   z-index: 200;
+  isolation: isolate;        /* own stacking context; drei Html portals can't bleed in */
   display: flex;
   flex-direction: column;
   align-items: flex-end;
