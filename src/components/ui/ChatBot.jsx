@@ -152,42 +152,18 @@ export default function ChatBot() {
       </AnimatePresence>
 
       {/* ── Floating trigger bubble ───────────────────────────── */}
-      <motion.button
-        className={styles.bubble}
+      <button
+        className={`${styles.bubble} ${isOpen ? styles.bubbleOpen : ''}`}
         onClick={() => setIsOpen((v) => !v)}
-        whileHover={{ scale: 1.08 }}
-        whileTap={{ scale: 0.92 }}
         aria-label={isOpen ? 'Close chat' : 'Open AI chat'}
       >
-        <AnimatePresence mode="wait">
-          {isOpen ? (
-            <motion.span
-              key="close"
-              initial={{ opacity: 0, rotate: -90 }}
-              animate={{ opacity: 1, rotate: 0 }}
-              exit={{ opacity: 0, rotate: 90 }}
-              transition={{ duration: 0.15 }}
-              className={styles.bubbleIcon}
-            >
-              ✕
-            </motion.span>
-          ) : (
-            <motion.span
-              key="open"
-              initial={{ opacity: 0, scale: 0.7 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.7 }}
-              transition={{ duration: 0.15 }}
-              className={styles.bubbleIcon}
-            >
-              ✦
-            </motion.span>
-          )}
-        </AnimatePresence>
+        <span className={styles.bubbleIcon}>
+          {isOpen ? '✕' : '✦'}
+        </span>
 
         {/* Unread indicator */}
         {hasNewMessage && <span className={styles.unreadDot} />}
-      </motion.button>
+      </button>
     </div>
   )
 }

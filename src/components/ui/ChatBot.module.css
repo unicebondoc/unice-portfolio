@@ -3,8 +3,7 @@
   position: fixed;
   bottom: 28px;
   right: 28px;
-  z-index: 200;
-  isolation: isolate;        /* own stacking context; drei Html portals can't bleed in */
+  z-index: 9999;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -241,13 +240,20 @@
     0 0 0 1px rgba(255,255,255,0.12),
     0 8px 24px rgba(0, 0, 0, 0.5),
     0 0 30px -4px rgba(199, 125, 255, 0.55);
-  transition: box-shadow 250ms;
+  transition: transform 200ms ease, box-shadow 250ms ease;
 }
 .bubble:hover {
+  transform: scale(1.08);
   box-shadow:
     0 0 0 1px rgba(255,255,255,0.16),
     0 10px 28px rgba(0, 0, 0, 0.55),
     0 0 40px -4px rgba(199, 125, 255, 0.75);
+}
+.bubble:active {
+  transform: scale(0.92);
+}
+.bubbleOpen {
+  transform: scale(1);
 }
 
 .bubbleIcon {
