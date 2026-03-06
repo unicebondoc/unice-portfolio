@@ -1,7 +1,7 @@
 /**
  * Vercel serverless POST /api/chat
- * Calls OpenAI from server only. Do not expose OPENAI_API_KEY to the client.
- * Set OPENAI_API_KEY in Vercel project Environment Variables.
+ * Calls OpenAI from server only. Do not expose the key in client code.
+ * In Vercel: set OPENAI_API_KEY or VITE_OPENAI_API_KEY in Project → Environment Variables.
  */
 
 const OPENAI_URL = 'https://api.openai.com/v1/chat/completions'
@@ -67,9 +67,11 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const apiKey = process.env.OPENAI_API_KEY
+  const apiKey = process.env.OPENAI_API_KEY || process.env.VITE_OPENAI_API_KEY
   if (!apiKey) {
-    return res.status(500).json({ error: 'Server configuration error: OPENAI_API_KEY not set' })
+    return res.status(500).json({
+      error: 'Server configuration error: set OPENAI_API_KEY (or VITE_OPENAI_API_KEY) in Vercel Environment Variables',
+    })
   }
 
   let body
