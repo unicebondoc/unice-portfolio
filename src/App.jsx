@@ -2,7 +2,6 @@ import { Suspense, useEffect, useLayoutEffect, useRef, useMemo, useState, useCal
 import HUD from './components/ui/HUD'
 import SacredArtifacts from './components/ui/SacredArtifacts'
 import IntroOverlay from './components/ui/IntroOverlay'
-import ChatBot from './components/ui/ChatBot'
 import { Canvas, useThree, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useProgress } from '@react-three/drei'
@@ -29,8 +28,8 @@ import BlogPanel from './components/ui/BlogPanel'
 import hudStyles from './components/ui/HUD.module.css'
 import LoadingScreen from './components/ui/LoadingScreen'
 import SoundToggle from './components/ui/SoundToggle'
-import MobileNavFab from './components/ui/MobileNavFab'
 import CustomCursor from './components/ui/CustomCursor'
+import SimpleChat from './components/ui/SimpleChat'
 
 const LERP = 0.08
 
@@ -830,6 +829,8 @@ export default function App() {
       <div
         ref={mainUiRef}
         style={{
+          position: 'relative',
+          zIndex: 1,
           opacity: 1,
           pointerEvents: 'none',
         }}
@@ -922,7 +923,7 @@ export default function App() {
           <SacredArtifacts />
         </div>
 
-        <MobileNavFab />
+        <SimpleChat />
 
       {/* ── Bottom bar: socials only, fades when memory panel open ── */}
       <div
@@ -1171,22 +1172,6 @@ export default function App() {
       {/* Intro overlay disabled so orbs/scene are visible from load; re-enable to restore 3s awakening */}
       {/* <IntroOverlay /> */}
       <HUD />
-      {/* Tyche + ChatBot: visible on all screen sizes; z-index 50; wrapper pointer-events: none, children use pointer-events: auto */}
-      <div
-        className="chatBotLayer"
-        data-chatbot-layer
-        style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 60,
-          pointerEvents: 'none',
-          visibility: 'visible',
-          display: 'block',
-        }}
-      >
-        <ChatBot />
-      </div>
-
         {/* ── Bottom hint (clean onboarding, hidden when panel open) ── */}
         <div
           data-entrance="bottomhint"
