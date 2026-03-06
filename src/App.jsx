@@ -184,6 +184,8 @@ export default function App() {
       {/* ── HTML overlays ─────────────────────────────────────── */}
       <HUD />
       <ProjectModal />
+      {/* DEBUG — remove after confirming chatbot paints */}
+      <div style={{ position:'fixed', bottom:90, right:28, zIndex:99999, background:'red', width:12, height:12, borderRadius:'50%' }} />
       <ChatBot />
 
       {/* ── Loading screen ────────────────────────────────────── */}
