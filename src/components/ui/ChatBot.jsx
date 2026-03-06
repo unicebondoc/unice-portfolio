@@ -1,15 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
+import { useGemini } from '../../hooks/useGemini'
 import styles from './ChatBot.module.css'
 
 export default function ChatBot() {
   const [open, setOpen] = useState(false)
 
-  // Phase 2: basic local chat UX (still no API integration)
+  // Phase 4: Gemini integration (keep UI + interaction model stable)
   const [input, setInput] = useState('')
-  const [messages, setMessages] = useState(() => ([
-    { role: 'assistant', text: "Hi — this is a minimal local chat. We'll wire AI later." },
-    { role: 'assistant', text: 'Try typing a message and pressing Enter.' },
-  ]))
+  const { messages, sendMessage, isLoading, error } = useGemini()
 
   const listRef = useRef(null)
   const inputRef = useRef(null)
@@ -25,16 +23,12 @@ export default function ChatBot() {
     const el = listRef.current
     if (!el) return
     el.scrollTop = el.scrollHeight
-  }, [open, messages.length])
+  }, [open, messages.length, isLoading])
 
   const send = () => {
     const text = input.trim()
-    if (!text) return
-    setMessages((prev) => ([
-      ...prev,
-      { role: 'user', text },
-      { role: 'assistant', text: `Echo: ${text}` },
-    ]))
+    if (!text || isLoading) return
+    sendMessage(text)
     setInput('')
   }
 
@@ -91,6 +85,14 @@ export default function ChatBot() {
                 {m.text}
               </div>
             ))}
+            {isLoading && (
+              <div className={styles.typing}>Thinking…</div>
+            )}
+            {error && (
+              <div className={styles.errorNote}>
+                {error}
+              </div>
+            )}
           </div>
 
           {/* Input row */}
@@ -114,11 +116,12 @@ export default function ChatBot() {
               onKeyDown={(e) => {
                 if (e.key === 'Enter') console.log('[ChatBot] enter keydown')
               }}
+              disabled={isLoading}
             />
             <button
               type="submit"
-              disabled={!input.trim()}
-              className={`${styles.send} ${input.trim() ? styles.sendEnabled : styles.sendDisabled}`}
+              disabled={!input.trim() || isLoading}
+              className={`${styles.send} ${input.trim() && !isLoading ? styles.sendEnabled : styles.sendDisabled}`}
               aria-label="Send"
               onMouseDown={() => console.log('[ChatBot] send mouse down')}
               onPointerDown={() => console.log('[ChatBot] send pointer down')}

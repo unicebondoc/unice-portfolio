@@ -84,6 +84,28 @@
   color: rgba(220, 245, 245, 0.92);
 }
 
+.typing {
+  align-self: flex-start;
+  color: rgba(220, 245, 245, 0.72);
+  font-family: Raleway, system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 6px 2px;
+  user-select: none;
+}
+
+.errorNote {
+  align-self: center;
+  color: rgba(255, 145, 145, 0.85);
+  font-family: Raleway, system-ui, -apple-system, sans-serif;
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 6px 8px;
+  border: 1px solid rgba(255, 145, 145, 0.25);
+  border-radius: 12px;
+  background: rgba(255, 145, 145, 0.08);
+}
+
 .inputRow {
   flex: 0 0 auto;
   padding: 12px;
