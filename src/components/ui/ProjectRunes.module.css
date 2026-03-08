@@ -70,10 +70,10 @@
   box-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
 }
 
-/* Status: pulsing dot + "building" (in progress = amber, live = cyan) */
+/* Status: pulsing dot + "building" — moved to bottom so it doesn't block the rune name */
 .statusBadge {
   position: absolute;
-  top: 8px;
+  bottom: 8px;
   right: 10px;
   display: flex;
   align-items: center;

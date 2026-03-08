@@ -1,7 +1,6 @@
 /**
- * ProjectRunes — floating rune stones on the right: Unice's projects as ancient glowing tablets.
+ * ProjectRunes — floating rune stones on the right: Gesture Tarot only.
  * Parallax with cursor; faint vine connecting to tree/heart.
- * ClawBot removed per request.
  */
 
 import { useState } from 'react'
@@ -14,13 +13,6 @@ const PROJECTS = [
     name: 'Gesture Tarot',
     desc: 'Hand-tracking AI that draws and reads tarot cards via webcam',
     tech: 'MediaPipe · TensorFlow.js · React',
-    status: 'in progress',
-  },
-  {
-    id: 'ar-vision',
-    name: 'AR Vision',
-    desc: 'Real-time AI object recognition through Rayneo X2 AR glasses',
-    tech: 'Rayneo X2 · Computer Vision · AI',
     status: 'in progress',
   },
 ]
