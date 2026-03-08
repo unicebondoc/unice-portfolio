@@ -193,6 +193,16 @@ export default function OrbPanel({
     el.play().catch(() => {})
   }, [])
 
+  /** Direct tap on badge: play() is in same call stack as user click — most reliable for autoplay policy */
+  const handleBadgePlay = useCallback((e) => {
+    e.stopPropagation()
+    const el = videoBadgeRef.current
+    if (!el) return
+    el.muted = true
+    el.play().catch(() => {})
+    badgeVideoUnlockedRef.current = true
+  }, [])
+
   if (!memory) return null
 
   const m = displayMemory || memory
@@ -286,38 +296,38 @@ export default function OrbPanel({
             {(m.videoSrc || (isPhoto && m.image)) && (
               <div
                 className={`${styles.thumbnailBadge} ${m.isRoot ? styles.thumbnailBadgeVignette : ''}`}
-                title={m.videoSrc ? 'Tap panel to play video' : undefined}
+                title={m.videoSrc ? 'Tap to play video' : undefined}
               >
                 {m.videoSrc ? (
-                  <video
-                    ref={(el) => {
-                      videoBadgeRef.current = el
-                      if (el && m.videoSrc) {
-                        el.muted = true
-                        el.play().catch(() => {})
-                      }
-                    }}
-                    key={m.videoSrc}
-                    className={styles.thumbnailMedia}
-                    src={`${m.videoSrc}${m.videoSrc.includes('?') ? '&' : '?'}badge=1`}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="auto"
-                    onCanPlay={(e) => {
-                      e.currentTarget.muted = true
-                      e.currentTarget.play?.().catch?.(() => {})
-                    }}
-                    onLoadedData={(e) => {
-                      e.currentTarget.muted = true
-                      e.currentTarget.play?.().catch?.(() => {})
-                    }}
-                    onEnded={(e) => {
-                      e.currentTarget.currentTime = 0
-                      e.currentTarget.play?.().catch?.(() => {})
-                    }}
-                  />
+                  <button
+                    type="button"
+                    className={styles.thumbnailBadgeBtn}
+                    onClick={handleBadgePlay}
+                    aria-label="Play video"
+                  >
+                    <video
+                      ref={videoBadgeRef}
+                      key={m.videoSrc}
+                      className={styles.thumbnailMedia}
+                      src={`${m.videoSrc}${m.videoSrc.includes('?') ? '&' : '?'}b=1`}
+                      loop
+                      muted
+                      playsInline
+                      preload="auto"
+                      onCanPlay={(e) => {
+                        e.currentTarget.muted = true
+                        e.currentTarget.play?.().catch?.(() => {})
+                      }}
+                      onLoadedData={(e) => {
+                        e.currentTarget.muted = true
+                        e.currentTarget.play?.().catch?.(() => {})
+                      }}
+                      onEnded={(e) => {
+                        e.currentTarget.currentTime = 0
+                        e.currentTarget.play?.().catch?.(() => {})
+                      }}
+                    />
+                  </button>
                 ) : (
                   <img className={styles.thumbnailMedia} src={m.image} alt="" draggable="false" />
                 )}
