@@ -63,6 +63,7 @@ export default function OrbPanel({
   const swapTimeoutRef = useRef(null)
   const videoBadgeRef = useRef(null)
   const videoInnerRef = useRef(null)
+  const badgeVideoUnlockedRef = useRef(false)
 
   useEffect(() => {
     if (panelPos) lastPosRef.current = panelPos
@@ -93,6 +94,7 @@ export default function OrbPanel({
       swapTimeoutRef.current = setTimeout(() => {
         setDisplayMemory(memory)
         setContentOpacity(1)
+        badgeVideoUnlockedRef.current = false
         setTimeout(() => setRevealed(true), 50)
       }, 180)
       return () => {
@@ -103,6 +105,7 @@ export default function OrbPanel({
       setRevealed(false)
       setDisplayMemory(null)
       setContentOpacity(1)
+      badgeVideoUnlockedRef.current = false
     }
   }, [memory?.id, mobile])
 
@@ -179,6 +182,16 @@ export default function OrbPanel({
     if (dragY > 80) onClose()
     setDragY(0)
   }, [mobile, dragY, onClose])
+
+  /** Unlock badge video on first user interaction with panel (browser requires play() in user gesture stack) */
+  const handlePanelUserGesture = useCallback(() => {
+    if (badgeVideoUnlockedRef.current) return
+    const el = videoBadgeRef.current
+    if (!el || !el.src) return
+    badgeVideoUnlockedRef.current = true
+    el.muted = true
+    el.play().catch(() => {})
+  }, [])
 
   if (!memory) return null
 
@@ -265,11 +278,16 @@ export default function OrbPanel({
                 opacity: contentOpacity,
                 transition: contentOpacity === 1 ? 'opacity 250ms ease-out' : 'opacity 180ms ease-out',
               }}
+              onPointerDown={handlePanelUserGesture}
+              onClick={handlePanelUserGesture}
             >
             {/* Thumbnail badge: 48px circle top-right */}
             {/* Thumbnail badge: 48px circle top-right; profile orb gets vignette */}
             {(m.videoSrc || (isPhoto && m.image)) && (
-              <div className={`${styles.thumbnailBadge} ${m.isRoot ? styles.thumbnailBadgeVignette : ''}`}>
+              <div
+                className={`${styles.thumbnailBadge} ${m.isRoot ? styles.thumbnailBadgeVignette : ''}`}
+                title={m.videoSrc ? 'Tap panel to play video' : undefined}
+              >
                 {m.videoSrc ? (
                   <video
                     ref={(el) => {
