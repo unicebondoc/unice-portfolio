@@ -61,6 +61,8 @@ export default function OrbPanel({
   const [sheetOffset, setSheetOffset] = useState(100)
   const lastPosRef = useRef(panelPos)
   const swapTimeoutRef = useRef(null)
+  const videoBadgeRef = useRef(null)
+  const videoInnerRef = useRef(null)
 
   useEffect(() => {
     if (panelPos) lastPosRef.current = panelPos
@@ -124,6 +126,20 @@ export default function OrbPanel({
   useEffect(() => {
     if (memory && displayMemory?.id === memory.id) setDisplayMemory(memory)
   }, [memory, displayMemory?.id])
+
+  /* When panel is revealed with a video, ensure both badge and inner clip play (and loop) */
+  useEffect(() => {
+    const current = displayMemory || memory
+    if (!revealed || !current?.videoSrc) return
+    const play = (el) => {
+      if (el && el.play) el.play().catch(() => {})
+    }
+    const t = requestAnimationFrame(() => {
+      play(videoBadgeRef.current)
+      play(videoInnerRef.current)
+    })
+    return () => cancelAnimationFrame(t)
+  }, [revealed, memory, displayMemory])
 
   const handleClose = useCallback(() => {
     if (closingState) return
@@ -254,6 +270,7 @@ export default function OrbPanel({
               <div className={`${styles.thumbnailBadge} ${m.isRoot ? styles.thumbnailBadgeVignette : ''}`}>
                 {m.videoSrc ? (
                   <video
+                    ref={videoBadgeRef}
                     key={m.videoSrc}
                     className={styles.thumbnailMedia}
                     src={m.videoSrc}
@@ -263,7 +280,6 @@ export default function OrbPanel({
                     playsInline
                     preload="auto"
                     onCanPlay={(e) => {
-                      // Some browsers still require an explicit play() call.
                       e.currentTarget.play?.().catch?.(() => {})
                     }}
                   />
@@ -283,6 +299,28 @@ export default function OrbPanel({
                     {getSymbolForCategory(m.category)}
                   </span>
                 </div>
+
+                {m.videoSrc && (
+                  <div className={styles.panelVideoWrap}>
+                    <video
+                      ref={videoInnerRef}
+                      key={m.videoSrc}
+                      className={styles.panelVideo}
+                      src={m.videoSrc}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="auto"
+                      disablePictureInPicture
+                      onCanPlay={(e) => e.currentTarget.play?.().catch(() => {})}
+                      onLoadedData={(e) => e.currentTarget.play?.().catch(() => {})}
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none'
+                      }}
+                    />
+                  </div>
+                )}
 
                 <p className={styles.metaLine}>{metaLine}</p>
                 <h2 className={styles.title}>{m.title}</h2>
