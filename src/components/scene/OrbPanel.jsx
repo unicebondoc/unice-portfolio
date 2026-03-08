@@ -284,27 +284,6 @@ export default function OrbPanel({
                   </span>
                 </div>
 
-                {m.videoSrc && (
-                  <div className={styles.panelVideoWrap}>
-                    <video
-                      key={m.videoSrc}
-                      className={styles.panelVideo}
-                      src={m.videoSrc}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      preload="auto"
-                      disablePictureInPicture
-                      onCanPlay={(e) => e.currentTarget.play?.().catch(() => {})}
-                      onLoadedData={(e) => e.currentTarget.play?.().catch(() => {})}
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none'
-                      }}
-                    />
-                  </div>
-                )}
-
                 <p className={styles.metaLine}>{metaLine}</p>
                 <h2 className={styles.title}>{m.title}</h2>
                 <p className={styles.subtitle}>{m.subtitle}</p>
