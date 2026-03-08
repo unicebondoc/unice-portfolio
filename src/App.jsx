@@ -570,7 +570,7 @@ export default function App() {
   const setLoadingExited = useStore((s) => s.setLoadingExited)
   const loadingExited = useStore((s) => s.loadingExited)
   const visibleMemories = useMemo(
-    () => MEMORIES.filter((m) => m.isPrimary !== false).slice(0, 7),
+    () => MEMORIES.filter((m) => m.isPrimary !== false).slice(0, 8),
     []
   )
 
