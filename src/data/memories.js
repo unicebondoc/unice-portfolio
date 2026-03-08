@@ -27,6 +27,7 @@ function mobilePositionsForMemories(list) {
   return result
 }
 
+export const MEMORIES = [
   // 1 — ORIGIN
   {
     id: 'orb-origin',
