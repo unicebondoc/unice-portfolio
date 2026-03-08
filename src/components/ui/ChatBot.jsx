@@ -108,7 +108,20 @@ export default function ChatBot() {
     setInput('')
   }
 
+  const stripEmoji = (q) => (q || '').replace(/\s*[🌿✦📋🤖🌙🏆📩⚡🔮🚀]\s*$/g, '').trim()
   const hasUserSentMessage = messages.some((m) => m.role === 'user')
+  const usedTexts = new Set(
+    messages
+      .filter((m) => m.role === 'user')
+      .map((m) => (m.text || '').trim().toLowerCase())
+  )
+  const availableQuestions = SUGGESTED_QUESTIONS.filter(
+    (q) => !usedTexts.has(stripEmoji(q).toLowerCase())
+  )
+  const chipsToShow = availableQuestions.slice(0, 3)
+  const lastMessage = messages[messages.length - 1]
+  const showChipsAfterReply = lastMessage?.role === 'assistant' && !isLoading && !pendingReply
+  const showChips = (!hasUserSentMessage || showChipsAfterReply) && chipsToShow.length > 0
 
   return (
     <div
@@ -126,15 +139,6 @@ export default function ChatBot() {
           <div className={styles.header}>
             <div className={styles.title}>MEMORY TREE</div>
             <div className={styles.headerActions}>
-              <a
-                href="/resume/Unice_Bondoc_Resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.resumeBtn}
-                aria-label="Open Résumé"
-              >
-                RÉSUMÉ ↗
-              </a>
               <button
                 type="button"
                 onClick={clearMessages}
@@ -179,8 +183,8 @@ export default function ChatBot() {
           </div>
 
           <div className={styles.suggested}>
-            {!hasUserSentMessage &&
-              SUGGESTED_QUESTIONS.map((q, i) => (
+            {showChips &&
+              chipsToShow.map((q, i) => (
                 <button
                   key={i}
                   type="button"
