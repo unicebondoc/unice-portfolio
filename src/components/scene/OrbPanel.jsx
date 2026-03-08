@@ -26,6 +26,13 @@ const CATEGORY_SYMBOL = {
   creator: '❋',
   skills: '❋',
   future: '❋',
+  writing: '✒',
+  operations: '◆',
+  the_leap: '💫',
+  ai_deployment: '🌱',
+  masters: '✧',
+  ai_portfolio: '⬡',
+  present: '✦',
 }
 function getSymbolForCategory(category) {
   if (!category) return '❋'
@@ -276,9 +283,6 @@ export default function OrbPanel({
                     {getSymbolForCategory(m.category)}
                   </span>
                 </div>
-                <p className={styles.metaLine}>{metaLine}</p>
-                <h2 className={styles.title}>{m.title}</h2>
-                <p className={styles.subtitle}>{m.subtitle}</p>
 
                 {m.videoSrc && (
                   <div className={styles.panelVideoWrap}>
@@ -287,16 +291,23 @@ export default function OrbPanel({
                       className={styles.panelVideo}
                       src={m.videoSrc}
                       autoPlay
-                      loop
                       muted
+                      loop
                       playsInline
                       preload="auto"
                       disablePictureInPicture
                       onCanPlay={(e) => e.currentTarget.play?.().catch(() => {})}
                       onLoadedData={(e) => e.currentTarget.play?.().catch(() => {})}
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none'
+                      }}
                     />
                   </div>
                 )}
+
+                <p className={styles.metaLine}>{metaLine}</p>
+                <h2 className={styles.title}>{m.title}</h2>
+                <p className={styles.subtitle}>{m.subtitle}</p>
 
                 <p className={styles.desc}>{desc}</p>
 

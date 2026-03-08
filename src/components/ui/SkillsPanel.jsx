@@ -14,22 +14,22 @@ const CATEGORIES = [
   },
   {
     key: 'frameworks',
-    label: 'FRAMEWORKS & LIBRARIES',
+    label: 'FRAMEWORKS',
     skills: ['React 18', 'Node.js', 'REST APIs', 'Git', 'GitHub'],
   },
   {
     key: 'ai',
     label: 'AI & GENERATIVE AI',
     skills: [
-      'OpenAI API (GPT-4)',
+      'OpenAI API',
       'Prompt Engineering',
       'LangChain',
       'RAG',
       'Pinecone',
       'AI Output Evaluation',
       'Voiceflow',
-      'Anthropic Claude API',
-      'Google Gemini API',
+      'Claude API',
+      'Gemini API',
       'LLaMA',
     ],
   },
@@ -66,7 +66,7 @@ const CATEGORIES = [
   },
   {
     key: 'developing',
-    label: 'DEVELOPING & FAMILIAR',
+    label: 'DEVELOPING',
     skills: [
       'FastAPI',
       'Three.js',
