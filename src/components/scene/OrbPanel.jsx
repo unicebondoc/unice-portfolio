@@ -6,7 +6,7 @@ import { useRef, useState, useCallback, useEffect } from 'react'
 import styles from './OrbPanel.module.css'
 
 const IS_PHOTO = /\.(png|jpe?g|webp)$/i
-const PANEL_DIAMETER = 'min(352px, 46vw)'
+const PANEL_DIAMETER = 'min(440px, 56vw)'
 
 function hexToRgb(hex) {
   const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
@@ -132,13 +132,13 @@ export default function OrbPanel({
     const current = displayMemory || memory
     if (!revealed || !current?.videoSrc) return
     const play = (el) => {
-      if (el && el.play) el.play().catch(() => {})
+      if (el && typeof el.play === 'function') el.play().catch(() => {})
     }
-    const t = requestAnimationFrame(() => {
+    const id = setTimeout(() => {
       play(videoBadgeRef.current)
       play(videoInnerRef.current)
-    })
-    return () => cancelAnimationFrame(t)
+    }, 150)
+    return () => clearTimeout(id)
   }, [revealed, memory, displayMemory])
 
   const handleClose = useCallback(() => {
@@ -280,6 +280,13 @@ export default function OrbPanel({
                     playsInline
                     preload="auto"
                     onCanPlay={(e) => {
+                      e.currentTarget.play?.().catch?.(() => {})
+                    }}
+                    onLoadedData={(e) => {
+                      e.currentTarget.play?.().catch?.(() => {})
+                    }}
+                    onEnded={(e) => {
+                      e.currentTarget.currentTime = 0
                       e.currentTarget.play?.().catch?.(() => {})
                     }}
                   />

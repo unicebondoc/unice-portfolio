@@ -291,10 +291,12 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 72%;
-  max-height: 62vh;
-  overflow: hidden;
+  max-height: 68vh;
+  overflow-y: auto;
+  overflow-x: hidden;
   text-align: center;
   z-index: 2;
+  -webkit-overflow-scrolling: touch;
 }
 
 .content {
