@@ -196,6 +196,7 @@ export const PORTFOLIO_DATA = {
     "Video editing — Adobe Premiere Pro",
     "Gaming — Nintendo Switch 2 and PS5",
     "Content creation — Life of Mooni / Mooni of Sydney",
+    "Writing — Medium blog (medium.com/@unicebondoc)",
     "Stock photography",
   ],
 
@@ -203,6 +204,7 @@ export const PORTFOLIO_DATA = {
     email: "uniceabondoc@gmail.com",
     linkedIn: "linkedin.com/in/unicebondoc",
     website: "unicebondoc.com",
+    mediumBlog: "https://medium.com/@unicebondoc",
   },
 
   accuracyRules: {
