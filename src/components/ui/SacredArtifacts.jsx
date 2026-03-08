@@ -22,10 +22,13 @@ export default function SacredArtifacts() {
     }, 280)
   }
 
-  const handleResumeClick = () => {
+  const handleResumeClick = (e) => {
+    e.preventDefault()
     setRippleArtifact('resume')
-    setTimeout(() => setRippleArtifact(null), 280)
-    // Link opens in new tab via href
+    setTimeout(() => {
+      setRippleArtifact(null)
+      setActivePanel({ type: 'resume' })
+    }, 280)
   }
 
   const handleWritingsClick = (e) => {
@@ -55,10 +58,8 @@ export default function SacredArtifacts() {
         </div>
       </button>
 
-      <a
-        href="/resume/Unice_Bondoc_Resume.pdf"
-        target="_blank"
-        rel="noopener noreferrer"
+      <button
+        type="button"
         className={`${styles.artifact} ${styles.artifactResume} ${rippleArtifact === 'resume' ? styles.artifactRipple : ''}`}
         onClick={handleResumeClick}
         onMouseEnter={onNavHover}
@@ -68,10 +69,10 @@ export default function SacredArtifacts() {
           <span>◈</span>
         </div>
         <div className={styles.artifactText}>
-          <span className={styles.artifactLabel}>RÉSUMÉ ↗</span>
+          <span className={styles.artifactLabel}>RÉSUMÉ</span>
           <span className={styles.artifactSubLabel}>my journey</span>
         </div>
-      </a>
+      </button>
 
       <button
         type="button"

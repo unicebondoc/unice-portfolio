@@ -26,6 +26,7 @@ import { useSound } from './context/SoundManager'
 import OrbPanel from './components/scene/OrbPanel'
 import SkillsPanel from './components/ui/SkillsPanel'
 import BlogPanel from './components/ui/BlogPanel'
+import ResumePanel from './components/ui/ResumePanel'
 import hudStyles from './components/ui/HUD.module.css'
 import LoadingScreen from './components/ui/LoadingScreen'
 import SoundToggle from './components/ui/SoundToggle'
@@ -645,7 +646,7 @@ export default function App() {
   useEffect(() => {
     const el = mainContentRef.current
     if (!el) return
-    const isPanelOpen = activePanel?.type === 'skills' || activePanel?.type === 'blog'
+    const isPanelOpen = activePanel?.type === 'skills' || activePanel?.type === 'blog' || activePanel?.type === 'resume'
     gsap.killTweensOf(el)
     if (isPanelOpen) {
       gsap.to(el, {
@@ -1252,6 +1253,9 @@ export default function App() {
       )}
       {activePanel?.type === 'blog' && (
         <BlogPanel onClose={() => setActivePanel(null)} />
+      )}
+      {activePanel?.type === 'resume' && (
+        <ResumePanel onClose={() => setActivePanel(null)} />
       )}
 
       </div>

@@ -159,42 +159,44 @@ export default function ChatBot() {
             </div>
           </div>
 
-          <div ref={listRef} className={styles.body}>
-            {messages.map((m, idx) => (
-              <div
-                key={idx}
-                className={`${styles.msg} ${m.role === 'user' ? styles.msgUser : styles.msgAssistant}`}
-              >
-                {m.text}
-              </div>
-            ))}
-            {pendingReply && (
-              <div className={`${styles.msg} ${styles.msgAssistant} ${styles.msgReveal}`}>
-                {revealedText}
-                {!revealEndRef.current && <span className={styles.cursor} />}
-              </div>
-            )}
-            {isLoading && !pendingReply && (
-              <div className={styles.typing}>{loadingPhrase}</div>
-            )}
-            {error && (
-              <div className={styles.errorNote}>{error}</div>
-            )}
-          </div>
-
-          <div className={styles.suggested}>
-            {showChips &&
-              chipsToShow.map((q, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  className={styles.chip}
-                  onClick={() => onSuggestedQuestion(q)}
-                  disabled={isLoading}
+          <div ref={listRef} className={styles.scrollArea}>
+            <div className={styles.body}>
+              {messages.map((m, idx) => (
+                <div
+                  key={idx}
+                  className={`${styles.msg} ${m.role === 'user' ? styles.msgUser : styles.msgAssistant}`}
                 >
-                  {q}
-                </button>
+                  {m.text}
+                </div>
               ))}
+              {pendingReply && (
+                <div className={`${styles.msg} ${styles.msgAssistant} ${styles.msgReveal}`}>
+                  {revealedText}
+                  {!revealEndRef.current && <span className={styles.cursor} />}
+                </div>
+              )}
+              {isLoading && !pendingReply && (
+                <div className={styles.typing}>{loadingPhrase}</div>
+              )}
+              {error && (
+                <div className={styles.errorNote}>{error}</div>
+              )}
+            </div>
+
+            <div className={styles.suggested}>
+              {showChips &&
+                chipsToShow.map((q, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    className={styles.chip}
+                    onClick={() => onSuggestedQuestion(q)}
+                    disabled={isLoading}
+                  >
+                    {q}
+                  </button>
+                ))}
+            </div>
           </div>
 
           <form

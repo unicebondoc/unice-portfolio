@@ -5,7 +5,7 @@
  */
 
 import { SYSTEM_PROMPT } from '../lib/systemPrompt.js'
-import { PORTFOLIO_DATA } from '../lib/portfolioData.js'
+import { getPortfolioDataForAPI } from '../lib/portfolioData.js'
 
 const OPENAI_URL = 'https://api.openai.com/v1/chat/completions'
 const MODEL = 'gpt-4o-mini'
@@ -111,7 +111,7 @@ export default async function handler(req, res) {
     SYSTEM_PROMPT,
     '',
     'PORTFOLIO KNOWLEDGE:',
-    JSON.stringify(PORTFOLIO_DATA, null, 2),
+    JSON.stringify(getPortfolioDataForAPI(), null, 2),
     rollingSummary ? `\nCONVERSATION SUMMARY SO FAR:\n${rollingSummary}` : '',
   ]
     .join('\n')

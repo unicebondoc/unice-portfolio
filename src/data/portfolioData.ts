@@ -1,8 +1,6 @@
 export const PORTFOLIO_DATA = {
   identity: {
     fullName: "Unice Bondoc",
-    dateOfBirth: "December 1, 1994",
-    ageNote: "Born December 1, 1994. As of March 2026 she is 31. Turns 32 in December 2026. Always calculate age from date of birth before answering.",
     location: "Sydney, NSW, Australia",
     originallyFrom: "Philippines",
     movedToSydney: 2023,
@@ -208,7 +206,7 @@ export const PORTFOLIO_DATA = {
   },
 
   accuracyRules: {
-    age: "31 as of March 2026. Born December 1, 1994. Turns 32 December 2026.",
+    age: "State only her current age; do not mention full birthdate. (Age is computed yearly by the API.)",
     banking: "~4 years — BDO (Apr 2018–Mar 2019) + RCBC (Sep 2019–Sep 2022).",
     chatbotDelivery: "One week end-to-end.",
     capstoneGrade: "88/100 High Distinction.",

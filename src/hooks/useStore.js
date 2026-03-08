@@ -7,6 +7,7 @@ import { create } from 'zustand'
  * - { type: 'chat' }: chat panel
  * - { type: 'skills' }: skills panel (Crystal artifact)
  * - { type: 'blog' }: blog/writings panel (Tome artifact)
+ * - { type: 'resume' }: resume PDF panel (Scroll artifact)
  * Only one can be open at a time. setActivePanel keeps selectedOrb/selectedOrbWorldPos in sync.
  */
 const useStore = create((set) => ({
@@ -58,6 +59,9 @@ const useStore = create((set) => ({
       }
       if (panel.type === 'blog') {
         return { activePanel: panel, activeSection: 3 }
+      }
+      if (panel.type === 'resume') {
+        return { activePanel: panel, activeSection: 2 }
       }
       return { activePanel: panel }
     }),
