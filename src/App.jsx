@@ -1,7 +1,6 @@
 import { Suspense, useEffect, useLayoutEffect, useRef, useMemo, useState, useCallback } from 'react'
 import HUD from './components/ui/HUD'
 import SacredArtifacts from './components/ui/SacredArtifacts'
-import ProjectRunes from './components/ui/ProjectRunes'
 import IntroOverlay from './components/ui/IntroOverlay'
 import { Canvas, useThree, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
@@ -935,8 +934,6 @@ export default function App() {
         >
           <SacredArtifacts />
         </div>
-
-        {!activePanel && <ProjectRunes />}
 
         {/* ── Chat + Tyche (bottom-right): wrapper pointer-events none; Tyche has pointer-events auto ── */}
         <div

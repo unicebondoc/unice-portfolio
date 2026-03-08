@@ -27,7 +27,6 @@ function mobilePositionsForMemories(list) {
   return result
 }
 
-export const MEMORIES = [
   // 1 — ORIGIN
   {
     id: 'orb-origin',
@@ -43,7 +42,7 @@ export const MEMORIES = [
     glowColor: '#e07c64',
     image: '/memories/orb-07.svg',
     labelShort: '2012 · Origin',
-    position: [-2.2, 3.0, -1.5],
+    position: [-2.5, -1.5, 0.5],
     visualTier: 'secondary',
     orbType: 'secondary',
     isPrimary: true,
@@ -56,7 +55,7 @@ export const MEMORIES = [
     videoHint: 'Philippines footage, childhood, Bicol, anything that feels like a beginning',
     isFuture: false,
   },
-  // 2 — VOICE
+  // 2 — VOICE (The Writer — intimate, slightly smaller)
   {
     id: 'orb-writer',
     tier: 'supporting',
@@ -71,7 +70,8 @@ export const MEMORIES = [
     glowColor: '#c4b5fd',
     image: '/memories/orb-02.svg',
     labelShort: '2020 · Writing',
-    position: [1.8, -2.6, -1.5],
+    position: [2, -1, 0.3],
+    scaleMult: 0.9,
     visualTier: 'secondary',
     orbType: 'secondary',
     isPrimary: true,
@@ -99,7 +99,7 @@ export const MEMORIES = [
     glowColor: '#d4a853',
     image: '/memories/orb-08.svg',
     labelShort: '2018 · Operations',
-    position: [-0.6, -0.8, 0],
+    position: [-1.8, 0.2, 0.8],
     visualTier: 'primary',
     orbType: 'primary',
     isPrimary: true,
@@ -127,7 +127,7 @@ export const MEMORIES = [
     glowColor: '#a78bfa',
     image: '/memories/orb-01.svg',
     labelShort: '2022 · The Leap',
-    position: [-3.6, -2.0, -1.5],
+    position: [1.5, 0.8, 0.5],
     visualTier: 'primary',
     orbType: 'primary',
     isPrimary: true,
@@ -155,7 +155,7 @@ export const MEMORIES = [
     glowColor: '#67e8f9',
     image: '/memories/orb-04.svg',
     labelShort: '2024 · AI Deployment',
-    position: [-3.8, 1.4, 0.5],
+    position: [-1, 1.8, 0.3],
     visualTier: 'primary',
     orbType: 'primary',
     isPrimary: true,
@@ -168,7 +168,7 @@ export const MEMORIES = [
     videoHint: 'screen recording of chatbot, code editor, terminal output — anything that feels like something going live',
     isFuture: false,
   },
-  // 6 — PROOF (gold, brightest)
+  // 6 — PROOF (gold, prominent — second largest)
   {
     id: 'orb-proof',
     tier: 'core',
@@ -183,7 +183,7 @@ export const MEMORIES = [
     glowColor: '#ffd700',
     image: '/memories/orb-03.svg',
     labelShort: '2025 · Master\'s',
-    position: [3.6, 0.8, 0.5],
+    position: [1.8, 2.2, 0.6],
     scaleMult: 1.2,
     visualTier: 'hero',
     orbType: 'primary',
@@ -212,8 +212,7 @@ export const MEMORIES = [
     glowColor: '#34d399',
     image: '/memories/orb-05.svg',
     labelShort: '2026 · AI Portfolio',
-    position: [5.4, 0.24, -1.5],
-    scaleMult: 1.15,
+    position: [-0.5, 3, 0.4],
     visualTier: 'hero',
     orbType: 'primary',
     isPrimary: true,
@@ -226,7 +225,7 @@ export const MEMORIES = [
     videoHint: 'screen recording of this portfolio being built, code, the 3D scene coming to life — or just a beautiful clip of the forest itself',
     isFuture: false,
   },
-  // 8 — BECOMING
+  // 8 — BECOMING (present — slightly larger)
   {
     id: 'orb-becoming',
     tier: 'core',
@@ -241,7 +240,8 @@ export const MEMORIES = [
     glowColor: '#a5f3fc',
     image: '/memories/orb-06.svg',
     labelShort: '2026 · Present',
-    position: [7.2, 1.8, -1.5],
+    position: [0.8, 3.8, 0.2],
+    scaleMult: 1.1,
     visualTier: 'primary',
     orbType: 'primary',
     isPrimary: true,
@@ -254,7 +254,7 @@ export const MEMORIES = [
     videoHint: 'Sydney daily life, studying, laptop at cafe, city at night — anything that feels like right now and what\'s coming',
     isFuture: true,
   },
-  // 9 — ROOT (identity)
+  // 9 — ROOT (identity — largest, base of tree)
   {
     id: 'orb-root',
     tier: 'root',
@@ -272,8 +272,8 @@ export const MEMORIES = [
     videoSrc: '/videos/root-identity.mp4',
     videoHint: 'your best intro clip, portrait, selfie video — this is you',
     labelShort: '2025 · Identity',
-    position: [2.8, 2.2, 0],
-    scaleMult: 1.05,
+    position: [0, -2, 0],
+    scaleMult: 1.4,
     visualTier: 'primary',
     orbType: 'primary',
     isPrimary: true,
