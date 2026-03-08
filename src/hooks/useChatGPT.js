@@ -5,7 +5,7 @@ const MEMORY_TAG_RE = /\[MEMORY:(orb-\d+)\]/gi
 
 const INITIAL_MESSAGE = {
   role: 'assistant',
-  text: "I'm Tyche — guardian of this memory tree. Ask me anything about Unice: her leap from banking to tech, Sydney, the AI work, or the cat who shares my name. I'll keep it wise and a little warm.",
+  text: "I'm the Memory Tree. Ask about Unice's work, her story, or why she belongs on your team. Short answers, no fluff.",
 }
 
 /**
@@ -17,6 +17,7 @@ export function useChatGPT() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
   const [pendingReply, setPendingReply] = useState(null)
+  const conversationSummaryRef = useRef(null)
   const pulseOrb = useStore((s) => s.pulseOrb)
   const messagesRef = useRef(messages)
   messagesRef.current = messages
@@ -38,7 +39,10 @@ export function useChatGPT() {
         const res = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: apiMessages }),
+          body: JSON.stringify({
+            messages: apiMessages,
+            conversationSummary: conversationSummaryRef.current || undefined,
+          }),
         })
 
         const data = await res.json().catch(() => ({}))
@@ -49,6 +53,9 @@ export function useChatGPT() {
 
         const reply = (data.reply || '').trim()
         const orbIds = Array.isArray(data.orbIds) ? data.orbIds : []
+        if (data.conversationSummary != null && data.conversationSummary !== '') {
+          conversationSummaryRef.current = data.conversationSummary
+        }
 
         if (reply) {
           setPendingReply(reply)
@@ -86,5 +93,12 @@ export function useChatGPT() {
     }
   }, [pendingReply])
 
-  return { messages, sendMessage, isLoading, error, pendingReply, setPendingReply, commitPendingReply }
+  const clearMessages = useCallback(() => {
+    setMessages([INITIAL_MESSAGE])
+    setPendingReply(null)
+    setError(null)
+    conversationSummaryRef.current = null
+  }, [])
+
+  return { messages, sendMessage, isLoading, error, pendingReply, setPendingReply, commitPendingReply, clearMessages }
 }

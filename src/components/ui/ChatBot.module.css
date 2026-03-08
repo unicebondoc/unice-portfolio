@@ -67,6 +67,48 @@
   white-space: nowrap;
 }
 
+.clear {
+  pointer-events: auto;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  font-size: 12px;
+  font-family: Raleway, system-ui, -apple-system, sans-serif;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.clear:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.resumeBtn {
+  pointer-events: auto;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 9px;
+  letter-spacing: 3px;
+  font-family: Raleway, system-ui, -apple-system, sans-serif;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.resumeBtn:hover {
+  color: rgba(255, 255, 255, 0.95);
+  border-color: rgba(196, 160, 82, 0.6);
+  background: rgba(196, 160, 82, 0.08);
+}
+
 .close {
   pointer-events: auto;
   border: none;
@@ -166,6 +208,37 @@
   border: 1px solid rgba(255, 145, 145, 0.25);
   border-radius: 12px;
   background: rgba(255, 80, 80, 0.08);
+}
+
+.suggested {
+  flex: 0 0 auto;
+  padding: 0 16px 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.chip {
+  pointer-events: auto;
+  background: rgba(0, 240, 255, 0.06);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.chip:hover:not(:disabled) {
+  background: rgba(0, 240, 255, 0.14);
+  border-color: rgba(0, 240, 255, 0.6);
+  color: rgba(255, 255, 255, 0.9);
+}
+.chip:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .inputRow {

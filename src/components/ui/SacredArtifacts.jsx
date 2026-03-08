@@ -56,19 +56,19 @@ export default function SacredArtifacts() {
       </button>
 
       <a
-        href="/resume.pdf"
+        href="/resume/Unice_Bondoc_Resume.pdf"
         target="_blank"
         rel="noopener noreferrer"
         className={`${styles.artifact} ${styles.artifactResume} ${rippleArtifact === 'resume' ? styles.artifactRipple : ''}`}
         onClick={handleResumeClick}
         onMouseEnter={onNavHover}
-        aria-label="Download Résumé"
+        aria-label="Open Résumé"
       >
         <div className={styles.artifactIcon}>
           <span>◈</span>
         </div>
         <div className={styles.artifactText}>
-          <span className={styles.artifactLabel}>RÉSUMÉ</span>
+          <span className={styles.artifactLabel}>RÉSUMÉ ↗</span>
           <span className={styles.artifactSubLabel}>my journey</span>
         </div>
       </a>

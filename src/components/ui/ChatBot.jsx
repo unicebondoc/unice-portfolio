@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { useChatGPT } from '../../hooks/useChatGPT'
 import useStore from '../../hooks/useStore'
+import { SUGGESTED_QUESTIONS } from '../../data/suggestedQuestions'
 import styles from './ChatBot.module.css'
 
 const LOADING_PHRASES = [
-  'Tyche is tracing the roots…',
+  'The tree is listening…',
   'Gathering a memory…',
-  'Listening to the tree…',
+  'Tracing the roots…',
 ]
 const REVEAL_MS_PER_WORD = 36
 const REVEAL_MS_MIN = 400
@@ -17,7 +18,7 @@ export default function ChatBot() {
   const isMobile = useStore((s) => s.isMobile)
   const open = activePanel?.type === 'chat'
 
-  const { messages, sendMessage, isLoading, error, pendingReply, setPendingReply, commitPendingReply } = useChatGPT()
+  const { messages, sendMessage, isLoading, error, pendingReply, setPendingReply, commitPendingReply, clearMessages } = useChatGPT()
   const [input, setInput] = useState('')
   const [loadingPhrase, setLoadingPhrase] = useState(LOADING_PHRASES[0])
   const [revealedText, setRevealedText] = useState('')
@@ -99,6 +100,16 @@ export default function ChatBot() {
     setInput('')
   }
 
+  const onSuggestedQuestion = (question) => {
+    if (!question || isLoading) return
+    const text = question.replace(/\s*[🌿✦📋🤖🌙🏆📩⚡🔮🚀]\s*$/g, '').trim() || question
+    setInput(text)
+    sendMessage(text)
+    setInput('')
+  }
+
+  const hasUserSentMessage = messages.some((m) => m.role === 'user')
+
   return (
     <div
       className={styles.wrap}
@@ -113,15 +124,35 @@ export default function ChatBot() {
       {open && (
         <div className={`${styles.panel} ${isMobile ? styles.panelMobile : ''}`}>
           <div className={styles.header}>
-            <div className={styles.title}>TYCHE</div>
-            <button
-              type="button"
-              onClick={() => setActivePanel(null)}
-              className={styles.close}
-              aria-label="Close chat"
-            >
-              ×
-            </button>
+            <div className={styles.title}>MEMORY TREE</div>
+            <div className={styles.headerActions}>
+              <a
+                href="/resume/Unice_Bondoc_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.resumeBtn}
+                aria-label="Open Résumé"
+              >
+                RÉSUMÉ ↗
+              </a>
+              <button
+                type="button"
+                onClick={clearMessages}
+                className={styles.clear}
+                aria-label="Clear chat"
+                title="Clear chat"
+              >
+                Clear
+              </button>
+              <button
+                type="button"
+                onClick={() => setActivePanel(null)}
+                className={styles.close}
+                aria-label="Close chat"
+              >
+                ×
+              </button>
+            </div>
           </div>
 
           <div ref={listRef} className={styles.body}>
@@ -147,6 +178,21 @@ export default function ChatBot() {
             )}
           </div>
 
+          <div className={styles.suggested}>
+            {!hasUserSentMessage &&
+              SUGGESTED_QUESTIONS.map((q, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  className={styles.chip}
+                  onClick={() => onSuggestedQuestion(q)}
+                  disabled={isLoading}
+                >
+                  {q}
+                </button>
+              ))}
+          </div>
+
           <form
             onSubmit={(e) => {
               e.preventDefault()
@@ -158,7 +204,7 @@ export default function ChatBot() {
               ref={inputRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask Tyche…"
+              placeholder="Ask the tree…"
               className={styles.input}
               aria-label="Message input"
               disabled={isLoading}
