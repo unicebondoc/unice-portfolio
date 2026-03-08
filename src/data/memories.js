@@ -194,7 +194,7 @@ export const MEMORIES = [
     tags: ['WSU', 'LLM Research', '88/100', 'High Distinction', 'Graduation'],
     skills: [],
     link: '',
-    videoSrc: '/videos/orb6-proof.mp4',
+    videoSrc: '/memories/belong-web.mp4',
     videoHint: 'graduation ceremony, walking across stage, WSU — that graduation clip is perfect for this',
     isFuture: false,
   },
