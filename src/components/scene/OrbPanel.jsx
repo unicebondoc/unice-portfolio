@@ -132,13 +132,15 @@ export default function OrbPanel({
     const current = displayMemory || memory
     if (!revealed || !current?.videoSrc) return
     const play = (el) => {
-      if (el && typeof el.play === 'function') el.play().catch(() => {})
+      if (el && typeof el.play === 'function') {
+        el.muted = true
+        el.play().catch(() => {})
+      }
     }
-    const id = setTimeout(() => {
-      play(videoBadgeRef.current)
-      play(videoInnerRef.current)
-    }, 150)
-    return () => clearTimeout(id)
+    const t1 = setTimeout(() => { play(videoBadgeRef.current); play(videoInnerRef.current) }, 100)
+    const t2 = setTimeout(() => { play(videoBadgeRef.current); play(videoInnerRef.current) }, 450)
+    const t3 = setTimeout(() => { play(videoBadgeRef.current); play(videoInnerRef.current) }, 900)
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
   }, [revealed, memory, displayMemory])
 
   const handleClose = useCallback(() => {
@@ -270,19 +272,27 @@ export default function OrbPanel({
               <div className={`${styles.thumbnailBadge} ${m.isRoot ? styles.thumbnailBadgeVignette : ''}`}>
                 {m.videoSrc ? (
                   <video
-                    ref={videoBadgeRef}
+                    ref={(el) => {
+                      videoBadgeRef.current = el
+                      if (el && m.videoSrc) {
+                        el.muted = true
+                        el.play().catch(() => {})
+                      }
+                    }}
                     key={m.videoSrc}
                     className={styles.thumbnailMedia}
-                    src={m.videoSrc}
+                    src={`${m.videoSrc}${m.videoSrc.includes('?') ? '&' : '?'}badge=1`}
                     autoPlay
                     loop
                     muted
                     playsInline
                     preload="auto"
                     onCanPlay={(e) => {
+                      e.currentTarget.muted = true
                       e.currentTarget.play?.().catch?.(() => {})
                     }}
                     onLoadedData={(e) => {
+                      e.currentTarget.muted = true
                       e.currentTarget.play?.().catch?.(() => {})
                     }}
                     onEnded={(e) => {
