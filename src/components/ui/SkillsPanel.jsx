@@ -1,39 +1,99 @@
 /**
  * SkillsPanel — immersive glass panel with rune-chip tags, grouped by category.
  * Opens when the Skills artifact is clicked.
+ * Content matches CV; outside click on backdrop closes panel.
  */
 import { useMemo } from 'react'
-import { MEMORIES } from '../../data/memories'
 import styles from './SkillsPanel.module.css'
 
-const SKILLS_ORB = MEMORIES.find((m) => m.category === 'skills')
-const RAW_SKILLS = SKILLS_ORB?.skills ?? [
-  'React', 'Three.js', 'Python', 'TypeScript', 'Node.js',
-  'TensorFlow', 'AWS', 'Docker', 'Voiceflow', 'AI/ML',
-  'WebGL', 'Next.js', 'MongoDB', 'REST APIs', 'Git',
-]
-
 const CATEGORIES = [
-  { key: 'languages', label: 'LANGUAGES', skills: ['Python', 'TypeScript', 'JavaScript'] },
-  { key: 'frameworks', label: 'FRAMEWORKS', skills: ['React', 'Next.js', 'Three.js', 'Node.js'] },
-  { key: 'ai', label: 'AI / ML', skills: ['TensorFlow', 'AI/ML', 'Voiceflow'] },
-  { key: 'tools', label: 'TOOLS', skills: ['Docker', 'AWS', 'MongoDB', 'Git', 'REST APIs', 'WebGL'] },
+  {
+    key: 'languages',
+    label: 'LANGUAGES',
+    skills: ['Python', 'JavaScript', 'HTML5', 'CSS3', 'SQL'],
+  },
+  {
+    key: 'frameworks',
+    label: 'FRAMEWORKS & LIBRARIES',
+    skills: ['React 18', 'Node.js', 'REST APIs', 'Git', 'GitHub'],
+  },
+  {
+    key: 'ai',
+    label: 'AI & GENERATIVE AI',
+    skills: [
+      'OpenAI API (GPT-4)',
+      'Prompt Engineering',
+      'LangChain',
+      'RAG',
+      'Pinecone',
+      'AI Output Evaluation',
+      'Voiceflow',
+      'Anthropic Claude API',
+      'Google Gemini API',
+      'LLaMA',
+    ],
+  },
+  {
+    key: 'platforms',
+    label: 'PLATFORMS & TOOLS',
+    skills: [
+      'Shopify Liquid',
+      'Figma',
+      'VS Code',
+      'Adobe Premiere Pro',
+      'Photoshop',
+      'Lightroom',
+      'MongoDB',
+      'Flutter',
+      'Microsoft 365',
+    ],
+  },
+  {
+    key: 'delivery',
+    label: 'PROJECT DELIVERY',
+    skills: [
+      'Agile',
+      'Scrum',
+      'Jira',
+      'Trello',
+      'Confluence',
+      'Notion',
+      'ClickUp',
+      'Stakeholder Coordination',
+      'Risk Management',
+      'IT Project Management',
+    ],
+  },
+  {
+    key: 'developing',
+    label: 'DEVELOPING & FAMILIAR',
+    skills: [
+      'FastAPI',
+      'Three.js',
+      'React Three Fiber',
+      'GLSL Shaders',
+      'Azure OpenAI',
+      'Azure AI Services',
+      'Hugging Face',
+      'AWS Cloud',
+    ],
+  },
 ]
 
-function groupSkillsByCategory() {
-  const set = new Set(RAW_SKILLS)
-  return CATEGORIES.map((cat) => ({
-    ...cat,
-    skills: cat.skills.filter((s) => set.has(s)),
-  })).filter((cat) => cat.skills.length > 0)
+function buildGrouped() {
+  return CATEGORIES.map((cat) => ({ ...cat }))
 }
 
 export default function SkillsPanel({ onClose }) {
-  const grouped = useMemo(groupSkillsByCategory, [])
+  const grouped = useMemo(buildGrouped, [])
   let tagIndex = 0
 
   return (
-    <div className={styles.anchor} aria-label="Skills & tech stack" onClick={(e) => e.target === e.currentTarget && onClose()}>
+    <div
+      className={styles.anchor}
+      aria-label="Skills & tech stack"
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+    >
       <div className={styles.panel} onClick={(e) => e.stopPropagation()}>
         <button
           type="button"
