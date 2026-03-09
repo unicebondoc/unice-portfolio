@@ -7,8 +7,8 @@ import styles from './OrbPanel.module.css'
 
 const IS_PHOTO = /\.(png|jpe?g|webp)$/i
 /** Video orbs: larger circle. Non-video: smaller circle. */
-const PANEL_SIZE_VIDEO = 'min(520px, 58vw)'
-const PANEL_SIZE_DEFAULT = 'min(460px, 52vw)'
+const PANEL_SIZE_VIDEO = 'min(620px, 72vmin)'
+const PANEL_SIZE_DEFAULT = 'min(560px, 66vmin)'
 
 function hexToRgb(hex) {
   const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
@@ -348,30 +348,7 @@ export default function OrbPanel({
               </div>
             )}
 
-            <div
-              className={styles.scroll}
-              style={
-                m.videoSrc
-                  ? {
-                      position: 'relative',
-                      top: 'auto',
-                      left: 'auto',
-                      transform: 'none',
-                      width: '100%',
-                      maxHeight: 'none',
-                      overflowX: 'hidden',
-                      overflowY: 'auto',
-                      WebkitOverflowScrolling: 'touch',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'flex-start',
-                      flex: 1,
-                      minHeight: 0,
-                    }
-                  : {}
-              }
-            >
+            <div className={styles.scroll}>
               <div key={m.id} className={styles.content}>
                 <div
                   className={styles.panelSymbol}

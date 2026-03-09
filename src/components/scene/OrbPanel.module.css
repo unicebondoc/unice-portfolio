@@ -16,7 +16,7 @@
   bottom: 0 !important;
   transform: none !important;
   width: 100%;
-  max-height: 70vh;
+  max-height: 85vh;
   pointer-events: auto;
   z-index: 100;
 }
@@ -32,7 +32,7 @@
 .anchorBottomSheet .panel {
   width: 100%;
   height: 100%;
-  max-height: 70vh;
+  max-height: 85vh;
   border-radius: 20px 20px 0 0;
   overflow: hidden;
   display: flex;
@@ -46,8 +46,7 @@
   width: 100%;
   max-height: none;
   flex: 1 1 auto;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
 }
 .anchorBottomSheet .contentWrap {
   flex: 1;
@@ -88,8 +87,8 @@
 /* ── Orb container: circle (video orbs larger, non-video smaller) ───────────────────────────── */
 .panel {
   --orb-color: rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 1);
-  width: var(--panel-diameter, min(520px, 58vw));
-  height: var(--panel-diameter, min(520px, 58vw));
+  width: var(--panel-diameter, min(620px, 72vmin));
+  height: var(--panel-diameter, min(620px, 72vmin));
   position: relative;
   border-radius: 50%;
   overflow: hidden;
@@ -301,19 +300,17 @@
   }
 }
 
-/* ── Content area: 72% width, scroll so TOOLS and full text stay visible ──────────── */
+/* ── Content area: no internal scroll; panel is sized to fit ──────────── */
 .scroll {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 72%;
-  max-height: 92%;
-  overflow-y: auto;
-  overflow-x: hidden;
+  width: 74%;
+  max-height: 94%;
+  overflow: hidden;
   text-align: center;
   z-index: 2;
-  -webkit-overflow-scrolling: touch;
 }
 
 .content {
