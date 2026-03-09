@@ -178,14 +178,17 @@
 @media (max-width: 768px) {
   .sacredArtifacts {
     flex-direction: row;
-    gap: 16px;
+    gap: 20px;
   }
-  .artifactText {
-    display: none;
+  .artifactText,
+  .artifactLabel,
+  .artifactSubLabel {
+    display: none !important;
   }
   .artifactIcon {
-    width: 38px;
-    height: 38px;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
   }
   .artifactIcon span {
     font-size: 20px;

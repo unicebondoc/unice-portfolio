@@ -14,18 +14,18 @@ const ORB_PALETTES = {
   warmCoral:  { fill: 'rgba(220,120,100,0.5)',  glow: '#e07c64', innerLight: '#ffebe8', core: '#f0a090' },
 }
 
-// Scattered layout for mobile: each orb gets a fixed [x, y, z] so they're spread out and don't overlap.
-// Min center-to-center ~1.6 (orb radius ~0.55–0.7). Order matches MEMORIES array index.
+// Scattered layout for mobile (max-width 768px): full viewport height, bottom to canopy.
+// Order matches MEMORIES array: 0 origin, 1 writer, 2 pressure, 3 reinvention, 4 building, 5 proof, 6 work, 7 becoming, 8 root.
 const SCATTERED_MOBILE_POSITIONS = [
-  [-1.8, 1.9, 0],   // 0 top-left
-  [1.7, 1.5, 0],    // 1 top-right
-  [-1.7, 0.5, 0],   // 2 mid-left
-  [1.8, -0.2, 0],   // 3 center-right
-  [-1.6, -1.0, 0],  // 4 lower-left
-  [1.6, -1.6, 0],   // 5 bottom-right
-  [0, 2.0, 0],      // 6 top center
-  [0, 0.5, 0],      // 7 center
-  [0.2, -1.9, 0],   // 8 bottom center
+  [-1.2, -1.8, 0.3],  // 0 orb-origin
+  [1.0, -1.2, 0.2],   // 1 orb-writer
+  [-1.4, -0.3, 0.4],  // 2 orb-pressure
+  [0.8, 0.5, 0.2],    // 3 orb-reinvention
+  [-0.8, 1.4, 0.3],   // 4 orb-building
+  [1.2, 2.0, 0.4],    // 5 orb-proof
+  [-0.3, 2.8, 0.2],   // 6 orb-work
+  [0.6, 3.6, 0.1],    // 7 orb-becoming
+  [0.2, -2.8, 0],     // 8 orb-root (identity)
 ]
 
 function mobilePositionsForMemories(list) {

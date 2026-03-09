@@ -38,7 +38,9 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
   const isInteractive = orbType !== 'ambient'
   const isPrimary = memory.isPrimary !== false
   const visualTier = memory.visualTier || (isRoot ? 'primary' : 'primary') // 'hero' | 'primary' | 'secondary'
-  const RADIUS  = (TIER_RADIUS[tier] ?? 0.50) * (memory.scaleMult ?? 1.0)
+  const isMobileViewport = size.width <= 768
+  const baseRadius = (TIER_RADIUS[tier] ?? 0.50) * (memory.scaleMult ?? 1.0)
+  const RADIUS  = isMobileViewport ? baseRadius * 1.3 : baseRadius
 
   const BREATHE_SPEED   = isCore ? 0.55 : 0.42
   const PULSE_SPEED     = isCore ? 1.35 : 0.85

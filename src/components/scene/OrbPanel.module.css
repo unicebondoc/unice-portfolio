@@ -88,15 +88,15 @@
   height: 100%;
 }
 .panelMobileCenter {
-  width: min(460px, 96vw) !important;
-  height: min(460px, 96vw) !important;
+  width: min(320px, 86vw) !important;
+  height: min(320px, 86vw) !important;
   max-height: none !important;
   border-radius: 50% !important;
 }
 .anchorMobileCenter .panel {
-  width: min(460px, 96vw) !important;
-  height: min(460px, 96vw) !important;
-  max-height: min(620px, 88vh) !important;
+  width: min(320px, 86vw) !important;
+  height: min(320px, 86vw) !important;
+  max-height: min(520px, 88vh) !important;
   border-radius: 50% !important;
   display: flex !important;
   flex-direction: column !important;
@@ -137,6 +137,19 @@
 }
 .anchorMobileCenter .content {
   padding: 4px 0 24px !important;
+}
+
+@media (max-width: 768px) {
+  .anchorMobileCenter .panelVideoWrap {
+    width: 75% !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .anchorMobileCenter .panelVideo {
+    height: 120px !important;
+    width: 100% !important;
+    object-fit: cover;
+  }
 }
 
 .parallaxWrap {
