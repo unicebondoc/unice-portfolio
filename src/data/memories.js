@@ -14,15 +14,25 @@ const ORB_PALETTES = {
   warmCoral:  { fill: 'rgba(220,120,100,0.5)',  glow: '#e07c64', innerLight: '#ffebe8', core: '#f0a090' },
 }
 
-const MOBILE_Y_STEP = 1.0
-const MOBILE_X_AMP = 0.6
+// Scattered layout for mobile: each orb gets a fixed [x, y, z] so they're spread out and don't overlap.
+// Min center-to-center ~1.6 (orb radius ~0.55–0.7). Order matches MEMORIES array index.
+const SCATTERED_MOBILE_POSITIONS = [
+  [-1.8, 1.9, 0],   // 0 top-left
+  [1.7, 1.5, 0],    // 1 top-right
+  [-1.7, 0.5, 0],   // 2 mid-left
+  [1.8, -0.2, 0],   // 3 center-right
+  [-1.6, -1.0, 0],  // 4 lower-left
+  [1.6, -1.6, 0],   // 5 bottom-right
+  [0, 2.0, 0],      // 6 top center
+  [0, 0.5, 0],      // 7 center
+  [0.2, -1.9, 0],   // 8 bottom center
+]
 
 function mobilePositionsForMemories(list) {
   const result = {}
   list.forEach((m, i) => {
-    const y = 2.4 - i * MOBILE_Y_STEP
-    const x = (i % 2 === 0 ? 1 : -1) * MOBILE_X_AMP
-    result[m.id] = [x, y, 0]
+    const pos = SCATTERED_MOBILE_POSITIONS[i % SCATTERED_MOBILE_POSITIONS.length]
+    result[m.id] = pos
   })
   return result
 }
