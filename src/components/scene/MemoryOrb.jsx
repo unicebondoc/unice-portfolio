@@ -1642,7 +1642,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
 
       {/* Onboarding pulse removed (clarity-first landing) */}
 
-      {/* ── Hover label: orb title above (readable, never clipped) ── */}
+      {/* ── Hover label: orb title above in small panel (readable, never clipped) ── */}
       <Html
         position={[0, RADIUS + 0.12, 0]}
         center
@@ -1659,17 +1659,29 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       >
         <div
           style={{
-            fontSize: '14px',
-            fontWeight: 600,
-            letterSpacing: '2px',
-            color: 'rgba(255,255,255,0.95)',
-            textAlign: 'center',
-            whiteSpace: 'nowrap',
-            textShadow: '0 0 14px rgba(0,200,255,0.5), 0 1px 4px rgba(0,0,0,0.7)',
-            lineHeight: 1.3,
+            padding: '8px 14px 10px',
+            borderRadius: '10px',
+            background: 'rgba(6, 9, 20, 0.88)',
+            border: '1px solid rgba(255, 255, 255, 0.18)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.45)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
           }}
         >
-          {title}
+          <div
+            style={{
+              fontSize: '14px',
+              fontWeight: 600,
+              letterSpacing: '2px',
+              color: 'rgba(255,255,255,0.95)',
+              textAlign: 'center',
+              whiteSpace: 'nowrap',
+              textShadow: '0 0 12px rgba(0,200,255,0.35), 0 1px 2px rgba(0,0,0,0.5)',
+              lineHeight: 1.3,
+            }}
+          >
+            {title}
+          </div>
         </div>
       </Html>
 
