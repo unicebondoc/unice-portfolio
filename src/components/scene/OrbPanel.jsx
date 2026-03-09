@@ -389,7 +389,7 @@ export default function OrbPanel({
                         width: '80%',
                         height: '160px',
                         objectFit: 'cover',
-                        objectPosition: 'center 10%',
+                        objectPosition: m.cropPosition || 'center 10%',
                         borderRadius: '16px',
                         display: 'block',
                         margin: '0 auto 14px auto',

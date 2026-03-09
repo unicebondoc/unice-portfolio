@@ -32,8 +32,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
 
   const isCore  = tier === 'core' || tier === 'root'
   const isRoot  = tier === 'root' || memory.isRoot
-  // "I Earned My Place" orb (in the 8) gets flat circular video; no extra 9th orb
-  const isFlatVideoOrb = memory.id === 'orb-proof'
+  // Root orb (central identity) gets flat circular portrait; story orbs get sphere video
   const orbType = memory.orbType || (memory.isPrimary === false ? 'secondary' : 'primary') // 'primary' | 'secondary' | 'ambient'
   const isInteractive = orbType !== 'ambient'
   const isPrimary = memory.isPrimary !== false
@@ -557,17 +556,13 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
     if (mediaTex && videoRef.current && videoRef.current.readyState >= 2) {
       mediaTex.needsUpdate = true
     }
-    // Only play video when visible:
-    // - root orb should keep playing (it's the identity/video orb)
-    // - orb-proof (I Earned My Place) always plays so the flat portrait is alive
-    // - other orbs play on hover/selection to reduce CPU
+    // Every orb with a video shows it by default: autoplay, no hover required.
     if (videoRef.current && memory.videoSrc) {
       const cam = state.camera
       groupRef.current.getWorldPosition(videoWorldPosRef.current)
       const dist = cam.position.distanceTo(videoWorldPosRef.current)
-      const shouldPlay = isRoot || isFlatVideoOrb || isHovered || isSelected
+      const shouldPlay = true
       if (shouldPlay && videoRef.current.paused) videoRef.current.play().catch(() => {})
-      if (!shouldPlay && !videoRef.current.paused) videoRef.current.pause()
     }
 
     // Entrance: T+2s + entranceOrder*0.1 (stagger 100ms), duration 0.4s. Scale 0.7→1, opacity 0→1.
@@ -1500,9 +1495,9 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       />
 
       {memory.videoSrc && mediaTex ? (
-        /* Video orb: orb-proof (I Earned My Place) = flat circular portrait + shell; others = inner sphere + shell */
+        /* Video orb: root = flat circular portrait + shell; story orbs = inner sphere + shell. All autoplay. */
         <>
-          {isFlatVideoOrb && circleAlphaTex ? (
+          {isRoot && circleAlphaTex ? (
             <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
               <mesh renderOrder={3} onClick={handleClick} onPointerOver={handlePointerOver} onPointerOut={handlePointerOut}>
                 <planeGeometry args={[RADIUS * 1.95, RADIUS * 1.95]} />
@@ -1518,7 +1513,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
                 />
               </mesh>
             </Billboard>
-          ) : !isFlatVideoOrb ? (
+          ) : !isRoot ? (
           <mesh renderOrder={1}>
             <sphereGeometry args={[RADIUS * 0.72, 48, 48]} />
             <meshBasicMaterial
