@@ -852,30 +852,30 @@ export default function App() {
           }}
         />
 
-        {/* ── Site title: fixed top-left, always on top (z-index above panel) ── */}
+        {/* ── Site title: fixed top-left, always visible, never clipped ── */}
         <div
           data-entrance="title"
           aria-label="Unice Bondoc"
           style={{
             position: 'fixed',
-            top: '3vh',
-            left: '3vw',
-            zIndex: 101,
+            top: 28,
+            left: 32,
+            zIndex: 100,
             pointerEvents: 'none',
-            maxWidth: isMobile ? '60vw' : 'none',
           }}
         >
           <h1
             style={{
               fontFamily: "'Cinzel', serif",
-              fontSize: isMobile ? 'clamp(1.6rem, 6vw, 2.2rem)' : 'clamp(32px, 5vw, 56px)',
+              fontSize: 'clamp(36px, 5.5vw, 64px)',
               fontWeight: 700,
-              letterSpacing: '0.15em',
-              color: 'rgba(245, 252, 255, 0.98)',
-              textShadow: '0 0 40px rgba(0, 200, 255, 0.35), 0 2px 12px rgba(0, 0, 0, 0.5)',
+              letterSpacing: '3px',
+              color: 'rgba(255,255,255,0.97)',
+              lineHeight: 1,
               margin: 0,
+              marginBottom: 6,
               padding: 0,
-              lineHeight: 1.2,
+              textShadow: '0 0 40px rgba(0,200,255,0.15)',
             }}
           >
             UNICE
@@ -883,13 +883,13 @@ export default function App() {
           <p
             style={{
               fontFamily: "'Raleway', sans-serif",
-              fontSize: isMobile ? 'clamp(0.5rem, 2vw, 0.7rem)' : 'clamp(10px, 1.2vw, 14px)',
+              fontSize: 'clamp(11px, 1.1vw, 13px)',
               fontWeight: 500,
-              letterSpacing: '6px',
-              color: 'rgba(200, 235, 255, 0.82)',
-              margin: '4px 0 0 0',
+              letterSpacing: '7px',
+              color: 'rgba(255,255,255,0.7)',
+              margin: 0,
+              marginBottom: 5,
               padding: 0,
-              textShadow: '0 1px 8px rgba(0, 0, 0, 0.45)',
             }}
           >
             AI ENGINEER
@@ -897,19 +897,17 @@ export default function App() {
           <p
             style={{
               fontFamily: "'Raleway', sans-serif",
-              fontSize: isMobile ? 9 : 'clamp(8px, 0.9vw, 11px)',
+              fontSize: 'clamp(8px, 0.85vw, 10px)',
               fontWeight: 300,
               letterSpacing: '3px',
-              color: 'rgba(255,255,255,0.38)',
-              margin: '6px 0 0 0',
+              color: 'rgba(255,255,255,0.3)',
+              margin: 0,
               padding: 0,
               textTransform: 'uppercase',
-              textShadow: '0 1px 4px rgba(0, 0, 0, 0.4)',
-              whiteSpace: isMobile ? 'normal' : 'nowrap',
+              whiteSpace: 'nowrap',
               overflow: 'visible',
-              maxWidth: 'none',
+              width: 'max-content',
               lineHeight: 1.35,
-              opacity: 0.4,
             }}
           >
             FROM MANILA · TO SYDNEY · TO THE FUTURE
