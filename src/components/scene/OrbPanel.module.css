@@ -237,6 +237,9 @@
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.2);
   z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 /* Button wrapper so tap triggers play() in same user-gesture stack (reliable playback) */
 .thumbnailBadgeBtn {
@@ -399,6 +402,9 @@
   border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
   flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .panelVideo {
   display: block;

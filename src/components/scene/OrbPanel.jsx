@@ -358,6 +358,13 @@ export default function OrbPanel({
                       playsInline
                       preload="auto"
                       disablePictureInPicture
+                      style={{
+                        width: '100%',
+                        maxHeight: '88px',
+                        objectFit: 'cover',
+                        objectPosition: 'center center',
+                        display: 'block',
+                      }}
                       onCanPlay={(e) => e.currentTarget.play?.().catch(() => {})}
                       onLoadedData={(e) => e.currentTarget.play?.().catch(() => {})}
                       onError={(e) => {
