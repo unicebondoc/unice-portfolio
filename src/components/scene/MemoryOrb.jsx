@@ -559,12 +559,13 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
     }
     // Only play video when visible:
     // - root orb should keep playing (it's the identity/video orb)
+    // - orb-proof (I Earned My Place) always plays so the flat portrait is alive
     // - other orbs play on hover/selection to reduce CPU
     if (videoRef.current && memory.videoSrc) {
       const cam = state.camera
       groupRef.current.getWorldPosition(videoWorldPosRef.current)
       const dist = cam.position.distanceTo(videoWorldPosRef.current)
-      const shouldPlay = isRoot || isHovered || isSelected
+      const shouldPlay = isRoot || isFlatVideoOrb || isHovered || isSelected
       if (shouldPlay && videoRef.current.paused) videoRef.current.play().catch(() => {})
       if (!shouldPlay && !videoRef.current.paused) videoRef.current.pause()
     }
