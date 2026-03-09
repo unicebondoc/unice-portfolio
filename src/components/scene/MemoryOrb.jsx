@@ -127,6 +127,9 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
   // Refs for video-orb layers (hover: emissive, mid glow opacity, point light)
   const orbPointLightRef = useRef()
   const orbShellMatRef = useRef()
+  const orbVideoPlaneMatRef = useRef()
+  const orbGlowAuraRef = useRef()
+  const orbGlowAuraMatRef = useRef()
   const orbMidGlowMatRef = useRef()
   const orbInnerHazeMatRef = useRef()
 
@@ -833,19 +836,12 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
     // Hover scale pulse: 1.0 → 1.04 → 1.0 over 0.5s (singular focal response, no extra “orb” feel)
     if (isHovered && hoverPulseStartRef.current === null) hoverPulseStartRef.current = t
     if (!isHovered) hoverPulseStartRef.current = null
-    let hoverScalePulse = 1
-    if (hoverPulseStartRef.current !== null) {
-      const el = t - hoverPulseStartRef.current
-      if (el < 0.5) {
-        const p = el / 0.5
-        hoverScalePulse = p < 0.5 ? 1 + 0.08 * (p * 2) : 1 + 0.08 * (1 - (p - 0.5) * 2)
-      } else {
-        hoverScalePulse = 1
-      }
-    }
-    const hoverScaleTgt = isHovered ? hoverScalePulse : 1
-    hoverScaleRef.current = THREE.MathUtils.lerp(hoverScaleRef.current, hoverScaleTgt, Math.min(1, delta * 8))
-    let target = entranceScaleFinal * breathe * hoverMul * pulseMul * onboardingMul * hoverScaleRef.current * secondaryScaleMult * visualScaleMult * ambientScaleMult
+
+    const hoverScaleTgt = isHovered ? 1.15 : 1
+    const scaleLerpK = isHovered ? Math.min(1, delta / 0.25) : Math.min(1, delta / 0.3)
+    hoverScaleRef.current = THREE.MathUtils.lerp(hoverScaleRef.current, hoverScaleTgt, scaleLerpK * 4)
+    const idlePulseMult = 1 + 0.015 * (1 + Math.sin(t * (Math.PI * 2 / 4)))
+    let target = entranceScaleFinal * breathe * hoverMul * pulseMul * onboardingMul * hoverScaleRef.current * idlePulseMult * secondaryScaleMult * visualScaleMult * ambientScaleMult
     const scaleLerp = isSelected ? 0.14 : 0.06
     groupRef.current.scale.setScalar(
       THREE.MathUtils.lerp(groupRef.current.scale.x, target, scaleLerp)
@@ -1058,7 +1054,8 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       orbPointLightRef.current.color.set(memory.orbGlow || '#67e8f9')
     }
     if (isVideoOrb) {
-      const shellEmTgt = isHovered ? 0.12 * 3 : 0.12
+      const shellEmTgt = isHovered ? 1.8 : 0.7
+      const videoPlaneEmTgt = isHovered ? 1.8 : 0.7
       if (orbShellMatRef.current) {
         orbShellMatRef.current.emissiveIntensity = THREE.MathUtils.lerp(
           orbShellMatRef.current.emissiveIntensity,
@@ -1066,10 +1063,25 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
           Math.min(1, hoverLerpSpeed * 4)
         )
       }
+      if (orbVideoPlaneMatRef.current) {
+        orbVideoPlaneMatRef.current.emissiveIntensity = THREE.MathUtils.lerp(
+          orbVideoPlaneMatRef.current.emissiveIntensity,
+          videoPlaneEmTgt * dimMult,
+          Math.min(1, hoverLerpSpeed * 4)
+        )
+      }
+      const glowAuraOpTgt = isHovered ? 0.35 : 0.15
+      if (orbGlowAuraMatRef.current) {
+        orbGlowAuraMatRef.current.opacity = THREE.MathUtils.lerp(
+          orbGlowAuraMatRef.current.opacity,
+          glowAuraOpTgt * dimMult,
+          Math.min(1, hoverLerpSpeed * 4)
+        )
+      }
     } else {
       // Non-video: core and aura opacity targets (emissive body is driven by JSX)
       const coreOpTgt = isHovered ? 1 : 0.85
-      const auraOpTgt = isHovered ? 0.2 : 0.1
+      const auraOpTgt = isHovered ? 0.35 : 0.15
       if (orbInnerHazeMatRef.current) {
         orbInnerHazeMatRef.current.opacity = THREE.MathUtils.lerp(
           orbInnerHazeMatRef.current.opacity,
@@ -1089,7 +1101,15 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
           Math.min(1, hoverLerpSpeed * 4)
         )
       }
-      // Aura scale fixed at 1.4 (no hover scale)
+      const shellEmTgt = isHovered ? 1.8 : 0.7
+      if (orbShellMatRef.current) {
+        orbShellMatRef.current.emissiveIntensity = THREE.MathUtils.lerp(
+          orbShellMatRef.current.emissiveIntensity,
+          shellEmTgt * dimMult,
+          Math.min(1, hoverLerpSpeed * 4)
+        )
+      }
+      // Aura scale fixed at 1.2
     }
 
     // Idle orb pulse (world breathing): one random orb pulses — video shell only (non-video has no emissive)
@@ -1551,10 +1571,11 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
               <mesh renderOrder={3} onClick={handleClick} onPointerOver={handlePointerOver} onPointerOut={handlePointerOut}>
                 <planeGeometry args={[RADIUS * 1.95, RADIUS * 1.95]} />
                 <meshStandardMaterial
+                  ref={orbVideoPlaneMatRef}
                   map={mediaTex}
                   emissiveMap={mediaTex}
                   emissive="#ffffff"
-                  emissiveIntensity={2}
+                  emissiveIntensity={0.7}
                   alphaMap={circleAlphaTex}
                   color="#ffffff"
                   transparent
@@ -1562,8 +1583,8 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
                   depthWrite={false}
                   toneMapped={false}
                   side={THREE.DoubleSide}
-                  roughness={1}
-                  metalness={0}
+                  roughness={0.3}
+                  metalness={0.1}
                 />
               </mesh>
             </Billboard>
@@ -1581,31 +1602,43 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
               ref={orbShellMatRef}
               color="#ffffff"
               emissive="#ffffff"
-              emissiveIntensity={0.05}
-              roughness={0}
-              metalness={0}
+              emissiveIntensity={0.7}
+              roughness={0.3}
+              metalness={0.1}
               transparent
               opacity={0.08}
               depthWrite={false}
+            />
+          </mesh>
+          {/* Glow aura: subtle outer sphere, radius 1.2, additive */}
+          <mesh ref={orbGlowAuraRef} renderOrder={0} scale={1.2}>
+            <sphereGeometry args={[RADIUS, 16, 16]} />
+            <meshBasicMaterial
+              ref={orbGlowAuraMatRef}
+              color={memory.orbGlow || '#ffffff'}
+              transparent
+              opacity={0.15}
+              depthWrite={false}
+              blending={THREE.AdditiveBlending}
             />
           </mesh>
         </>
       ) : (
         /* Non-video orb: emissive body + core + aura (nuclear fix — colors from memory.orbGlow / orbInnerLight) */
         <>
-          {/* AURA: outer glow */}
-          <mesh ref={orbAuraRef} renderOrder={0} scale={1.4}>
+          {/* AURA: outer glow — radius 1.2, opacity 0.15 base / 0.35 hover */}
+          <mesh ref={orbAuraRef} renderOrder={0} scale={1.2}>
             <sphereGeometry args={[RADIUS, 16, 16]} />
             <meshBasicMaterial
               ref={orbAuraMatRef}
               color={memory.orbGlow || '#67e8f9'}
               transparent
-              opacity={isHovered ? 0.2 : 0.1}
+              opacity={isHovered ? 0.35 : 0.15}
               depthWrite={false}
               blending={THREE.AdditiveBlending}
             />
           </mesh>
-          {/* BODY: emissive shell so orb generates its own color (immune to env/fog) */}
+          {/* BODY: emissive shell — base 0.7, hover 1.8 */}
           <mesh
             ref={orbMeshRef}
             renderOrder={1}
@@ -1619,11 +1652,11 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
               ref={orbShellMatRef}
               color={memory.orbGlow || '#67e8f9'}
               emissive={memory.orbGlow || '#67e8f9'}
-              emissiveIntensity={isHovered ? 0.6 : 0.35}
+              emissiveIntensity={isHovered ? 1.8 : 0.7}
               transparent
               opacity={0.5}
-              roughness={0.4}
-              metalness={0}
+              roughness={0.3}
+              metalness={0.1}
               depthWrite={false}
             />
           </mesh>

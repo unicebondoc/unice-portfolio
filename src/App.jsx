@@ -244,6 +244,8 @@ function AmbientLightWithFocusDim() {
 function Lights() {
   return (
     <>
+      <ambientLight intensity={0.6} />
+      <pointLight position={[0, 0, 8]} intensity={0.8} distance={20} decay={2} />
       <AmbientLightWithFocusDim />
 
       {/* Warm amber — animated by LightShaftBreath (tree breathing) */}
