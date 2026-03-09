@@ -253,6 +253,10 @@ export default function TycheMascot() {
 
   if (!loadingExited) return null
 
+  /* When chat is open on mobile, hide mascot so it doesn't overlap the chat panel */
+  const chatOpen = activePanel?.type === 'chat'
+  if (chatOpen) return null
+
   return (
     <div
       ref={rootRef}
