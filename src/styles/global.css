@@ -206,6 +206,11 @@ canvas {
   50% { opacity: 0.35; }
 }
 
+@keyframes hintBreathe {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 0.55; }
+}
+
 /* Custom cursor: hide default on desktop when custom cursor is active */
 @media (pointer: fine) {
   body.custom-cursor-active,
@@ -217,6 +222,20 @@ canvas {
   body.custom-cursor-active,
   body.custom-cursor-active * {
     cursor: auto !important;
+  }
+}
+
+/* Mystical cursor: hide default cursor when active (desktop only) */
+@media (pointer: fine) {
+  body.mystical-cursor-active,
+  body.mystical-cursor-active *,
+  body.mystical-cursor-active *::before,
+  body.mystical-cursor-active *::after {
+    cursor: none !important;
+  }
+  body.mystical-cursor-active input,
+  body.mystical-cursor-active textarea {
+    cursor: text !important;
   }
 }
 

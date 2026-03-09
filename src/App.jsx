@@ -30,6 +30,8 @@ import hudStyles from './components/ui/HUD.module.css'
 import LoadingScreen from './components/ui/LoadingScreen'
 import SoundToggle from './components/ui/SoundToggle'
 import CustomCursor from './components/ui/CustomCursor'
+import MysticalCursor from './components/MysticalCursor'
+import ExploreHint from './components/ExploreHint'
 import GestureTarotScroll from './components/ui/GestureTarotScroll'
 import ChatBot from './components/ui/ChatBot'
 import TycheMascot from './components/ui/TycheMascot'
@@ -580,10 +582,19 @@ export default function App() {
   const openPanelTimestamp = useStore((s) => s.openPanelTimestamp)
   const setLoadingExited = useStore((s) => s.setLoadingExited)
   const loadingExited = useStore((s) => s.loadingExited)
+  const [isTouchDevice, setIsTouchDevice] = useState(false)
+
   const visibleMemories = useMemo(
     () => MEMORIES.filter((m) => m.isPrimary !== false).slice(0, 8),
     []
   )
+
+  useEffect(() => {
+    setIsTouchDevice(
+      typeof window !== 'undefined' &&
+        ('ontouchstart' in window || (navigator.maxTouchPoints != null && navigator.maxTouchPoints > 0))
+    )
+  }, [])
 
   // Viewport: isMobile (<768px) and prefers-reduced-motion
   useEffect(() => {
@@ -1223,6 +1234,8 @@ export default function App() {
       {/* No blocking backdrop: keep orbs clickable while panel open */}
 
       {/* ── HTML overlays ─────────────────────────────────────── */}
+      {!isTouchDevice && <MysticalCursor />}
+      <ExploreHint />
       {/* Custom cursor removed to eliminate stray cyan dot; re-enable if desired */}
       {/* <CustomCursor /> */}
       {/* Intro overlay disabled so orbs/scene are visible from load; re-enable to restore 3s awakening */}

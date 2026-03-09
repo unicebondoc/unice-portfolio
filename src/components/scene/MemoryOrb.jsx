@@ -134,6 +134,18 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
   const orbGlowAuraMatRef = useRef()
   const orbMidGlowMatRef = useRef()
   const orbInnerHazeMatRef = useRef()
+  // Mystical orb layers (nebula, ring, glow sprite)
+  const mysticalNebulaCoreRef = useRef()
+  const mysticalNebulaCloudRef = useRef()
+  const mysticalEnergyMidRef = useRef()
+  const mysticalEnergyMidMatRef = useRef()
+  const mysticalRingRef = useRef()
+  const mysticalRingMatRef = useRef()
+  const mysticalGlowSpriteRef = useRef()
+  const mysticalGlowSpriteMatRef = useRef()
+  const proofRingOuterRef = useRef()
+  const proofDotsRef = useRef()
+  const proofOrbitAngleRef = useRef(0)
 
   // ── Store ────────────────────────────────────────────────────────
   const {
@@ -656,9 +668,32 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
     const secondaryOpacityMult = (isPrimary ? 1 : 0.56) * ambientOpacityMult
     const visualGlowMult = visualTier === 'hero' ? 1.12 : visualTier === 'secondary' ? 0.75 : 1
     const secondaryGlowMult = (isPrimary ? 1 : 0.55) * visualGlowMult * ambientGlowMult
-    const effectiveOpacityFinal = entranceOpacityFinal * secondaryOpacityMult
+  const effectiveOpacityFinal = entranceOpacityFinal * secondaryOpacityMult
 
-    // Ritual: set openRitualStartTime once when this orb becomes selected
+  const isProofOrb = id === 'orb-proof'
+  const proofGold = '#ffc850'
+  const proofWhite = 'rgba(255,255,220,0.9)'
+
+  // Radial gradient texture for outer glow sprite (mystical orb)
+  const glowSpriteTexture = useMemo(() => {
+    if (typeof document === 'undefined') return null
+    const canvas = document.createElement('canvas')
+    canvas.width = 128
+    canvas.height = 128
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return null
+    const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64)
+    gradient.addColorStop(0, 'rgba(255,255,255,0.8)')
+    gradient.addColorStop(0.4, 'rgba(255,255,255,0.2)')
+    gradient.addColorStop(1, 'rgba(255,255,255,0)')
+    ctx.fillStyle = gradient
+    ctx.fillRect(0, 0, 128, 128)
+    const tex = new THREE.CanvasTexture(canvas)
+    tex.needsUpdate = true
+    return tex
+  }, [])
+
+  // Ritual: set openRitualStartTime once when this orb becomes selected
     if (isSelected) {
       if (!ritualStartSetRef.current) {
         ritualStartRef.current = t
@@ -1136,6 +1171,60 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       // Aura scale fixed at 1.2
     }
 
+    // Mystical orb layers: nebula rotation, energy breath, ring, glow sprite, proof orb
+    const showMysticalNebula = isInteractive && (!memory.videoSrc || !mediaTex)
+    if (showMysticalNebula && mysticalNebulaCoreRef.current) {
+      mysticalNebulaCoreRef.current.rotation.y += isProofOrb ? 0.012 : 0.008
+      mysticalNebulaCoreRef.current.rotation.z += 0.003
+    }
+    if (showMysticalNebula && mysticalNebulaCloudRef.current) {
+      mysticalNebulaCloudRef.current.rotation.y -= 0.005
+      mysticalNebulaCloudRef.current.rotation.x += 0.002
+    }
+    if (mysticalEnergyMidMatRef.current) {
+      const breath = 0.15 + 0.1 * Math.sin(t * Math.PI + index * 0.7)
+      mysticalEnergyMidMatRef.current.opacity = THREE.MathUtils.lerp(
+        mysticalEnergyMidMatRef.current.opacity,
+        breath,
+        0.02
+      )
+    }
+    if (mysticalRingMatRef.current && mysticalRingRef.current) {
+      mysticalRingRef.current.rotation.z += 0.006
+      const ringOpTgt = isHovered ? 0.9 : 0.5
+      const ringScaleTgt = isHovered ? 1.1 : 1
+      mysticalRingMatRef.current.opacity = THREE.MathUtils.lerp(
+        mysticalRingMatRef.current.opacity,
+        ringOpTgt,
+        Math.min(1, delta * 4)
+      )
+      const s = mysticalRingRef.current.scale.x
+      mysticalRingRef.current.scale.setScalar(THREE.MathUtils.lerp(s, ringScaleTgt, Math.min(1, delta * 4)))
+    }
+    if (proofRingOuterRef.current) {
+      proofRingOuterRef.current.rotation.z -= 0.004
+    }
+    if (mysticalGlowSpriteMatRef.current) {
+      const glowOpTgt = isHovered ? 0.35 : 0.15
+      mysticalGlowSpriteMatRef.current.opacity = THREE.MathUtils.lerp(
+        mysticalGlowSpriteMatRef.current.opacity,
+        glowOpTgt,
+        Math.min(1, delta * 3)
+      )
+    }
+    if (proofDotsRef.current && proofDotsRef.current.children) {
+      proofOrbitAngleRef.current += delta * 0.8
+      const angle = proofOrbitAngleRef.current
+      const r = RADIUS * 1.05
+      for (let i = 0; i < proofDotsRef.current.children.length; i++) {
+        const a = angle + (i / 6) * Math.PI * 2
+        const x = Math.cos(a) * r * 0.6
+        const z = Math.sin(a) * r * 0.6
+        const y = Math.sin(a * 2) * r * 0.3
+        proofDotsRef.current.children[i].position.set(x, y, z)
+      }
+    }
+
     // Idle orb pulse (world breathing): one random orb pulses — video shell only (non-video has no emissive)
     const isIdlePulse = id === idlePulseOrbId && idlePulseOrbStartTime != null && !isHovered
     if (isIdlePulse && idlePulseOrbStartTime != null && isVideoOrb) {
@@ -1200,6 +1289,9 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         worldPos: [wp.x, wp.y, wp.z],
         screenPos: [clampedX, clampedY],
       })
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('hint:orb-interaction'))
+      }
       if (import.meta.env?.DEV) {
         const mobile = useStore.getState().isMobile
         console.log(`[Orb] opening panel ${id} mobile=${mobile}`)
@@ -1524,6 +1616,101 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
           ))}
         </group>
       )}
+        </>
+      )}
+
+      {/* ── Mystical orb layers: nebula (when no video), ring, glow sprite, proof extras ── */}
+      {isInteractive && (
+        <>
+          {(!memory.videoSrc || !mediaTex) && (
+            <>
+              <mesh ref={mysticalNebulaCoreRef} renderOrder={0.5}>
+                <sphereGeometry args={[RADIUS * 0.35, 24, 24]} />
+                <meshBasicMaterial
+                  color={isProofOrb ? proofGold : orbColor}
+                  transparent
+                  opacity={0.9}
+                  depthWrite={false}
+                  blending={THREE.AdditiveBlending}
+                />
+              </mesh>
+              <mesh ref={mysticalNebulaCloudRef} renderOrder={0.6}>
+                <sphereGeometry args={[RADIUS * 0.55, 32, 32]} />
+                <meshBasicMaterial
+                  color={isProofOrb ? proofGold : orbColor}
+                  transparent
+                  opacity={0.4}
+                  depthWrite={false}
+                  blending={THREE.AdditiveBlending}
+                />
+              </mesh>
+            </>
+          )}
+          <mesh ref={mysticalEnergyMidRef} renderOrder={0.65}>
+            <sphereGeometry args={[RADIUS * 0.72, 32, 32]} />
+            <meshBasicMaterial
+              ref={mysticalEnergyMidMatRef}
+              color={isProofOrb ? proofGold : orbColor}
+              transparent
+              opacity={0.2}
+              depthWrite={false}
+              blending={THREE.AdditiveBlending}
+            />
+          </mesh>
+          <mesh ref={mysticalRingRef} rotation={[Math.PI / 4, 0, 0]} renderOrder={0.7}>
+            <torusGeometry args={[RADIUS * 0.85, RADIUS * 0.03, 8, 64]} />
+            <meshBasicMaterial
+              ref={mysticalRingMatRef}
+              color={isProofOrb ? proofGold : orbColor}
+              transparent
+              opacity={0.5}
+              depthWrite={false}
+              blending={THREE.AdditiveBlending}
+              side={THREE.DoubleSide}
+            />
+          </mesh>
+          {isProofOrb && (
+            <mesh ref={proofRingOuterRef} rotation={[Math.PI / 4, 0, 0]} renderOrder={0.71}>
+              <torusGeometry args={[RADIUS * 0.9, RADIUS * 0.02, 8, 64]} />
+              <meshBasicMaterial
+                color={proofWhite}
+                transparent
+                opacity={0.4}
+                depthWrite={false}
+                blending={THREE.AdditiveBlending}
+                side={THREE.DoubleSide}
+              />
+            </mesh>
+          )}
+          {glowSpriteTexture && (
+            <sprite ref={mysticalGlowSpriteRef} scale={[RADIUS * 4, RADIUS * 4, 1]} renderOrder={0.4}>
+              <spriteMaterial
+                ref={mysticalGlowSpriteMatRef}
+                map={glowSpriteTexture}
+                color={isProofOrb ? proofGold : orbColor}
+                transparent
+                opacity={0.15}
+                blending={THREE.AdditiveBlending}
+                depthWrite={false}
+              />
+            </sprite>
+          )}
+          {isProofOrb && (
+            <group ref={proofDotsRef} renderOrder={0.8}>
+              {[0, 1, 2, 3, 4, 5].map((i) => (
+                <mesh key={i}>
+                  <sphereGeometry args={[0.02, 8, 8]} />
+                  <meshBasicMaterial
+                    color={proofGold}
+                    transparent
+                    opacity={0.9}
+                    depthWrite={false}
+                    blending={THREE.AdditiveBlending}
+                  />
+                </mesh>
+              ))}
+            </group>
+          )}
         </>
       )}
 
