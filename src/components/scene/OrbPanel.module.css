@@ -109,8 +109,8 @@
     inset 0 0 50px rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 0.05),
     inset 0 2px 0 rgba(255, 255, 255, 0.12);
 
-  backdrop-filter: blur(36px);
   -webkit-backdrop-filter: blur(36px);
+  backdrop-filter: blur(36px);
   pointer-events: none;
   user-select: none;
   transform-origin: center center;

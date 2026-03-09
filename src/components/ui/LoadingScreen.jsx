@@ -184,7 +184,7 @@ export default function LoadingScreen({
             zIndex: 1000,
             background: '#000',
             overflow: 'hidden',
-            pointerEvents: 'all',
+            pointerEvents: show ? 'all' : 'none',
           }}
         >
           {/* Particles */}

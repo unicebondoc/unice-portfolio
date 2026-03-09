@@ -774,7 +774,7 @@ export default function App() {
   }, [showLoader, runEntrance])
 
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', overflow: 'hidden' }}>
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', overflow: 'hidden', isolation: 'isolate' }}>
       {/* Skip to main content — visible on focus */}
       <a
         href="#main-content"
@@ -818,6 +818,7 @@ export default function App() {
           opacity: backgroundReady ? 0 : 0.85,
           transition: 'opacity 0.6s ease-out',
           pointerEvents: 'none',
+          isolation: 'isolate',
         }}
       />
       <div
@@ -1033,12 +1034,18 @@ export default function App() {
             zIndex: activePanel?.type === 'memory' ? 51 : 1,
             pointerEvents: entranceTime >= 3 ? 'auto' : 'none',
             transformOrigin: '50% 50%',
+            isolation: 'isolate',
           }}
         >
       <Canvas
         dpr={[1, 2]}
         camera={{ position: [0, 0, 8], fov: 60, near: 0.1, far: 100 }}
-        gl={{ antialias: true, alpha: true }}
+        gl={{
+          antialias: true,
+          alpha: true,
+          powerPreference: 'high-performance',
+          failIfMajorPerformanceCaveat: false,
+        }}
         onPointerMissed={() => {
           if (activePanel?.type !== 'memory') return
           // Don't close on "miss" right after opening (e.g. tap on mobile can fire miss)
@@ -1055,6 +1062,7 @@ export default function App() {
           width: '100vw',
           height: '100vh',
           zIndex: 1,
+          pointerEvents: 'auto',
         }}
       >
         <SceneReadyNotifier />
