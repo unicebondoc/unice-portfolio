@@ -562,6 +562,29 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
     }
   }, [memory.videoSrc, isHovered, isSelected, shouldLoadVideo])
 
+  const isProofOrb = id === 'orb-proof'
+  const proofGold = '#ffc850'
+  const proofWhite = 'rgba(255,255,220,0.9)'
+
+  // Radial gradient texture for outer glow sprite (mystical orb)
+  const glowSpriteTexture = useMemo(() => {
+    if (typeof document === 'undefined') return null
+    const canvas = document.createElement('canvas')
+    canvas.width = 128
+    canvas.height = 128
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return null
+    const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64)
+    gradient.addColorStop(0, 'rgba(255,255,255,0.8)')
+    gradient.addColorStop(0.4, 'rgba(255,255,255,0.2)')
+    gradient.addColorStop(1, 'rgba(255,255,255,0)')
+    ctx.fillStyle = gradient
+    ctx.fillRect(0, 0, 128, 128)
+    const tex = new THREE.CanvasTexture(canvas)
+    tex.needsUpdate = true
+    return tex
+  }, [])
+
   // Once the texture is ready, switch body material colour to white so
   // video/photo colours render correctly.
   useEffect(() => {
@@ -669,29 +692,6 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
     const visualGlowMult = visualTier === 'hero' ? 1.12 : visualTier === 'secondary' ? 0.75 : 1
     const secondaryGlowMult = (isPrimary ? 1 : 0.55) * visualGlowMult * ambientGlowMult
   const effectiveOpacityFinal = entranceOpacityFinal * secondaryOpacityMult
-
-  const isProofOrb = id === 'orb-proof'
-  const proofGold = '#ffc850'
-  const proofWhite = 'rgba(255,255,220,0.9)'
-
-  // Radial gradient texture for outer glow sprite (mystical orb)
-  const glowSpriteTexture = useMemo(() => {
-    if (typeof document === 'undefined') return null
-    const canvas = document.createElement('canvas')
-    canvas.width = 128
-    canvas.height = 128
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return null
-    const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64)
-    gradient.addColorStop(0, 'rgba(255,255,255,0.8)')
-    gradient.addColorStop(0.4, 'rgba(255,255,255,0.2)')
-    gradient.addColorStop(1, 'rgba(255,255,255,0)')
-    ctx.fillStyle = gradient
-    ctx.fillRect(0, 0, 128, 128)
-    const tex = new THREE.CanvasTexture(canvas)
-    tex.needsUpdate = true
-    return tex
-  }, [])
 
   // Ritual: set openRitualStartTime once when this orb becomes selected
     if (isSelected) {
