@@ -40,7 +40,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
   const visualTier = memory.visualTier || (isRoot ? 'primary' : 'primary') // 'hero' | 'primary' | 'secondary'
   const isMobileViewport = size.width <= 768
   const baseRadius = (TIER_RADIUS[tier] ?? 0.50) * (memory.scaleMult ?? 1.0)
-  const RADIUS  = isMobileViewport ? baseRadius * 1.3 : baseRadius
+  const RADIUS  = isMobileViewport ? baseRadius * 1.45 : baseRadius
 
   const BREATHE_SPEED   = isCore ? 0.55 : 0.42
   const PULSE_SPEED     = isCore ? 1.35 : 0.85

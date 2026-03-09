@@ -81,7 +81,7 @@ function ResponsiveCamera() {
       if (aspect < 0.6) camera.fov = 90
       else if (aspect < 0.8) camera.fov = 82
       else camera.fov = 75
-      camera.position.z = 7
+      camera.position.z = 8
     } else {
       if (aspect < 1) camera.fov = 80
       else if (aspect < 1.4) camera.fov = 70
@@ -98,8 +98,8 @@ function ResponsiveConstellation({ children }) {
   const scale = useMemo(() => {
     const aspect = size.width / size.height
     if (size.width <= 768) {
-      if (size.width < 400) return 0.88
-      return 0.96
+      if (size.width < 400) return 0.92
+      return 1.02
     }
     if (size.width < 1024) return 0.7
     if (aspect < 1.4) return 0.85
@@ -474,7 +474,7 @@ function IdleOrbPulseDriver() {
 // ── Fixed camera: no user drag; optional nudge toward orb when memory panel opens ────
 const HOME_TARGET = new THREE.Vector3(0, 0, 0)
 const DEFAULT_CAM = new THREE.Vector3(0, 0, 8)
-const DEFAULT_CAM_MOBILE = new THREE.Vector3(0, 0, 7)
+const DEFAULT_CAM_MOBILE = new THREE.Vector3(0, 0, 8)
 
 function CameraController() {
   const { camera } = useThree()
@@ -502,8 +502,8 @@ function CameraController() {
       driftTargetRef.current.copy(nudgedCam).addScaledVector(dir, 0.3)
       isFocused.current = true
     } else {
-      focusCamPos.current.set(0, 0, isMobile ? 7 : 8)
-      driftTargetRef.current.set(0, 0, isMobile ? 7 : 8)
+      focusCamPos.current.set(0, 0, isMobile ? 8 : 8)
+      driftTargetRef.current.set(0, 0, isMobile ? 8 : 8)
       isFocused.current = false
     }
   }, [selectedOrbWorldPos, isMobile])
@@ -972,13 +972,13 @@ export default function App() {
         style={{
           position: 'fixed',
           bottom: 24,
-          left: isMobile ? '50%' : '24px',
+          left: isMobile ? 12 : 24,
           right: 0,
-          transform: isMobile ? 'translateX(-50%)' : undefined,
+          transform: isMobile ? undefined : undefined,
           zIndex: 20,
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: isMobile ? 'center' : 'flex-start',
+          justifyContent: isMobile ? 'flex-start' : 'flex-start',
           alignItems: 'center',
           padding: 0,
           background: 'transparent',
@@ -986,8 +986,8 @@ export default function App() {
           transition: activePanel?.type === 'memory' ? 'opacity 300ms ease-out' : 'opacity 400ms ease-out',
         }}
       >
-        <div className={hudStyles.socialsBar} style={{ flex: isMobile ? 0 : 1, justifyContent: isMobile ? 'center' : 'flex-start', gap: isMobile ? 16 : 12 }}>
-          {!isMobile && <SoundToggle />}
+        <div className={hudStyles.socialsBar} style={{ flex: isMobile ? 0 : 1, justifyContent: 'flex-start', gap: isMobile ? 16 : 12 }}>
+          <SoundToggle />
           {SOCIALS.map((s) => (
             <a
               key={s.label}
@@ -1001,11 +1001,6 @@ export default function App() {
             </a>
           ))}
         </div>
-        {isMobile && (
-          <div style={{ position: 'fixed', bottom: 24, left: 12, zIndex: 21 }}>
-            <SoundToggle />
-          </div>
-        )}
         {!isMobile && <div style={{ flex: 1, minWidth: 0 }} aria-hidden />}
         {!isMobile && <div style={{ flex: 1, minWidth: 0 }} aria-hidden />}
       </div>

@@ -14,18 +14,18 @@ const ORB_PALETTES = {
   warmCoral:  { fill: 'rgba(220,120,100,0.5)',  glow: '#e07c64', innerLight: '#ffebe8', core: '#f0a090' },
 }
 
-// Scattered layout for mobile (max-width 768px): full viewport, bigger and really scattered.
+// Scattered layout for mobile: much bigger, no overlap, extend above (full height).
 // Order: 0 origin, 1 writer, 2 pressure, 3 reinvention, 4 building, 5 proof, 6 work, 7 becoming, 8 root.
 const SCATTERED_MOBILE_POSITIONS = [
-  [-2.0, -2.2, 0.2],  // 0 orb-origin — bottom-left
-  [1.8, -1.6, 0.4],   // 1 orb-writer — bottom-right
-  [-2.2, 0.2, 0.3],   // 2 orb-pressure — mid-left
-  [1.6, 1.0, 0.2],    // 3 orb-reinvention — center-right
-  [-1.4, 2.2, 0.4],   // 4 orb-building — upper-left
-  [2.0, 2.8, 0.1],    // 5 orb-proof — top-right
-  [-0.4, 3.8, 0.3],   // 6 orb-work — top center-left
-  [1.2, 4.2, 0.2],    // 7 orb-becoming — top-right
-  [0.0, -3.0, 0],     // 8 orb-root — bottom center
+  [-2.4, -2.6, 0.1],  // 0 orb-origin — bottom-left
+  [2.2, -2.0, 0.3],   // 1 orb-writer — bottom-right
+  [-2.6, 0.4, 0.2],   // 2 orb-pressure — mid-left
+  [2.4, 1.4, 0.4],    // 3 orb-reinvention — center-right
+  [-2.0, 3.0, 0.3],   // 4 orb-building — upper-left
+  [2.6, 3.6, 0.2],    // 5 orb-proof — top-right
+  [-0.8, 4.8, 0.2],   // 6 orb-work — top center-left
+  [1.4, 5.4, 0.1],    // 7 orb-becoming — top-right (extends above)
+  [0.0, -3.2, 0],     // 8 orb-root — bottom center
 ]
 
 function mobilePositionsForMemories(list) {
