@@ -434,25 +434,32 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
   }, [])
 
   useEffect(() => {
-    if (!memory.videoSrc) return
+    if (!memory.videoSrc || typeof document === 'undefined') return
 
     const video = document.createElement('video')
-    video.src         = memory.videoSrc
-    video.muted       = true
-    video.loop        = true
+    // Same-origin paths: avoid crossOrigin so static files load without CORS
+    const isSameOrigin = memory.videoSrc.startsWith('/') || memory.videoSrc.startsWith(typeof window !== 'undefined' ? window.location.origin : '')
+    if (!isSameOrigin) video.crossOrigin = 'anonymous'
+    video.muted = true
+    video.loop = true
     video.playsInline = true
-    video.autoplay    = true
-    video.preload     = 'auto'
-    video.crossOrigin = 'anonymous'
+    video.setAttribute('playsinline', '')
+    video.preload = 'auto'
     video.style.cssText = 'position:fixed;opacity:0;pointer-events:none;width:1px;height:1px;top:-9999px'
     document.body.appendChild(video)
     videoRef.current = video
 
+    // Set src after append so it loads in document context; then trigger load
+    video.src = memory.videoSrc
+    video.load()
+
     let built = false
+    let texRef = null
     const buildTex = () => {
       if (built) return
       built = true
       const tex = new THREE.VideoTexture(video)
+      texRef = tex
       tex.colorSpace = THREE.SRGBColorSpace
       tex.minFilter = THREE.LinearFilter
       tex.magFilter = THREE.LinearFilter
@@ -475,13 +482,21 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       video.play().catch(() => {})
       setTimeout(buildTex, 150)
     }, { once: true })
+    video.addEventListener('loadeddata', () => setTimeout(buildTex, 100), { once: true })
     video.addEventListener('error', () => { built = true; setMediaTex(null) }, { once: true })
     video.play().catch(() => {})
 
     return () => {
       built = true
+      if (texRef) {
+        texRef.dispose()
+        texRef = null
+      }
+      setMediaTex(null)
       videoRef.current = null
       video.pause()
+      video.removeAttribute('src')
+      video.load()
       try { document.body.removeChild(video) } catch {}
     }
   }, [memory.videoSrc])

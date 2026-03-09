@@ -323,7 +323,6 @@ export default function OrbPanel({
                       ref={videoBadgeRef}
                       key={m.videoSrc}
                       className={styles.thumbnailMedia}
-                      src={`${m.videoSrc}${m.videoSrc.includes('?') ? '&' : '?'}b=1`}
                       loop
                       muted
                       playsInline
@@ -340,7 +339,9 @@ export default function OrbPanel({
                         e.currentTarget.currentTime = 0
                         e.currentTarget.play?.().catch?.(() => {})
                       }}
-                    />
+                    >
+                      <source src={m.videoSrc} type="video/mp4" />
+                    </video>
                   </button>
                 ) : (
                   <img className={styles.thumbnailMedia} src={m.image} alt="" draggable="false" />
@@ -378,7 +379,6 @@ export default function OrbPanel({
                       ref={videoInnerRef}
                       key={m.videoSrc}
                       className={styles.panelVideo}
-                      src={m.videoSrc}
                       autoPlay
                       muted
                       loop
@@ -400,7 +400,9 @@ export default function OrbPanel({
                       onError={(e) => {
                         e.currentTarget.style.display = 'none'
                       }}
-                    />
+                    >
+                      <source src={m.videoSrc} type="video/mp4" />
+                    </video>
                   </div>
                 )}
 
