@@ -14,13 +14,13 @@ const ORB_PALETTES = {
   warmCoral:  { fill: 'rgba(220,120,100,0.5)',  glow: '#e07c64', innerLight: '#ffebe8', core: '#f0a090' },
 }
 
-const MOBILE_Y_STEP = 1.35
-const MOBILE_X_AMP = 1.0
+const MOBILE_Y_STEP = 1.0
+const MOBILE_X_AMP = 0.6
 
 function mobilePositionsForMemories(list) {
   const result = {}
   list.forEach((m, i) => {
-    const y = 3.2 - i * MOBILE_Y_STEP
+    const y = 2.4 - i * MOBILE_Y_STEP
     const x = (i % 2 === 0 ? 1 : -1) * MOBILE_X_AMP
     result[m.id] = [x, y, 0]
   })

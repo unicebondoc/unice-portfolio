@@ -88,15 +88,15 @@
   height: 100%;
 }
 .panelMobileCenter {
-  width: min(340px, 88vw) !important;
-  height: min(340px, 88vw) !important;
+  width: min(460px, 96vw) !important;
+  height: min(460px, 96vw) !important;
   max-height: none !important;
   border-radius: 50% !important;
 }
 .anchorMobileCenter .panel {
-  width: min(340px, 88vw) !important;
-  height: min(340px, 88vw) !important;
-  max-height: min(500px, 85vh) !important;
+  width: min(460px, 96vw) !important;
+  height: min(460px, 96vw) !important;
+  max-height: min(620px, 88vh) !important;
   border-radius: 50% !important;
   display: flex !important;
   flex-direction: column !important;

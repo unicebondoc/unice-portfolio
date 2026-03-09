@@ -93,7 +93,7 @@ function ResponsiveConstellation({ children }) {
   const { size } = useThree()
   const scale = useMemo(() => {
     const aspect = size.width / size.height
-    if (size.width < 768) return 0.5
+    if (size.width < 768) return 0.8
     if (size.width < 1024) return 0.7
     if (aspect < 1.4) return 0.85
     return 1.0
