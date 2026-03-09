@@ -7,8 +7,8 @@ import styles from './OrbPanel.module.css'
 
 const IS_PHOTO = /\.(png|jpe?g|webp)$/i
 /** Video orbs: larger circle. Non-video: smaller circle. */
-const PANEL_SIZE_VIDEO = 'min(460px, 52vw)'
-const PANEL_SIZE_DEFAULT = 'min(400px, 46vw)'
+const PANEL_SIZE_VIDEO = 'min(520px, 58vw)'
+const PANEL_SIZE_DEFAULT = 'min(460px, 52vw)'
 
 function hexToRgb(hex) {
   const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)

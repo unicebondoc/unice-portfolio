@@ -88,8 +88,8 @@
 /* ── Orb container: circle (video orbs larger, non-video smaller) ───────────────────────────── */
 .panel {
   --orb-color: rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 1);
-  width: var(--panel-diameter, min(460px, 52vw));
-  height: var(--panel-diameter, min(460px, 52vw));
+  width: var(--panel-diameter, min(520px, 58vw));
+  height: var(--panel-diameter, min(520px, 58vw));
   position: relative;
   border-radius: 50%;
   overflow: hidden;
