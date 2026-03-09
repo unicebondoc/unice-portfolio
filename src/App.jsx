@@ -17,7 +17,7 @@ import WaterParticles from './components/scene/WaterParticles'
 import GroundSporeParticles from './components/scene/GroundSporeParticles'
 import CanopyParticles from './components/scene/CanopyParticles'
 import FloatingSkills from './components/scene/FloatingSkills'
-import ProjectArtifact from './components/scene/ProjectArtifact'
+import ProjectScrollArtifact from './components/scene/ProjectScrollArtifact'
 import { Environment } from '@react-three/drei'
 import { MEMORIES, getMemoryPosition } from './data/memories'
 import { SOCIALS } from './data/socials'
@@ -1096,7 +1096,7 @@ export default function App() {
           </group>
           <Tendrils memories={visibleMemories} />
           <AwakeningBurst />
-          <ProjectArtifact />
+          <ProjectScrollArtifact />
           <SpiralGroup
             entranceOrderMap={entranceOrderMap}
             firstOrbId={firstOrbId}
