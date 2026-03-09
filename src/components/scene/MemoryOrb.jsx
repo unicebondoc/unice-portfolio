@@ -1126,27 +1126,20 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       }
     }
 
-    // Ripple ring: very subtle on hover — thin accent only, not a second orb (Part 3)
+    // Ripple ring on hover: single ring, opacity 0.6 → 0, scale 1 → 1.8, 800ms, orb color
     if (rippleRingRef.current && rippleRingMatRef.current) {
       if (isHovered) {
-        if (rippleCycleCountRef.current >= 1) {
-          rippleRingRef.current.visible = false
-          rippleRingMatRef.current.opacity = 0
-        } else {
-          if (rippleProgressRef.current === 0) rippleRingRef.current.visible = true
-          rippleProgressRef.current += delta / 0.8
-          if (rippleProgressRef.current >= 1) {
-            rippleProgressRef.current = 0
-            rippleCycleCountRef.current += 1
-          }
-          const ease = 1 - Math.pow(1 - rippleProgressRef.current, 2)
-          rippleRingRef.current.scale.setScalar(1 + ease * 0.15)
-          rippleRingMatRef.current.opacity = 0.07 * (1 - ease)
-        }
+        if (rippleProgressRef.current === 0) rippleRingRef.current.visible = true
+        rippleProgressRef.current = Math.min(1, rippleProgressRef.current + delta / 0.8)
+        const p = rippleProgressRef.current
+        const ease = 1 - Math.pow(1 - p, 2)
+        rippleRingRef.current.scale.setScalar(1 + ease * 0.8)
+        rippleRingMatRef.current.opacity = 0.6 * (1 - ease)
+        if (p >= 1) rippleRingRef.current.visible = false
       } else {
-        rippleCycleCountRef.current = 0
         rippleProgressRef.current = 0
         rippleRingRef.current.visible = false
+        rippleRingRef.current.scale.setScalar(1)
         rippleRingMatRef.current.opacity = THREE.MathUtils.lerp(rippleRingMatRef.current.opacity, 0, Math.min(1, delta * 5))
       }
     }
@@ -1633,7 +1626,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         </>
       )}
 
-      {/* ── Hover ripple ring: scale 1 → 2.5 over 700ms, opacity 0.5 → 0, 2 cycles then stop ── */}
+      {/* ── Hover ripple ring: single ring, scale 1→1.8, opacity 0.6→0, 800ms ── */}
       <mesh ref={rippleRingRef} visible={false} renderOrder={4}>
         <ringGeometry args={[RADIUS, RADIUS * 1.02, 32]} />
         <meshBasicMaterial
@@ -1649,64 +1642,34 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
 
       {/* Onboarding pulse removed (clarity-first landing) */}
 
-      {/* ── Hover label: meta + title (recruiter-readable) ── */}
-      {(
-        <Html
-          position={[0, RADIUS * 1.75, 0]}
-          center
-          distanceFactor={8}
-          zIndexRange={[20, 0]}
+      {/* ── Hover label: orb title above (minimal, never clipped) ── */}
+      <Html
+        position={[0, RADIUS + 0.12, 0]}
+        center
+        distanceFactor={8}
+        zIndexRange={[20, 0]}
+        style={{
+          pointerEvents: 'none',
+          opacity: hoverLabelOpacity,
+          transform: hoverLabelOpacity > 0 ? 'translateY(0)' : 'translateY(4px)',
+          transition: hoverLabelOpacity >= 0.5
+            ? 'opacity 200ms ease-out, transform 200ms ease-out'
+            : 'opacity 150ms ease-in, transform 150ms ease-in',
+        }}
+      >
+        <div
           style={{
-            pointerEvents: 'none',
-            opacity: hoverLabelOpacity,
-            transform: hoverLabelOpacity > 0 ? 'translateY(-8px)' : 'translateY(0)',
-            transition: 'opacity 300ms ease, transform 300ms ease',
+            fontSize: '9px',
+            letterSpacing: '3px',
+            color: 'rgba(255,255,255,0.8)',
+            textAlign: 'center',
+            whiteSpace: 'nowrap',
+            textShadow: '0 0 10px rgba(0,200,255,0.8)',
           }}
         >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '3px',
-              padding: '8px 12px 9px',
-              borderRadius: '12px',
-              background: 'rgba(6, 9, 20, 0.88)',
-              border: '1px solid rgba(255, 255, 255, 0.18)',
-              boxShadow: '0 16px 50px rgba(0, 0, 0, 0.5)',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-              textAlign: 'center',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            <div
-              style={{
-                fontFamily: 'Space Mono, monospace',
-                fontSize: '9px',
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: 'rgba(240, 250, 255, 0.85)',
-                textShadow: '0 1px 4px rgba(0,0,0,0.4)',
-              }}
-            >
-              {memory.labelShort || memory.year}
-            </div>
-            <div
-              style={{
-                fontFamily: 'Cinzel, serif',
-                fontSize: '13px',
-                fontWeight: 650,
-                letterSpacing: '0.02em',
-                color: 'rgba(255, 255, 255, 0.98)',
-                textShadow: '0 1px 10px rgba(0,0,0,0.5)',
-              }}
-            >
-              {title}
-            </div>
-          </div>
-        </Html>
-      )}
+          {title}
+        </div>
+      </Html>
 
       {/* Glow sprites removed — were causing massive white halos; can add subtle glow back later */}
 
