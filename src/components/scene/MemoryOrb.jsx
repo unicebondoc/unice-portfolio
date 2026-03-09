@@ -1554,7 +1554,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
                   map={mediaTex}
                   emissiveMap={mediaTex}
                   emissive="#ffffff"
-                  emissiveIntensity={1.35}
+                  emissiveIntensity={2}
                   alphaMap={circleAlphaTex}
                   color="#ffffff"
                   transparent
