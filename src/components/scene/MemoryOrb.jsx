@@ -381,6 +381,12 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         tex.colorSpace = THREE.SRGBColorSpace
         tex.minFilter = THREE.LinearFilter
         tex.magFilter = THREE.LinearFilter
+        if (memory.isRoot) {
+          tex.wrapS = THREE.ClampToEdgeWrapping
+          tex.wrapT = THREE.ClampToEdgeWrapping
+          tex.repeat.set(0.6, 0.6)
+          tex.offset.set(0.1, 0.15)
+        }
         imageTexRef.current = tex
         setImageTex(tex)
       },
@@ -430,6 +436,10 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       tex.center.set(0.5, 0.5)
       tex.rotation = 0
       tex.repeat.set(1, 1)
+      if (memory.isRoot) {
+        tex.repeat.set(0.6, 0.6)
+        tex.offset.set(0.1, 0.15)
+      }
       setMediaTex(tex)
     }
 

@@ -346,7 +346,17 @@ export default function OrbPanel({
                 </div>
 
                 {m.videoSrc && (
-                  <div className={styles.panelVideoWrap}>
+                  <div
+                    className={styles.panelVideoWrap}
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      overflow: 'hidden',
+                      borderRadius: '12px',
+                      marginBottom: '16px',
+                    }}
+                  >
                     <video
                       ref={videoInnerRef}
                       key={m.videoSrc}
@@ -359,11 +369,18 @@ export default function OrbPanel({
                       preload="auto"
                       disablePictureInPicture
                       style={{
-                        width: '100%',
-                        maxHeight: '88px',
+                        borderRadius: '12px',
+                        width: '85%',
+                        maxHeight: '220px',
+                        minHeight: '200px',
                         objectFit: 'cover',
-                        objectPosition: m.cropPosition || 'center 30%',
+                        objectPosition: m.cropPosition || 'center center',
+                        opacity: 0.9,
+                        marginBottom: '16px',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
                         display: 'block',
+                        aspectRatio: '4/3',
                       }}
                       onCanPlay={(e) => e.currentTarget.play?.().catch(() => {})}
                       onLoadedData={(e) => e.currentTarget.play?.().catch(() => {})}
