@@ -3,8 +3,8 @@
   position: fixed;
   right: 24px;
   bottom: 24px;
-  width: 64px;
-  height: 64px;
+  width: 52px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,8 +24,8 @@
 
 .catWrap {
   position: relative;
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   transform-origin: center center;
   will-change: transform;
 }

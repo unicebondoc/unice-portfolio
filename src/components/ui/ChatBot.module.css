@@ -8,7 +8,7 @@
   pointer-events: auto;
   position: relative;
   z-index: 2147483648;
-  width: 340px;
+  width: min(340px, 88vw);
   max-width: calc(100vw - 24px);
   height: 460px;
   max-height: 85vh;
@@ -59,8 +59,8 @@
 
 .title {
   font-family: 'Cinzel', serif;
-  font-size: 12px;
-  letter-spacing: 5px;
+  font-size: 10px;
+  letter-spacing: 2px;
   color: rgba(0, 235, 255, 0.94);
   text-shadow: 0 0 24px rgba(0, 235, 255, 0.35);
   user-select: none;
@@ -135,8 +135,8 @@
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   font-family: Raleway, system-ui, -apple-system, sans-serif;
-  font-size: 14px;
-  line-height: 1.52;
+  font-size: 13px;
+  line-height: 1.6;
   white-space: pre-wrap;
 }
 
@@ -256,7 +256,7 @@
   color: rgba(245, 255, 255, 0.98);
   outline: none;
   font-family: Raleway, system-ui, -apple-system, sans-serif;
-  font-size: 15px;
+  font-size: 13px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .input::placeholder {

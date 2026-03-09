@@ -7,8 +7,8 @@ import styles from './OrbPanel.module.css'
 
 const IS_PHOTO = /\.(png|jpe?g|webp)$/i
 /** Video orbs: larger circle. Non-video: smaller circle. */
-const PANEL_SIZE_VIDEO = 'min(520px, 58vw)'
-const PANEL_SIZE_DEFAULT = 'min(460px, 52vw)'
+const PANEL_SIZE_VIDEO = 'min(480px, 54vw)'
+const PANEL_SIZE_DEFAULT = 'min(420px, 48vw)'
 
 function hexToRgb(hex) {
   const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
@@ -407,15 +407,14 @@ export default function OrbPanel({
                       preload="auto"
                       disablePictureInPicture
                       style={{
-                        width: '75%',
-                        height: '150px',
+                        width: '80%',
+                        height: '160px',
                         objectFit: 'cover',
                         objectPosition: 'center 10%',
                         borderRadius: '16px',
                         display: 'block',
-                        margin: '0 auto 12px auto',
+                        margin: '0 auto 14px auto',
                         flexShrink: 0,
-                        background: 'transparent',
                       }}
                       onCanPlay={(e) => e.currentTarget.play?.().catch(() => {})}
                       onLoadedData={(e) => e.currentTarget.play?.().catch(() => {})}

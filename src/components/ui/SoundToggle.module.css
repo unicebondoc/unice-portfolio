@@ -1,16 +1,17 @@
-/* Sound toggle — bottom-left, near socials; thin lines, subtle glow */
+/* Sound toggle — bottom-left, near socials; 44px touch target, 11px if label */
 .toggle {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   padding: 0;
   border: none;
   border-radius: 50%;
   background: rgba(150, 200, 230, 0.06);
   color: rgba(150, 200, 230, 0.6);
   cursor: pointer;
+  font-size: 11px;
   transition: color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -32,6 +33,6 @@
 }
 
 .icon svg {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
 }

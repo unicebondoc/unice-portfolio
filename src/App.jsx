@@ -1,7 +1,6 @@
 import { Suspense, useEffect, useLayoutEffect, useRef, useMemo, useState, useCallback } from 'react'
 import HUD from './components/ui/HUD'
 import SacredArtifacts from './components/ui/SacredArtifacts'
-import ProjectRunes from './components/ui/ProjectRunes'
 import IntroOverlay from './components/ui/IntroOverlay'
 import { Canvas, useThree, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
@@ -866,7 +865,7 @@ export default function App() {
           <h1
             style={{
               fontFamily: "'Cinzel', serif",
-              fontSize: isMobile ? 'clamp(1.6rem, 6vw, 2.2rem)' : 'clamp(2.8rem, 5vw, 4.5rem)',
+              fontSize: isMobile ? 'clamp(1.6rem, 6vw, 2.2rem)' : 'clamp(32px, 5vw, 56px)',
               fontWeight: 700,
               letterSpacing: '0.15em',
               color: 'rgba(245, 252, 255, 0.98)',
@@ -881,9 +880,9 @@ export default function App() {
           <p
             style={{
               fontFamily: "'Raleway', sans-serif",
-              fontSize: isMobile ? 'clamp(0.5rem, 2vw, 0.7rem)' : 'clamp(0.6rem, 1.1vw, 0.85rem)',
+              fontSize: isMobile ? 'clamp(0.5rem, 2vw, 0.7rem)' : 'clamp(10px, 1.2vw, 14px)',
               fontWeight: 500,
-              letterSpacing: '0.4em',
+              letterSpacing: '6px',
               color: 'rgba(200, 235, 255, 0.82)',
               margin: '4px 0 0 0',
               padding: 0,
@@ -895,9 +894,9 @@ export default function App() {
           <p
             style={{
               fontFamily: "'Raleway', sans-serif",
-              fontSize: isMobile ? 9 : 7,
+              fontSize: isMobile ? 9 : 'clamp(8px, 0.9vw, 11px)',
               fontWeight: 300,
-              letterSpacing: '2px',
+              letterSpacing: '3px',
               color: 'rgba(255,255,255,0.38)',
               margin: '6px 0 0 0',
               padding: 0,
@@ -907,6 +906,7 @@ export default function App() {
               overflow: 'visible',
               maxWidth: 'none',
               lineHeight: 1.35,
+              opacity: 0.4,
             }}
           >
             FROM MANILA · TO SYDNEY · TO THE FUTURE
@@ -922,9 +922,8 @@ export default function App() {
           data-entrance="artifacts"
           style={{
             position: 'fixed',
-            left: '2.5vw',
-            top: '50%',
-            transform: 'translateY(-50%)',
+            left: '20px',
+            bottom: '15vh',
             zIndex: 20,
             display: isMobile ? 'none' : 'flex',
             flexDirection: 'column',
@@ -936,8 +935,6 @@ export default function App() {
         >
           <SacredArtifacts />
         </div>
-
-        {!activePanel && <ProjectRunes />}
 
         {/* ── Chat + Tyche (bottom-right): wrapper pointer-events none; Tyche has pointer-events auto ── */}
         <div
@@ -957,16 +954,16 @@ export default function App() {
       <div
         style={{
           position: 'fixed',
-          bottom: '3vh',
-          left: 0,
+          bottom: '24px',
+          left: '24px',
           right: 0,
           zIndex: 20,
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-start',
           alignItems: 'center',
-          padding: '8px 3vw',
-          background: 'linear-gradient(180deg, rgba(2, 6, 18, 0) 0%, rgba(2, 6, 18, 0.28) 55%, rgba(2, 6, 18, 0.42) 100%)',
+          padding: '0',
+          background: 'transparent',
           opacity: activePanel?.type === 'memory' ? 0 : 1,
           transition: activePanel?.type === 'memory' ? 'opacity 300ms ease-out' : 'opacity 400ms ease-out',
         }}
