@@ -897,10 +897,10 @@ export default function App() {
           <p
             style={{
               fontFamily: "'Raleway', sans-serif",
-              fontSize: 'clamp(8px, 0.85vw, 10px)',
+              fontSize: 'clamp(10px, 1vw, 13px)',
               fontWeight: 300,
               letterSpacing: '3px',
-              color: 'rgba(255,255,255,0.3)',
+              color: 'rgba(255,255,255,0.62)',
               margin: 0,
               padding: 0,
               textTransform: 'uppercase',

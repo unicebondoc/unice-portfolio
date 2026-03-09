@@ -86,7 +86,7 @@
 
 /* Status badge */
 .scrollStatus {
-  font-size: 7px;
+  font-size: 9px;
   letter-spacing: 2.5px;
   color: #00ffaa;
   display: flex;
@@ -130,7 +130,7 @@
 }
 
 .scrollTitle {
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 2px;
   color: rgba(255, 255, 255, 0.92);
@@ -139,21 +139,21 @@
 }
 
 .scrollDesc {
-  font-size: 7.5px;
-  color: rgba(255, 255, 255, 0.4);
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.55);
   line-height: 1.5;
 }
 
 .scrollTags {
-  font-size: 6.5px;
-  color: rgba(0, 220, 180, 0.55);
+  font-size: 9px;
+  color: rgba(0, 220, 180, 0.65);
   letter-spacing: 0.5px;
 }
 
 /* Coming soon tooltip */
 .comingSoon {
-  font-size: 8px;
-  color: rgba(255, 255, 255, 0.4);
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
   position: absolute;
   bottom: -20px;
   left: 0;
