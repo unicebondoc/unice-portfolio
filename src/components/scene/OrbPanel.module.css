@@ -302,14 +302,14 @@
   }
 }
 
-/* ── Content area: 72% width, tighter vertical rhythm ──────────── */
+/* ── Content area: 72% width, scroll if needed ──────────── */
 .scroll {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 72%;
-  max-height: 68vh;
+  max-height: 90%;
   overflow-y: auto;
   overflow-x: hidden;
   text-align: center;
@@ -392,15 +392,15 @@
   margin: 0 0 6px 0;
 }
 
-/* Small in-orb video clip: compact, center-cropped, fits without enlarging orb */
+/* Video wrapper: borderless, full video visible */
 .panelVideoWrap {
   width: 100%;
-  max-height: 88px;
-  margin: 0 auto 10px;
-  border-radius: 10px;
+  margin: 0 auto 16px;
+  border-radius: 8px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  border: none;
+  outline: none;
+  box-shadow: none;
   flex-shrink: 0;
   display: flex;
   justify-content: center;
@@ -408,13 +408,12 @@
 }
 .panelVideo {
   display: block;
-  width: 100%;
-  height: 88px;
-  max-height: 88px;
-  object-fit: cover;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
   object-position: center center;
-  opacity: 0.92;
-  background: rgba(0, 0, 0, 0.3);
+  opacity: 0.95;
+  background: transparent;
 }
 
 /* ── Tags: compact ─────────────────────────────────────────────── */

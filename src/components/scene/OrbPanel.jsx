@@ -6,7 +6,7 @@ import { useRef, useState, useCallback, useEffect } from 'react'
 import styles from './OrbPanel.module.css'
 
 const IS_PHOTO = /\.(png|jpe?g|webp)$/i
-const PANEL_DIAMETER = 'min(440px, 56vw)'
+const PANEL_DIAMETER = 'min(480px, 52vw)'
 
 function hexToRgb(hex) {
   const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
@@ -353,8 +353,11 @@ export default function OrbPanel({
                       display: 'flex',
                       justifyContent: 'center',
                       overflow: 'hidden',
-                      borderRadius: '12px',
+                      borderRadius: '8px',
                       marginBottom: '16px',
+                      border: 'none',
+                      outline: 'none',
+                      boxShadow: 'none',
                     }}
                   >
                     <video
@@ -369,18 +372,15 @@ export default function OrbPanel({
                       preload="auto"
                       disablePictureInPicture
                       style={{
-                        borderRadius: '12px',
-                        width: '85%',
-                        maxHeight: '220px',
-                        minHeight: '200px',
-                        objectFit: 'cover',
-                        objectPosition: m.cropPosition || 'center center',
-                        opacity: 0.9,
+                        width: '100%',
+                        height: 'auto',
+                        objectFit: 'contain',
+                        objectPosition: 'center center',
+                        opacity: 0.95,
                         marginBottom: '16px',
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
                         display: 'block',
-                        aspectRatio: '4/3',
+                        borderRadius: '8px',
+                        background: 'transparent',
                       }}
                       onCanPlay={(e) => e.currentTarget.play?.().catch(() => {})}
                       onLoadedData={(e) => e.currentTarget.play?.().catch(() => {})}
