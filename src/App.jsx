@@ -862,6 +862,7 @@ export default function App() {
             left: 32,
             zIndex: 100,
             pointerEvents: 'none',
+            overflow: 'visible',
           }}
         >
           <h1
@@ -897,10 +898,10 @@ export default function App() {
           <p
             style={{
               fontFamily: "'Raleway', sans-serif",
-              fontSize: 'clamp(10px, 1vw, 13px)',
+              fontSize: 'clamp(8px, 0.85vw, 10px)',
               fontWeight: 300,
               letterSpacing: '3px',
-              color: 'rgba(255,255,255,0.62)',
+              color: 'rgba(255,255,255,0.3)',
               margin: 0,
               padding: 0,
               textTransform: 'uppercase',
