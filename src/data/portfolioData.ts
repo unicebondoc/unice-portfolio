@@ -5,8 +5,8 @@ export const PORTFOLIO_DATA = {
     originallyFrom: "Philippines",
     movedToSydney: 2023,
     website: "unicebondoc.com",
-    email: "uniceabondoc@gmail.com",
-    linkedIn: "linkedin.com/in/unicebondoc",
+    email: "unicebondoc@gmail.com",
+    linkedIn: "https://www.linkedin.com/in/unicebondoc/",
     onlinePersona: ["Life of Mooni", "Mooni of Sydney"],
     headline: "AI Software Engineer | Technical Project Lead | Generative AI",
     summary: "AI Software Engineer and Technical Project Lead. Graduated with a Master of ICT (Web and Mobile Computing) from Western Sydney University with High Distinction (88/100) for her LLM research. Built and shipped an AI-powered chatbot for a live Shopify e-commerce platform. Developed a 3D interactive AI portfolio website. Brings stakeholder coordination experience from managing 100+ SME accounts in regulated banking.",
@@ -202,8 +202,8 @@ export const PORTFOLIO_DATA = {
   ],
 
   contact: {
-    email: "uniceabondoc@gmail.com",
-    linkedIn: "linkedin.com/in/unicebondoc",
+    email: "unicebondoc@gmail.com",
+    linkedIn: "https://www.linkedin.com/in/unicebondoc/",
     website: "unicebondoc.com",
     mediumBlog: "https://medium.com/@unicebondoc",
   },

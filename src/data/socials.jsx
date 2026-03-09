@@ -15,7 +15,7 @@ export const SOCIALS = [
   },
   {
     label: 'LinkedIn',
-    href: 'https://linkedin.com/in/unice-bondoc',
+    href: 'https://www.linkedin.com/in/unicebondoc/',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <rect x="2" y="2" width="20" height="20" rx="3" ry="3" stroke="currentColor" strokeWidth="1.8"/>
@@ -40,7 +40,7 @@ export const SOCIALS = [
   },
   {
     label: 'Contact',
-    href: 'mailto:unice@email.com',
+    href: 'mailto:unicebondoc@gmail.com',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" strokeWidth="1.8"/>
