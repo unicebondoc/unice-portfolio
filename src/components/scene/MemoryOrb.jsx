@@ -1550,8 +1550,11 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
             <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
               <mesh renderOrder={3} onClick={handleClick} onPointerOver={handlePointerOver} onPointerOut={handlePointerOut}>
                 <planeGeometry args={[RADIUS * 1.95, RADIUS * 1.95]} />
-                <meshBasicMaterial
+                <meshStandardMaterial
                   map={mediaTex}
+                  emissiveMap={mediaTex}
+                  emissive="#ffffff"
+                  emissiveIntensity={1.35}
                   alphaMap={circleAlphaTex}
                   color="#ffffff"
                   transparent
@@ -1559,6 +1562,8 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
                   depthWrite={false}
                   toneMapped={false}
                   side={THREE.DoubleSide}
+                  roughness={1}
+                  metalness={0}
                 />
               </mesh>
             </Billboard>
