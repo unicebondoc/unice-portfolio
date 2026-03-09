@@ -5,3 +5,6 @@ dist
 .env
 .env.*
 !.env.example
+
+# Local backup of pre-converted video (do not commit)
+public/memories/belong-web-original.mp4
