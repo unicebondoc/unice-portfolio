@@ -462,6 +462,11 @@ export default function OrbPanel({
 
             {/* Refined hint: single line, low prominence */}
             <p className={styles.releaseHint}>click outside to close</p>
+            {mobile && (
+              <p className={styles.scrollHint} aria-hidden>
+                Scroll to read more
+              </p>
+            )}
             </div>
           </div>
           {/* No exit button — close via outside click, ESC, or same orb */}

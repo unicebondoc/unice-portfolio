@@ -356,6 +356,21 @@
   z-index: 3;
 }
 
+/* Mobile: hint that content is scrollable */
+.anchorMobileCenter .scrollHint {
+  position: relative;
+  flex-shrink: 0;
+  bottom: auto;
+  font-size: 9px;
+  letter-spacing: 1.8px;
+  color: rgba(255, 255, 255, 0.35);
+  padding: 6px 0 10px;
+  margin: 0;
+}
+.anchorMobileCenter .releaseHint {
+  display: none;
+}
+
 .panelClosing {
   animation: panelScaleOut 200ms ease-in forwards;
 }
