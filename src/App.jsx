@@ -98,8 +98,8 @@ function ResponsiveConstellation({ children }) {
   const scale = useMemo(() => {
     const aspect = size.width / size.height
     if (size.width <= 768) {
-      if (size.width < 400) return 0.82
-      return 0.92
+      if (size.width < 400) return 0.88
+      return 0.96
     }
     if (size.width < 1024) return 0.7
     if (aspect < 1.4) return 0.85
@@ -1002,7 +1002,7 @@ export default function App() {
           ))}
         </div>
         {isMobile && (
-          <div style={{ position: 'fixed', bottom: 24, left: 20, zIndex: 21 }}>
+          <div style={{ position: 'fixed', bottom: 24, left: 12, zIndex: 21 }}>
             <SoundToggle />
           </div>
         )}

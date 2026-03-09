@@ -14,18 +14,18 @@ const ORB_PALETTES = {
   warmCoral:  { fill: 'rgba(220,120,100,0.5)',  glow: '#e07c64', innerLight: '#ffebe8', core: '#f0a090' },
 }
 
-// Scattered layout for mobile (max-width 768px): full viewport height, bottom to canopy.
-// Order matches MEMORIES array: 0 origin, 1 writer, 2 pressure, 3 reinvention, 4 building, 5 proof, 6 work, 7 becoming, 8 root.
+// Scattered layout for mobile (max-width 768px): full viewport, bigger and really scattered.
+// Order: 0 origin, 1 writer, 2 pressure, 3 reinvention, 4 building, 5 proof, 6 work, 7 becoming, 8 root.
 const SCATTERED_MOBILE_POSITIONS = [
-  [-1.2, -1.8, 0.3],  // 0 orb-origin
-  [1.0, -1.2, 0.2],   // 1 orb-writer
-  [-1.4, -0.3, 0.4],  // 2 orb-pressure
-  [0.8, 0.5, 0.2],    // 3 orb-reinvention
-  [-0.8, 1.4, 0.3],   // 4 orb-building
-  [1.2, 2.0, 0.4],    // 5 orb-proof
-  [-0.3, 2.8, 0.2],   // 6 orb-work
-  [0.6, 3.6, 0.1],    // 7 orb-becoming
-  [0.2, -2.8, 0],     // 8 orb-root (identity)
+  [-2.0, -2.2, 0.2],  // 0 orb-origin — bottom-left
+  [1.8, -1.6, 0.4],   // 1 orb-writer — bottom-right
+  [-2.2, 0.2, 0.3],   // 2 orb-pressure — mid-left
+  [1.6, 1.0, 0.2],    // 3 orb-reinvention — center-right
+  [-1.4, 2.2, 0.4],   // 4 orb-building — upper-left
+  [2.0, 2.8, 0.1],    // 5 orb-proof — top-right
+  [-0.4, 3.8, 0.3],   // 6 orb-work — top center-left
+  [1.2, 4.2, 0.2],    // 7 orb-becoming — top-right
+  [0.0, -3.0, 0],     // 8 orb-root — bottom center
 ]
 
 function mobilePositionsForMemories(list) {
