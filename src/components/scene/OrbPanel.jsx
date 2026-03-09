@@ -7,8 +7,8 @@ import styles from './OrbPanel.module.css'
 
 const IS_PHOTO = /\.(png|jpe?g|webp)$/i
 /** Video orbs: larger circle. Non-video: smaller circle. */
-const PANEL_SIZE_VIDEO = 'min(480px, 54vw)'
-const PANEL_SIZE_DEFAULT = 'min(420px, 48vw)'
+const PANEL_SIZE_VIDEO = 'min(520px, 58vw)'
+const PANEL_SIZE_DEFAULT = 'min(460px, 52vw)'
 
 function hexToRgb(hex) {
   const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
@@ -294,8 +294,8 @@ export default function OrbPanel({
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'center',
-                      justifyContent: 'center',
-                      padding: '16px 28px',
+                      justifyContent: 'flex-start',
+                      padding: '14px 24px 10px',
                       height: '100%',
                       overflow: 'hidden',
                       textAlign: 'center',
@@ -359,11 +359,13 @@ export default function OrbPanel({
                       transform: 'none',
                       width: '100%',
                       maxHeight: 'none',
-                      overflow: 'hidden',
+                      overflowX: 'hidden',
+                      overflowY: 'auto',
+                      WebkitOverflowScrolling: 'touch',
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'center',
-                      justifyContent: 'center',
+                      justifyContent: 'flex-start',
                       flex: 1,
                       minHeight: 0,
                     }

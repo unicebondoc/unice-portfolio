@@ -88,8 +88,8 @@
 /* ── Orb container: circle (video orbs larger, non-video smaller) ───────────────────────────── */
 .panel {
   --orb-color: rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 1);
-  width: var(--panel-diameter, min(480px, 54vw));
-  height: var(--panel-diameter, min(480px, 54vw));
+  width: var(--panel-diameter, min(520px, 58vw));
+  height: var(--panel-diameter, min(520px, 58vw));
   position: relative;
   border-radius: 50%;
   overflow: hidden;
@@ -301,14 +301,14 @@
   }
 }
 
-/* ── Content area: 72% width, scroll if needed ──────────── */
+/* ── Content area: 72% width, scroll so TOOLS and full text stay visible ──────────── */
 .scroll {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 72%;
-  max-height: 90%;
+  max-height: 92%;
   overflow-y: auto;
   overflow-x: hidden;
   text-align: center;
@@ -317,7 +317,7 @@
 }
 
 .content {
-  padding: 4px 0 36px;
+  padding: 4px 0 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
