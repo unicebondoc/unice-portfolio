@@ -5,7 +5,7 @@ export const PORTFOLIO_DATA = {
     originallyFrom: "Philippines",
     movedToSydney: 2023,
     website: "unicebondoc.com",
-    email: "unicebondoc@gmail.com",
+    email: "uniceabondoc@gmail.com",
     linkedIn: "https://www.linkedin.com/in/unicebondoc/",
     onlinePersona: ["Life of Mooni", "Mooni of Sydney"],
     headline: "AI Software Engineer | Technical Project Lead | Generative AI",
@@ -202,7 +202,7 @@ export const PORTFOLIO_DATA = {
   ],
 
   contact: {
-    email: "unicebondoc@gmail.com",
+    email: "uniceabondoc@gmail.com",
     linkedIn: "https://www.linkedin.com/in/unicebondoc/",
     website: "unicebondoc.com",
     mediumBlog: "https://medium.com/@unicebondoc",

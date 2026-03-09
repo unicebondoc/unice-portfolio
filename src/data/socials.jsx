@@ -40,7 +40,7 @@ export const SOCIALS = [
   },
   {
     label: 'Contact',
-    href: 'mailto:unicebondoc@gmail.com',
+    href: 'mailto:uniceabondoc@gmail.com',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" strokeWidth="1.8"/>
