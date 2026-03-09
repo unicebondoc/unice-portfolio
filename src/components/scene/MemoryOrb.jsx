@@ -471,12 +471,38 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       tex.wrapT = THREE.ClampToEdgeWrapping
       tex.center.set(0.5, 0.5)
       tex.rotation = 0
-      tex.repeat.set(1, 1)
-      if (memory.isRoot) {
+      // Center-crop: show center of video so it fills the circle without warp
+      const w = video.videoWidth || video.width || 1
+      const h = video.videoHeight || video.height || 1
+      if (w > 0 && h > 0) {
+        const r = w / h
+        if (r >= 1) {
+          tex.repeat.set(1 / r, 1)
+          tex.offset.set((1 - 1 / r) / 2, 0)
+        } else {
+          tex.repeat.set(1, r)
+          tex.offset.set(0, (1 - r) / 2)
+        }
+      } else {
         tex.repeat.set(1, 1)
-        tex.offset.set(0.1, 0.2)
+        tex.offset.set(0, 0)
+        video.addEventListener('loadedmetadata', onMeta, { once: true })
       }
       setMediaTex(tex)
+    }
+    const onMeta = () => {
+      if (texRef && video.videoWidth > 0 && video.videoHeight > 0) {
+        const w = video.videoWidth
+        const h = video.videoHeight
+        const r = w / h
+        if (r >= 1) {
+          texRef.repeat.set(1 / r, 1)
+          texRef.offset.set((1 - 1 / r) / 2, 0)
+        } else {
+          texRef.repeat.set(1, r)
+          texRef.offset.set(0, (1 - r) / 2)
+        }
+      }
     }
 
     video.addEventListener('playing', buildTex, { once: true })
@@ -1518,9 +1544,9 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       />
 
       {memory.videoSrc && mediaTex ? (
-        /* Video orb: root = flat circular portrait + shell; story orbs = inner sphere + shell. All autoplay. */
+        /* Video orb: flat circular portrait (center-cropped) + shell for all orbs. No sphere warp. */
         <>
-          {isRoot && circleAlphaTex ? (
+          {circleAlphaTex ? (
             <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
               <mesh renderOrder={3} onClick={handleClick} onPointerOver={handlePointerOver} onPointerOut={handlePointerOut}>
                 <planeGeometry args={[RADIUS * 1.95, RADIUS * 1.95]} />
@@ -1536,18 +1562,6 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
                 />
               </mesh>
             </Billboard>
-          ) : !isRoot ? (
-          <mesh renderOrder={1}>
-            <sphereGeometry args={[RADIUS * 0.72, 48, 48]} />
-            <meshBasicMaterial
-              map={mediaTex}
-              color="#ffffff"
-              toneMapped={false}
-              opacity={1}
-              depthWrite={true}
-              side={THREE.FrontSide}
-            />
-          </mesh>
           ) : null}
           <mesh
             ref={orbMeshRef}
