@@ -32,6 +32,8 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
 
   const isCore  = tier === 'core' || tier === 'root'
   const isRoot  = tier === 'root' || memory.isRoot
+  // "I Earned My Place" orb (in the 8) gets flat circular video; no extra 9th orb
+  const isFlatVideoOrb = memory.id === 'orb-proof'
   const orbType = memory.orbType || (memory.isPrimary === false ? 'secondary' : 'primary') // 'primary' | 'secondary' | 'ambient'
   const isInteractive = orbType !== 'ambient'
   const isPrimary = memory.isPrimary !== false
@@ -406,15 +408,16 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
   // Prefer video when available so ROOT orb shows playing video, not static image
   const bodyTexture = (memory.videoSrc && mediaTex) ? mediaTex : (hasImageTexture ? imageTex : mediaTex)
 
-  // Circular alpha texture for root orb flat portrait (no sphere warp)
-  const circleAlphaTex = useMemo(() => {
-    if (typeof document === 'undefined') return null
+  // Circular alpha for "I Earned My Place" orb flat portrait (create after mount)
+  const [circleAlphaTex, setCircleAlphaTex] = useState(null)
+  useEffect(() => {
+    if (typeof document === 'undefined') return
     const size = 64
     const canvas = document.createElement('canvas')
     canvas.width = size
     canvas.height = size
     const ctx = canvas.getContext('2d')
-    if (!ctx) return null
+    if (!ctx) return
     const r = size / 2
     ctx.fillStyle = '#000'
     ctx.fillRect(0, 0, size, size)
@@ -424,7 +427,11 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
     ctx.fill()
     const tex = new THREE.CanvasTexture(canvas)
     tex.needsUpdate = true
-    return tex
+    setCircleAlphaTex(tex)
+    return () => {
+      tex.dispose()
+      setCircleAlphaTex(null)
+    }
   }, [])
 
   useEffect(() => {
@@ -1492,9 +1499,25 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       />
 
       {memory.videoSrc && mediaTex ? (
-        /* Video orb: inner sphere + shell (root uses flat circle in Branch A, so only shell here) */
+        /* Video orb: orb-proof (I Earned My Place) = flat circular portrait + shell; others = inner sphere + shell */
         <>
-          {!isRoot && (
+          {isFlatVideoOrb && circleAlphaTex ? (
+            <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
+              <mesh renderOrder={3} onClick={handleClick} onPointerOver={handlePointerOver} onPointerOut={handlePointerOut}>
+                <planeGeometry args={[RADIUS * 1.95, RADIUS * 1.95]} />
+                <meshBasicMaterial
+                  map={mediaTex}
+                  alphaMap={circleAlphaTex}
+                  color="#ffffff"
+                  transparent
+                  opacity={1}
+                  depthWrite={false}
+                  toneMapped={false}
+                  side={THREE.DoubleSide}
+                />
+              </mesh>
+            </Billboard>
+          ) : !isFlatVideoOrb ? (
           <mesh renderOrder={1}>
             <sphereGeometry args={[RADIUS * 0.72, 48, 48]} />
             <meshBasicMaterial
@@ -1506,7 +1529,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
               side={THREE.FrontSide}
             />
           </mesh>
-          )}
+          ) : null}
           <mesh
             ref={orbMeshRef}
             renderOrder={2}
