@@ -194,8 +194,9 @@ export const MEMORIES = [
     tags: ['WSU', 'LLM Research', '88/100', 'High Distinction', 'Graduation'],
     skills: [],
     link: '',
-    videoSrc: '/memories/belong-web.mp4',
+    videoSrc: '/videos/orb6-proof.mp4',
     videoHint: 'graduation ceremony, walking across stage, WSU — that graduation clip is perfect for this',
+    cropPosition: 'center 30%',
     isFuture: false,
   },
   // 7 — THE WORK (Core Memories, no links)

@@ -362,7 +362,7 @@ export default function OrbPanel({
                         width: '100%',
                         maxHeight: '88px',
                         objectFit: 'cover',
-                        objectPosition: 'center center',
+                        objectPosition: m.cropPosition || 'center 30%',
                         display: 'block',
                       }}
                       onCanPlay={(e) => e.currentTarget.play?.().catch(() => {})}
