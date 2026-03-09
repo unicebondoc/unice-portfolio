@@ -8,6 +8,7 @@
 import useStore from '../../hooks/useStore'
 import { MEMORIES } from '../../data/memories'
 import { panelDomRef } from '../../utils/panelRef'
+import { getVideoUrl } from '../../utils/videoUrl'
 import styles from './FocusPanel.module.css'
 
 const IS_PHOTO = /\.(png|jpe?g|webp)$/i
@@ -49,8 +50,11 @@ export default function FocusPanel() {
             <video
               key={memory.videoSrc}
               className={styles.video}
-              src={memory.videoSrc}
-              autoPlay loop muted={false} controls playsInline
+              src={getVideoUrl(memory.videoSrc)}
+              autoPlay
+              loop
+              muted
+              playsInline
             />
           )}
 

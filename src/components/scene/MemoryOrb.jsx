@@ -4,6 +4,7 @@ import { Sphere, Html, Billboard } from '@react-three/drei'
 import * as THREE from 'three'
 import useStore from '../../hooks/useStore'
 import { TIER_RADIUS } from '../../data/memories'
+import { getVideoUrl } from '../../utils/videoUrl'
 import { useSound } from '../../context/SoundManager'
 
 /**
@@ -436,9 +437,10 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
   useEffect(() => {
     if (!memory.videoSrc || typeof document === 'undefined') return
 
+    const videoUrl = getVideoUrl(memory.videoSrc)
     const video = document.createElement('video')
     // Same-origin paths: avoid crossOrigin so static files load without CORS
-    const isSameOrigin = memory.videoSrc.startsWith('/') || memory.videoSrc.startsWith(typeof window !== 'undefined' ? window.location.origin : '')
+    const isSameOrigin = videoUrl.startsWith('/') || (typeof window !== 'undefined' && videoUrl.startsWith(window.location.origin))
     if (!isSameOrigin) video.crossOrigin = 'anonymous'
     video.muted = true
     video.loop = true
@@ -450,7 +452,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
     videoRef.current = video
 
     // Set src after append so it loads in document context; then trigger load
-    video.src = memory.videoSrc
+    video.src = videoUrl
     video.load()
 
     let built = false
@@ -483,7 +485,13 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       setTimeout(buildTex, 150)
     }, { once: true })
     video.addEventListener('loadeddata', () => setTimeout(buildTex, 100), { once: true })
-    video.addEventListener('error', () => { built = true; setMediaTex(null) }, { once: true })
+    video.addEventListener('error', (e) => {
+      built = true
+      setMediaTex(null)
+      if (typeof console !== 'undefined' && console.warn) {
+        console.warn('[MemoryOrb] Video failed to load:', memory.videoSrc, video.error?.message || e)
+      }
+    }, { once: true })
     video.play().catch(() => {})
 
     return () => {

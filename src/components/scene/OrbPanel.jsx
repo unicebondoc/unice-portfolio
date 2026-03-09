@@ -4,6 +4,7 @@
  */
 import { useRef, useState, useCallback, useEffect } from 'react'
 import styles from './OrbPanel.module.css'
+import { getVideoUrl } from '../../utils/videoUrl'
 
 const IS_PHOTO = /\.(png|jpe?g|webp)$/i
 /** Video orbs: larger circle. Non-video: smaller circle. */
@@ -339,8 +340,13 @@ export default function OrbPanel({
                         e.currentTarget.currentTime = 0
                         e.currentTarget.play?.().catch?.(() => {})
                       }}
+                      onError={(e) => {
+                        if (typeof console !== 'undefined' && console.warn) {
+                          console.warn('[OrbPanel] Badge video failed:', m.videoSrc, e.currentTarget?.error?.message)
+                        }
+                      }}
                     >
-                      <source src={m.videoSrc} type="video/mp4" />
+                      <source src={getVideoUrl(m.videoSrc)} type="video/mp4" />
                     </video>
                   </button>
                 ) : (
@@ -399,9 +405,12 @@ export default function OrbPanel({
                       onLoadedData={(e) => e.currentTarget.play?.().catch(() => {})}
                       onError={(e) => {
                         e.currentTarget.style.display = 'none'
+                        if (typeof console !== 'undefined' && console.warn) {
+                          console.warn('[OrbPanel] Panel video failed:', m.videoSrc, e.currentTarget?.error?.message)
+                        }
                       }}
                     >
-                      <source src={m.videoSrc} type="video/mp4" />
+                      <source src={getVideoUrl(m.videoSrc)} type="video/mp4" />
                     </video>
                   </div>
                 )}
