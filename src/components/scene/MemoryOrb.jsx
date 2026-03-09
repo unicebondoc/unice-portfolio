@@ -1,6 +1,6 @@
 import { useRef, useMemo, useState, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { Sphere, Html } from '@react-three/drei'
+import { Sphere, Html, Billboard } from '@react-three/drei'
 import * as THREE from 'three'
 import useStore from '../../hooks/useStore'
 import { TIER_RADIUS } from '../../data/memories'
@@ -384,8 +384,8 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         if (memory.isRoot) {
           tex.wrapS = THREE.ClampToEdgeWrapping
           tex.wrapT = THREE.ClampToEdgeWrapping
-          tex.repeat.set(0.6, 0.6)
-          tex.offset.set(0.1, 0.15)
+          tex.repeat.set(1, 1)
+          tex.offset.set(0.1, 0.2)
         }
         imageTexRef.current = tex
         setImageTex(tex)
@@ -405,6 +405,27 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
   const hasImageTexture = !!imageTex
   // Prefer video when available so ROOT orb shows playing video, not static image
   const bodyTexture = (memory.videoSrc && mediaTex) ? mediaTex : (hasImageTexture ? imageTex : mediaTex)
+
+  // Circular alpha texture for root orb flat portrait (no sphere warp)
+  const circleAlphaTex = useMemo(() => {
+    if (typeof document === 'undefined') return null
+    const size = 64
+    const canvas = document.createElement('canvas')
+    canvas.width = size
+    canvas.height = size
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return null
+    const r = size / 2
+    ctx.fillStyle = '#000'
+    ctx.fillRect(0, 0, size, size)
+    ctx.fillStyle = '#fff'
+    ctx.beginPath()
+    ctx.arc(r, r, r - 1, 0, Math.PI * 2)
+    ctx.fill()
+    const tex = new THREE.CanvasTexture(canvas)
+    tex.needsUpdate = true
+    return tex
+  }, [])
 
   useEffect(() => {
     if (!memory.videoSrc) return
@@ -437,8 +458,8 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       tex.rotation = 0
       tex.repeat.set(1, 1)
       if (memory.isRoot) {
-        tex.repeat.set(0.6, 0.6)
-        tex.offset.set(0.1, 0.15)
+        tex.repeat.set(1, 1)
+        tex.offset.set(0.1, 0.2)
       }
       setMediaTex(tex)
     }
@@ -1209,8 +1230,50 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       </Sphere>
       )}
 
-      {/* ── Glass / photo body — when video: clear outer shell + inner video sphere ────────────────────────────────────── */}
+      {/* ── Glass / photo body — when video: clear outer shell + inner video sphere (root: flat circle only) ────────────────────────────────────── */}
       {memory.videoSrc && mediaTex ? (
+        isRoot && circleAlphaTex ? (
+          <>
+            <Sphere
+              args={[RADIUS, 64, 64]}
+              renderOrder={1}
+              onClick={handleClick}
+              onPointerOver={handlePointerOver}
+              onPointerOut={handlePointerOut}
+            >
+              <meshPhysicalMaterial
+                ref={bodyMat}
+                color="#ffffff"
+                emissive={etherealColor}
+                emissiveIntensity={0.03}
+                transmission={0.4}
+                transparent
+                opacity={0.12}
+                roughness={0.06}
+                metalness={0}
+                thickness={0.6}
+                ior={1.4}
+                envMapIntensity={0.4}
+                depthWrite={false}
+              />
+            </Sphere>
+            <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
+              <mesh renderOrder={1.4} onClick={handleClick} onPointerOver={handlePointerOver} onPointerOut={handlePointerOut}>
+                <planeGeometry args={[RADIUS * 1.95, RADIUS * 1.95]} />
+                <meshBasicMaterial
+                  map={mediaTex}
+                  alphaMap={circleAlphaTex}
+                  color="#ffffff"
+                  transparent
+                  opacity={1}
+                  depthWrite={false}
+                  toneMapped={false}
+                  side={THREE.DoubleSide}
+                />
+              </mesh>
+            </Billboard>
+          </>
+        ) : (
         <>
           <Sphere
             args={[RADIUS, 64, 64]}
@@ -1250,7 +1313,50 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
             />
           </Sphere>
         </>
+        )
       ) : bodyTexture ? (
+        isRoot && circleAlphaTex ? (
+          <>
+            <Sphere
+              args={[RADIUS, 64, 64]}
+              renderOrder={1}
+              onClick={handleClick}
+              onPointerOver={handlePointerOver}
+              onPointerOut={handlePointerOut}
+            >
+              <meshPhysicalMaterial
+                ref={bodyMat}
+                color="#ffffff"
+                emissive={etherealColor}
+                emissiveIntensity={0.03}
+                transmission={0.4}
+                transparent
+                opacity={0.12}
+                roughness={0.06}
+                metalness={0}
+                thickness={0.6}
+                ior={1.4}
+                envMapIntensity={0.4}
+                depthWrite={false}
+              />
+            </Sphere>
+            <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
+              <mesh renderOrder={1.4} onClick={handleClick} onPointerOver={handlePointerOver} onPointerOut={handlePointerOut}>
+                <planeGeometry args={[RADIUS * 1.95, RADIUS * 1.95]} />
+                <meshBasicMaterial
+                  map={bodyTexture}
+                  alphaMap={circleAlphaTex}
+                  color="#ffffff"
+                  transparent
+                  opacity={1}
+                  depthWrite={false}
+                  toneMapped={false}
+                  side={THREE.DoubleSide}
+                />
+              </mesh>
+            </Billboard>
+          </>
+        ) : (
         <Sphere
           args={[RADIUS, 64, 64]}
           renderOrder={1}
@@ -1311,6 +1417,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
             />
           )}
         </Sphere>
+        )
       ) : (
         <Sphere
           args={[RADIUS, 64, 64]}
@@ -1385,8 +1492,9 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       />
 
       {memory.videoSrc && mediaTex ? (
-        /* Video orb ONLY: video sphere + barely-there glass shell. No inner glow. */
+        /* Video orb: inner sphere + shell (root uses flat circle in Branch A, so only shell here) */
         <>
+          {!isRoot && (
           <mesh renderOrder={1}>
             <sphereGeometry args={[RADIUS * 0.72, 48, 48]} />
             <meshBasicMaterial
@@ -1398,6 +1506,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
               side={THREE.FrontSide}
             />
           </mesh>
+          )}
           <mesh
             ref={orbMeshRef}
             renderOrder={2}
