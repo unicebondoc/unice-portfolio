@@ -262,11 +262,18 @@ export default function OrbPanel({
         <div className={styles.driftWrap}>
           <div
             ref={panelRef}
-            className={`${styles.panel} ${mobile ? styles.panelBottomSheet : ''} ${effectiveClosing ? styles.panelClosing : ''} ${memory.isFuture ? styles.future : ''}`}
+            className={`${styles.panel} ${mobile ? styles.panelBottomSheet : ''} ${effectiveClosing ? styles.panelClosing : ''} ${memory.isFuture ? styles.future : ''} ${m.videoSrc ? styles.panelOval : ''}`}
             style={{
               '--orb-r': r,
               '--orb-g': g,
               '--orb-b': b,
+              ...(m.videoSrc
+                ? {
+                    '--panel-width': 'min(420px, 50vw)',
+                    '--panel-height': 'min(620px, 72vw)',
+                    '--panel-radius': '50% / 40%',
+                  }
+                : {}),
             }}
           >
             {mobile && (
@@ -287,6 +294,17 @@ export default function OrbPanel({
               style={{
                 opacity: contentOpacity,
                 transition: contentOpacity === 1 ? 'opacity 250ms ease-out' : 'opacity 180ms ease-out',
+                ...(m.videoSrc
+                  ? {
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'flex-start',
+                      padding: '20px 24px',
+                      height: '100%',
+                      overflow: 'hidden',
+                    }
+                  : {}),
               }}
               onPointerDown={handlePanelUserGesture}
               onClick={handlePanelUserGesture}
@@ -334,7 +352,28 @@ export default function OrbPanel({
               </div>
             )}
 
-            <div className={styles.scroll}>
+            <div
+              className={styles.scroll}
+              style={
+                m.videoSrc
+                  ? {
+                      position: 'relative',
+                      top: 'auto',
+                      left: 'auto',
+                      transform: 'none',
+                      width: '100%',
+                      maxHeight: 'none',
+                      overflow: 'hidden',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'flex-start',
+                      flex: 1,
+                      minHeight: 0,
+                    }
+                  : {}
+              }
+            >
               <div key={m.id} className={styles.content}>
                 <div
                   className={styles.panelSymbol}
@@ -354,7 +393,7 @@ export default function OrbPanel({
                       justifyContent: 'center',
                       overflow: 'hidden',
                       borderRadius: '8px',
-                      marginBottom: '16px',
+                      marginBottom: '14px',
                       border: 'none',
                       outline: 'none',
                       boxShadow: 'none',
@@ -372,15 +411,15 @@ export default function OrbPanel({
                       preload="auto"
                       disablePictureInPicture
                       style={{
-                        width: '100%',
-                        height: 'auto',
+                        width: '88%',
+                        height: '240px',
                         objectFit: 'contain',
                         objectPosition: 'center center',
-                        opacity: 0.95,
-                        marginBottom: '16px',
-                        display: 'block',
-                        borderRadius: '8px',
                         background: 'transparent',
+                        borderRadius: '8px',
+                        display: 'block',
+                        margin: '0 auto 14px auto',
+                        flexShrink: 0,
                       }}
                       onCanPlay={(e) => e.currentTarget.play?.().catch(() => {})}
                       onLoadedData={(e) => e.currentTarget.play?.().catch(() => {})}

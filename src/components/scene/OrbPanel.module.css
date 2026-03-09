@@ -85,14 +85,14 @@
   position: relative;
 }
 
-/* ── Orb container: circular, glass, organic breathing shape (~10% smaller) ───────────────────────────── */
+/* ── Orb container: circular or tall oval (oval when .panelOval) ───────────────────────────── */
 .panel {
   --orb-color: rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 1);
-  --panel-size: var(--panel-diameter, min(352px, 46vw));
-  width: var(--panel-size);
-  height: var(--panel-size);
+  --panel-size: var(--panel-diameter, min(480px, 52vw));
+  width: var(--panel-width, var(--panel-size));
+  height: var(--panel-height, var(--panel-size));
   position: relative;
-  border-radius: 50%;
+  border-radius: var(--panel-radius, 50%);
   overflow: hidden;
   animation: breatheShape 4s ease-in-out infinite;
 
@@ -349,11 +349,11 @@
   to { transform: rotate(360deg); }
 }
 
-/* ── Meta, title, description: tighter vertical spacing ─────────────────────────────────── */
+/* ── Meta, title, description: fit oval panel ─────────────────────────────────── */
 .metaLine {
   font-family: 'Raleway', sans-serif;
   font-weight: 500;
-  font-size: 8px;
+  font-size: 9px;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: rgba(210, 235, 255, 0.72);
@@ -364,7 +364,7 @@
 .title {
   font-family: 'Cinzel', serif;
   font-weight: 650;
-  font-size: 19px;
+  font-size: 20px;
   color: rgba(255, 255, 255, 0.98);
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
   margin: 0 0 2px 0;
@@ -386,7 +386,7 @@
   font-family: 'Raleway', sans-serif;
   font-weight: 450;
   font-size: 11px;
-  line-height: 1.42;
+  line-height: 1.6;
   color: rgba(235, 245, 255, 0.9);
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
   margin: 0 0 6px 0;
@@ -420,7 +420,7 @@
 .tags {
   font-family: 'Raleway', sans-serif;
   font-weight: 400;
-  font-size: 7px;
+  font-size: 8px;
   letter-spacing: 2px;
   color: rgba(220, 235, 255, 0.68);
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
