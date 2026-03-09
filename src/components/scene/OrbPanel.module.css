@@ -96,8 +96,11 @@
 .anchorMobileCenter .panel {
   width: min(340px, 88vw) !important;
   height: min(340px, 88vw) !important;
-  max-height: none !important;
+  max-height: min(500px, 85vh) !important;
   border-radius: 50% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
 }
 .anchorMobileCenter .bottomSheetHandle {
   display: none;
@@ -107,6 +110,33 @@
   right: 12px;
   bottom: auto;
   left: auto;
+}
+
+/* Mobile center: content area scrollable so text is not cropped */
+.anchorMobileCenter .contentWrap {
+  position: relative !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+.anchorMobileCenter .scroll {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  width: 100% !important;
+  max-height: none !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 8% !important;
+}
+.anchorMobileCenter .content {
+  padding: 4px 0 24px !important;
 }
 
 .parallaxWrap {
