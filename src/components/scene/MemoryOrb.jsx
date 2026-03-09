@@ -371,9 +371,11 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
 
   const hasMedia = !!(memory.videoSrc || /\.(png|jpe?g|webp)$/i.test(memory.image || ''))
 
-  // ── Video texture ───────────────────────────────────────────────
+  // ── Video texture: lazy load on first hover or click (not on mount) ───────────────────────
   const [mediaTex, setMediaTex] = useState(null)
   const videoReady = !!mediaTex
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
+  const videoRevealStartRef = useRef(null)
 
   // ── Image texture for photo orbs (e.g. belong.png) — visible through glass ──
   const [imageTex, setImageTex] = useState(null)
@@ -441,22 +443,21 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
 
   useEffect(() => {
     if (!memory.videoSrc || typeof document === 'undefined') return
+    if (!shouldLoadVideo) return
 
     const videoUrl = getVideoUrl(memory.videoSrc)
     const video = document.createElement('video')
-    // Same-origin paths: avoid crossOrigin so static files load without CORS
     const isSameOrigin = videoUrl.startsWith('/') || (typeof window !== 'undefined' && videoUrl.startsWith(window.location.origin))
     if (!isSameOrigin) video.crossOrigin = 'anonymous'
     video.muted = true
     video.loop = true
     video.playsInline = true
     video.setAttribute('playsinline', '')
-    video.preload = 'auto'
+    video.preload = 'none'
     video.style.cssText = 'position:fixed;opacity:0;pointer-events:none;width:1px;height:1px;top:-9999px'
     document.body.appendChild(video)
     videoRef.current = video
 
-    // Set src after append so it loads in document context; then trigger load
     video.src = videoUrl
     video.load()
 
@@ -477,7 +478,6 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       tex.wrapT = THREE.ClampToEdgeWrapping
       tex.center.set(0.5, 0.5)
       tex.rotation = 0
-      // Center-crop: show center of video so it fills the circle without warp
       const w = video.videoWidth || video.width || 1
       const h = video.videoHeight || video.height || 1
       if (w > 0 && h > 0) {
@@ -533,13 +533,22 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         texRef = null
       }
       setMediaTex(null)
+      videoRevealStartRef.current = null
       videoRef.current = null
       video.pause()
       video.removeAttribute('src')
       video.load()
       try { document.body.removeChild(video) } catch {}
     }
-  }, [memory.videoSrc])
+  }, [memory.videoSrc, shouldLoadVideo])
+
+  // Trigger lazy video load on first hover or click (so we load 0 videos on page load)
+  useEffect(() => {
+    if (!memory.videoSrc || shouldLoadVideo) return
+    if (isHovered || isSelected) {
+      setShouldLoadVideo(true)
+    }
+  }, [memory.videoSrc, isHovered, isSelected, shouldLoadVideo])
 
   // Once the texture is ready, switch body material colour to white so
   // video/photo colours render correctly.
@@ -611,6 +620,13 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
     if (mediaTex && videoRef.current && videoRef.current.readyState >= 2) {
       mediaTex.needsUpdate = true
     }
+    // 200ms fade-in when video texture first appears (hides pop-in)
+    if (mediaTex && videoRevealStartRef.current === null) {
+      videoRevealStartRef.current = t
+    }
+    const videoRevealOpacity = (mediaTex && videoRevealStartRef.current != null)
+      ? Math.min(1, (t - videoRevealStartRef.current) / 0.2)
+      : 1
     // Every orb with a video shows it by default: autoplay, no hover required.
     if (videoRef.current && memory.videoSrc) {
       const cam = state.camera
@@ -1059,6 +1075,10 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
     if (isVideoOrb) {
       const shellEmTgt = isHovered ? 0.08 : 0.05
       const videoPlaneEmTgt = isHovered ? 1.8 : 0.7
+      if (videoInnerMat.current) {
+        videoInnerMat.current.opacity = videoRevealOpacity
+        if (videoRevealOpacity < 1) videoInnerMat.current.transparent = true
+      }
       if (orbShellMatRef.current) {
         orbShellMatRef.current.emissiveIntensity = THREE.MathUtils.lerp(
           orbShellMatRef.current.emissiveIntensity,
@@ -1072,6 +1092,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
           videoPlaneEmTgt * dimMult,
           Math.min(1, hoverLerpSpeed * 4)
         )
+        orbVideoPlaneMatRef.current.opacity = videoRevealOpacity
       }
       const glowAuraOpTgt = isHovered ? 0.35 : 0.15
       if (orbGlowAuraMatRef.current) {

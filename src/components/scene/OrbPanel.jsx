@@ -153,6 +153,12 @@ export default function OrbPanel({
     if (closingState) return
     if (mobile) setSheetOffset(100)
     setClosingState(true)
+    if (videoBadgeRef.current) {
+      videoBadgeRef.current.pause()
+    }
+    if (videoInnerRef.current) {
+      videoInnerRef.current.pause()
+    }
     onClose()
   }, [onClose, closingState, mobile])
 
@@ -324,7 +330,7 @@ export default function OrbPanel({
                       loop
                       muted
                       playsInline
-                      preload="auto"
+                      preload="none"
                       onCanPlay={(e) => {
                         e.currentTarget.muted = true
                         e.currentTarget.play?.().catch?.(() => {})
@@ -386,7 +392,7 @@ export default function OrbPanel({
                       muted
                       loop
                       playsInline
-                      preload="auto"
+                      preload="none"
                       disablePictureInPicture
                       style={{
                         width: '80%',
