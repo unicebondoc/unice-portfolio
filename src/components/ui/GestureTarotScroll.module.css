@@ -1,0 +1,175 @@
+/* Wrapper: fixed right, vertically centered */
+.wrapper {
+  position: fixed;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  pointer-events: auto;
+}
+
+.scrollContainer {
+  width: 120px;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transform: translateY(-50%);
+  transition: transform 0.4s ease, filter 0.4s ease;
+  filter: drop-shadow(0 0 12px rgba(0, 240, 200, 0.25));
+  animation: scrollFloat 4s ease-in-out infinite;
+  position: relative;
+}
+
+.scrollContainer:hover {
+  animation-play-state: paused;
+  transform: translateY(-50%) rotateY(-8deg) scale(1.05);
+  filter: drop-shadow(0 0 24px rgba(0, 240, 200, 0.5));
+}
+
+@keyframes scrollFloat {
+  0%,
+  100% {
+    transform: translateY(-50%) translateY(0);
+  }
+  50% {
+    transform: translateY(-50%) translateY(-8px);
+  }
+}
+
+/* Top and bottom scroll rolls (cylinders) */
+.scrollRoll {
+  width: 120px;
+  height: 16px;
+  background: linear-gradient(
+    to bottom,
+    rgba(180, 140, 80, 0.9),
+    rgba(120, 90, 40, 0.95),
+    rgba(180, 140, 80, 0.9)
+  );
+  border-radius: 50%;
+  border: 1px solid rgba(200, 160, 80, 0.6);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 220, 100, 0.3);
+}
+
+.scrollTop {
+  margin-bottom: 0;
+}
+
+.scrollBottom {
+  margin-top: 0;
+}
+
+/* Main scroll body */
+.scrollBody {
+  width: 120px;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 25, 40, 0.92),
+    rgba(8, 18, 35, 0.96)
+  );
+  border-left: 1px solid rgba(200, 160, 80, 0.4);
+  border-right: 1px solid rgba(200, 160, 80, 0.4);
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+/* Status badge */
+.scrollStatus {
+  font-size: 7px;
+  letter-spacing: 3px;
+  color: #00ffaa;
+  display: flex;
+  align-items: center;
+  opacity: 0.9;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00ffaa;
+  display: inline-block;
+  margin-right: 5px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+}
+
+/* Glow line decoration */
+.scrollLine {
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(200, 160, 80, 0.5),
+    transparent
+  );
+  margin: 2px auto;
+}
+
+.scrollTitle {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.3;
+  font-family: serif;
+}
+
+.scrollDesc {
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.5;
+  letter-spacing: 0.5px;
+}
+
+.scrollTags {
+  font-size: 7px;
+  color: rgba(0, 240, 200, 0.6);
+  letter-spacing: 1px;
+  line-height: 1.6;
+}
+
+/* Coming soon tooltip */
+.comingSoon {
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.4);
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  animation: fadeInOut 2s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

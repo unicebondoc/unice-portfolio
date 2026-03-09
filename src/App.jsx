@@ -30,6 +30,7 @@ import hudStyles from './components/ui/HUD.module.css'
 import LoadingScreen from './components/ui/LoadingScreen'
 import SoundToggle from './components/ui/SoundToggle'
 import CustomCursor from './components/ui/CustomCursor'
+import GestureTarotScroll from './components/ui/GestureTarotScroll'
 import ChatBot from './components/ui/ChatBot'
 import TycheMascot from './components/ui/TycheMascot'
 
@@ -937,6 +938,9 @@ export default function App() {
         >
           <SacredArtifacts />
         </div>
+
+        {/* ── Right side: Gesture Tarot scroll artifact ── */}
+        <GestureTarotScroll />
 
         {/* ── Chat + Tyche (bottom-right): wrapper pointer-events none; Tyche has pointer-events auto ── */}
         <div
