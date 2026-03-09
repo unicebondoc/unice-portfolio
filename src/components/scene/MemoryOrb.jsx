@@ -469,6 +469,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       tex.minFilter = THREE.LinearFilter
       tex.magFilter = THREE.LinearFilter
       tex.generateMipmaps = false
+      tex.needsUpdate = true
       tex.format = THREE.RGBAFormat
       tex.wrapS = THREE.ClampToEdgeWrapping
       tex.wrapT = THREE.ClampToEdgeWrapping
@@ -1054,7 +1055,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       orbPointLightRef.current.color.set(memory.orbGlow || '#67e8f9')
     }
     if (isVideoOrb) {
-      const shellEmTgt = isHovered ? 1.8 : 0.7
+      const shellEmTgt = isHovered ? 0.08 : 0.05
       const videoPlaneEmTgt = isHovered ? 1.8 : 0.7
       if (orbShellMatRef.current) {
         orbShellMatRef.current.emissiveIntensity = THREE.MathUtils.lerp(
@@ -1120,7 +1121,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         const p = el / 1.2
         const mult = p < 0.5 ? 1 + 1.5 * (p * 2) : 2.5 - 1.5 * ((p - 0.5) * 2)
         if (orbShellMatRef.current) {
-          orbShellMatRef.current.emissiveIntensity = 0.12 * mult
+          orbShellMatRef.current.emissiveIntensity = 0.05 * mult
         }
       }
     }
@@ -1306,29 +1307,6 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       {memory.videoSrc && mediaTex ? (
         isRoot && circleAlphaTex ? (
           <>
-            <Sphere
-              args={[RADIUS, 64, 64]}
-              renderOrder={1}
-              onClick={handleClick}
-              onPointerOver={handlePointerOver}
-              onPointerOut={handlePointerOut}
-            >
-              <meshPhysicalMaterial
-                ref={bodyMat}
-                color="#ffffff"
-                emissive={etherealColor}
-                emissiveIntensity={0.03}
-                transmission={0.4}
-                transparent
-                opacity={0.12}
-                roughness={0.06}
-                metalness={0}
-                thickness={0.6}
-                ior={1.4}
-                envMapIntensity={0.4}
-                depthWrite={false}
-              />
-            </Sphere>
             <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
               <mesh renderOrder={1.4} onClick={handleClick} onPointerOver={handlePointerOver} onPointerOut={handlePointerOut}>
                 <planeGeometry args={[RADIUS * 1.95, RADIUS * 1.95]} />
@@ -1348,40 +1326,20 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         ) : (
         <>
           <Sphere
-            args={[RADIUS, 64, 64]}
-            renderOrder={1}
+            args={[RADIUS * 0.7, 48, 48]}
+            renderOrder={1.5}
             onClick={handleClick}
             onPointerOver={handlePointerOver}
             onPointerOut={handlePointerOut}
           >
-            <meshPhysicalMaterial
-              ref={bodyMat}
-              color="#ffffff"
-              emissive={isRoot ? etherealColor : orbColor}
-              emissiveIntensity={0.03}
-              transmission={0.4}
-              transparent
-              opacity={0.12}
-              roughness={0.06}
-              metalness={0}
-              thickness={0.6}
-              ior={1.4}
-              envMapIntensity={0.4}
-              depthWrite={false}
-            />
-          </Sphere>
-          <Sphere args={[RADIUS * 0.7, 48, 48]} renderOrder={1.5}>
-            <meshStandardMaterial
+            <meshBasicMaterial
               ref={videoInnerMat}
               map={mediaTex}
-              color="#ffffff"
-              emissive="#000000"
-              emissiveIntensity={0}
-              side={THREE.FrontSide}
+              toneMapped={false}
               transparent={false}
               opacity={1}
-              depthWrite={false}
-              toneMapped={false}
+              depthWrite={true}
+              side={THREE.FrontSide}
             />
           </Sphere>
         </>
@@ -1602,7 +1560,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
               ref={orbShellMatRef}
               color="#ffffff"
               emissive="#ffffff"
-              emissiveIntensity={0.7}
+              emissiveIntensity={0.05}
               roughness={0.3}
               metalness={0.1}
               transparent
