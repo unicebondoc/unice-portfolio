@@ -6,7 +6,9 @@ import { useRef, useState, useCallback, useEffect } from 'react'
 import styles from './OrbPanel.module.css'
 
 const IS_PHOTO = /\.(png|jpe?g|webp)$/i
-const PANEL_DIAMETER = 'min(480px, 52vw)'
+/** Video orbs: larger circle. Non-video: smaller circle. */
+const PANEL_SIZE_VIDEO = 'min(460px, 52vw)'
+const PANEL_SIZE_DEFAULT = 'min(400px, 46vw)'
 
 function hexToRgb(hex) {
   const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
@@ -228,7 +230,7 @@ export default function OrbPanel({
     <div
       className={`${styles.anchor} ${mobile ? styles.anchorBottomSheet : styles.anchorCenter} ${visible ? (revealed ? styles.panelVisible : styles.panelEnter) : styles.panelEnter}`}
       style={{
-        ['--panel-diameter']: PANEL_DIAMETER,
+        ['--panel-diameter']: m.videoSrc ? PANEL_SIZE_VIDEO : PANEL_SIZE_DEFAULT,
         ...(mobile
           ? {
               left: 0,
@@ -262,18 +264,11 @@ export default function OrbPanel({
         <div className={styles.driftWrap}>
           <div
             ref={panelRef}
-            className={`${styles.panel} ${mobile ? styles.panelBottomSheet : ''} ${effectiveClosing ? styles.panelClosing : ''} ${memory.isFuture ? styles.future : ''} ${m.videoSrc ? styles.panelOval : ''}`}
+            className={`${styles.panel} ${mobile ? styles.panelBottomSheet : ''} ${effectiveClosing ? styles.panelClosing : ''} ${memory.isFuture ? styles.future : ''}`}
             style={{
               '--orb-r': r,
               '--orb-g': g,
               '--orb-b': b,
-              ...(m.videoSrc
-                ? {
-                    '--panel-width': 'min(420px, 50vw)',
-                    '--panel-height': 'min(620px, 72vw)',
-                    '--panel-radius': '50% / 40%',
-                  }
-                : {}),
             }}
           >
             {mobile && (
@@ -299,10 +294,11 @@ export default function OrbPanel({
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'center',
-                      justifyContent: 'flex-start',
-                      padding: '20px 24px',
+                      justifyContent: 'center',
+                      padding: '16px 28px',
                       height: '100%',
                       overflow: 'hidden',
+                      textAlign: 'center',
                     }
                   : {}),
               }}
@@ -367,7 +363,7 @@ export default function OrbPanel({
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'center',
-                      justifyContent: 'flex-start',
+                      justifyContent: 'center',
                       flex: 1,
                       minHeight: 0,
                     }
@@ -411,15 +407,15 @@ export default function OrbPanel({
                       preload="auto"
                       disablePictureInPicture
                       style={{
-                        width: '88%',
-                        height: '240px',
-                        objectFit: 'contain',
-                        objectPosition: 'center center',
-                        background: 'transparent',
-                        borderRadius: '8px',
+                        width: '75%',
+                        height: '150px',
+                        objectFit: 'cover',
+                        objectPosition: 'center 10%',
+                        borderRadius: '16px',
                         display: 'block',
-                        margin: '0 auto 14px auto',
+                        margin: '0 auto 12px auto',
                         flexShrink: 0,
+                        background: 'transparent',
                       }}
                       onCanPlay={(e) => e.currentTarget.play?.().catch(() => {})}
                       onLoadedData={(e) => e.currentTarget.play?.().catch(() => {})}

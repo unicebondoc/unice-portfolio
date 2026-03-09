@@ -85,14 +85,13 @@
   position: relative;
 }
 
-/* ── Orb container: circular or tall oval (oval when .panelOval) ───────────────────────────── */
+/* ── Orb container: circle (video orbs larger, non-video smaller) ───────────────────────────── */
 .panel {
   --orb-color: rgba(var(--orb-r, 100), var(--orb-g, 180), var(--orb-b, 255), 1);
-  --panel-size: var(--panel-diameter, min(480px, 52vw));
-  width: var(--panel-width, var(--panel-size));
-  height: var(--panel-height, var(--panel-size));
+  width: var(--panel-diameter, min(460px, 52vw));
+  height: var(--panel-diameter, min(460px, 52vw));
   position: relative;
-  border-radius: var(--panel-radius, 50%);
+  border-radius: 50%;
   overflow: hidden;
   animation: breatheShape 4s ease-in-out infinite;
 
@@ -349,11 +348,11 @@
   to { transform: rotate(360deg); }
 }
 
-/* ── Meta, title, description: fit oval panel ─────────────────────────────────── */
+/* ── Meta, title, description: fit circle with video ─────────────────────────────────── */
 .metaLine {
   font-family: 'Raleway', sans-serif;
   font-weight: 500;
-  font-size: 9px;
+  font-size: 8px;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: rgba(210, 235, 255, 0.72);
@@ -364,7 +363,7 @@
 .title {
   font-family: 'Cinzel', serif;
   font-weight: 650;
-  font-size: 20px;
+  font-size: 18px;
   color: rgba(255, 255, 255, 0.98);
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
   margin: 0 0 2px 0;
@@ -374,7 +373,7 @@
 .subtitle {
   font-family: 'Raleway', sans-serif;
   font-weight: 600;
-  font-size: 9px;
+  font-size: 8px;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: rgba(120, 235, 220, 0.82);
@@ -385,8 +384,8 @@
 .desc {
   font-family: 'Raleway', sans-serif;
   font-weight: 450;
-  font-size: 11px;
-  line-height: 1.6;
+  font-size: 10px;
+  line-height: 1.5;
   color: rgba(235, 245, 255, 0.9);
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
   margin: 0 0 6px 0;
@@ -434,7 +433,7 @@
 .sectionLabel {
   font-family: 'Raleway', sans-serif;
   font-weight: 400;
-  font-size: 8px;
+  font-size: 7px;
   letter-spacing: 2.5px;
   color: rgba(215, 235, 255, 0.58);
   text-transform: uppercase;
