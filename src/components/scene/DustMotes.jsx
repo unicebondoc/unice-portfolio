@@ -5,6 +5,7 @@
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import useStore from '../../hooks/useStore'
 
 const COUNT = 50
 const BOX = { xMin: -6, xMax: 6, yMin: -2, yMax: 4, zMin: -2, zMax: 2 }
@@ -52,6 +53,8 @@ void main() {
 `
 
 export default function DustMotes() {
+  const isMobile = useStore((s) => s.isMobile)
+  const count = isMobile ? Math.max(15, Math.floor(COUNT * 0.5)) : COUNT
   const pointsRef = useRef()
   const velocities = useRef(
     Array.from({ length: COUNT }, () => [
@@ -61,14 +64,14 @@ export default function DustMotes() {
   ).current
 
   const { geometry, material } = useMemo(() => {
-    const positions = new Float32Array(COUNT * 3)
-    const colors = new Float32Array(COUNT * 3)
-    const sizes = new Float32Array(COUNT)
-    const phases = new Float32Array(COUNT)
+    const positions = new Float32Array(count * 3)
+    const colors = new Float32Array(count * 3)
+    const sizes = new Float32Array(count)
+    const phases = new Float32Array(count)
     const w = BOX.xMax - BOX.xMin
     const h = BOX.yMax - BOX.yMin
     const d = BOX.zMax - BOX.zMin
-    for (let i = 0; i < COUNT; i++) {
+    for (let i = 0; i < count; i++) {
       positions[i * 3] = BOX.xMin + Math.random() * w
       positions[i * 3 + 1] = BOX.yMin + Math.random() * h
       positions[i * 3 + 2] = BOX.zMin + Math.random() * d
@@ -94,14 +97,14 @@ export default function DustMotes() {
       blending: THREE.AdditiveBlending,
     })
     return { geometry: geo, material: mat }
-  }, [])
+  }, [count])
 
   useFrame((state) => {
     if (!pointsRef.current) return
     const geo = pointsRef.current.geometry
     const pos = geo.attributes.position.array
     const t = state.clock.elapsedTime
-    for (let i = 0; i < COUNT; i++) {
+    for (let i = 0; i < count; i++) {
       const [vx, vy] = velocities[i]
       pos[i * 3] += vx
       pos[i * 3 + 1] += vy

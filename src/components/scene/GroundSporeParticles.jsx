@@ -2,9 +2,10 @@
  * GroundSporeParticles — Zone B: spores rising from forest floor.
  * Mostly purple (70%) with some amber (30%). AdditiveBlending for glow.
  */
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import useStore from '../../hooks/useStore'
 
 const COUNT = 60
 const PURPLE = new THREE.Color('#c084fc')
@@ -37,14 +38,16 @@ void main() {
 `
 
 export default function GroundSporeParticles() {
+  const isMobile = useStore((s) => s.isMobile)
+  const count = isMobile ? Math.max(15, Math.floor(COUNT * 0.5)) : COUNT
   const ptsRef = useRef()
   const matRef = useRef()
   const { pos, col, seed, baseY } = useMemo(() => {
-    const pos = new Float32Array(COUNT * 3)
-    const col = new Float32Array(COUNT * 3)
-    const seed = new Float32Array(COUNT)
-    const baseY = new Float32Array(COUNT)
-    for (let i = 0; i < COUNT; i++) {
+    const pos = new Float32Array(count * 3)
+    const col = new Float32Array(count * 3)
+    const seed = new Float32Array(count)
+    const baseY = new Float32Array(count)
+    for (let i = 0; i < count; i++) {
       pos[i * 3] = -7 + Math.random() * 14
       pos[i * 3 + 1] = -2.5 + Math.random() * 1
       pos[i * 3 + 2] = -1 + Math.random() * 2
@@ -57,11 +60,14 @@ export default function GroundSporeParticles() {
       seed[i] = Math.random() * Math.PI * 2
     }
     return { pos, col, seed, baseY }
-  }, [])
+  }, [count])
 
-  const currentY = useRef(new Float32Array(COUNT))
-  useMemo(() => {
-    for (let i = 0; i < COUNT; i++) currentY.current[i] = baseY[i]
+  const currentY = useRef(new Float32Array(count))
+  useEffect(() => {
+    if (baseY.length !== currentY.current.length) {
+      currentY.current = new Float32Array(baseY.length)
+    }
+    for (let i = 0; i < baseY.length; i++) currentY.current[i] = baseY[i]
   }, [baseY])
 
   const uniforms = useMemo(() => ({
@@ -74,7 +80,7 @@ export default function GroundSporeParticles() {
     const t = state.clock.elapsedTime
     const delta = state.clock.getDelta()
     const posA = ptsRef.current.geometry.attributes.position.array
-    for (let i = 0; i < COUNT; i++) {
+    for (let i = 0; i < count; i++) {
       let y = currentY.current[i]
       y += Math.sin(t * 0.3 + seed[i]) * 0.008 * (delta * 60)
       if (y > -1.5) y = -2.5 + Math.random() * 0.5

@@ -229,17 +229,14 @@ export default function OrbPanel({
 
   return (
     <div
-      className={`${styles.anchor} ${mobile ? styles.anchorBottomSheet : styles.anchorCenter} ${visible ? (revealed ? styles.panelVisible : styles.panelEnter) : styles.panelEnter}`}
+      className={`${styles.anchor} ${mobile ? styles.anchorMobileCenter : styles.anchorCenter} ${visible ? (revealed ? styles.panelVisible : styles.panelEnter) : styles.panelEnter}`}
       style={{
         ['--panel-diameter']: m.videoSrc ? PANEL_SIZE_VIDEO : PANEL_SIZE_DEFAULT,
         ...(mobile
           ? {
-              left: 0,
-              right: 0,
-              bottom: 0,
-              top: 'auto',
-              transform: `translateY(calc(${sheetOffset}% + ${dragY}px))`,
-              transition: 'transform 0.32s cubic-bezier(0.32, 0.72, 0, 1)',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%, -50%)',
             }
           : {
               left: (panelPos?.[0] ?? lastPosRef.current?.[0] ?? (typeof window !== 'undefined' ? window.innerWidth / 2 : 400)) + 'px',
@@ -257,15 +254,15 @@ export default function OrbPanel({
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         style={{
-          transform: mobile ? `translateY(${dragY}px)` : `translate(${parallax.x}px, ${parallax.y}px) scale(${panelAnim.scale})`,
+          transform: mobile ? 'scale(1)' : `translate(${parallax.x}px, ${parallax.y}px) scale(${panelAnim.scale})`,
           opacity: panelAnim.opacity,
-          transition: mobile && !dragY ? `transform 0.3s ease-out, opacity 0.3s ease-out` : `transform ${panelAnim.durationMs}ms cubic-bezier(0.34, 1.3, 0.64, 1), opacity ${panelAnim.durationMs}ms ease-out`,
+          transition: `transform ${panelAnim.durationMs}ms cubic-bezier(0.34, 1.3, 0.64, 1), opacity ${panelAnim.durationMs}ms ease-out`,
         }}
       >
         <div className={styles.driftWrap}>
           <div
             ref={panelRef}
-            className={`${styles.panel} ${mobile ? styles.panelBottomSheet : ''} ${effectiveClosing ? styles.panelClosing : ''} ${memory.isFuture ? styles.future : ''}`}
+            className={`${styles.panel} ${mobile ? styles.panelMobileCenter : ''} ${effectiveClosing ? styles.panelClosing : ''} ${memory.isFuture ? styles.future : ''}`}
             style={{
               '--orb-r': r,
               '--orb-g': g,

@@ -5,6 +5,7 @@
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import useStore from '../../hooks/useStore'
 
 const COUNT = 70
 const CYAN = new THREE.Color('#22d3ee')
@@ -42,14 +43,16 @@ const Y_TOP = 5.5
 const Y_BOTTOM = 2.5
 
 export default function CanopyParticles() {
+  const isMobile = useStore((s) => s.isMobile)
+  const count = isMobile ? Math.max(18, Math.floor(COUNT * 0.5)) : COUNT
   const ptsRef = useRef()
   const matRef = useRef()
   const { pos, col, seed, baseX } = useMemo(() => {
-    const pos = new Float32Array(COUNT * 3)
-    const col = new Float32Array(COUNT * 3)
-    const seed = new Float32Array(COUNT)
-    const baseX = new Float32Array(COUNT)
-    for (let i = 0; i < COUNT; i++) {
+    const pos = new Float32Array(count * 3)
+    const col = new Float32Array(count * 3)
+    const seed = new Float32Array(count)
+    const baseX = new Float32Array(count)
+    for (let i = 0; i < count; i++) {
       pos[i * 3] = -5 + Math.random() * 10
       pos[i * 3 + 1] = 2.5 + Math.random() * 3
       pos[i * 3 + 2] = -2 + Math.random() * 2
@@ -62,12 +65,12 @@ export default function CanopyParticles() {
       seed[i] = Math.random() * Math.PI * 2
     }
     return { pos, col, seed, baseX }
-  }, [])
+  }, [count])
 
-  const currentY = useRef(new Float32Array(COUNT))
+  const currentY = useRef(new Float32Array(count))
   useMemo(() => {
-    for (let i = 0; i < COUNT; i++) currentY.current[i] = pos[i * 3 + 1]
-  }, [pos])
+    for (let i = 0; i < count; i++) currentY.current[i] = pos[i * 3 + 1]
+  }, [pos, count])
 
   const uniforms = useMemo(() => ({
     uSize: { value: 0.375 },
@@ -78,7 +81,7 @@ export default function CanopyParticles() {
     if (!ptsRef.current?.geometry?.attributes?.position) return
     const t = state.clock.elapsedTime
     const posA = ptsRef.current.geometry.attributes.position.array
-    for (let i = 0; i < COUNT; i++) {
+    for (let i = 0; i < count; i++) {
       let y = currentY.current[i]
       y -= FALL_SPEED
       if (y < Y_BOTTOM) y = Y_TOP

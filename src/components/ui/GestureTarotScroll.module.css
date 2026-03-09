@@ -8,6 +8,12 @@
   pointer-events: auto;
 }
 
+@media (max-width: 768px) {
+  .wrapper {
+    display: none;
+  }
+}
+
 .scrollContainer {
   width: 112px;
   cursor: pointer;

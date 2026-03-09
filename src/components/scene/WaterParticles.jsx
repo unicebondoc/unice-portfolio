@@ -5,6 +5,7 @@
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import useStore from '../../hooks/useStore'
 
 const COUNT = 80
 const PURPLE = new THREE.Color('#c084fc')
@@ -38,13 +39,15 @@ void main() {
 `
 
 export default function WaterParticles() {
+  const isMobile = useStore((s) => s.isMobile)
+  const count = isMobile ? Math.max(20, Math.floor(COUNT * 0.5)) : COUNT
   const ptsRef = useRef()
   const matRef = useRef()
   const { pos, col, seed } = useMemo(() => {
-    const pos = new Float32Array(COUNT * 3)
-    const col = new Float32Array(COUNT * 3)
-    const seed = new Float32Array(COUNT)
-    for (let i = 0; i < COUNT; i++) {
+    const pos = new Float32Array(count * 3)
+    const col = new Float32Array(count * 3)
+    const seed = new Float32Array(count)
+    for (let i = 0; i < count; i++) {
       pos[i * 3] = -6 + Math.random() * 12
       pos[i * 3 + 1] = -4 + Math.random() * 2
       pos[i * 3 + 2] = -1 + Math.random() * 3
@@ -56,13 +59,13 @@ export default function WaterParticles() {
       seed[i] = Math.random() * Math.PI * 2
     }
     return { pos, col, seed }
-  }, [])
+  }, [count])
 
   const originX = useMemo(() => {
-    const a = new Float32Array(COUNT)
-    for (let i = 0; i < COUNT; i++) a[i] = pos[i * 3]
+    const a = new Float32Array(count)
+    for (let i = 0; i < count; i++) a[i] = pos[i * 3]
     return a
-  }, [pos])
+  }, [pos, count])
 
   const uniforms = useMemo(() => ({
     uSize: { value: 0.9 },
@@ -73,7 +76,7 @@ export default function WaterParticles() {
     if (!ptsRef.current?.geometry?.attributes?.position) return
     const t = state.clock.elapsedTime
     const posA = ptsRef.current.geometry.attributes.position.array
-    for (let i = 0; i < COUNT; i++) {
+    for (let i = 0; i < count; i++) {
       const s = seed[i]
       posA[i * 3] = originX[i] + Math.sin(t * 0.2 + s) * 0.3
       posA[i * 3 + 1] = pos[i * 3 + 1] + Math.sin(t * 0.1) * 0.1

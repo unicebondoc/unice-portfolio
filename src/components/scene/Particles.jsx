@@ -444,7 +444,7 @@ export default function Particles() {
     return MEMORIES.find((m) => m.id === hoveredOrb)?.position ?? null
   }, [hoveredOrb])
 
-  const mult = reducedMotion ? 0.35 : isMobile ? 0.6 : 1
+  const mult = reducedMotion ? 0.35 : isMobile ? 0.5 : 1
   const blossomCount = Math.max(40, Math.floor(BLOSSOM_COUNT * mult))
   const sporeCount = Math.max(20, Math.floor(SPORE_COUNT * mult))
   const ringCount = Math.max(24, Math.floor(RING_COUNT * mult))

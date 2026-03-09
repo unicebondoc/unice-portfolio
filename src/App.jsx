@@ -858,8 +858,8 @@ export default function App() {
           aria-label="Unice Bondoc"
           style={{
             position: 'fixed',
-            top: 28,
-            left: 32,
+            top: isMobile ? 20 : 28,
+            left: isMobile ? 20 : 32,
             zIndex: 100,
             pointerEvents: 'none',
             overflow: 'visible',
@@ -868,7 +868,7 @@ export default function App() {
           <h1
             style={{
               fontFamily: "'Cinzel', serif",
-              fontSize: 'clamp(36px, 5.5vw, 64px)',
+              fontSize: isMobile ? '28px' : 'clamp(36px, 5.5vw, 64px)',
               fontWeight: 700,
               letterSpacing: '3px',
               color: 'rgba(255,255,255,0.97)',
@@ -884,9 +884,9 @@ export default function App() {
           <p
             style={{
               fontFamily: "'Raleway', sans-serif",
-              fontSize: 'clamp(11px, 1.1vw, 13px)',
+              fontSize: isMobile ? '9px' : 'clamp(11px, 1.1vw, 13px)',
               fontWeight: 500,
-              letterSpacing: '7px',
+              letterSpacing: isMobile ? '4px' : '7px',
               color: 'rgba(255,255,255,0.7)',
               margin: 0,
               marginBottom: 5,
@@ -895,6 +895,7 @@ export default function App() {
           >
             AI ENGINEER
           </p>
+          {!isMobile && (
           <p
             style={{
               fontFamily: "'Raleway', sans-serif",
@@ -913,23 +914,25 @@ export default function App() {
           >
             FROM MANILA · TO SYDNEY · TO THE FUTURE
           </p>
+          )}
         </div>
 
         {/* Left edge: no dots — nav is Sacred Artifacts sidebar only */}
 
       {/* Right side intentionally empty (no fixed elements) */}
 
-        {/* ── Left menu (artifacts) — vertically centered on left; desktop only ── */}
+        {/* ── Left menu (artifacts) — desktop: left vertical; mobile: bottom horizontal ── */}
         <div
           data-entrance="artifacts"
           style={{
             position: 'fixed',
-            left: '20px',
-            bottom: '15vh',
+            left: isMobile ? '50%' : '20px',
+            bottom: isMobile ? 70 : '15vh',
+            transform: isMobile ? 'translateX(-50%)' : 'none',
             zIndex: 20,
-            display: isMobile ? 'none' : 'flex',
-            flexDirection: 'column',
-            gap: 0,
+            display: 'flex',
+            flexDirection: isMobile ? 'row' : 'column',
+            gap: isMobile ? 16 : 0,
             pointerEvents: 'auto',
             opacity: activePanel?.type === 'memory' ? 0 : 1,
             transition: activePanel?.type === 'memory' ? 'opacity 300ms ease-out' : 'opacity 400ms ease-out',
@@ -959,8 +962,8 @@ export default function App() {
       <div
         style={{
           position: 'fixed',
-          bottom: '24px',
-          left: '24px',
+          bottom: isMobile ? 20 : 24,
+          left: isMobile ? 20 : '24px',
           right: 0,
           zIndex: 20,
           display: 'flex',
@@ -1214,7 +1217,7 @@ export default function App() {
       {/* Intro overlay disabled so orbs/scene are visible from load; re-enable to restore 3s awakening */}
       {/* <IntroOverlay /> */}
       <HUD />
-        {/* ── Bottom hint: mobile only (reduce desktop visual fog) ── */}
+        {/* ── Bottom hint: mobile only ── */}
         {isMobile && (
           <div
             data-entrance="bottomhint"
@@ -1226,9 +1229,9 @@ export default function App() {
               transform: 'translateX(-50%)',
               pointerEvents: 'none',
               zIndex: 12,
-              fontSize: 8,
-              letterSpacing: 5,
-              color: 'rgba(255,255,255,0.22)',
+              fontSize: 9,
+              letterSpacing: 4,
+              color: 'rgba(255,255,255,0.28)',
               fontFamily: 'Raleway, sans-serif',
               textTransform: 'uppercase',
               opacity: activePanel?.type === 'memory' ? 0 : 1,
@@ -1238,7 +1241,7 @@ export default function App() {
               textShadow: '0 1px 6px rgba(0,0,0,0.45)',
             }}
           >
-            TAP · EXPLORE
+            ✦ TAP THE ORBS ✦
           </div>
         )}
 

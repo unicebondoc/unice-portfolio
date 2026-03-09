@@ -88,6 +88,20 @@
   height: 22px;
 }
 
+@media (max-width: 768px) {
+  .socialsBar {
+    gap: 10px;
+  }
+  .socialLink {
+    width: 28px;
+    height: 28px;
+  }
+  .socialLink svg {
+    width: 28px;
+    height: 28px;
+  }
+}
+
 @keyframes runeGlow {
   0%, 100% { box-shadow: 0 0 12px rgba(100, 180, 255, 0.06); }
   50%      { box-shadow: 0 0 16px rgba(100, 180, 255, 0.12); }
