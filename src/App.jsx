@@ -580,6 +580,52 @@ export default function App() {
   const setLoadingExited = useStore((s) => s.setLoadingExited)
   const loadingExited = useStore((s) => s.loadingExited)
   const [isTouchDevice, setIsTouchDevice] = useState(false)
+  const audioRef = useRef(null)
+  const [isMuted, setIsMuted] = useState(() => {
+    if (typeof localStorage === 'undefined') return true
+    return localStorage.getItem('portfolioMuted') !== 'false'
+  })
+
+  // Single background audio element — loop, volume 0.25, muted until user gesture or saved preference
+  useEffect(() => {
+    audioRef.current = new Audio('/audio/background.mp3')
+    audioRef.current.loop = true
+    audioRef.current.volume = 0.25
+    audioRef.current.muted = true
+
+    const startAudio = () => {
+      audioRef.current.play().catch(() => {})
+      window.removeEventListener('click', startAudio)
+      window.removeEventListener('touchstart', startAudio)
+    }
+
+    window.addEventListener('click', startAudio)
+    window.addEventListener('touchstart', startAudio)
+
+    return () => {
+      if (audioRef.current) audioRef.current.pause()
+      window.removeEventListener('click', startAudio)
+      window.removeEventListener('touchstart', startAudio)
+    }
+  }, [])
+
+  // Restore saved mute preference on load (syncs with audio element created above)
+  useEffect(() => {
+    const saved = localStorage.getItem('portfolioMuted')
+    if (saved === 'false') {
+      setIsMuted(false)
+      if (audioRef.current) audioRef.current.muted = false
+    }
+  }, [])
+
+  const handleMuteToggle = useCallback(() => {
+    const newMuted = !isMuted
+    setIsMuted(newMuted)
+    if (audioRef.current) {
+      audioRef.current.muted = newMuted
+    }
+    localStorage.setItem('portfolioMuted', newMuted)
+  }, [isMuted])
 
   const visibleMemories = useMemo(
     () => MEMORIES.filter((m) => m.isPrimary !== false).slice(0, 8),
@@ -994,6 +1040,39 @@ export default function App() {
         }}
       >
         <div className={hudStyles.socialsBar} style={{ flex: isMobile ? 0 : 1, justifyContent: 'flex-start', gap: isMobile ? 16 : 12 }}>
+          <button
+            type="button"
+            onClick={handleMuteToggle}
+            aria-label={isMuted ? 'Unmute background music' : 'Mute background music'}
+            title={isMuted ? '♪ enter the grove' : '♪ silence'}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 36,
+              height: 36,
+              borderRadius: '50%',
+              background: 'rgba(150, 200, 230, 0.06)',
+              border: '1px solid rgba(150, 200, 230, 0.2)',
+              color: 'rgba(150, 200, 230, 0.6)',
+              cursor: 'pointer',
+              opacity: isMuted ? 0.4 : 1,
+              transition: 'opacity 0.2s ease',
+            }}
+          >
+            {isMuted ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <line x1="23" y1="9" x2="17" y2="15" />
+                <line x1="17" y1="9" x2="23" y2="15" />
+              </svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+              </svg>
+            )}
+          </button>
           {SOCIALS.map((s) => (
             <a
               key={s.label}
