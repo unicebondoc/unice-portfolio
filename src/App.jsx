@@ -33,6 +33,7 @@ import ExploreHint from './components/ExploreHint'
 import GestureTarotScroll from './components/ui/GestureTarotScroll'
 import ChatBot from './components/ui/ChatBot'
 import TycheMascot from './components/ui/TycheMascot'
+import MobileArtifactPill from './components/ui/MobileArtifactPill'
 
 const LERP = 0.08
 
@@ -992,7 +993,7 @@ export default function App() {
             bottom: isMobile ? 80 : '15vh',
             transform: isMobile ? 'translateX(-50%)' : 'none',
             zIndex: isMobile ? 100 : 20,
-            display: 'flex',
+            display: isMobile ? 'none' : 'flex',
             flexDirection: isMobile ? 'row' : 'column',
             gap: isMobile ? 20 : 0,
             pointerEvents: 'auto',
@@ -1002,6 +1003,18 @@ export default function App() {
         >
           <SacredArtifacts />
         </div>
+
+        {isMobile && (
+          <div
+            style={{
+              pointerEvents: activePanel?.type === 'memory' ? 'none' : 'auto',
+              opacity: activePanel?.type === 'memory' ? 0 : 1,
+              transition: 'opacity 400ms ease-out',
+            }}
+          >
+            <MobileArtifactPill />
+          </div>
+        )}
 
         {/* ── Right side: Gesture Tarot scroll artifact ── */}
         <GestureTarotScroll />
