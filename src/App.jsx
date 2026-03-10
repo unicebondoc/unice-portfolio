@@ -21,14 +21,12 @@ import { Environment } from '@react-three/drei'
 import { MEMORIES, getMemoryPosition } from './data/memories'
 import { SOCIALS } from './data/socials'
 import useStore from './hooks/useStore'
-import { useSound } from './context/SoundManager'
 import OrbPanel from './components/scene/OrbPanel'
 import SkillsPanel from './components/ui/SkillsPanel'
 import BlogPanel from './components/ui/BlogPanel'
 import ResumePanel from './components/ui/ResumePanel'
 import hudStyles from './components/ui/HUD.module.css'
 import LoadingScreen from './components/ui/LoadingScreen'
-import SoundToggle from './components/ui/SoundToggle'
 import CustomCursor from './components/ui/CustomCursor'
 import MysticalCursor from './components/MysticalCursor'
 import ExploreHint from './components/ExploreHint'
@@ -573,7 +571,6 @@ export default function App() {
   const mainUiRef = useRef(null)
   const mainContentRef = useRef(null)
   const hasEnteredRef = useRef(false)
-  const sound = useSound()
   const isMobile = useStore((s) => s.isMobile)
   const backgroundReady = useStore((s) => s.backgroundReady)
   const reducedMotion = useStore((s) => s.reducedMotion)
@@ -626,7 +623,6 @@ export default function App() {
 
   const requestClosePanel = useCallback(() => {
     if (activePanel?.type === 'memory') {
-      sound?.play('orbClose')
       setMemoryPanelClosing(true)
       setTimeout(() => {
         setActivePanel(null)
@@ -635,7 +631,7 @@ export default function App() {
     } else {
       setActivePanel(null)
     }
-  }, [activePanel, setActivePanel, sound])
+  }, [activePanel, setActivePanel])
 
   // Entrance order: orbs by distance from center (closest first) for stagger
   const entranceOrderMap = useMemo(() => {
@@ -998,7 +994,6 @@ export default function App() {
         }}
       >
         <div className={hudStyles.socialsBar} style={{ flex: isMobile ? 0 : 1, justifyContent: 'flex-start', gap: isMobile ? 16 : 12 }}>
-          <SoundToggle />
           {SOCIALS.map((s) => (
             <a
               key={s.label}

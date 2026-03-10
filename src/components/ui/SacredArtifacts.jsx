@@ -1,17 +1,13 @@
 /**
  * SacredArtifacts — Game UI left sidebar: Skills, Résumé, Writings.
  */
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import useStore from '../../hooks/useStore'
-import { useSound } from '../../context/SoundManager'
 import styles from './SacredArtifacts.module.css'
 
 export default function SacredArtifacts() {
   const setActivePanel = useStore((s) => s.setActivePanel)
-  const sound = useSound()
   const [rippleArtifact, setRippleArtifact] = useState(null)
-
-  const onNavHover = useCallback(() => sound?.play('navHover'), [sound])
 
   const handleSkillsClick = (e) => {
     e.preventDefault()
@@ -46,7 +42,6 @@ export default function SacredArtifacts() {
         type="button"
         className={`${styles.artifact} ${styles.artifactSkills} ${rippleArtifact === 'skills' ? styles.artifactRipple : ''}`}
         onClick={handleSkillsClick}
-        onMouseEnter={onNavHover}
         aria-label="Open Skills"
       >
         <div className={styles.artifactIcon}>
@@ -62,7 +57,6 @@ export default function SacredArtifacts() {
         type="button"
         className={`${styles.artifact} ${styles.artifactResume} ${rippleArtifact === 'resume' ? styles.artifactRipple : ''}`}
         onClick={handleResumeClick}
-        onMouseEnter={onNavHover}
         aria-label="Open Résumé"
       >
         <div className={styles.artifactIcon}>
@@ -78,7 +72,6 @@ export default function SacredArtifacts() {
         type="button"
         className={`${styles.artifact} ${styles.artifactWritings} ${rippleArtifact === 'writings' ? styles.artifactRipple : ''}`}
         onClick={handleWritingsClick}
-        onMouseEnter={onNavHover}
         aria-label="Open Writings"
       >
         <div className={styles.artifactIcon}>

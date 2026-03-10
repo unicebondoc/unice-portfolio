@@ -5,7 +5,6 @@ import * as THREE from 'three'
 import useStore from '../../hooks/useStore'
 import { TIER_RADIUS } from '../../data/memories'
 import { getVideoUrl } from '../../utils/videoUrl'
-import { useSound } from '../../context/SoundManager'
 
 /**
  * MemoryOrb — glass soul crystal.
@@ -160,7 +159,6 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
     idlePulseOrbStartTime,
   } = useStore()
   const setHoveredOrbScreenPos = useStore((s) => s.setHoveredOrbScreenPos)
-  const sound = useSound()
 
   const isSelected = activePanel?.type === 'memory' && activePanel.id === id
   const isHovered  = hoveredOrb  === id
@@ -1296,7 +1294,6 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         const mobile = useStore.getState().isMobile
         console.log(`[Orb] opening panel ${id} mobile=${mobile}`)
       }
-      sound?.play('orbOpen')
       setClickPulse({ position: [wp.x, wp.y, wp.z], color, radius: RADIUS })
       coreFlashRef.current = tRef.current
       auraStartRef.current = tRef.current
@@ -1313,7 +1310,6 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
   const handlePointerOver = (e) => {
     e.stopPropagation()
     if (!isInteractive) return
-    sound?.play('orbHover')
     setHoveredOrb(id)
     document.body.style.cursor = (activePanel?.type === 'memory' && activePanel.id !== id) ? 'crosshair' : 'pointer'
   }

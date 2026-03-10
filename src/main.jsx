@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import { SoundProvider } from './context/SoundManager'
 import './styles/global.css'
 
 // Suppress THREE.Clock deprecation from R3F/drei (we use THREE.Timer; lib will migrate)
@@ -17,8 +16,6 @@ console.error = (...args) => suppressClockDeprecation(args, origError)
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <SoundProvider>
-      <App />
-    </SoundProvider>
+    <App />
   </React.StrictMode>
 )
