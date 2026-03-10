@@ -135,7 +135,10 @@ export default function ChatBot() {
       }}
     >
       {open && (
-        <div className={`${styles.panel} ${isMobile ? styles.panelMobile : ''}`}>
+        <div
+          className={`${styles.panel} ${isMobile ? styles.panelMobile : ''}`}
+          style={{ cursor: 'none' }}
+        >
           <div className={styles.header}>
             <div className={styles.title}>MEMORY TREE</div>
             <div className={styles.headerActions}>

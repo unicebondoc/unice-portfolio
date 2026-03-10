@@ -239,3 +239,30 @@ canvas {
   }
 }
 
+/* Nuclear option — force cursor none everywhere when mystical cursor is active */
+@media (pointer: fine) {
+  body.mystical-cursor-active *,
+  body.mystical-cursor-active *::before,
+  body.mystical-cursor-active *::after,
+  body.mystical-cursor-active div,
+  body.mystical-cursor-active section,
+  body.mystical-cursor-active article,
+  body.mystical-cursor-active aside,
+  body.mystical-cursor-active button,
+  body.mystical-cursor-active input,
+  body.mystical-cursor-active textarea,
+  body.mystical-cursor-active a,
+  body.mystical-cursor-active [class*="chat"],
+  body.mystical-cursor-active [class*="modal"],
+  body.mystical-cursor-active [class*="panel"],
+  body.mystical-cursor-active [class*="overlay"] {
+    cursor: none !important;
+  }
+  /* ONLY exception — keep text cursor inside input and textarea */
+  body.mystical-cursor-active input[type="text"],
+  body.mystical-cursor-active input[type="email"],
+  body.mystical-cursor-active textarea {
+    cursor: text !important;
+  }
+}
+

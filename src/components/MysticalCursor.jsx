@@ -31,31 +31,26 @@ export default function MysticalCursor() {
       rafRef.current = requestAnimationFrame(animateRing)
     }
 
-    const onHover = () => {
+    const handleMouseOver = (e) => {
       if (!ringRef.current) return
-      ringRef.current.style.width = '48px'
-      ringRef.current.style.height = '48px'
-      ringRef.current.style.opacity = '0.8'
-      ringRef.current.style.borderColor = 'rgba(0, 255, 220, 0.9)'
-    }
-
-    const onLeave = () => {
-      if (!ringRef.current) return
-      ringRef.current.style.width = '28px'
-      ringRef.current.style.height = '28px'
-      ringRef.current.style.opacity = '0.5'
-      ringRef.current.style.borderColor = 'rgba(0, 220, 255, 0.6)'
+      const isClickable = e.target.closest(
+        'button, a, [data-orb], input, textarea, [role="button"], [onClick], .artifact, .artifactIcon, .scrollContainer, [data-cursor-hover]'
+      )
+      if (isClickable) {
+        ringRef.current.style.width = '48px'
+        ringRef.current.style.height = '48px'
+        ringRef.current.style.opacity = '0.8'
+        ringRef.current.style.borderColor = 'rgba(0, 255, 220, 0.9)'
+      } else {
+        ringRef.current.style.width = '28px'
+        ringRef.current.style.height = '28px'
+        ringRef.current.style.opacity = '0.5'
+        ringRef.current.style.borderColor = 'rgba(0, 220, 255, 0.6)'
+      }
     }
 
     window.addEventListener('mousemove', moveCursor)
-
-    const clickables = document.querySelectorAll(
-      'button, a, [data-orb], .artifact, .artifactIcon, .scrollContainer, [data-cursor-hover], [role="button"]'
-    )
-    clickables.forEach((el) => {
-      el.addEventListener('mouseenter', onHover)
-      el.addEventListener('mouseleave', onLeave)
-    })
+    window.addEventListener('mouseover', handleMouseOver)
 
     rafRef.current = requestAnimationFrame(animateRing)
 
@@ -64,10 +59,7 @@ export default function MysticalCursor() {
     return () => {
       document.body.classList.remove('mystical-cursor-active')
       window.removeEventListener('mousemove', moveCursor)
-      clickables.forEach((el) => {
-        el.removeEventListener('mouseenter', onHover)
-        el.removeEventListener('mouseleave', onLeave)
-      })
+      window.removeEventListener('mouseover', handleMouseOver)
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
   }, [])
@@ -83,7 +75,8 @@ export default function MysticalCursor() {
           borderRadius: '50%',
           border: '1px solid rgba(0, 220, 255, 0.6)',
           pointerEvents: 'none',
-          zIndex: 99999,
+          userSelect: 'none',
+          zIndex: 2147483647,
           top: '-14px',
           left: '-14px',
           transition: 'width 0.2s ease, height 0.2s ease, opacity 0.2s ease, border-color 0.2s ease',
@@ -101,7 +94,8 @@ export default function MysticalCursor() {
           borderRadius: '50%',
           background: 'rgba(0, 255, 240, 0.95)',
           pointerEvents: 'none',
-          zIndex: 99999,
+          userSelect: 'none',
+          zIndex: 2147483647,
           top: '-2.5px',
           left: '-2.5px',
           boxShadow: '0 0 6px rgba(0, 255, 240, 0.8), 0 0 12px rgba(0, 200, 255, 0.4)',
