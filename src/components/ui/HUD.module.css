@@ -88,6 +88,37 @@
   height: 22px;
 }
 
+/* Mobile unified bar: smaller circle buttons (mute + socials) — same style as .socialLink */
+.mobileBarLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(150, 200, 230, 0.06);
+  border: 1px solid rgba(150, 200, 230, 0.2);
+  color: rgba(150, 200, 230, 0.6);
+  box-shadow: 0 0 12px rgba(100, 180, 255, 0.08);
+  text-decoration: none;
+  transition: all 0.4s ease;
+  flex-shrink: 0;
+}
+.mobileBarLink:hover {
+  background: rgba(150, 200, 230, 0.12);
+  border-color: rgba(150, 200, 230, 0.4);
+  color: rgba(200, 230, 255, 0.95);
+  box-shadow: 0 0 15px rgba(150, 200, 230, 0.12);
+}
+.mobileBarLink:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.6);
+}
+.mobileBarLink svg {
+  width: 14px;
+  height: 14px;
+}
+
 @media (max-width: 768px) {
   .socialsBar {
     gap: 16px;

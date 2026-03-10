@@ -1063,7 +1063,7 @@ export default function App() {
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            gap: 16,
+            gap: 12,
             zIndex: 100,
             opacity: activePanel?.type === 'memory' ? 0 : 1,
             transition: activePanel?.type === 'memory' ? 'opacity 300ms ease-out' : 'opacity 400ms ease-out',
@@ -1073,30 +1073,35 @@ export default function App() {
             type="button"
             onClick={handleMuteToggle}
             aria-label={isMuted ? 'Unmute background music' : 'Mute background music'}
+            className={hudStyles.mobileBarLink}
             style={{
-              background: 'none',
-              border: 'none',
-              color: 'rgba(255,255,255,0.4)',
-              fontSize: 14,
-              padding: 4,
+              padding: 0,
               cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              opacity: isMuted ? 0.5 : 1,
             }}
           >
-            {isMuted ? '🔇' : '🔊'}
+            {isMuted ? (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <line x1="23" y1="9" x2="17" y2="15" />
+                <line x1="17" y1="9" x2="23" y2="15" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+              </svg>
+            )}
           </button>
-          <div style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.1)' }} />
+          <div style={{ width: 1, height: 14, background: 'rgba(255,255,255,0.1)' }} />
           {SOCIALS.map((s) => (
             <a
               key={s.label}
               href={s.href}
               target={s.href.startsWith('mailto:') ? undefined : '_blank'}
               rel={s.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
-              className={hudStyles.socialLink}
+              className={hudStyles.mobileBarLink}
               aria-label={s.label}
-              style={{ width: 36, height: 36 }}
             >
               {s.icon}
             </a>
