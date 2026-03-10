@@ -93,6 +93,25 @@ function ResponsiveCamera() {
   return null
 }
 
+// ── Mobile: keep canvas/camera aspect in sync so orbs stay circular (no oval) ──
+function CanvasResizeSync() {
+  const { gl, camera } = useThree()
+  useEffect(() => {
+    const handleResize = () => {
+      const w = window.innerWidth
+      const h = window.innerHeight
+      gl.setSize(w, h)
+      gl.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+      camera.aspect = w / h
+      camera.updateProjectionMatrix()
+    }
+    window.addEventListener('resize', handleResize)
+    handleResize()
+    return () => window.removeEventListener('resize', handleResize)
+  }, [gl, camera])
+  return null
+}
+
 // ── Responsive: scale entire constellation so orbs/tendrils/artifacts stay on screen ──
 function ResponsiveConstellation({ children }) {
   const { size } = useThree()
@@ -1033,18 +1052,67 @@ export default function App() {
           <TycheMascot />
         </div>
 
-      {/* ── Bottom bar: socials only, fades when memory panel open ── */}
+      {/* ── Bottom bar: mobile = unified row (mute + socials); desktop = unchanged ── */}
+      {isMobile ? (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: 24,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 16,
+            zIndex: 100,
+            opacity: activePanel?.type === 'memory' ? 0 : 1,
+            transition: activePanel?.type === 'memory' ? 'opacity 300ms ease-out' : 'opacity 400ms ease-out',
+          }}
+        >
+          <button
+            type="button"
+            onClick={handleMuteToggle}
+            aria-label={isMuted ? 'Unmute background music' : 'Mute background music'}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'rgba(255,255,255,0.4)',
+              fontSize: 14,
+              padding: 4,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            {isMuted ? '🔇' : '🔊'}
+          </button>
+          <div style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.1)' }} />
+          {SOCIALS.map((s) => (
+            <a
+              key={s.label}
+              href={s.href}
+              target={s.href.startsWith('mailto:') ? undefined : '_blank'}
+              rel={s.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+              className={hudStyles.socialLink}
+              aria-label={s.label}
+              style={{ width: 36, height: 36 }}
+            >
+              {s.icon}
+            </a>
+          ))}
+        </div>
+      ) : (
       <div
         style={{
           position: 'fixed',
           bottom: 24,
-          left: isMobile ? 12 : 24,
+          left: 24,
           right: 0,
-          transform: isMobile ? undefined : undefined,
           zIndex: 20,
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: isMobile ? 'flex-start' : 'flex-start',
+          justifyContent: 'flex-start',
           alignItems: 'center',
           padding: 0,
           background: 'transparent',
@@ -1052,7 +1120,7 @@ export default function App() {
           transition: activePanel?.type === 'memory' ? 'opacity 300ms ease-out' : 'opacity 400ms ease-out',
         }}
       >
-        <div className={hudStyles.socialsBar} style={{ flex: isMobile ? 0 : 1, justifyContent: 'flex-start', gap: isMobile ? 16 : 12 }}>
+        <div className={hudStyles.socialsBar} style={{ flex: 1, justifyContent: 'flex-start', gap: 12 }}>
           <button
             type="button"
             onClick={handleMuteToggle}
@@ -1099,9 +1167,10 @@ export default function App() {
             </a>
           ))}
         </div>
-        {!isMobile && <div style={{ flex: 1, minWidth: 0 }} aria-hidden />}
-        {!isMobile && <div style={{ flex: 1, minWidth: 0 }} aria-hidden />}
+        <div style={{ flex: 1, minWidth: 0 }} aria-hidden />
+        <div style={{ flex: 1, minWidth: 0 }} aria-hidden />
       </div>
+      )}
 
       {/* ── Subtle vignette: draws eye to center; softer at bottom so frame breathes (FIX 6) ───────────────────────────── */}
       <div
@@ -1180,6 +1249,7 @@ export default function App() {
         }}
       >
         <SceneReadyNotifier />
+        <CanvasResizeSync />
         <SceneBackground />
         <EntranceDriver />
         <ResponsiveCamera />

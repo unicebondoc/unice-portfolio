@@ -1323,6 +1323,21 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
   return (
     <group position={basePosition} ref={groupRef}>
 
+      {/* Mobile: larger invisible tap hitbox so orbs are easier to tap */}
+      {isMobileViewport && (
+        <mesh
+          visible={false}
+          scale={1.6}
+          onClick={handleClick}
+          onPointerDown={handlePointerDown}
+          onPointerOver={handlePointerOver}
+          onPointerOut={handlePointerOut}
+        >
+          <sphereGeometry args={[RADIUS, 8, 8]} />
+          <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+        </mesh>
+      )}
+
       {/* Accessibility: focusable button for keyboard/screen reader */}
       <Html center position={[0, 0, 0]} zIndexRange={[0, 0]} style={{ pointerEvents: 'none' }}>
         <button
