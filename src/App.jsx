@@ -1,4 +1,5 @@
 import { Suspense, useEffect, useLayoutEffect, useRef, useMemo, useState, useCallback } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import HUD from './components/ui/HUD'
 import SacredArtifacts from './components/ui/SacredArtifacts'
 import IntroOverlay from './components/ui/IntroOverlay'
@@ -1467,6 +1468,8 @@ export default function App() {
         whisperAfterMs={6000}
         onExited={enableInteraction}
       />
+
+      <Analytics />
     </div>
   )
 }
