@@ -16,7 +16,7 @@ const PROJECTS = [
     stack: ['React', 'FastAPI', 'MediaPipe', 'OpenAI', 'LangChain', 'Pinecone', 'Docker', 'Vercel', 'Railway'],
     links: { live: 'https://whatwasdrawn.com', github: 'https://github.com/unicebondoc/whatwasdrawn' },
     color: '#ffd700',
-    glow: 'rgba(255,215,0,0.7)',
+    glow: 'rgba(255,215,0,0.75)',
     glowSoft: 'rgba(255,215,0,0.25)',
     flagship: true,
   },
@@ -26,12 +26,12 @@ const PROJECTS = [
     subtitle: 'Interactive 3D AI Portfolio',
     description:
       "The site you're standing in right now. A bioluminescent forest built with React 18, Three.js, WebGL, and GLSL shaders. Features an AI chatbot for natural language portfolio interaction.",
-    stack: ['React 18', 'Three.js', 'WebGL', 'GLSL', 'TypeScript', 'OpenAI API', 'Claude API'],
+    stack: ['React 18', 'Three.js', 'WebGL', 'GLSL', 'TypeScript', 'OpenAI API'],
     links: { live: null, github: null },
     note: "You're already here ✦",
-    color: '#22d3ee',
-    glow: 'rgba(34,211,238,0.7)',
-    glowSoft: 'rgba(34,211,238,0.2)',
+    color: '#3b82f6',
+    glow: 'rgba(59,130,246,0.75)',
+    glowSoft: 'rgba(59,130,246,0.2)',
   },
   {
     id: 'ninja-butler',
@@ -42,7 +42,7 @@ const PROJECTS = [
     stack: ['Python', 'LangChain', 'Telegram', 'LLaMA', 'Qwen', 'Ollama', 'OpenAI'],
     links: { live: null, github: 'https://github.com/unicebondoc/ninja-butler' },
     color: '#a78bfa',
-    glow: 'rgba(167,139,250,0.7)',
+    glow: 'rgba(167,139,250,0.75)',
     glowSoft: 'rgba(167,139,250,0.2)',
   },
   {
@@ -50,12 +50,12 @@ const PROJECTS = [
     title: 'LLMs Research',
     subtitle: 'High Distinction — 88/100',
     description:
-      'Masters capstone. A/B testing comparing AI-generated vs human-generated e-commerce content on a live Shopify platform. Measured page views, CTR, bounce rate, and time on page.',
+      'Masters capstone. A/B testing comparing AI-generated vs human-generated e-commerce content on a live Shopify platform. Measured real page views, CTR, bounce rate, and time on page with Python.',
     stack: ['Python', 'OpenAI', 'pandas', 'numpy', 'matplotlib', 'Shopify'],
     links: { live: null, github: 'https://github.com/unicebondoc/llm-ecommerce-analysis' },
-    color: '#f0b840',
-    glow: 'rgba(240,184,64,0.7)',
-    glowSoft: 'rgba(240,184,64,0.2)',
+    color: '#ef4444',
+    glow: 'rgba(239,68,68,0.75)',
+    glowSoft: 'rgba(239,68,68,0.2)',
   },
 ]
 
