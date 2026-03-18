@@ -490,22 +490,22 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       tex.rotation = 0
       const w = video.videoWidth || video.width || 1
       const h = video.videoHeight || video.height || 1
-      // Root orb portrait: zoom in and center on face (~28% from top = UV v=0.72)
-      // cropOffsetY = faceUV - 0.5 = 0.72 - 0.50 = 0.22 (math holds for any zoom)
-      const zoom   = memory.isRoot ? 0.85 : 1
-      const shiftY = memory.isRoot ? 0.22 : 0
+      // Root orb: show the full portrait video — fit width, no crop, no shift
+      // Non-root orbs: default (zoom=1, centered)
       if (w > 0 && h > 0) {
         const r = w / h
         if (r >= 1) {
-          tex.repeat.set(zoom / r, zoom)
-          tex.offset.set((1 - zoom / r) / 2, (1 - zoom) / 2 + shiftY)
+          // landscape — fill height, letterbox sides
+          tex.repeat.set(1 / r, 1)
+          tex.offset.set((1 - 1 / r) / 2, 0)
         } else {
-          tex.repeat.set(zoom, r * zoom)
-          tex.offset.set((1 - zoom) / 2, (1 - r * zoom) / 2 + shiftY)
+          // portrait — fit full width, show everything top-to-bottom
+          tex.repeat.set(1, r)
+          tex.offset.set(0, (1 - r) / 2)
         }
       } else {
-        tex.repeat.set(zoom, zoom)
-        tex.offset.set((1 - zoom) / 2, (1 - zoom) / 2 + shiftY)
+        tex.repeat.set(1, 1)
+        tex.offset.set(0, 0)
         video.addEventListener('loadedmetadata', onMeta, { once: true })
       }
       setMediaTex(tex)
@@ -515,14 +515,12 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         const w = video.videoWidth
         const h = video.videoHeight
         const r = w / h
-        const zoom   = memory.isRoot ? 0.85 : 1
-        const shiftY = memory.isRoot ? 0.22 : 0
         if (r >= 1) {
-          texRef.repeat.set(zoom / r, zoom)
-          texRef.offset.set((1 - zoom / r) / 2, (1 - zoom) / 2 + shiftY)
+          texRef.repeat.set(1 / r, 1)
+          texRef.offset.set((1 - 1 / r) / 2, 0)
         } else {
-          texRef.repeat.set(zoom, r * zoom)
-          texRef.offset.set((1 - zoom) / 2, (1 - r * zoom) / 2 + shiftY)
+          texRef.repeat.set(1, r)
+          texRef.offset.set(0, (1 - r) / 2)
         }
       }
     }

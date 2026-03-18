@@ -3,7 +3,7 @@
  * Click once to open: lid swings up, golden gush, 4 project diamonds fan out horizontally.
  * Click again to close. Hover a diamond to see its label. Click to open project modal.
  */
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useCallback, useEffect, useRef, useId } from 'react'
 import useStore from '../../hooks/useStore'
 
 const PROJECTS = [
@@ -68,6 +68,8 @@ const DIAMOND_POSITIONS = [
 ]
 
 function DiamondSvg({ color, glow, size = 32 }) {
+  const uid = useId().replace(/:/g, '')
+  const gradId = `dg-${uid}`
   return (
     <svg
       width={size}
@@ -75,28 +77,30 @@ function DiamondSvg({ color, glow, size = 32 }) {
       viewBox="0 0 54 62"
       fill="none"
     >
+      <defs>
+        <linearGradient id={gradId} x1="0" y1="0" x2="0.8" y2="1">
+          <stop offset="0%" stopColor="#fff" stopOpacity="0.55" />
+          <stop offset="30%" stopColor={color} stopOpacity="0.95" />
+          <stop offset="100%" stopColor={color} stopOpacity="0.6" />
+        </linearGradient>
+      </defs>
       <polygon
         points="27,2 52,20 27,60 2,20"
-        fill={`url(#dg-${color.replace('#', '')})`}
+        fill={`url(#${gradId})`}
         stroke={color}
-        strokeWidth="1.2"
-        opacity="0.95"
+        strokeWidth="1.5"
+        opacity="1"
       />
+      {/* inner facet lines */}
       <polygon
         points="27,8 46,21 27,52 8,21"
         fill="none"
-        stroke="rgba(255,255,255,0.18)"
+        stroke="rgba(255,255,255,0.22)"
         strokeWidth="0.8"
       />
-      <polygon points="27,2 52,20 27,20" fill="rgba(255,255,255,0.12)" />
-      <ellipse cx="35" cy="14" rx="5" ry="3" fill="rgba(255,255,255,0.22)" transform="rotate(-20 35 14)" />
-      <defs>
-        <linearGradient id={`dg-${color.replace('#', '')}`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor={color} stopOpacity="0.9" />
-          <stop offset="60%" stopColor={color} stopOpacity="0.55" />
-          <stop offset="100%" stopColor={color} stopOpacity="0.3" />
-        </linearGradient>
-      </defs>
+      {/* top shine */}
+      <polygon points="27,2 52,20 27,20" fill="rgba(255,255,255,0.18)" />
+      <ellipse cx="35" cy="13" rx="5" ry="3" fill="rgba(255,255,255,0.30)" transform="rotate(-20 35 13)" />
     </svg>
   )
 }
@@ -115,17 +119,20 @@ function ProjectModal({ project, onClose }) {
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         pointerEvents: 'auto',
       }}
-      onMouseDown={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
-      {/* backdrop */}
-      <div style={{
-        position: 'absolute', inset: 0,
-        background: 'rgba(0,0,0,0.6)',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
-        opacity: visible ? 1 : 0,
-        transition: 'opacity 0.3s ease',
-      }} />
+      {/* backdrop — clicking anywhere outside card closes the modal */}
+      <div
+        onClick={onClose}
+        style={{
+          position: 'absolute', inset: 0,
+          background: 'rgba(0,0,0,0.6)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          opacity: visible ? 1 : 0,
+          transition: 'opacity 0.3s ease',
+          cursor: 'pointer',
+        }}
+      />
       {/* card */}
       <div style={{
         position: 'relative', zIndex: 1,
