@@ -11,7 +11,7 @@ const OPENAI_URL = 'https://api.openai.com/v1/chat/completions'
 const MODEL = 'gpt-4o-mini'
 const MAX_RECENT_MESSAGES = 10
 
-const MEMORY_TAG_RE = /\[MEMORY:(orb-\d+)\]/gi
+const MEMORY_TAG_RE = /\[MEMORY:(orb-[\w-]+)\]/gi
 
 function stripMemoryTags(text) {
   return text.replace(MEMORY_TAG_RE, '').replace(/\n{3,}/g, '\n\n').trim()
@@ -22,9 +22,7 @@ function extractOrbIds(text) {
   let match
   const re = new RegExp(MEMORY_TAG_RE.source, 'gi')
   while ((match = re.exec(text)) !== null) {
-    const raw = match[1]
-    const n = parseInt(raw.replace('orb-', ''), 10)
-    ids.push(`orb-${String(n).padStart(2, '0')}`)
+    ids.push(match[1])
   }
   return ids
 }

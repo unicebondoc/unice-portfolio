@@ -1,31 +1,28 @@
 /**
- * Core Memories — bioluminescent world data.
- * 8 story orbs + 1 root identity orb = 9 total. First person throughout.
- *
- * Orb palettes: warmCoral (origin), paleViolet (writer, reinvention), warmAmber (pressure, proof, root),
- * softCyan (building, becoming), spiritMint (work).
+ * Core Memories — career and personal journey orbs.
+ * 6 story orbs + 1 root identity orb = 7 total.
+ * Colors: red, yellow/gold, purple, blue — user-specified palette.
+ * Each orb is a chapter in the story a hiring manager needs to hear.
  */
 const ORB_PALETTES = {
-  warmAmber:  { fill: 'rgba(212,168,83,0.6)',  glow: '#f0b840', innerLight: '#fff4d6', core: '#ffd700' },
-  softCyan:   { fill: 'rgba(103,232,249,0.5)',  glow: '#22d3ee', innerLight: '#e0f7fa', core: '#67e8f9' },
-  paleViolet: { fill: 'rgba(196,181,253,0.5)',  glow: '#a78bfa', innerLight: '#ede9fe', core: '#c4b5fd' },
-  roseQuartz: { fill: 'rgba(232,160,192,0.45)', glow: '#f472b6', innerLight: '#fce7f3', core: '#fb7eaf' },
-  spiritMint: { fill: 'rgba(126,207,160,0.45)', glow: '#34d399', innerLight: '#d1fae5', core: '#6ee7b7' },
-  warmCoral:  { fill: 'rgba(220,120,100,0.5)',  glow: '#e07c64', innerLight: '#ffebe8', core: '#f0a090' },
+  // User-specified: yellow, blue, purple, red
+  vividRed:    { fill: 'rgba(220,60,60,0.52)',   glow: '#ef4444', innerLight: '#fde8e8', core: '#f87171' },
+  heroGold:    { fill: 'rgba(255,215,0,0.58)',   glow: '#ffd700', innerLight: '#fffde7', core: '#fde047' },
+  warmAmber:   { fill: 'rgba(212,168,83,0.55)',  glow: '#f0b840', innerLight: '#fff4d6', core: '#fcd34d' },
+  electricBlue:{ fill: 'rgba(59,130,246,0.50)',  glow: '#3b82f6', innerLight: '#eff6ff', core: '#60a5fa' },
+  deepPurple:  { fill: 'rgba(139,92,246,0.52)',  glow: '#8b5cf6', innerLight: '#f5f3ff', core: '#a78bfa' },
+  softPurple:  { fill: 'rgba(196,181,253,0.48)', glow: '#a78bfa', innerLight: '#ede9fe', core: '#c4b5fd' },
 }
 
-// Scattered layout for mobile: much bigger, no overlap, extend above (full height).
-// Order: 0 origin, 1 writer, 2 pressure, 3 reinvention, 4 building, 5 proof, 6 work, 7 becoming, 8 root.
+// Mobile scattered positions — 6 orbs + root
 const SCATTERED_MOBILE_POSITIONS = [
-  [-2.4, -2.6, 0.1],  // 0 orb-origin — bottom-left
-  [2.2, -2.0, 0.3],   // 1 orb-writer — bottom-right
-  [-2.6, 0.4, 0.2],   // 2 orb-pressure — mid-left
-  [2.4, 1.4, 0.4],    // 3 orb-reinvention — center-right
-  [-2.0, 3.0, 0.3],   // 4 orb-building — upper-left
-  [2.6, 3.6, 0.2],    // 5 orb-proof — top-right
-  [-0.8, 4.8, 0.2],   // 6 orb-work — top center-left
-  [1.4, 5.4, 0.1],    // 7 orb-becoming — top-right (extends above)
-  [0.0, -3.2, 0],     // 8 orb-root — bottom center
+  [-2.4, -2.6, 0.1],  // 0 orb-origin
+  [2.2,  -2.0, 0.3],  // 1 orb-banking
+  [-2.6,  0.4, 0.2],  // 2 orb-leap
+  [2.4,   1.6, 0.4],  // 3 orb-proof  (hero — larger)
+  [-2.0,  3.2, 0.3],  // 4 orb-engineer
+  [1.4,   4.6, 0.1],  // 5 orb-becoming
+  [0.0,  -3.2, 0],    // 6 orb-root
 ]
 
 function mobilePositionsForMemories(list) {
@@ -38,19 +35,19 @@ function mobilePositionsForMemories(list) {
 }
 
 export const MEMORIES = [
-  // 1 — ORIGIN
+  // ─── 1. ORIGIN — RED ────────────────────────────────────────────────────
   {
     id: 'orb-origin',
     tier: 'supporting',
-    title: 'Creative Foundations',
-    subtitle: 'THE FIRST LANGUAGE',
+    title: 'The Communicator',
+    subtitle: 'WHERE IT ALL BEGAN',
     year: '2012',
     emotion: 'Origin',
     icon: '🎬',
     category: 'origin',
-    orbPalette: 'warmCoral',
-    color: '#e07c64',
-    glowColor: '#e07c64',
+    orbPalette: 'vividRed',
+    color: '#f87171',
+    glowColor: '#ef4444',
     image: '/memories/orb-07.svg',
     labelShort: '2012 · Origin',
     position: [-3.5, -1.5, 0.8],
@@ -58,198 +55,146 @@ export const MEMORIES = [
     orbType: 'secondary',
     isPrimary: true,
     description:
-      'Before I ever wrote a line of code, I learned how to make meaning land. Communications majored in Broadcastin at Bicol University taught me that words are not decoration. They are structure, rhythm, timing, and feeling. I did not know it then, but I was learning the first architecture of everything I would later build.',
-    tags: ['Broadcasting', 'Bicol University', 'Storytelling', 'Philippines'],
+      'I didn\'t start in tech. I started in story. A Bachelor of Communication in Broadcasting from Bicol University taught me what most engineers never learn — how to make meaning land. Structure. Rhythm. Timing. Audience. I didn\'t know it then, but I was learning the first architecture of everything I would later build.',
+    tags: ['Broadcasting', 'Bicol University', 'Philippines', 'Storytelling', 'Communication'],
     skills: [],
     link: '',
     videoSrc: '/memories/videos/01-orb-origin-web.mp4',
-    videoHint: 'Philippines footage, childhood, Bicol, anything that feels like a beginning',
+    videoHint: 'Philippines footage, Bicol, childhood, anything that feels like a beginning',
     isFuture: false,
   },
-  // 2 — VOICE (The Writer — intimate, slightly smaller)
+
+  // ─── 2. BANKING — YELLOW/AMBER ──────────────────────────────────────────
   {
-    id: 'orb-writer',
+    id: 'orb-banking',
     tier: 'supporting',
-    title: 'The Writer',
-    subtitle: 'FINDING THE SIGNAL',
-    year: '2020',
-    emotion: 'Voice',
-    icon: '✒️',
-    category: 'writing',
-    orbPalette: 'paleViolet',
-    color: '#c4b5fd',
-    glowColor: '#c4b5fd',
-    image: '/memories/orb-02.svg',
-    labelShort: '2020 · Writing',
-    position: [3.0, -1.0, -0.5],
-    scaleMult: 0.95,
-    visualTier: 'secondary',
-    orbType: 'secondary',
-    isPrimary: true,
-    description:
-      'When the world slowed down, I started writing. Not because I had answers, but because I needed somewhere honest to place the questions. I wrote through grief, love, distance, and becoming. That habit never left. It only changed shape. Now the same voice turns toward technology, AI, and the futures we are quietly building.',
-    tags: ['Writing', 'Voice', 'Reflection', '2020'],
-    skills: [],
-    link: '',
-    videoSrc: '/memories/videos/02-orb-writer-web.mp4',
-    videoHint: 'quiet, personal — journaling, coffee, rainy window, anything that feels like inner life and reflection',
-    isFuture: false,
-  },
-  // 3 — PRESSURE
-  {
-    id: 'orb-pressure',
-    tier: 'supporting',
-    title: 'Corporate Discipline',
-    subtitle: 'FORGED, NOT BROKEN',
+    title: '100 Clients. Zero Room For Error.',
+    subtitle: 'FORGED UNDER PRESSURE',
     year: '2018',
     emotion: 'Foundation',
     icon: '🏦',
     category: 'operations',
     orbPalette: 'warmAmber',
-    color: '#d4a853',
-    glowColor: '#d4a853',
+    color: '#fcd34d',
+    glowColor: '#f0b840',
     image: '/memories/orb-08.svg',
     labelShort: '2018 · Operations',
-    position: [-2.5, 0.5, 1.2],
+    position: [3.0, -1.0, -0.5],
     visualTier: 'primary',
     orbType: 'primary',
     isPrimary: true,
     description:
-      'Banking taught me the weight of real responsibility. Four years across BDO Unibank and RCBC. More than one hundred SME accounts. Deadlines that did not soften for anyone. It taught me precision, coordination, restraint, and the kind of composure that only forms under pressure. I still carry that discipline into every build.',
-    tags: ['BDO Unibank', 'RCBC', '100+ Accounts', 'Banking', 'Operations'],
+      'Four years in banking — BDO Unibank and RCBC — managing 100+ concurrent SME client accounts in a regulated, high-stakes environment. Compliance deadlines don\'t soften. Clients don\'t wait. I learned to hold complexity under real pressure, stay precise under constraint, and communicate across stakeholders when the stakes were high. Every engineer who has only ever worked in tech has never had this.',
+    tags: ['RCBC', 'BDO Unibank', '100+ SME Accounts', 'Banking Operations', 'Philippines', 'Stakeholder Management'],
     skills: [],
     link: '',
     videoSrc: '/memories/videos/03-orb-pressure-web.mp4',
-    videoHint: 'Manila city, office aesthetic, structured environment, professional setting — anything that feels like discipline and constraint',
+    videoHint: 'Manila city, office environment, structured professional setting — anything that feels like discipline and precision',
     isFuture: false,
   },
-  // 4 — REINVENTION
+
+  // ─── 3. THE LEAP — PURPLE ───────────────────────────────────────────────
   {
-    id: 'orb-reinvention',
+    id: 'orb-leap',
     tier: 'core',
-    title: 'I Chose Different',
+    title: 'I Chose the Harder Path',
     subtitle: 'THE ONLY HONEST THING LEFT',
-    year: '2022',
+    year: '2023',
     emotion: 'Courage',
     icon: '💫',
     category: 'the_leap',
-    orbPalette: 'paleViolet',
+    orbPalette: 'deepPurple',
     color: '#a78bfa',
-    glowColor: '#a78bfa',
+    glowColor: '#8b5cf6',
     image: '/memories/orb-01.svg',
-    labelShort: '2022 · The Leap',
-    position: [2.5, 0.5, 0.3],
+    labelShort: '2023 · The Leap',
+    position: [-2.5, 0.8, 1.2],
     visualTier: 'primary',
     orbType: 'primary',
     isPrimary: true,
     description:
-      'Some decisions do not just change your life. They reveal it. I left banking, left the Philippines, and arrived in Sydney carrying a Master\'s offer and a version of myself that had not fully been tested yet. It was not bravery in the theatrical sense. It was alignment. The kind that costs something, and is worth it anyway.',
-    tags: ['Career Pivot', 'Sydney', 'Master\'s', 'Philippines → Australia'],
+      'I left a stable career, left the Philippines, and arrived in Sydney with a Master\'s offer and a version of myself that hadn\'t fully been tested yet. It wasn\'t bravery for its own sake — it was clarity. I knew what I was becoming. The only path through was the one that cost something. It\'s one of the best decisions I\'ve ever made, and I\'d make it again.',
+    tags: ['Career Pivot', 'Philippines → Australia', 'Sydney', 'Master\'s Enrolment', '2023'],
     skills: [],
     link: '',
     videoSrc: '/memories/videos/04-orb-reinvention-web.mp4',
-    videoHint: 'airport, packing, arriving Sydney, harbour bridge, ocean — anything that feels like crossing a threshold',
+    videoHint: 'airport, packing, arriving in Sydney, harbour bridge, ocean — anything that feels like crossing a threshold',
     isFuture: false,
   },
-  // 5 — BUILDING
-  {
-    id: 'orb-building',
-    tier: 'core',
-    title: 'Theory Became Real',
-    subtitle: 'CONCEPT TO LIVE DEPLOYMENT · ONE WEEK',
-    year: '2024',
-    emotion: 'Real Impact',
-    icon: '🌱',
-    category: 'ai_deployment',
-    orbPalette: 'softCyan',
-    color: '#67e8f9',
-    glowColor: '#67e8f9',
-    image: '/memories/orb-04.svg',
-    labelShort: '2024 · AI Deployment',
-    position: [-3.0, 2.0, -0.6],
-    visualTier: 'primary',
-    orbType: 'primary',
-    isPrimary: true,
-    description:
-      'This is the memory I return to when doubt starts performing. A live Shopify business. A real brief. A real deadline. Python, GPT-4, Voiceflow. Scoped, built, tested, and deployed in seven days. Not classroom confidence. Not theory. This was the moment learning crossed the line into delivery.',
-    tags: ['Python', 'GPT-4', 'Voiceflow', 'Shopify', 'One Week', 'Solo'],
-    skills: [],
-    link: '',
-    videoSrc: '/memories/videos/05-orb-building-web.mp4',
-    videoHint: 'screen recording of chatbot, code editor, terminal output — anything that feels like something going live',
-    isFuture: false,
-  },
-  // 6 — PROOF (gold, prominent — second largest)
+
+  // ─── 4. PROOF — GOLD HERO ───────────────────────────────────────────────
   {
     id: 'orb-proof',
     tier: 'core',
-    title: 'I Earned My Place',
+    title: 'I Proved It Works',
     subtitle: 'LLM RESEARCH · HIGH DISTINCTION · 88/100',
     year: '2025',
     emotion: 'Pride',
     icon: '🎓',
     category: 'masters',
-    orbPalette: 'warmAmber',
-    color: '#f0b840',
+    orbPalette: 'heroGold',
+    color: '#fde047',
     glowColor: '#ffd700',
     image: '/memories/orb-03.svg',
-    labelShort: '2025 · Master\'s',
-    position: [2.8, 2.2, 0.6],
+    labelShort: '2025 · High Distinction',
+    position: [2.8, 2.0, 0.6],
     scaleMult: 1.3,
     visualTier: 'hero',
     orbType: 'primary',
     isPrimary: true,
     description:
-      'I graduated with a Master of Information and Communications Technology in Web and Mobile Computing from Western Sydney University. My LLM research earned 88/100 with High Distinction, focused on AI-generated content in e-commerce. I moved to a country I had never lived in, stepped into a field I was still learning to claim, and finished with work I could stand behind. That mattered to me more than ease ever could.',
-    tags: ['WSU', 'LLM Research', '88/100', 'High Distinction', 'Graduation'],
+      'My Master\'s capstone wasn\'t a classroom exercise. I ran empirical A/B tests comparing AI-generated vs human-written content on a live Shopify e-commerce platform — measuring real CTR, bounce rate, page views, and time on page with Python (pandas, numpy, matplotlib). Awarded 88 out of 100. High Distinction. Western Sydney University. This is what it looks like when research is real.',
+    tags: ['WSU', 'Master of ICT', 'LLM Research', 'High Distinction', '88/100', 'A/B Testing', 'Python', 'Shopify', 'pandas', 'numpy', 'matplotlib'],
     skills: [],
     link: '',
     videoSrc: '/memories/videos/06-orb-proof-web.mp4',
-    videoHint: 'graduation ceremony, walking across stage, WSU — that graduation clip is perfect for this',
+    videoHint: 'graduation ceremony, walking across stage, WSU campus, academic achievement',
     cropPosition: 'center 15%',
     isFuture: false,
   },
-  // 7 — THE WORK (Core Memories, no links)
+
+  // ─── 5. AI ENGINEER — BLUE ──────────────────────────────────────────────
   {
-    id: 'orb-work',
+    id: 'orb-engineer',
     tier: 'core',
-    title: 'Core Memories',
-    subtitle: 'A PORTFOLIO THAT BECAME A WORLD',
-    year: '2026',
-    emotion: 'Proof',
-    icon: '🔮',
-    category: 'ai_portfolio',
-    orbPalette: 'spiritMint',
-    color: '#34d399',
-    glowColor: '#34d399',
-    image: '/memories/orb-05.svg',
-    labelShort: '2026 · AI Portfolio',
-    position: [-0.5, 3.2, 1.0],
-    visualTier: 'hero',
+    title: 'Theory Became Delivery',
+    subtitle: 'CONCEPT TO LIVE IN SEVEN DAYS',
+    year: '2024',
+    emotion: 'Real Impact',
+    icon: '🛠️',
+    category: 'ai_deployment',
+    orbPalette: 'electricBlue',
+    color: '#60a5fa',
+    glowColor: '#3b82f6',
+    image: '/memories/orb-04.svg',
+    labelShort: '2024 · AI Engineer',
+    position: [-0.5, 3.0, 1.0],
+    visualTier: 'primary',
     orbType: 'primary',
     isPrimary: true,
     description:
-      'I did not want a portfolio that behaved like a filing cabinet. I wanted a place. A memory system. A bioluminescent archive of who I have been, what I have built, and what still pulls me forward. React, Three.js, GLSL, OpenAI. Built alone. Shaped with intention. The brief was simple: make them feel something true.',
-    tags: ['React 18', 'Three.js', 'GLSL', 'OpenAI API', 'Solo Build'],
+      'A live Shopify business. A real brief. No tutorial to follow. I scoped, built, and deployed a GPT-4 AI customer service chatbot in seven days — Python, OpenAI API, Voiceflow — independently owning every stage from architecture to delivery. Later recognised by Western Sydney University as my official industry placement. There is a real difference between someone who knows AI and someone who has shipped it. I\'m the second.',
+    tags: ['Python', 'GPT-4', 'OpenAI API', 'Voiceflow', 'Shopify', 'Freelance', 'Industry Placement', 'Solo Delivery'],
     skills: [],
     link: '',
-    videoSrc: '/memories/videos/07-orb-work-web.mp4',
-    videoHint: 'screen recording of this portfolio being built, code, the 3D scene coming to life — or just a beautiful clip of the forest itself',
+    videoSrc: '/memories/videos/05-orb-building-web.mp4',
+    videoHint: 'screen recording of chatbot, code editor, terminal output — something going live',
     isFuture: false,
   },
-  // 8 — BECOMING (present — slightly larger)
+
+  // ─── 6. BECOMING — SOFT PURPLE ──────────────────────────────────────────
   {
     id: 'orb-becoming',
     tier: 'core',
-    title: 'Still Becoming',
-    subtitle: 'THE STORY DOES NOT END HERE',
+    title: 'The Architect, Ongoing',
+    subtitle: 'BUILDING WHAT COMES NEXT',
     year: '2026',
     emotion: 'Ambition',
     icon: '🚀',
     category: 'present',
-    orbPalette: 'softCyan',
-    color: '#a5f3fc',
-    glowColor: '#a5f3fc',
+    orbPalette: 'softPurple',
+    color: '#c4b5fd',
+    glowColor: '#a78bfa',
     image: '/memories/orb-06.svg',
     labelShort: '2026 · Present',
     position: [1.5, 4.0, -0.3],
@@ -258,40 +203,41 @@ export const MEMORIES = [
     orbType: 'primary',
     isPrimary: true,
     description:
-      'I am in my Professional Year in Sydney, continuing to sharpen the technical side of what I can do while building what comes next. Azure AI certifications are in motion. New systems are taking shape. I have crossed countries, industries, and versions of myself already. I know how to begin again. That is one of my strongest skills.',
-    tags: ['Professional Year', 'Azure AI', 'Sydney', 'Open to Work', 'AI Engineer'],
+      'Professional Year in Sydney. Azure AI certifications in motion. Three live systems shipped in 2026. I don\'t wait to be ready — I build until I am. The next chapter is a full-time AI engineering role where the work is real, the stack matters, and the team is building something that counts. That team is the next memory.',
+    tags: ['Professional Year', 'ACS Accredited', 'Azure AI Fundamentals', 'Open to Work', 'AI Engineer', 'Sydney', '2026'],
     skills: [],
     link: '',
     videoSrc: '/memories/videos/08-orb-becoming-web.mp4',
-    videoHint: 'Sydney daily life, studying, laptop at cafe, city at night — anything that feels like right now and what\'s coming',
+    videoHint: 'Sydney daily life, studying, laptop at café, city lights, anything that feels like now and what\'s coming',
     isFuture: true,
   },
-  // 9 — ROOT (identity — largest, base of tree)
+
+  // ─── ROOT — IDENTITY (bottom centre) ────────────────────────────────────
   {
     id: 'orb-root',
     tier: 'root',
     isRoot: true,
     title: 'Unice Bondoc',
-    subtitle: 'THE ROOT OF ALL THIS',
+    subtitle: 'AI ENGINEER · BUILDER · STORYTELLER',
     year: 'NOW',
-    emotion: 'Pride',
-    icon: '🎓',
-    category: 'achievement',
+    emotion: 'Identity',
+    icon: '✦',
+    category: 'identity',
     orbPalette: 'warmAmber',
-    color: '#d4a853',
+    color: '#f0b840',
     glowColor: '#d4a853',
     image: '/memories/belong.png',
     videoSrc: '/memories/videos/09-orb-root-web.mp4',
-    videoHint: 'your best intro clip, portrait, selfie video — this is you',
-    labelShort: 'Now · Identity',
+    videoHint: 'your best intro clip — portrait, selfie video, this is you',
+    labelShort: 'Now · Unice',
     position: [0, -2.5, 0],
     scaleMult: 1.4,
     visualTier: 'primary',
     orbType: 'primary',
     isPrimary: true,
     description:
-      'A builder shaped by communication, pressure, reinvention, and the refusal to stay where I no longer fit. Everything above grows from here: the storyteller, the operator, the researcher, the one who kept going until the work became undeniable.',
-    tags: ['Identity', 'Storyteller', 'Builder', 'Researcher'],
+      'A builder shaped by communication, discipline, reinvention, and the refusal to stay where I no longer fit. Everything above grows from here: the storyteller who became an operator, the operator who became a researcher, the researcher who became an engineer. The work is undeniable. The builder is still becoming.',
+    tags: ['AI Engineer', 'Storyteller', 'Builder', 'Researcher', 'Sydney'],
     skills: [],
     link: '',
     isFuture: false,
@@ -307,13 +253,13 @@ MEMORIES.forEach((m) => {
     m.orbInnerLight = p.innerLight
     m.orbCore = p.core
   } else {
-    m.orbFill = ORB_PALETTES.softCyan.fill
-    m.orbGlow = m.glowColor || ORB_PALETTES.softCyan.glow
-    m.orbInnerLight = ORB_PALETTES.softCyan.innerLight
-    m.orbCore = ORB_PALETTES.softCyan.core
+    m.orbFill = ORB_PALETTES.electricBlue.fill
+    m.orbGlow = m.glowColor || ORB_PALETTES.electricBlue.glow
+    m.orbInnerLight = ORB_PALETTES.electricBlue.innerLight
+    m.orbCore = ORB_PALETTES.electricBlue.core
   }
   if (import.meta.env?.DEV) {
-    console.log('MEMORY PALETTE:', m.id, 'orbGlow:', m.orbGlow, 'orbInnerLight:', m.orbInnerLight, 'orbFill:', m.orbFill)
+    console.log('MEMORY PALETTE:', m.id, 'orbGlow:', m.orbGlow, 'orbInnerLight:', m.orbInnerLight)
   }
 })
 
