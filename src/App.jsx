@@ -31,7 +31,7 @@ import LoadingScreen from './components/ui/LoadingScreen'
 import CustomCursor from './components/ui/CustomCursor'
 import MysticalCursor from './components/MysticalCursor'
 import ExploreHint from './components/ExploreHint'
-import GestureTarotScroll from './components/ui/GestureTarotScroll'
+import TreasureChest from './components/ui/TreasureChest'
 import ChatBot from './components/ui/ChatBot'
 import TycheMascot from './components/ui/TycheMascot'
 import MobileArtifactPill from './components/ui/MobileArtifactPill'
@@ -1036,8 +1036,8 @@ export default function App() {
           </div>
         )}
 
-        {/* ── Right side: Gesture Tarot scroll artifact ── */}
-        <GestureTarotScroll />
+        {/* ── Bottom center: Project treasure chest ── */}
+        <TreasureChest />
 
         {/* ── Chat + Tyche (bottom-right): wrapper pointer-events none; Tyche has pointer-events auto ── */}
         <div

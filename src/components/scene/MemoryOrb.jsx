@@ -490,18 +490,22 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       tex.rotation = 0
       const w = video.videoWidth || video.width || 1
       const h = video.videoHeight || video.height || 1
+      // Root orb: zoom in to crop face, shift right so face is centered
+      const zoom   = memory.isRoot ? 0.82 : 1
+      const shiftX = memory.isRoot ? 0.10 : 0   // shift right to center face
+      const shiftY = memory.isRoot ? 0.18 : 0   // shift up to center face vertically
       if (w > 0 && h > 0) {
         const r = w / h
         if (r >= 1) {
-          tex.repeat.set(1 / r, 1)
-          tex.offset.set((1 - 1 / r) / 2, 0)
+          tex.repeat.set(zoom / r, zoom)
+          tex.offset.set((1 - zoom / r) / 2 + shiftX, (1 - zoom) / 2 + shiftY)
         } else {
-          tex.repeat.set(1, r)
-          tex.offset.set(0, (1 - r) / 2)
+          tex.repeat.set(zoom, r * zoom)
+          tex.offset.set((1 - zoom) / 2 + shiftX, (1 - r * zoom) / 2 + shiftY)
         }
       } else {
-        tex.repeat.set(1, 1)
-        tex.offset.set(0, 0)
+        tex.repeat.set(zoom, zoom)
+        tex.offset.set((1 - zoom) / 2 + shiftX, (1 - zoom) / 2 + shiftY)
         video.addEventListener('loadedmetadata', onMeta, { once: true })
       }
       setMediaTex(tex)
@@ -511,12 +515,15 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         const w = video.videoWidth
         const h = video.videoHeight
         const r = w / h
+        const zoom   = memory.isRoot ? 0.82 : 1
+        const shiftX = memory.isRoot ? 0.10 : 0
+        const shiftY = memory.isRoot ? 0.18 : 0
         if (r >= 1) {
-          texRef.repeat.set(1 / r, 1)
-          texRef.offset.set((1 - 1 / r) / 2, 0)
+          texRef.repeat.set(zoom / r, zoom)
+          texRef.offset.set((1 - zoom / r) / 2 + shiftX, (1 - zoom) / 2 + shiftY)
         } else {
-          texRef.repeat.set(1, r)
-          texRef.offset.set(0, (1 - r) / 2)
+          texRef.repeat.set(zoom, r * zoom)
+          texRef.offset.set((1 - zoom) / 2 + shiftX, (1 - r * zoom) / 2 + shiftY)
         }
       }
     }
