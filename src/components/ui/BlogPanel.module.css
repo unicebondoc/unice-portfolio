@@ -1,32 +1,37 @@
-/* BlogPanel — small glass panel, left side */
+/* BlogPanel — full-screen backdrop + left-anchored glass panel */
 
-.anchor {
+.backdrop {
   position: fixed;
-  left: 40px;
-  top: 50%;
-  transform: translateY(-50%);
+  inset: 0;
   z-index: 100;
   pointer-events: auto;
+  /* no tint — transparent backdrop so the forest stays visible */
 }
 
 .panel {
-  width: min(280px, calc(100vw - 80px));
-  padding: 20px 24px 24px;
-  background: rgba(8, 15, 30, 0.85);
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
+  position: absolute;
+  left: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(310px, calc(100vw - 80px));
+  padding: 20px 22px 22px;
+  background: rgba(8, 15, 30, 0.88);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
   border: 1px solid rgba(0, 229, 255, 0.12);
   border-radius: 16px;
   box-shadow:
     0 0 40px rgba(0, 229, 255, 0.06),
-    0 8px 32px rgba(0, 0, 0, 0.4);
-  animation: panelSlideIn 0.4s ease-out;
-}
-@keyframes panelSlideIn {
-  from { opacity: 0; transform: translateX(-20px); }
-  to { opacity: 1; transform: translateX(0); }
+    0 8px 32px rgba(0, 0, 0, 0.45);
+  animation: panelIn 0.35s ease-out;
 }
 
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(-50%) translateX(-16px); }
+  to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+/* Close button (×) */
 .close {
   position: absolute;
   top: 12px;
@@ -38,11 +43,9 @@
   cursor: pointer;
   opacity: 0.35;
   padding: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s;
 }
-.close:hover {
-  opacity: 0.9;
-}
+.close:hover { opacity: 1; }
 .close::before,
 .close::after {
   content: '';
@@ -51,58 +54,133 @@
   top: 50%;
   width: 14px;
   height: 1px;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.75);
   transform: translate(-50%, -50%) rotate(45deg);
 }
-.close::after {
-  transform: translate(-50%, -50%) rotate(-45deg);
-}
-.close:hover {
-  opacity: 1;
-}
+.close::after { transform: translate(-50%, -50%) rotate(-45deg); }
 .close:focus-visible {
   outline: none;
   box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.6);
   opacity: 1;
 }
 
+/* Header */
+.header {
+  margin-bottom: 16px;
+}
+.sparkle {
+  display: block;
+  font-size: 14px;
+  color: rgba(0, 229, 255, 0.5);
+  margin-bottom: 4px;
+}
 .title {
   font-family: 'Cinzel', serif;
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.2em;
   color: rgba(200, 230, 255, 0.95);
-  margin: 0 0 4px;
+  margin: 0 0 3px;
   text-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
 }
-
 .subtitle {
   font-family: 'Raleway', sans-serif;
   font-size: 8px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: rgba(180, 220, 240, 0.35);
-  margin: 0 0 14px;
+  margin: 0;
 }
 
-.link {
-  display: inline-block;
-  font-size: 12px;
-  letter-spacing: 1px;
+/* Article list */
+.articles {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.loading {
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+  color: rgba(180, 220, 240, 0.45);
+  margin: 0;
+  font-style: italic;
+}
+
+.fallback {
   color: rgba(46, 168, 160, 0.9);
   text-decoration: none;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(46, 168, 160, 0.3);
-  transition: color 0.2s, border-color 0.2s;
 }
-.link:hover {
-  color: rgba(100, 220, 210, 1);
-  border-color: rgba(46, 168, 160, 0.5);
+.fallback:hover { color: rgba(100, 220, 210, 1); }
+
+/* Individual article card */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(0, 229, 255, 0.09);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+.card:hover {
+  background: rgba(0, 229, 255, 0.07);
+  border-color: rgba(0, 229, 255, 0.22);
 }
 
-.hint {
-  font-size: 10px;
-  color: rgba(200, 210, 255, 0.4);
-  margin: 12px 0 0;
+.cardDate {
   font-family: 'Raleway', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(0, 229, 255, 0.45);
+}
+
+.cardTitle {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(220, 240, 255, 0.92);
+  line-height: 1.4;
+}
+
+.cardExcerpt {
+  font-family: 'Raleway', sans-serif;
+  font-size: 10px;
+  color: rgba(180, 210, 240, 0.45);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cardCta {
+  font-family: 'Raleway', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: rgba(46, 168, 160, 0.8);
+  margin-top: 2px;
+  transition: color 0.2s;
+}
+.card:hover .cardCta { color: rgba(100, 220, 210, 1); }
+
+/* Footer link */
+.allLink {
+  display: inline-block;
+  font-family: 'Raleway', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: rgba(46, 168, 160, 0.7);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(46, 168, 160, 0.25);
+  padding-bottom: 1px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.allLink:hover {
+  color: rgba(100, 220, 210, 1);
+  border-color: rgba(100, 220, 210, 0.5);
 }
