@@ -43,8 +43,8 @@ export default function HeartOfTree() {
     const t = state.clock.elapsedTime
     if (!groupRef.current) return
 
-    const px = parallaxMouse.x * 0.04
-    const py = parallaxMouse.y * 0.04
+    const px = parallaxMouse.x * 0.018
+    const py = parallaxMouse.y * 0.018
     groupRef.current.position.set(-px, 0.5 - py, 0)
 
     // Base breathing: scale 0.95–1.05, light 0.6–1.0

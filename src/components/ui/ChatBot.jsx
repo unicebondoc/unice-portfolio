@@ -4,10 +4,24 @@ import useStore from '../../hooks/useStore'
 import { SUGGESTED_QUESTIONS } from '../../data/suggestedQuestions'
 import styles from './ChatBot.module.css'
 
+/** Strip markdown bold/italic/headers so Tyche's replies render as clean plain text */
+function cleanReply(text) {
+  if (!text) return ''
+  return text
+    .replace(/\*\*\*(.*?)\*\*\*/g, '$1')   // ***bold-italic***
+    .replace(/\*\*(.*?)\*\*/g, '$1')        // **bold**
+    .replace(/\*(.*?)\*/g, '$1')            // *italic*
+    .replace(/__(.*?)__/g, '$1')            // __bold__
+    .replace(/_(.*?)_/g, '$1')              // _italic_
+    .replace(/^#{1,6}\s+/gm, '')            // ## headings
+    .replace(/`{1,3}([^`]*)`{1,3}/g, '$1') // `code`
+    .trim()
+}
+
 const LOADING_PHRASES = [
-  'The tree is listening…',
-  'Gathering a memory…',
-  'Tracing the roots…',
+  'The forest is listening… 🌿',
+  'Consulting the roots… 🐾',
+  'Tyche is thinking… ✦',
 ]
 const REVEAL_MS_PER_WORD = 36
 const REVEAL_MS_MIN = 400
@@ -140,7 +154,7 @@ export default function ChatBot() {
           style={{ cursor: 'none' }}
         >
           <div className={styles.header}>
-            <div className={styles.title}>MEMORY TREE</div>
+            <div className={styles.title}>✦ TYCHE</div>
             <div className={styles.headerActions}>
               <button
                 type="button"
@@ -169,12 +183,12 @@ export default function ChatBot() {
                   key={idx}
                   className={`${styles.msg} ${m.role === 'user' ? styles.msgUser : styles.msgAssistant}`}
                 >
-                  {m.text}
+                  {m.role === 'assistant' ? cleanReply(m.text) : m.text}
                 </div>
               ))}
               {pendingReply && (
                 <div className={`${styles.msg} ${styles.msgAssistant} ${styles.msgReveal}`}>
-                  {revealedText}
+                  {cleanReply(revealedText)}
                   {!revealEndRef.current && <span className={styles.cursor} />}
                 </div>
               )}

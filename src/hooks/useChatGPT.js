@@ -5,7 +5,7 @@ const MEMORY_TAG_RE = /\[MEMORY:(orb-\d+)\]/gi
 
 const INITIAL_MESSAGE = {
   role: 'assistant',
-  text: "I'm Tyche — guardian of this forest. Ask me about Unice's work, her story, or why she belongs on your team.",
+  text: "Ah, a visitor. 🐾 I'm Tyche — Unice's cat and the unofficial guardian of this forest. Ask me about her work, her story, or make a case for why your team deserves her. I'm listening. 🌿",
 }
 
 /**

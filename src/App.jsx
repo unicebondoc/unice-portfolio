@@ -535,8 +535,8 @@ function CameraController() {
     const base = camera.position.clone().lerp(driftTgt, Math.min(1, delta * 0.8))
     camera.position.copy(base)
     if (!isMobile) {
-      camera.position.x += parallaxMouse.x * 0.04
-      camera.position.y += parallaxMouse.y * 0.04
+      camera.position.x += parallaxMouse.x * 0.018
+      camera.position.y += parallaxMouse.y * 0.018
     }
     camera.lookAt(HOME_TARGET)
   })

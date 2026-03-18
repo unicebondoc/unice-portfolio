@@ -490,16 +490,20 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       tex.rotation = 0
       const w = video.videoWidth || video.width || 1
       const h = video.videoHeight || video.height || 1
-      // Root orb: show the full portrait video — fit width, no crop, no shift
-      // Non-root orbs: default (zoom=1, centered)
+      // Root orb portrait: face is left-of-center in the video frame.
+      // Crop to the left 65% of the width (no offset.x) so the face reads centred.
+      // Crop vertically to the upper-middle zone where the face lives.
+      // Non-root orbs: standard centred letterbox.
       if (w > 0 && h > 0) {
         const r = w / h
-        if (r >= 1) {
-          // landscape — fill height, letterbox sides
+        if (memory.isRoot && r < 1) {
+          // portrait — zoom in on the face (left portion, upper-middle of frame)
+          tex.repeat.set(0.65, 0.50)
+          tex.offset.set(0, 0.44)
+        } else if (r >= 1) {
           tex.repeat.set(1 / r, 1)
           tex.offset.set((1 - 1 / r) / 2, 0)
         } else {
-          // portrait — fit full width, show everything top-to-bottom
           tex.repeat.set(1, r)
           tex.offset.set(0, (1 - r) / 2)
         }
@@ -515,7 +519,10 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         const w = video.videoWidth
         const h = video.videoHeight
         const r = w / h
-        if (r >= 1) {
+        if (memory.isRoot && r < 1) {
+          texRef.repeat.set(0.65, 0.50)
+          texRef.offset.set(0, 0.44)
+        } else if (r >= 1) {
           texRef.repeat.set(1 / r, 1)
           texRef.offset.set((1 - 1 / r) / 2, 0)
         } else {
