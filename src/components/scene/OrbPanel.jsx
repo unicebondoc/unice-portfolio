@@ -395,14 +395,16 @@ export default function OrbPanel({
                       preload="none"
                       disablePictureInPicture
                       style={{
-                        width: '80%',
-                        height: '160px',
-                        objectFit: 'cover',
-                        objectPosition: m.cropPosition || 'center 10%',
-                        borderRadius: '16px',
+                        width: m.isRoot ? '86%' : '80%',
+                        height: m.isRoot ? 'auto' : '160px',
+                        aspectRatio: m.isRoot ? '1 / 1' : undefined,
+                        objectFit: m.isRoot ? 'contain' : 'cover',
+                        objectPosition: m.isRoot ? 'center center' : (m.cropPosition || 'center 10%'),
+                        borderRadius: m.isRoot ? '50%' : '16px',
                         display: 'block',
                         margin: '0 auto 14px auto',
                         flexShrink: 0,
+                        background: m.isRoot ? 'rgba(0,0,0,0.3)' : 'transparent',
                       }}
                       onCanPlay={(e) => e.currentTarget.play?.().catch(() => {})}
                       onLoadedData={(e) => e.currentTarget.play?.().catch(() => {})}

@@ -35,6 +35,7 @@ import TreasureChest from './components/ui/TreasureChest'
 import ChatBot from './components/ui/ChatBot'
 import TycheMascot from './components/ui/TycheMascot'
 import MobileArtifactPill from './components/ui/MobileArtifactPill'
+import OnboardingHints from './components/ui/OnboardingHints'
 
 const LERP = 0.08
 
@@ -1038,6 +1039,7 @@ export default function App() {
 
         {/* ── Bottom center: Project treasure chest ── */}
         <TreasureChest />
+        <OnboardingHints />
 
         {/* ── Chat + Tyche (bottom-right): wrapper pointer-events none; Tyche has pointer-events auto ── */}
         <div
