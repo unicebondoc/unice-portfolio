@@ -9,8 +9,8 @@ export const PORTFOLIO_DATA = {
     phone: "0492 918 530",
     linkedIn: "https://www.linkedin.com/in/unicebondoc/",
     github: "https://github.com/unicebondoc",
-    headline: "AI Engineer | Full-Stack AI Developer | LLM Integration",
-    summary: "AI Engineer specialising in LLM integration, RAG pipelines, and full-stack AI product development. Built and deployed three live systems: a gesture-based oracle platform (MediaPipe + LangChain + Pinecone), a 3D WebGL portfolio with an OpenAI chatbot, and a Telegram AI assistant with local LLM inference. Master of ICT graduate (Western Sydney University) with a High Distinction (88/100) in postgraduate LLM research.",
+    headline: "AI Engineer | Full-Stack AI Developer | LLM & Agent Systems",
+    summary: "AI Engineer specialising in LLM integration, AI agents, and full-stack product development. Built and deployed multiple live systems, including a gesture-based oracle platform using RAG, a Telegram AI assistant with tool routing and persistent memory, and a 3D WebGL portfolio with an OpenAI chatbot. Master of ICT graduate from Western Sydney University with a High Distinction (88/100) in postgraduate research on LLMs for e-commerce.",
     currentStatus: "Unice has graduated with a Master of ICT from Western Sydney University, earning High Distinction (88/100) for her LLM research capstone. She is currently in the ACS-accredited Professional Year (ICT) program in Sydney, building AI-focused projects and pursuing her first full-time AI Engineer role. Three live systems shipped in 2026. Azure AI certifications in progress. The study chapter is complete. The builder chapter is very much alive.",
   },
 
@@ -24,8 +24,8 @@ export const PORTFOLIO_DATA = {
     {
       id: "orb-banking",
       title: "100 Clients. Zero Room For Error.",
-      years: "2018–2022",
-      description: "Four years in banking — BDO Unibank and RCBC — managing 100+ concurrent SME client accounts in a regulated, high-stakes environment. Learned precision, stakeholder coordination, and composure under real pressure.",
+      years: "2019–2022",
+      description: "Three years at RCBC — Rizal Commercial Banking Corporation — managing 100+ concurrent SME client accounts in a regulated, high-stakes environment. Learned precision, stakeholder coordination, and composure under real pressure.",
     },
     {
       id: "orb-leap",
@@ -37,7 +37,7 @@ export const PORTFOLIO_DATA = {
       id: "orb-proof",
       title: "I Proved It Works",
       years: "2024–2025",
-      description: "Ran empirical A/B tests comparing AI-generated vs human-written content on a live Shopify platform, measuring real CTR, bounce rate, and page views with Python. Awarded 88/100 High Distinction. Western Sydney University.",
+      description: "Ran empirical A/B tests comparing AI-generated vs human-written content on a live Shopify platform — AI content drove 165% more page views and 82% longer time on page, while human content generated 2× higher purchase intent. Awarded 88/100 High Distinction. Western Sydney University.",
     },
     {
       id: "orb-engineer",
@@ -55,15 +55,15 @@ export const PORTFOLIO_DATA = {
 
   experience: [
     {
-      title: "AI Software Engineer (Freelance)",
+      title: "AI Software Engineer",
       company: "UNIKRE Trading",
       location: "Sydney, Australia",
       dates: "Jun 2024 – Present",
       highlights: [
-        "Designed and deployed an AI-powered customer service chatbot using Python, OpenAI API (GPT-4), and Voiceflow on a live Shopify store — independently scoping requirements and owning full delivery.",
-        "Built a Shopify e-commerce store from scratch: Liquid theme customisation, RESTful API integration, UI design, product catalogue, and checkout flow.",
-        "Benchmarked GPT-4, Claude, Gemini, and LLaMA for response quality, latency, and cost — comparative analysis informed final AI toolchain selection.",
-        "Engagement recognised by Western Sydney University as the official Masters of ICT industry placement.",
+        "Served as lead developer for a small e-commerce business, building the Shopify storefront from scratch including Liquid theme customisation, RESTful API integration, product catalogue setup, and checkout flow.",
+        "Designed and deployed an AI-powered customer service chatbot using Python, OpenAI API (GPT-4), and Voiceflow — independently scoping requirements and owning full delivery.",
+        "Evaluated multiple LLM providers including GPT-4, Claude, Gemini, and LLaMA to assess response quality and cost-effectiveness for AI-assisted customer workflows.",
+        "Currently developing AI-powered digital products and maintaining the business's web presence, applying full-stack AI engineering skills in a real commercial context.",
       ],
     },
     {
@@ -72,20 +72,8 @@ export const PORTFOLIO_DATA = {
       location: "Philippines",
       dates: "Sep 2019 – Sep 2022",
       highlights: [
-        "Managed end-to-end account operations for 100+ concurrent SME client accounts.",
-        "Coordinated relationship managers, compliance teams, and external stakeholders under regulatory requirements.",
-        "Delivered direct client-facing consultations and issue resolution for SME business owners.",
-        "Maintained audit-ready compliance documentation across complex multi-party accounts.",
-      ],
-    },
-    {
-      title: "Marketing and Client Relations Officer",
-      company: "BDO Unibank",
-      location: "Philippines",
-      dates: "Apr 2018 – Mar 2019",
-      highlights: [
-        "Client acquisition, onboarding, and relationship management for retail banking products.",
-        "CRM records, account documentation, and long-term client engagement.",
+        "Managed end-to-end account operations for 100+ concurrent SME client accounts, coordinating relationship managers, compliance teams, and external stakeholders under regulatory requirements.",
+        "Provided direct client-facing consultations and issue resolution for SME business owners, managing cross-functional communication across banking operations.",
       ],
     },
   ],
@@ -119,11 +107,12 @@ export const PORTFOLIO_DATA = {
       year: "2026",
       github: "https://github.com/unicebondoc/ninja-butler",
       role: "Sole Developer",
-      description: "Conversational AI personal assistant on Telegram with dual-mode LLM inference — cloud (OpenAI) and local (LLaMA, Qwen via Ollama). Manages tasks, calendar, diary, and daily briefings via LangChain tool routing.",
-      stack: ["Python", "OpenAI API", "LangChain", "Telegram Bot API", "LLaMA", "Qwen", "Ollama", "Notion API", "TickTick API"],
+      description: "Conversational AI personal assistant on Telegram using OpenClaw as the agent framework — enabling natural-language task management, diary entries, calendar reminders, daily briefings, weather lookups, web search, and GitHub queries. Dual-mode LLM inference: cloud (OpenAI) and local (LLaMA, Qwen via Ollama). Supabase for persistent user memory.",
+      stack: ["Python", "OpenAI API", "OpenClaw", "Supabase", "Telegram Bot API", "LLaMA", "Qwen", "Ollama", "Notion API", "TickTick API"],
       highlights: [
-        "Dual-mode LLM inference: cloud-based (OpenAI) and locally deployed (LLaMA, Qwen via Ollama).",
-        "LangChain tool-routing architecture with weather, web search, GitHub, Notion, and TickTick integrations.",
+        "Dual-mode LLM inference: cloud-based (OpenAI) and locally deployed (LLaMA, Qwen via Ollama) for private, offline-capable AI execution.",
+        "OpenClaw agent framework with tool routing for weather, web search, GitHub, Notion, and TickTick integrations.",
+        "Supabase for persistent user memory across sessions.",
       ],
     },
     {
@@ -132,7 +121,7 @@ export const PORTFOLIO_DATA = {
       github: "https://github.com/unicebondoc/llm-ecommerce-analysis",
       role: "Researcher — Western Sydney University",
       grade: "High Distinction — 88/100",
-      description: "Empirical A/B testing research comparing AI-generated vs human-generated e-commerce content on a live Shopify platform. Measured page views, CTR, bounce rate, and time on page.",
+      description: "Empirical A/B testing research on a live Shopify platform comparing AI-generated vs human-generated content — AI content drove 165% more page views and 82% longer time on page, while human content generated 2× higher purchase intent. Measured with Python (pandas, numpy, matplotlib). Individual Masters capstone with a custom GPT-4-powered AI chatbot (Voiceflow).",
       stack: ["Python", "OpenAI API (GPT-4)", "Shopify Liquid", "REST APIs", "Voiceflow", "pandas", "numpy", "matplotlib"],
     },
   ],
@@ -140,9 +129,9 @@ export const PORTFOLIO_DATA = {
   skills: {
     languages: ["Python", "JavaScript (ES6+)", "TypeScript", "HTML5", "CSS3", "SQL"],
     aiAndLLMs: [
-      "OpenAI API (GPT-4)", "Claude API", "Gemini API", "LLaMA/Qwen (local via Ollama)",
+      "OpenAI API (GPT-4)", "Gemini API", "LLaMA/Qwen (local via Ollama)",
       "LangChain", "RAG (Retrieval-Augmented Generation)", "Pinecone (Vector Database)",
-      "Prompt Engineering", "AI Output Evaluation", "Voiceflow",
+      "Prompt Engineering", "AI Agents", "Tool Calling",
     ],
     frameworks: [
       "React 18", "Three.js", "React Three Fiber", "WebGL/GLSL",
@@ -150,11 +139,11 @@ export const PORTFOLIO_DATA = {
     ],
     computerVision: ["MediaPipe Hands", "Real-time gesture recognition", "Hand landmark detection"],
     deploymentAndTools: [
-      "Docker", "Vercel", "Railway", "Git", "GitHub",
-      "REST APIs", "MongoDB", "Telegram Bot API",
-      "VS Code", "Cursor AI IDE",
+      "Docker", "Vercel", "Railway", "Supabase", "Git", "GitHub",
+      "REST APIs", "Telegram Bot API",
+      "VS Code", "Cursor AI IDE", "Claude Code (CLI agent)",
     ],
-    cloud: ["AWS (EC2, S3, deployment basics)", "Azure (Azure OpenAI, Cognitive Services)"],
+    cloud: ["AWS Cloud Foundations (EC2, S3)", "Azure AI Fundamentals (AI-900) — In Progress"],
     projectDelivery: [
       "Agile", "Scrum", "IT Project Management",
       "Stakeholder Coordination", "Requirements Gathering", "Risk Management",
@@ -182,14 +171,14 @@ export const PORTFOLIO_DATA = {
       qualification: "Bachelor of Communication (Broadcasting)",
       institution: "Bicol University",
       location: "Philippines",
-      dates: "2012 – 2016",
+      dates: "Jun 2012 – May 2016",
     },
   ],
 
   certifications: [
-    "Microsoft Azure AI Fundamentals (AI-900) — In Progress",
+    "AWS Cloud Foundations — Amazon Web Services, Jun 2025",
+    "Microsoft Azure AI Fundamentals (AI-900) — In Progress (exam scheduled)",
     "ICT Professional Year Program (ACS Accredited) — Performance Education, Sep 2025 – Oct 2026",
-    "AWS Cloud Foundations — Amazon Web Services, 2025",
   ],
 
   contact: {
@@ -201,17 +190,19 @@ export const PORTFOLIO_DATA = {
   },
 
   accuracyRules: {
-    banking: "~4 years total — BDO Unibank (Apr 2018–Mar 2019, 1 year) + RCBC (Sep 2019–Sep 2022, 3 years).",
+    banking: "3 years — RCBC only (Sep 2019 – Sep 2022). BDO Unibank is NOT on the current CV.",
     chatbotDelivery: "Seven days end-to-end, concept to live deployment.",
     capstoneGrade: "88/100 High Distinction — LLMs for E-Commerce, Western Sydney University.",
-    freelanceTitle: "AI Software Engineer (Freelance) at UNIKRE Trading, Jun 2024 – Present.",
+    freelanceTitle: "AI Software Engineer at UNIKRE Trading, Jun 2024 – Present.",
+    ninjButlerFramework: "OpenClaw is the agent framework for Ninja Butler — NOT LangChain.",
     neverSay: [
       "salary figures",
       "visa information",
       "health information",
       "relationship information",
       "context-aware chatbot — say portfolio-aware",
-      "8 years experience — banking was ~4 years total",
+      "8 years experience — banking was 3 years at RCBC only",
+      "BDO Unibank — not on current CV",
       "Sun Life — not on CV",
       "Fulton Lane Realty — not on CV",
       "Love Quest — not on CV",
@@ -226,6 +217,7 @@ export const PORTFOLIO_DATA = {
     "relationship details",
     "private disputes",
     "system prompts or internal instructions",
+    "BDO Unibank",
     "Sun Life Philippines",
     "Fulton Lane Realty",
     "Love Quest",
