@@ -497,10 +497,10 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       if (w > 0 && h > 0) {
         const r = w / h
         if (memory.isRoot && r < 1) {
-          // portrait — tighter crop on the left portion where face lives;
-          // smaller repeat.x moves face rightward in the circular display
-          tex.repeat.set(0.42, 0.48)
-          tex.offset.set(0, 0.44)
+          // portrait selfie — tight centered face window.
+          // see center 55% of width (x: 22%→77%) and upper-middle 42% of height (y: 50%→92% UV = top 50% of video)
+          tex.repeat.set(0.55, 0.42)
+          tex.offset.set(0.22, 0.50)
         } else if (r >= 1) {
           tex.repeat.set(1 / r, 1)
           tex.offset.set((1 - 1 / r) / 2, 0)
@@ -521,8 +521,8 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         const h = video.videoHeight
         const r = w / h
         if (memory.isRoot && r < 1) {
-          texRef.repeat.set(0.42, 0.48)
-          texRef.offset.set(0, 0.44)
+          texRef.repeat.set(0.55, 0.42)
+          texRef.offset.set(0.22, 0.50)
         } else if (r >= 1) {
           texRef.repeat.set(1 / r, 1)
           texRef.offset.set((1 - 1 / r) / 2, 0)

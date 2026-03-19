@@ -283,7 +283,7 @@ export default function TreasureChest() {
         }
         @keyframes lidSwing {
           0%   { transform: rotateX(0deg); }
-          100% { transform: rotateX(-130deg); }
+          100% { transform: rotateX(-120deg); }
         }
         @keyframes goldGush {
           0%   { opacity: 0; transform: translateX(-50%) scaleX(0.3) scaleY(0.2); }
@@ -322,9 +322,9 @@ export default function TreasureChest() {
             perspective: '300px',
           }}
         >
-          {/* CHEST SVG */}
-          <div style={{ position: 'relative', width: 70, height: 68 }}>
-            {/* base */}
+          {/* CHEST SVG — perspective on THIS div so rotateX works on lid */}
+          <div style={{ position: 'relative', width: 70, height: 68, perspective: '160px' }}>
+            {/* base — always visible */}
             <svg width="70" height="42" viewBox="0 0 70 42" style={{ position: 'absolute', bottom: 0, left: 0 }}>
               <rect x="3" y="8" width="64" height="34" rx="5" fill="url(#chestBase)" stroke="#a87832" strokeWidth="1.5" />
               <rect x="3" y="19" width="64" height="4" fill="#7a5520" opacity="0.6" />
@@ -338,26 +338,44 @@ export default function TreasureChest() {
                 </linearGradient>
               </defs>
             </svg>
-            {/* lid — disappears when open so chest visually looks open */}
-            <svg width="70" height="26" viewBox="0 0 70 26" style={{
-              position: 'absolute', top: 0, left: 0,
+
+            {/* inner glow — only visible when open */}
+            {(isOpen || opening) && (
+              <div style={{
+                position: 'absolute', bottom: 20, left: '50%',
+                transform: 'translateX(-50%)',
+                width: 44, height: 18,
+                background: 'radial-gradient(ellipse, rgba(255,215,0,0.7) 0%, rgba(255,160,0,0.3) 60%, transparent 100%)',
+                borderRadius: '50%',
+                pointerEvents: 'none',
+                opacity: opening ? 0 : 1,
+                transition: 'opacity 0.4s ease 0.3s',
+              }} />
+            )}
+
+            {/* lid wrapper — gets the 3D rotation; perspective is on parent div above */}
+            <div style={{
+              position: 'absolute', top: 0, left: 0, width: '100%',
               transformOrigin: '50% 100%',
+              transform: (isOpen && !opening) ? 'rotateX(-120deg)' : 'rotateX(0deg)',
+              transition: opening ? 'none' : 'transform 0.38s cubic-bezier(0.22,1,0.36,1)',
               animation: opening ? 'lidSwing 0.5s cubic-bezier(0.22,1,0.36,1) forwards' : undefined,
-              opacity: isOpen && !opening ? 0 : 1,
-              transition: 'opacity 0.3s ease',
             }}>
-              <rect x="3" y="0" width="64" height="22" rx="5 5 0 0" fill="url(#chestLid)" stroke="#a87832" strokeWidth="1.5" />
-              <rect x="3" y="14" width="64" height="4" fill="#7a5520" opacity="0.5" />
-              <rect x="30" y="0" width="10" height="22" fill="#7a5520" opacity="0.35" />
-              <ellipse cx="20" cy="8" rx="10" ry="4" fill="rgba(255,220,120,0.18)" transform="rotate(-10 20 8)" />
-              <defs>
-                <linearGradient id="chestLid" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#e8b840" />
-                  <stop offset="100%" stopColor="#a07020" />
-                </linearGradient>
-              </defs>
-            </svg>
-            {/* gold gush */}
+              <svg width="70" height="26" viewBox="0 0 70 26">
+                <rect x="3" y="0" width="64" height="22" rx="5 5 0 0" fill="url(#chestLid)" stroke="#a87832" strokeWidth="1.5" />
+                <rect x="3" y="14" width="64" height="4" fill="#7a5520" opacity="0.5" />
+                <rect x="30" y="0" width="10" height="22" fill="#7a5520" opacity="0.35" />
+                <ellipse cx="20" cy="8" rx="10" ry="4" fill="rgba(255,220,120,0.18)" transform="rotate(-10 20 8)" />
+                <defs>
+                  <linearGradient id="chestLid" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#e8b840" />
+                    <stop offset="100%" stopColor="#a07020" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+
+            {/* gold gush during open animation */}
             {opening && (
               <div style={{
                 position: 'absolute', bottom: 18, left: '50%',
