@@ -1005,18 +1005,18 @@ export default function App() {
 
       {/* Right side intentionally empty (no fixed elements) */}
 
-        {/* ── Left menu (artifacts) — desktop: left vertical; mobile: bottom horizontal ── */}
+        {/* ── Left menu (artifacts) — desktop only: fixed left side, vertically centred ── */}
         <div
           data-entrance="artifacts"
           style={{
             position: 'fixed',
-            left: isMobile ? '50%' : '20px',
-            bottom: isMobile ? 80 : '15vh',
-            transform: isMobile ? 'translateX(-50%)' : 'none',
-            zIndex: isMobile ? 100 : 20,
+            left: '20px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            zIndex: 20,
             display: isMobile ? 'none' : 'flex',
-            flexDirection: isMobile ? 'row' : 'column',
-            gap: isMobile ? 20 : 0,
+            flexDirection: 'column',
+            gap: 0,
             pointerEvents: 'auto',
             opacity: activePanel?.type === 'memory' ? 0 : 1,
             transition: activePanel?.type === 'memory' ? 'opacity 300ms ease-out' : 'opacity 400ms ease-out',
@@ -1060,7 +1060,7 @@ export default function App() {
         <div
           style={{
             position: 'fixed',
-            bottom: 24,
+            bottom: 16,
             left: '50%',
             transform: 'translateX(-50%)',
             display: 'flex',
@@ -1406,33 +1406,7 @@ export default function App() {
       {/* Intro overlay disabled so orbs/scene are visible from load; re-enable to restore 3s awakening */}
       {/* <IntroOverlay /> */}
       <HUD />
-        {/* ── Bottom hint: mobile only ── */}
-        {isMobile && (
-          <div
-            data-entrance="bottomhint"
-            aria-hidden
-            style={{
-              position: 'fixed',
-              bottom: '3.5vh',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              pointerEvents: 'none',
-              zIndex: 12,
-              fontSize: 9,
-              letterSpacing: 4,
-              color: 'rgba(255,255,255,0.28)',
-              fontFamily: 'Raleway, sans-serif',
-              textTransform: 'uppercase',
-              opacity: activePanel?.type === 'memory' ? 0 : 1,
-              transition: 'opacity 300ms ease-out',
-              animation: activePanel?.type === 'memory' ? 'none' : 'hintPulse 4s ease-in-out infinite',
-              whiteSpace: 'nowrap',
-              textShadow: '0 1px 6px rgba(0,0,0,0.45)',
-            }}
-          >
-            ✦ TAP THE ORBS ✦
-          </div>
-        )}
+        {/* Mobile orb hint handled by MobileArtifactPill first-visit hint */}
 
       {/* ── Memory panel (at orb position); on mobile: bottom sheet ── */}
       {activePanel?.type === 'memory' && (() => {

@@ -5,6 +5,7 @@
  * Uses localStorage so they only appear once per browser.
  */
 import { useState, useEffect, useCallback } from 'react'
+import useStore from '../../hooks/useStore'
 
 const STORAGE_KEY = 'cm_onboarded_v1'
 const AUTO_DISMISS_MS = 7000
@@ -35,6 +36,7 @@ const HINTS = [
 ]
 
 export default function OnboardingHints() {
+  const isMobile = useStore((s) => s.isMobile)
   const [visible, setVisible] = useState(false)
   const [fading, setFading] = useState(false)
   const [mounted, setMounted] = useState(false)
@@ -73,7 +75,7 @@ export default function OnboardingHints() {
     }
   }, [visible, dismiss])
 
-  if (!mounted) return null
+  if (!mounted || isMobile) return null
 
   return (
     <div
