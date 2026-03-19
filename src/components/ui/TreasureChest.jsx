@@ -391,12 +391,12 @@ export default function TreasureChest() {
           {/* label */}
           <span style={{
             fontFamily: "'Raleway', sans-serif",
-            fontSize: 9, letterSpacing: 4,
-            color: isOpen ? 'rgba(255,215,0,0.75)' : 'rgba(200,160,70,0.65)',
+            fontSize: 9, letterSpacing: 3,
+            color: isOpen ? 'rgba(255,215,0,0.80)' : 'rgba(200,160,70,0.65)',
             textTransform: 'uppercase', fontWeight: 600, marginTop: 6,
             transition: 'color 0.3s ease',
           }}>
-            {isOpen ? 'CLOSE' : 'OPEN'}
+            {isOpen ? 'HIDE TREASURE' : 'OPEN PROJECTS'}
           </span>
         </button>
 
