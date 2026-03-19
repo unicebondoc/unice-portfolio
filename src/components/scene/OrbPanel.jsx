@@ -359,10 +359,14 @@ export default function OrbPanel({
             )}
 
             <div className={styles.scroll}>
-              <div key={m.id} className={styles.content}>
+              <div
+                key={m.id}
+                className={styles.content}
+                style={m.isRoot ? { paddingBottom: '14px', paddingTop: '2px' } : {}}
+              >
                 <div
                   className={styles.panelSymbol}
-                  style={{ color: orbRgba(1) }}
+                  style={{ color: orbRgba(1), ...(m.isRoot ? { marginBottom: '0px' } : {}) }}
                 >
                   <span className={styles.panelSymbolInner}>
                     {getSymbolForCategory(m.category)}
@@ -395,16 +399,18 @@ export default function OrbPanel({
                       preload="none"
                       disablePictureInPicture
                       style={{
-                        width: m.isRoot ? '86%' : '80%',
+                        width: m.isRoot ? '40%' : '80%',
                         height: m.isRoot ? 'auto' : '160px',
                         aspectRatio: m.isRoot ? '1 / 1' : undefined,
-                        objectFit: m.isRoot ? 'contain' : 'cover',
-                        objectPosition: m.isRoot ? 'center center' : (m.cropPosition || 'center 10%'),
+                        objectFit: m.isRoot ? 'cover' : 'cover',
+                        objectPosition: m.isRoot ? 'center 8%' : (m.cropPosition || 'center 10%'),
                         borderRadius: m.isRoot ? '50%' : '16px',
                         display: 'block',
-                        margin: '0 auto 14px auto',
+                        margin: m.isRoot ? '0 auto 8px auto' : '0 auto 10px auto',
                         flexShrink: 0,
-                        background: m.isRoot ? 'rgba(0,0,0,0.3)' : 'transparent',
+                        background: 'transparent',
+                        border: m.isRoot ? '2px solid rgba(240,184,64,0.45)' : 'none',
+                        boxShadow: m.isRoot ? '0 0 20px rgba(240,184,64,0.25)' : 'none',
                       }}
                       onCanPlay={(e) => e.currentTarget.play?.().catch(() => {})}
                       onLoadedData={(e) => e.currentTarget.play?.().catch(() => {})}
@@ -422,9 +428,15 @@ export default function OrbPanel({
 
                 <p className={styles.metaLine}>{metaLine}</p>
                 <h2 className={styles.title}>{m.title}</h2>
-                <p className={styles.subtitle}>{m.subtitle}</p>
+                <p
+                  className={styles.subtitle}
+                  style={m.isRoot ? { marginBottom: '8px' } : {}}
+                >{m.subtitle}</p>
 
-                <p className={styles.desc}>{desc}</p>
+                <p
+                  className={styles.desc}
+                  style={m.isRoot ? { fontSize: '11.5px', lineHeight: '1.6', marginBottom: '10px' } : {}}
+                >{desc}</p>
 
                 {tagsLine && !hasTools && <div className={styles.tags}>{tagsLine}</div>}
 

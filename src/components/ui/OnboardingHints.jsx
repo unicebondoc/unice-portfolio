@@ -9,40 +9,27 @@ import { useState, useEffect, useCallback } from 'react'
 const STORAGE_KEY = 'cm_onboarded_v1'
 const AUTO_DISMISS_MS = 7000
 
+// All hints stacked on the right side, vertically centred as a group
 const HINTS = [
   {
     id: 'orbs',
     icon: '✦',
-    text: 'Click any orb',
-    sub: 'to explore my story',
-    style: {
-      top: '32%',
-      left: '50%',
-      transform: 'translateX(-50%)',
-    },
+    text: 'Click an orb',
+    sub: 'explore my story',
     delay: 600,
   },
   {
     id: 'chest',
     icon: '◈',
     text: 'Open the chest',
-    sub: 'for my projects',
-    style: {
-      bottom: '120px',
-      left: '50%',
-      transform: 'translateX(-50%)',
-    },
+    sub: 'see my projects',
     delay: 1100,
   },
   {
     id: 'chat',
     icon: '🐾',
     text: 'Ask Tyche',
-    sub: 'anything about me',
-    style: {
-      bottom: '40px',
-      right: '100px',
-    },
+    sub: 'chat with my cat',
     delay: 1600,
   },
 ]
@@ -109,14 +96,29 @@ export default function OnboardingHints() {
         }}
       />
 
-      {HINTS.map((h) => (
-        <HintCard
-          key={h.id}
-          hint={h}
-          visible={visible}
-          fading={fading}
-        />
-      ))}
+      {/* Right-side hint column — centred vertically */}
+      <div
+        style={{
+          position: 'absolute',
+          right: '3vw',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-end',
+          gap: 18,
+          pointerEvents: 'none',
+        }}
+      >
+        {HINTS.map((h) => (
+          <HintCard
+            key={h.id}
+            hint={h}
+            visible={visible}
+            fading={fading}
+          />
+        ))}
+      </div>
 
       {/* Skip whisper — bottom center */}
       <div
@@ -155,81 +157,66 @@ function HintCard({ hint, visible, fading }) {
   return (
     <div
       style={{
-        position: 'absolute',
-        ...hint.style,
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         alignItems: 'center',
-        gap: 4,
+        gap: 10,
         opacity: show ? 1 : 0,
-        transform: show
-          ? (hint.style.transform || 'none')
-          : `${hint.style.transform || ''} translateY(10px)`,
-        transition: `opacity 0.6s ease, transform 0.6s cubic-bezier(0.34,1.3,0.64,1)`,
+        transform: show ? 'translateX(0)' : 'translateX(18px)',
+        transition: 'opacity 0.55s ease, transform 0.55s cubic-bezier(0.34,1.3,0.64,1)',
         pointerEvents: 'none',
-        filter: show ? 'drop-shadow(0 0 16px rgba(100,200,255,0.4))' : 'none',
+        filter: show ? 'drop-shadow(0 0 12px rgba(100,200,255,0.3))' : 'none',
       }}
     >
-      {/* Icon ring */}
-      <div
-        style={{
-          width: 38,
-          height: 38,
-          borderRadius: '50%',
-          border: '1px solid rgba(100,200,255,0.25)',
-          background: 'rgba(8,20,45,0.7)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 15,
-          color: 'rgba(150,220,255,0.9)',
-          boxShadow: '0 0 20px rgba(100,200,255,0.15), inset 0 0 8px rgba(100,200,255,0.08)',
-          marginBottom: 6,
-        }}
-      >
-        {hint.icon}
-      </div>
-
       {/* Text pill */}
       <div
         style={{
-          background: 'rgba(8,20,45,0.72)',
-          backdropFilter: 'blur(14px)',
-          WebkitBackdropFilter: 'blur(14px)',
+          background: 'rgba(8,20,45,0.78)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid rgba(100,200,255,0.18)',
           borderRadius: 10,
-          padding: '6px 14px 7px',
-          textAlign: 'center',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+          padding: '7px 14px 8px',
+          textAlign: 'right',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.35)',
         }}
       >
-        <p
-          style={{
-            fontFamily: "'Cinzel', serif",
-            fontSize: 11,
-            fontWeight: 600,
-            letterSpacing: '0.12em',
-            color: 'rgba(210,235,255,0.95)',
-            margin: 0,
-            lineHeight: 1.3,
-          }}
-        >
+        <p style={{
+          fontFamily: "'Cinzel', serif",
+          fontSize: 11, fontWeight: 600,
+          letterSpacing: '0.1em',
+          color: 'rgba(210,235,255,0.95)',
+          margin: 0, lineHeight: 1.3,
+        }}>
           {hint.text}
         </p>
-        <p
-          style={{
-            fontFamily: "'Raleway', sans-serif",
-            fontSize: 9,
-            letterSpacing: '0.14em',
-            color: 'rgba(140,190,240,0.6)',
-            margin: '2px 0 0',
-            textTransform: 'uppercase',
-          }}
-        >
+        <p style={{
+          fontFamily: "'Raleway', sans-serif",
+          fontSize: 9, letterSpacing: '0.14em',
+          color: 'rgba(140,190,240,0.55)',
+          margin: '2px 0 0', textTransform: 'uppercase',
+        }}>
           {hint.sub}
         </p>
+      </div>
+
+      {/* Icon ring */}
+      <div
+        style={{
+          flexShrink: 0,
+          width: 36, height: 36,
+          borderRadius: '50%',
+          border: '1px solid rgba(100,200,255,0.28)',
+          background: 'rgba(8,20,45,0.75)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 14,
+          color: 'rgba(150,220,255,0.9)',
+          boxShadow: '0 0 16px rgba(100,200,255,0.18), inset 0 0 6px rgba(100,200,255,0.08)',
+        }}
+      >
+        {hint.icon}
       </div>
     </div>
   )
