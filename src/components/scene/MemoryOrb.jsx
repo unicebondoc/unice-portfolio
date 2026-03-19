@@ -497,8 +497,9 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       if (w > 0 && h > 0) {
         const r = w / h
         if (memory.isRoot && r < 1) {
-          // portrait — zoom in on the face (left portion, upper-middle of frame)
-          tex.repeat.set(0.65, 0.50)
+          // portrait — tighter crop on the left portion where face lives;
+          // smaller repeat.x moves face rightward in the circular display
+          tex.repeat.set(0.42, 0.48)
           tex.offset.set(0, 0.44)
         } else if (r >= 1) {
           tex.repeat.set(1 / r, 1)
@@ -520,7 +521,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
         const h = video.videoHeight
         const r = w / h
         if (memory.isRoot && r < 1) {
-          texRef.repeat.set(0.65, 0.50)
+          texRef.repeat.set(0.42, 0.48)
           texRef.offset.set(0, 0.44)
         } else if (r >= 1) {
           texRef.repeat.set(1 / r, 1)

@@ -230,7 +230,7 @@ export const MEMORIES = [
     videoSrc: '/memories/videos/09-orb-root-web.mp4',
     videoHint: 'your best intro clip — portrait, selfie video, this is you',
     labelShort: 'Now · Unice',
-    position: [0, -2.5, 0],
+    position: [0, -0.8, 0],
     scaleMult: 1.4,
     visualTier: 'primary',
     orbType: 'primary',

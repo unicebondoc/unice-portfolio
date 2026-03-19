@@ -338,13 +338,13 @@ export default function TreasureChest() {
                 </linearGradient>
               </defs>
             </svg>
-            {/* lid */}
+            {/* lid — disappears when open so chest visually looks open */}
             <svg width="70" height="26" viewBox="0 0 70 26" style={{
               position: 'absolute', top: 0, left: 0,
               transformOrigin: '50% 100%',
               animation: opening ? 'lidSwing 0.5s cubic-bezier(0.22,1,0.36,1) forwards' : undefined,
-              transform: isOpen ? 'rotateX(-130deg)' : 'rotateX(0deg)',
-              transition: isOpen ? undefined : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)',
+              opacity: isOpen && !opening ? 0 : 1,
+              transition: 'opacity 0.3s ease',
             }}>
               <rect x="3" y="0" width="64" height="22" rx="5 5 0 0" fill="url(#chestLid)" stroke="#a87832" strokeWidth="1.5" />
               <rect x="3" y="14" width="64" height="4" fill="#7a5520" opacity="0.5" />
@@ -378,7 +378,7 @@ export default function TreasureChest() {
             textTransform: 'uppercase', fontWeight: 600, marginTop: 6,
             transition: 'color 0.3s ease',
           }}>
-            {isOpen ? 'CLOSE' : 'PROJECTS'}
+            {isOpen ? 'CLOSE' : 'OPEN'}
           </span>
         </button>
 
