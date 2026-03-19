@@ -490,11 +490,15 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       tex.rotation = 0
       const w = video.videoWidth || video.width || 1
       const h = video.videoHeight || video.height || 1
-      // Root orb portrait: face is left-of-center in the video frame.
-      // Crop to the left 65% of the width (no offset.x) so the face reads centred.
-      // Crop vertically to the upper-middle zone where the face lives.
-      // Non-root orbs: standard centred letterbox.
-      if (w > 0 && h > 0) {
+      if (memory.isRoot) {
+        // Root orb: show video exactly as-is — no crop, no zoom, no letterbox.
+        // The user pre-cropped the video; we trust their framing completely.
+        tex.repeat.set(1, 1)
+        tex.offset.set(0, 0)
+        if (w <= 0 || h <= 0) {
+          video.addEventListener('loadedmetadata', onMeta, { once: true })
+        }
+      } else if (w > 0 && h > 0) {
         const r = w / h
         if (r >= 1) {
           tex.repeat.set(1 / r, 1)
@@ -511,10 +515,13 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
       setMediaTex(tex)
     }
     const onMeta = () => {
-      if (texRef && video.videoWidth > 0 && video.videoHeight > 0) {
-        const w = video.videoWidth
-        const h = video.videoHeight
-        const r = w / h
+      if (!texRef) return
+      if (memory.isRoot) {
+        // Root orb: as-is, no adjustment needed even after metadata loads
+        texRef.repeat.set(1, 1)
+        texRef.offset.set(0, 0)
+      } else if (video.videoWidth > 0 && video.videoHeight > 0) {
+        const r = video.videoWidth / video.videoHeight
         if (r >= 1) {
           texRef.repeat.set(1 / r, 1)
           texRef.offset.set((1 - 1 / r) / 2, 0)

@@ -344,6 +344,11 @@
   object-fit: cover;
   object-position: center center;
 }
+/* Root orb: show video as-is (user pre-cropped), no cover-crop */
+.thumbnailMediaContain {
+  object-fit: contain;
+  background: transparent;
+}
 /* Profile orb (root): vignette so photo blends into orb */
 .thumbnailBadgeVignette::after {
   content: '';

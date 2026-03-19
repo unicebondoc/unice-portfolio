@@ -326,7 +326,7 @@ export default function OrbPanel({
                     <video
                       ref={videoBadgeRef}
                       key={m.videoSrc}
-                      className={styles.thumbnailMedia}
+                      className={`${styles.thumbnailMedia} ${m.isRoot ? styles.thumbnailMediaContain : ''}`}
                       loop
                       muted
                       playsInline
