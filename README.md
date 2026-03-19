@@ -249,7 +249,7 @@ Sydney, NSW, Australia
 - 📧 uniceabondoc@gmail.com
 - 🐙 [github.com/unicebondoc](https://github.com/unicebondoc)
 
-Master of ICT (Web and Mobile Computing) — Western Sydney University  
+Master of Information and Communications Technology (Web & Mobile Computing) — Western Sydney University  
 High Distinction · 88/100 · LLM Research Capstone
 
 *From the Philippines · To Sydney · To the Future*

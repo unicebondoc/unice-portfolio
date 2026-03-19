@@ -144,6 +144,7 @@ export const PORTFOLIO_DATA = {
       "VS Code", "Cursor AI IDE", "Claude Code (CLI agent)",
     ],
     cloud: ["AWS Cloud Foundations (EC2, S3)", "Azure AI Fundamentals (AI-900) — In Progress"],
+    dataScience: ["Pandas", "numpy", "matplotlib"],
     projectDelivery: [
       "Agile", "Scrum", "IT Project Management",
       "Stakeholder Coordination", "Requirements Gathering", "Risk Management",
@@ -152,7 +153,7 @@ export const PORTFOLIO_DATA = {
 
   education: [
     {
-      qualification: "Master of ICT (Web & Mobile Computing)",
+      qualification: "Master of Information and Communications Technology (Web & Mobile Computing)",
       institution: "Western Sydney University",
       location: "Sydney, Australia",
       dates: "Jul 2023 – Jul 2025",

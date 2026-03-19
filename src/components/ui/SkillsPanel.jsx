@@ -72,6 +72,11 @@ const CATEGORIES = [
     ],
   },
   {
+    key: 'datascience',
+    label: 'DATA SCIENCE & LIBRARIES',
+    skills: ['Pandas', 'numpy', 'matplotlib'],
+  },
+  {
     key: 'delivery',
     label: 'PROJECT DELIVERY',
     skills: [

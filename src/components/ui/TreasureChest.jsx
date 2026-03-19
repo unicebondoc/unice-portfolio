@@ -12,8 +12,8 @@ const PROJECTS = [
     title: 'What Was Drawn',
     subtitle: 'Gesture-Based AI Oracle Card Platform',
     description:
-      'Draw oracle cards using real-time hand gestures via webcam. AI generates personalised readings grounded through a full RAG pipeline. No buttons. No taps. Just your hands.',
-    stack: ['React', 'FastAPI', 'MediaPipe', 'OpenAI', 'LangChain', 'Pinecone', 'Docker', 'Vercel', 'Railway'],
+      'Draw oracle cards using real-time hand gestures via webcam — no buttons, no taps, just your hands. AI generates personalised readings through a full RAG pipeline. Tap-based mobile fallback for devices without camera access.',
+    stack: ['React', 'Vite', 'Tailwind CSS', 'MediaPipe Hands', 'FastAPI', 'OpenAI API', 'LangChain', 'Pinecone', 'Docker', 'Vercel', 'Railway'],
     links: { live: 'https://whatwasdrawn.com', github: 'https://github.com/unicebondoc/whatwasdrawn' },
     color: '#ffd700',
     glow: 'rgba(255,215,0,0.75)',
@@ -25,8 +25,8 @@ const PROJECTS = [
     title: 'Core Memories',
     subtitle: 'Interactive 3D AI Portfolio',
     description:
-      "The site you're standing in right now. A bioluminescent forest built with React 18, Three.js, WebGL, and GLSL shaders. Features an AI chatbot for natural language portfolio interaction.",
-    stack: ['React 18', 'Three.js', 'WebGL', 'GLSL', 'TypeScript', 'OpenAI API'],
+      "The site you're standing in right now. A bioluminescent forest built with React 18, Three.js, React Three Fiber, WebGL, and GLSL shaders. Features an OpenAI-powered chatbot for natural language portfolio interaction.",
+    stack: ['React 18', 'Three.js', 'React Three Fiber', 'WebGL', 'GLSL', 'TypeScript', 'OpenAI API', 'Node.js'],
     links: { live: null, github: null },
     note: "You're already here ✦",
     color: '#3b82f6',
@@ -36,10 +36,10 @@ const PROJECTS = [
   {
     id: 'ninja-butler',
     title: 'Ninja Butler',
-    subtitle: 'AI Personal Assistant',
+    subtitle: 'AI Personal Assistant — Active Development',
     description:
-      'A conversational AI assistant on Telegram with dual-mode LLM inference — cloud (OpenAI) and local (LLaMA, Qwen via Ollama). Manages tasks, calendar, diary, and daily briefings through LangChain tool routing.',
-    stack: ['Python', 'LangChain', 'Telegram', 'LLaMA', 'Qwen', 'Ollama', 'OpenAI'],
+      'A conversational AI personal assistant on Telegram using OpenClaw as the agent framework. Dual-mode LLM inference — cloud (OpenAI) and local (LLaMA, Qwen via Ollama). Supabase for persistent memory. Manages tasks, calendar, diary, briefings, weather, web search, and GitHub queries.',
+    stack: ['Python', 'OpenAI API', 'OpenClaw', 'Supabase', 'Telegram Bot API', 'LLaMA', 'Qwen', 'Ollama', 'Notion API', 'TickTick API'],
     links: { live: null, github: 'https://github.com/unicebondoc/ninja-butler' },
     color: '#a78bfa',
     glow: 'rgba(167,139,250,0.75)',
@@ -47,11 +47,11 @@ const PROJECTS = [
   },
   {
     id: 'llm-research',
-    title: 'LLMs Research',
-    subtitle: 'High Distinction — 88/100',
+    title: 'LLMs for E-Commerce',
+    subtitle: 'WSU Research — High Distinction 88/100',
     description:
-      'Masters capstone. A/B testing comparing AI-generated vs human-generated e-commerce content on a live Shopify platform. Measured real page views, CTR, bounce rate, and time on page with Python.',
-    stack: ['Python', 'OpenAI', 'pandas', 'numpy', 'matplotlib', 'Shopify'],
+      'Masters capstone at Western Sydney University. A/B testing comparing AI-generated vs human-generated content on a live Shopify platform — AI content drove 165% more page views and 82% longer time on page, while human content generated 2× higher purchase intent.',
+    stack: ['Python', 'OpenAI API (GPT-4)', 'Shopify Liquid', 'REST APIs', 'Voiceflow', 'pandas', 'numpy', 'matplotlib'],
     links: { live: null, github: 'https://github.com/unicebondoc/llm-ecommerce-analysis' },
     color: '#ef4444',
     glow: 'rgba(239,68,68,0.75)',
