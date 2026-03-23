@@ -158,7 +158,7 @@ export const MEMORIES = [
     id: 'orb-engineer',
     tier: 'core',
     title: 'Theory Became Delivery',
-    subtitle: 'CONCEPT TO LIVE IN SEVEN DAYS',
+    subtitle: 'REAL BRIEF. REAL DELIVERY.',
     year: '2024',
     emotion: 'Real Impact',
     icon: '🛠️',
