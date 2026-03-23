@@ -173,8 +173,8 @@ export const MEMORIES = [
     orbType: 'primary',
     isPrimary: true,
     description:
-      'A live Shopify business. A real brief. No tutorial to follow. I scoped, built, and deployed a GPT-4 AI customer service chatbot in seven days — Python, OpenAI API, Voiceflow — independently owning every stage from architecture to delivery. Later recognised by Western Sydney University as my official industry placement. There is a real difference between someone who knows AI and someone who has shipped it. I\'m the second.',
-    tags: ['Python', 'GPT-4', 'OpenAI API', 'Voiceflow', 'Shopify', 'Freelance', 'Industry Placement', 'Solo Delivery'],
+      'A live Shopify business. A real brief. No tutorial to follow. I applied GPT-4 AI content strategies to a live e-commerce platform — independently owning every decision, end to end. That work fed directly into my Masters capstone research on LLMs for e-commerce, which earned 88/100, High Distinction. From there: What Was Drawn shipped live, then Ninja Butler. There is a real difference between someone who knows AI and someone who has shipped it. I\'m the second.',
+    tags: ['Python', 'GPT-4', 'OpenAI API', 'Voiceflow', 'Shopify', 'AI Content Strategy', 'Solo Delivery'],
     skills: [],
     link: '',
     videoSrc: '/memories/videos/05-orb-building-web.mp4',
@@ -203,8 +203,8 @@ export const MEMORIES = [
     orbType: 'primary',
     isPrimary: true,
     description:
-      'Professional Year in Sydney. Azure AI certifications in motion. Three live systems shipped in 2026. I don\'t wait to be ready — I build until I am. The next chapter is a full-time AI engineering role where the work is real, the stack matters, and the team is building something that counts. That team is the next memory.',
-    tags: ['Professional Year', 'ACS Accredited', 'Azure AI Fundamentals', 'Open to Work', 'AI Engineer', 'Sydney', '2026'],
+      'Professional Year in Sydney. Evaluating LLM outputs at Alignerr. Azure AI certifications in motion. Three live systems shipped. I don\'t wait to be ready — I build until I am. The next chapter is a full-time AI engineering role where the work is real, the stack matters, and the team is building something that counts. That team is the next memory.',
+    tags: ['Professional Year', 'ACS Accredited', 'Alignerr', 'Azure AI Fundamentals', 'Open to Work', 'AI Engineer', 'Sydney', '2026'],
     skills: [],
     link: '',
     videoSrc: '/memories/videos/08-orb-becoming-web.mp4',
