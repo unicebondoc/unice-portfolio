@@ -32,10 +32,10 @@ export const PROJECTS = [
   {
     id: 'ninja-butler',
     title: 'Ninja Butler',
-    subtitle: 'AI Personal Assistant — Active Development',
+    subtitle: 'Personal AI Assistant Agent',
     description:
-      'A conversational AI personal assistant on Telegram using OpenClaw as the agent framework. Dual-mode LLM inference — cloud (OpenAI) and local (LLaMA, Qwen via Ollama). Supabase for persistent memory. Manages tasks, calendar, diary, briefings, weather, web search, and GitHub queries.',
-    stack: ['Python', 'OpenAI API', 'OpenClaw', 'Supabase', 'Telegram Bot API', 'LLaMA', 'Qwen', 'Ollama', 'Notion API', 'TickTick API'],
+      'A conversational AI personal assistant on Telegram using OpenClaw as the agent framework. Manages tasks, calendar, diary, briefings, weather, web search, and GitHub queries. Benchmarked MiniMax Text 2.7 against Qwen 2.5 and GPT-4o-mini — MiniMax selected for speed and cost efficiency. Persistent memory via OpenClaw\'s native backend. Self-hosted on Linux (Zorin OS) as a systemd service.',
+    stack: ['Python', 'OpenClaw', 'MiniMax Text 2.7 (via Ollama)', 'Telegram Bot API', 'Notion API', 'TickTick API'],
     links: { live: null, github: 'https://github.com/unicebondoc/ninja-butler' },
     color: '#a78bfa',
     glow: 'rgba(167,139,250,0.75)',

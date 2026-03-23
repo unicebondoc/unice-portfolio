@@ -55,15 +55,26 @@ export const PORTFOLIO_DATA = {
 
   experience: [
     {
-      title: "AI Software Engineer",
+      title: "AI Training & Evaluation Specialist",
+      company: "Alignerr",
+      location: "Remote",
+      dates: "Mar 2026 – Present",
+      type: "Contract",
+      highlights: [
+        "Contract role evaluating and improving large language model outputs for leading AI labs.",
+        "Assessment covers code generation, reasoning accuracy, and response quality.",
+      ],
+    },
+    {
+      title: "Software Engineer",
       company: "UNIKRE Trading",
       location: "Sydney, Australia",
-      dates: "Jun 2024 – Present",
+      dates: "Nov 2024 – Jan 2025",
       highlights: [
-        "Served as lead developer for a small e-commerce business, building the Shopify storefront from scratch including Liquid theme customisation, RESTful API integration, product catalogue setup, and checkout flow.",
-        "Designed and deployed an AI-powered customer service chatbot using Python, OpenAI API (GPT-4), and Voiceflow — independently scoping requirements and owning full delivery.",
-        "Evaluated multiple LLM providers including GPT-4, Claude, Gemini, and LLaMA to assess response quality and cost-effectiveness for AI-assisted customer workflows.",
-        "Currently developing AI-powered digital products and maintaining the business's web presence, applying full-stack AI engineering skills in a real commercial context.",
+        "Maintained and updated product listings, promotional content, and storefront copy on a live Shopify e-commerce platform, ensuring accuracy across all customer-facing pages.",
+        "Implemented on-page SEO improvements — meta titles, meta descriptions, and page structure optimisation — across a 500-product catalogue.",
+        "Applied AI-generated content strategies using ChatGPT (GPT-4) as part of applied research into LLM effectiveness for e-commerce, contributing directly to the Masters capstone (High Distinction, 88/100).",
+        "Collaborated remotely with the business owner to scope and prioritise web improvements, communicating technical recommendations to a non-technical stakeholder.",
       ],
     },
     {
@@ -103,16 +114,16 @@ export const PORTFOLIO_DATA = {
       stack: ["React 18", "Three.js", "React Three Fiber", "WebGL", "GLSL", "TypeScript", "OpenAI API", "Node.js"],
     },
     {
-      name: "Ninja Butler — AI Personal Assistant",
+      name: "Ninja Butler — Personal AI Assistant Agent",
       year: "2026",
       github: "https://github.com/unicebondoc/ninja-butler",
       role: "Sole Developer",
-      description: "Conversational AI personal assistant on Telegram using OpenClaw as the agent framework — enabling natural-language task management, diary entries, calendar reminders, daily briefings, weather lookups, web search, and GitHub queries. Dual-mode LLM inference: cloud (OpenAI) and local (LLaMA, Qwen via Ollama). Supabase for persistent user memory.",
-      stack: ["Python", "OpenAI API", "OpenClaw", "Supabase", "Telegram Bot API", "LLaMA", "Qwen", "Ollama", "Notion API", "TickTick API"],
+      description: "Conversational AI personal assistant on Telegram using OpenClaw as the agent framework — natural-language task management, diary entries, calendar reminders, daily briefings, weather lookups, web search, and GitHub queries. Deployed on a self-hosted Linux server (Zorin OS). Benchmarked MiniMax Text 2.7 against Qwen 2.5 and GPT-4o-mini — MiniMax selected for superior speed and cost efficiency. Persistent memory via OpenClaw's native backend.",
+      stack: ["Python", "OpenClaw", "MiniMax Text 2.7 (via Ollama)", "Telegram Bot API", "Notion API", "TickTick API"],
       highlights: [
-        "Dual-mode LLM inference: cloud-based (OpenAI) and locally deployed (LLaMA, Qwen via Ollama) for private, offline-capable AI execution.",
         "OpenClaw agent framework with tool routing for weather, web search, GitHub, Notion, and TickTick integrations.",
-        "Supabase for persistent user memory across sessions.",
+        "MiniMax Text 2.7 selected as local model via Ollama after benchmarking against Qwen 2.5 and GPT-4o-mini.",
+        "Persistent memory managed via OpenClaw's native backend. Running as a systemd service on self-hosted Zorin OS Linux server.",
       ],
     },
     {
@@ -127,27 +138,28 @@ export const PORTFOLIO_DATA = {
   ],
 
   skills: {
-    languages: ["Python", "JavaScript (ES6+)", "TypeScript", "HTML5", "CSS3", "SQL"],
+    languages: ["Python", "JavaScript (ES6+)", "TypeScript", "Dart", "HTML5", "CSS3", "SQL"],
     aiAndLLMs: [
-      "OpenAI API (GPT-4)", "Gemini API", "LLaMA/Qwen (local via Ollama)",
-      "LangChain", "RAG (Retrieval-Augmented Generation)", "Pinecone (Vector Database)",
-      "Prompt Engineering", "AI Agents", "Tool Calling",
+      "Generative AI", "OpenAI API (GPT-4o)", "Gemini API",
+      "LLaMA / MiniMax (local via Ollama)", "LangChain",
+      "RAG (Retrieval-Augmented Generation)", "Vector Databases", "Pinecone",
+      "Prompt Engineering", "AI Agents", "Tool Calling", "Agentic Workflows",
     ],
     frameworks: [
-      "React 18", "Three.js", "React Three Fiber", "WebGL/GLSL",
+      "React 18", "Flutter", "Three.js", "React Three Fiber", "WebGL/GLSL",
       "Node.js", "FastAPI", "Vite", "Tailwind CSS",
     ],
     computerVision: ["MediaPipe Hands", "Real-time gesture recognition", "Hand landmark detection"],
     deploymentAndTools: [
-      "Docker", "Vercel", "Railway", "Supabase", "Git", "GitHub",
-      "REST APIs", "Telegram Bot API",
-      "VS Code", "Cursor AI IDE", "Claude Code (CLI agent)",
+      "Docker", "Linux (CLI)", "Vercel", "Railway", "Git", "GitHub",
+      "REST APIs", "API Integration", "CI/CD", "Production Deployment",
+      "Cursor AI", "VS Code", "Agile",
     ],
     cloud: ["AWS Cloud Foundations (EC2, S3)", "Azure AI Fundamentals (AI-900) — In Progress"],
-    dataScience: ["Pandas", "numpy", "matplotlib"],
+    dataScience: ["Pandas", "NumPy", "Matplotlib", "Data Analysis", "A/B Testing"],
     projectDelivery: [
-      "Agile", "Scrum", "IT Project Management",
-      "Stakeholder Coordination", "Requirements Gathering", "Risk Management",
+      "IT Project Management", "Stakeholder Coordination",
+      "Requirements Gathering", "Risk Management",
     ],
   },
 
@@ -194,8 +206,9 @@ export const PORTFOLIO_DATA = {
     banking: "3 years — RCBC only (Sep 2019 – Sep 2022). BDO Unibank is NOT on the current CV.",
     chatbotDelivery: "Seven days end-to-end, concept to live deployment.",
     capstoneGrade: "88/100 High Distinction — LLMs for E-Commerce, Western Sydney University.",
-    freelanceTitle: "AI Software Engineer at UNIKRE Trading, Jun 2024 – Present.",
-    ninjButlerFramework: "OpenClaw is the agent framework for Ninja Butler — NOT LangChain.",
+    unikreTitle: "Software Engineer (NOT AI Software Engineer) at UNIKRE Trading, Nov 2024 – Jan 2025.",
+    alignerr: "Alignerr — AI Training & Evaluation Specialist (Contract), Mar 2026 – Present. Evaluates LLM outputs for leading AI labs.",
+    ninjButlerFramework: "OpenClaw is the agent framework for Ninja Butler — NOT LangChain. Local model is MiniMax Text 2.7 via Ollama — NOT LLaMA or Qwen. Memory is via OpenClaw's native backend — NOT Supabase.",
     neverSay: [
       "salary figures",
       "visa information",
