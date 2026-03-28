@@ -158,7 +158,7 @@ export const MEMORIES = [
     id: 'orb-engineer',
     tier: 'core',
     title: 'AI in the Wild',
-    subtitle: 'UNIKRE · WHAT WAS DRAWN · NINJA BUTLER',
+    subtitle: 'LANDLIT · WHAT WAS DRAWN · NINJA BUTLER',
     year: '2024',
     emotion: 'Real Impact',
     icon: '🛠️',
@@ -173,8 +173,8 @@ export const MEMORIES = [
     orbType: 'primary',
     isPrimary: true,
     description:
-      'A real Shopify business. A real brief. As Software Engineer at UNIKRE Trading, I applied GPT-4 AI content strategies to a live commercial platform — work that fed straight into my Masters capstone and helped earn 88/100. That was the foundation. Then came What Was Drawn: gesture-controlled AI, full RAG pipeline, live at whatwasdrawn.com. Then Ninja Butler: self-hosted AI agent on Telegram. Shipping without a net is the only kind that counts.',
-    tags: ['GPT-4', 'OpenAI API', 'Shopify', 'What Was Drawn', 'Ninja Butler', 'RAG', 'AI Agent', 'Solo Delivery'],
+      'A real Shopify business. A real brief. As Software Engineer at UNIKRE Trading, I applied GPT-4 AI content strategies to a live commercial platform — work that fed straight into my Masters capstone and helped earn 88/100. That was the foundation. Then LandLIT: end-to-end workflow automation for real tenants, in production. Then What Was Drawn: gesture-controlled AI, full RAG pipeline, live at whatwasdrawn.com. Then Ninja Butler: self-hosted AI agent on Telegram. Four shipped. Shipping without a net is the only kind that counts.',
+    tags: ['GPT-4', 'OpenAI API', 'LandLIT', 'What Was Drawn', 'Ninja Butler', 'RAG', 'AI Agent', 'Solo Delivery', 'n8n', 'Automation'],
     skills: [],
     link: '',
     videoSrc: '/memories/videos/05-orb-building-web.mp4',
@@ -203,7 +203,7 @@ export const MEMORIES = [
     orbType: 'primary',
     isPrimary: true,
     description:
-      'Professional Year in Sydney. Evaluating LLM outputs for leading AI labs at Alignerr — real quality bars, real feedback loops. Azure AI certifications in motion. Three live systems out in the world and running. I don\'t wait to be ready. The next chapter is a full-time AI engineering role where the stack is real, the problem is hard, and the team actually cares what they\'re building. That team hasn\'t found me yet.',
+      'Professional Year in Sydney. Performing RLHF-style evaluation of LLM outputs for leading AI labs at Alignerr — real quality bars, real feedback loops. Azure AI certifications in motion. Four live-deployed products out in the world and running. I don\'t wait to be ready. The next chapter is a full-time AI engineering role where the stack is real, the problem is hard, and the team actually cares what they\'re building. That team hasn\'t found me yet.',
     tags: ['Professional Year', 'ACS Accredited', 'Alignerr', 'Azure AI Fundamentals', 'Open to Work', 'AI Engineer', 'Sydney', '2026'],
     skills: [],
     link: '',
