@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { getMobileLayoutFlag } from '../utils/mobileLayout'
 
 /**
  * activePanel: single source of truth for what is open.
@@ -122,7 +123,7 @@ const useStore = create((set) => ({
 
   // Viewport: for orb/tendril responsive scaling (set by App or a component on resize)
   viewportScale: 1,
-  isMobile: false,
+  isMobile: getMobileLayoutFlag(),
   setViewport: (scale, mobile) => set({ viewportScale: scale, isMobile: !!mobile }),
 
   // prefers-reduced-motion: when true, simplify animations (particles off, orb animations to fades)

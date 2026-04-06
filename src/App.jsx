@@ -22,6 +22,7 @@ import { Environment } from '@react-three/drei'
 import { MEMORIES, getMemoryPosition } from './data/memories'
 import { SOCIALS } from './data/socials'
 import useStore from './hooks/useStore'
+import { getMobileLayoutFlag } from './utils/mobileLayout'
 import OrbPanel from './components/scene/OrbPanel'
 import SkillsPanel from './components/ui/SkillsPanel'
 import BlogPanel from './components/ui/BlogPanel'
@@ -77,10 +78,10 @@ function ParallaxDriver() {
 // ── Responsive: FOV adjusts with aspect ratio so orbs fit at all viewport sizes ──
 function ResponsiveCamera() {
   const { camera, size } = useThree()
+  const isMobileLayout = useStore((s) => s.isMobile)
   useEffect(() => {
     const aspect = size.width / size.height
-    const isMobile = size.width <= 768
-    if (isMobile) {
+    if (isMobileLayout) {
       if (aspect < 0.6) camera.fov = 90
       else if (aspect < 0.8) camera.fov = 82
       else camera.fov = 75
@@ -91,7 +92,7 @@ function ResponsiveCamera() {
       else camera.fov = 60
     }
     camera.updateProjectionMatrix()
-  }, [camera, size.width, size.height])
+  }, [camera, size.width, size.height, isMobileLayout])
   return null
 }
 
@@ -117,16 +118,17 @@ function CanvasResizeSync() {
 // ── Responsive: scale entire constellation so orbs/tendrils/artifacts stay on screen ──
 function ResponsiveConstellation({ children }) {
   const { size } = useThree()
+  const isMobileLayout = useStore((s) => s.isMobile)
   const scale = useMemo(() => {
     const aspect = size.width / size.height
-    if (size.width <= 768) {
+    if (isMobileLayout) {
       if (size.width < 400) return 0.92
       return 1.02
     }
     if (size.width < 1024) return 0.7
     if (aspect < 1.4) return 0.85
     return 1.0
-  }, [size.width, size.height])
+  }, [size.width, size.height, isMobileLayout])
   return <group scale={[scale, scale, scale]}>{children}</group>
 }
 
@@ -667,7 +669,7 @@ export default function App() {
     const setReducedMotion = useStore.getState().setReducedMotion
     const update = () => {
       const w = window.innerWidth
-      const mobile = w < 768
+      const mobile = getMobileLayoutFlag()
       const scale = mobile ? 0.5 : w < 1024 ? 0.7 : 1
       setViewport(scale, mobile)
       setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
@@ -678,13 +680,18 @@ export default function App() {
       if (t) clearTimeout(t)
       t = setTimeout(update, 120)
     }
+    const onOrientation = () => {
+      requestAnimationFrame(() => requestAnimationFrame(update))
+    }
     window.addEventListener('resize', debounced)
+    window.addEventListener('orientationchange', onOrientation)
     const mql = window.matchMedia('(prefers-reduced-motion: reduce)')
     const onReduce = () => setReducedMotion(mql.matches)
     mql.addEventListener('change', onReduce)
     return () => {
       if (t) clearTimeout(t)
       window.removeEventListener('resize', debounced)
+      window.removeEventListener('orientationchange', onOrientation)
       mql.removeEventListener('change', onReduce)
     }
   }, [])

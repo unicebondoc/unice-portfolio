@@ -26,10 +26,6 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
   const orbCore = memory.orbCore || memory.orbInnerLight || color
   const { camera, size } = useThree()
 
-  if (import.meta.env?.DEV) {
-    console.log('ORB RENDER:', memory.id, memory.orbGlow, memory.orbInnerLight)
-  }
-
   const isCore  = tier === 'core' || tier === 'root'
   const isRoot  = tier === 'root' || memory.isRoot
   // Root orb (central identity) gets flat circular portrait; story orbs get sphere video
@@ -37,9 +33,9 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
   const isInteractive = orbType !== 'ambient'
   const isPrimary = memory.isPrimary !== false
   const visualTier = memory.visualTier || (isRoot ? 'primary' : 'primary') // 'hero' | 'primary' | 'secondary'
-  const isMobileViewport = size.width <= 768
+  const isMobileLayout = useStore((s) => s.isMobile)
   const baseRadius = (TIER_RADIUS[tier] ?? 0.50) * (memory.scaleMult ?? 1.0)
-  const RADIUS  = isMobileViewport ? baseRadius * 1.45 : baseRadius
+  const RADIUS  = isMobileLayout ? baseRadius * 1.45 : baseRadius
 
   const BREATHE_SPEED   = isCore ? 0.55 : 0.42
   const PULSE_SPEED     = isCore ? 1.35 : 0.85
@@ -1335,7 +1331,7 @@ function OrbInner({ memory, index = 0, entranceOrder = 0, isFirstOrb = false, me
     <group position={basePosition} ref={groupRef}>
 
       {/* Mobile: larger invisible tap hitbox so orbs are easier to tap */}
-      {isMobileViewport && (
+      {isMobileLayout && (
         <mesh
           visible={false}
           scale={1.6}
