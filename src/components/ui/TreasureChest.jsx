@@ -7,12 +7,13 @@ import { useState, useCallback, useEffect, useRef, useId } from 'react'
 import useStore from '../../hooks/useStore'
 import { PROJECTS } from '../../data/projects'
 
-// Horizontal row just above the chest — 4 diamonds evenly spaced
+// Horizontal row just above the chest — 5 diamonds evenly spaced
 const DIAMOND_POSITIONS = [
-  { x: -84, y: -72 },
-  { x: -28, y: -72 },
-  { x:  28, y: -72 },
-  { x:  84, y: -72 },
+  { x: -104, y: -72 },
+  { x:  -52, y: -72 },
+  { x:    0, y: -72 },
+  { x:   52, y: -72 },
+  { x:  104, y: -72 },
 ]
 
 function DiamondSvg({ color, glow, size = 32 }) {

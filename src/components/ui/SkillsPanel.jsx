@@ -10,7 +10,7 @@ const CATEGORIES = [
   {
     key: 'languages',
     label: 'LANGUAGES',
-    skills: ['Python', 'JavaScript (ES6+)', 'TypeScript', 'Dart', 'HTML5', 'CSS3', 'SQL'],
+    skills: ['Python', 'TypeScript', 'JavaScript (ES6+)', 'C#', 'Dart', 'SQL', 'HTML5', 'CSS3'],
   },
   {
     key: 'ai',
@@ -18,6 +18,7 @@ const CATEGORIES = [
     skills: [
       'Generative AI',
       'OpenAI API (GPT-4o)',
+      'Claude / Codex Workflows',
       'Gemini API',
       'MiniMax',
       'LLaMA',
@@ -29,6 +30,19 @@ const CATEGORIES = [
       'AI Agents',
       'Tool Calling',
       'Agentic Workflows',
+      'RLHF-style Evaluation',
+    ],
+  },
+  {
+    key: 'gamedev',
+    label: 'MOBILE & GAME DEV',
+    skills: [
+      'Unity 6',
+      'C#',
+      'Mobile-first Architecture',
+      'iOS Haptics',
+      'Custom Unity Editor Tooling',
+      'Rewarded-Ad Integration',
     ],
   },
   {
@@ -56,7 +70,9 @@ const CATEGORIES = [
     label: 'DEPLOYMENT & TOOLS',
     skills: [
       'Docker',
-      'Linux (CLI)',
+      'Linux VPS (Hetzner)',
+      'systemd',
+      'SSH Tunnels',
       'Vercel',
       'Railway',
       'Git / GitHub',

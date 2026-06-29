@@ -34,12 +34,24 @@ export const PROJECTS = [
     title: 'Ninja Butler',
     subtitle: 'Personal AI Assistant Agent',
     description:
-      'A conversational AI personal assistant on Telegram, built on the Hermes agent framework (migrated from OpenClaw). Manages tasks, calendar, diary, briefings, weather, web search, and GitHub queries. Uses the OpenAI API and MiniMax for language generation. Persistent memory via the agent framework\'s native backend. Self-hosted on Linux (Zorin OS) at $0/month, running via systemd since March 2026.',
-    stack: ['Python', 'Hermes', 'OpenAI API', 'MiniMax', 'Telegram Bot API', 'Notion API', 'TickTick API'],
+      'A conversational AI assistant and multi-agent personal OS on Telegram, built on the Hermes agent framework (migrated from OpenClaw). Manages tasks, calendar, diary, briefings, weather, web search, GitHub queries, and autonomous content publishing. Routes across Claude and Codex (OAuth-based). Persistent memory via the agent framework\'s native backend, with Todoist integration. Self-hosted on a Hetzner Linux VPS, running via systemd.',
+    stack: ['Python', 'Hermes', 'Claude', 'Codex', 'Telegram Bot API', 'Notion API', 'Todoist API', 'Hetzner VPS'],
     links: { live: null, github: 'https://github.com/unicebondoc/ninja-butler' },
     color: '#a78bfa',
     glow: 'rgba(167,139,250,0.75)',
     glowSoft: 'rgba(167,139,250,0.2)',
+  },
+  {
+    id: 'boba-rush',
+    title: 'Boba Rush',
+    subtitle: 'Unity Casual Mobile Game (iOS · Pre-Launch)',
+    description:
+      'A tap-based bubble-tea casual mobile game built in Unity 6 (C#) — timed rounds, customer-patience mechanics, combo scoring, speed bonuses, and a rewarded-ad "save order" flow. Mobile-first architecture with iOS haptics, safe-area handling, an analytics event pipeline, and custom Unity Editor tooling. iOS-targeted, in active development.',
+    stack: ['Unity 6', 'C#', 'iOS', 'Mobile-first', 'Rewarded Ads', 'Unity Editor Tooling'],
+    links: { live: null, github: null },
+    color: '#f472b6',
+    glow: 'rgba(244,114,182,0.75)',
+    glowSoft: 'rgba(244,114,182,0.2)',
   },
   {
     id: 'core-memories',

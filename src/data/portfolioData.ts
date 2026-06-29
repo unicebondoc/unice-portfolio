@@ -9,9 +9,9 @@ export const PORTFOLIO_DATA = {
     phone: "0492 918 530",
     linkedIn: "https://www.linkedin.com/in/unicebondoc/",
     github: "https://github.com/unicebondoc",
-    headline: "AI Engineer | Full-Stack AI Developer | LLM & Agent Systems",
-    summary: "AI Engineer with a Master of ICT (High Distinction, WSU) and 4 live-deployed products spanning RAG pipelines, agentic systems, workflow automation, and computer vision — built and shipped end-to-end, not just prototyped. Former banking ops manager turned engineer: brings process thinking, stakeholder communication, and real-world problem framing to every technical build.",
-    currentStatus: "Unice has graduated with a Master of ICT from Western Sydney University, earning High Distinction (88/100) for her LLM research capstone. She is currently in the ACS-accredited Professional Year (ICT) program in Sydney and working as an AI Training & Evaluation Specialist (Contract) at Alignerr since Mar 2026. Four live-deployed products shipped. Azure AI certifications in progress. Actively pursuing a full-time AI Engineer role.",
+    headline: "AI Engineer | Mobile & Full-Stack Developer | LLM, Agent & Game Systems",
+    summary: "AI engineer and full-stack mobile builder with a Master of ICT (High Distinction, WSU) and a multi-product delivery portfolio spanning RAG products, multi-agent orchestration, AI workflow automation, computer vision, Unity mobile game development, and self-hosted production infrastructure — built and shipped end-to-end, not just prototyped. Operates as a registered sole trader shipping public web products, private agent systems, mobile games, and PropTech automation. Former banking ops manager turned engineer: brings process thinking, stakeholder communication, and real-world problem framing to every build.",
+    currentStatus: "Unice has graduated with a Master of ICT from Western Sydney University, earning High Distinction (88/100) for her LLM research capstone. She now works as an Independent AI Engineer (registered sole trader, Mar 2026 – Present), building and shipping AI and mobile products end-to-end, while completing the ACS-accredited Professional Year (ICT) program in Sydney. She also contracts on RLHF-style AI training and evaluation at Alignerr. Live products include What Was Drawn (web + a native iOS app submitted to the App Store), Ninja Butler / Ninja Clan HQ, and this Core Memories site, with LandLIT (PropTech automation) and Boba Rush (Unity mobile game) in active development. Actively pursuing a full-time AI Engineer role.",
   },
 
   story: [
@@ -43,17 +43,27 @@ export const PORTFOLIO_DATA = {
       id: "orb-engineer",
       title: "Theory Became Delivery",
       years: "2024–present",
-      description: "Software Engineer at UNIKRE Trading (Nov 2024 – Jan 2025) — applied GPT-4 AI content strategies to a live Shopify platform, contributing directly to the Masters capstone (High Distinction 88/100). Has since shipped LandLIT, What Was Drawn, and Ninja Butler — four live-deployed products total.",
+      description: "Software Engineer at UNIKRE Trading (Nov 2024 – Jan 2025) — applied GPT-4 AI content strategies to a live Shopify platform, contributing directly to the Masters capstone (High Distinction 88/100). Has since shipped a multi-product portfolio end-to-end: What Was Drawn (web + native iOS), Ninja Butler / Ninja Clan HQ, this Core Memories site, LandLIT PropTech automation, and Boba Rush — a Unity mobile game.",
     },
     {
       id: "orb-becoming",
       title: "The Architect, Ongoing",
       years: "2026",
-      description: "Professional Year in Sydney. AI Training & Evaluation Specialist at Alignerr (Mar 2026 – Present) — RLHF-style evaluation of LLM outputs for leading AI labs. Azure AI certifications in progress. Four live-deployed products shipped. Open to work as an AI Engineer.",
+      description: "Professional Year in Sydney, now building independently as a registered sole trader — shipping AI, web, and mobile products end-to-end. Also contracts on RLHF-style AI training and evaluation at Alignerr. RAG products, multi-agent systems, PropTech automation, and a Unity game in flight. Open to a full-time AI Engineer role.",
     },
   ],
 
   experience: [
+    {
+      title: "Independent AI Engineer (Sole Trader)",
+      company: "Self-employed — multi-product portfolio",
+      location: "Sydney, Remote",
+      dates: "Mar 2026 – Present",
+      highlights: [
+        "Registered sole trader building and shipping AI and mobile products end-to-end after completing the Master of ICT (High Distinction, WSU).",
+        "Design, build, and deploy across What Was Drawn (web + native iOS), Ninja Butler / Ninja Clan HQ, Core Memories, LandLIT (PropTech automation), and Boba Rush (Unity mobile game).",
+      ],
+    },
     {
       title: "AI Training & Evaluation Specialist",
       company: "Alignerr",
@@ -118,12 +128,24 @@ export const PORTFOLIO_DATA = {
       year: "2026",
       github: "https://github.com/unicebondoc/ninja-butler",
       role: "Sole Developer",
-      description: "Conversational AI personal assistant on Telegram, built on the Hermes agent framework (migrated from OpenClaw) — natural-language task management, diary entries, calendar reminders, daily briefings, weather lookups, web search, and GitHub queries. Deployed on a self-hosted Linux server (Zorin OS) at $0/month, running continuously via systemd since March 2026. Uses the OpenAI API and MiniMax for language generation, with persistent memory via the framework's native backend.",
-      stack: ["Python", "Hermes", "OpenAI API", "MiniMax", "Telegram Bot API", "Notion API", "TickTick API"],
+      description: "Conversational AI personal assistant and multi-agent personal OS on Telegram, built on the Hermes agent framework (migrated from OpenClaw) — natural-language task management, diary entries, calendar reminders, daily briefings, weather lookups, web search, GitHub queries, and autonomous content publishing. Self-hosted on a Hetzner Linux VPS, running continuously via systemd. Routes across Claude and Codex (OAuth-based), with persistent memory via the framework's native backend and Todoist for task integration.",
+      stack: ["Python", "Hermes", "Claude", "Codex", "Telegram Bot API", "Notion API", "Todoist API", "Hetzner VPS"],
       highlights: [
-        "Hermes agent framework (migrated from OpenClaw) with tool routing for weather, web search, GitHub, Notion, and TickTick integrations.",
-        "Uses the OpenAI API and MiniMax for language generation, chosen for a balance of speed, quality, and cost.",
-        "Persistent memory via the framework's native backend. Running as a systemd service on a self-hosted Zorin OS Linux server at $0/month.",
+        "Hermes agent framework (migrated from OpenClaw) with tool routing for weather, web search, GitHub, Notion, Todoist, and autonomous content publishing.",
+        "Routes across Claude and Codex (OAuth-based) for reasoning and high-volume automation.",
+        "Persistent memory via the framework's native backend. Running as a systemd service on a self-hosted Hetzner Linux VPS.",
+      ],
+    },
+    {
+      name: "Boba Rush — Unity Casual Mobile Game (iOS, Pre-Launch)",
+      year: "2026",
+      role: "Sole Developer",
+      description: "A tap-based bubble-tea casual mobile game built in Unity 6 (C#) — timed rounds, customer-patience mechanics, combo scoring, speed bonuses, and a rewarded-ad \"save order\" flow. Mobile-first architecture with iOS haptics, safe-area handling, an analytics event pipeline, and custom Unity Editor tooling. iOS-targeted, in active development.",
+      stack: ["Unity 6", "C#", "iOS", "Mobile-first architecture", "Rewarded Ads", "Custom Unity Editor Tooling"],
+      highlights: [
+        "Architected a tap-based bubble-tea game with timed rounds, customer-patience mechanics, combo scoring, and a rewarded-ad save-order flow.",
+        "Built full game systems end-to-end: customer queue, recipe data models, ingredient logic, unlock progression, and analytics tracking.",
+        "Implemented iOS-specific haptic feedback and safe-area handling; authored custom Unity Editor tools (recipe generator, scene builder) to speed up content creation.",
       ],
     },
     {
@@ -138,20 +160,26 @@ export const PORTFOLIO_DATA = {
   ],
 
   skills: {
-    languages: ["Python", "JavaScript (ES6+)", "TypeScript", "Dart", "HTML5", "CSS3", "SQL"],
+    languages: ["Python", "TypeScript", "JavaScript (ES6+)", "C#", "Dart", "SQL", "HTML5", "CSS3"],
     aiAndLLMs: [
-      "Generative AI", "OpenAI API (GPT-4o)", "Gemini API",
+      "Generative AI", "OpenAI API (GPT-4o)", "Claude / Codex Workflows", "Gemini API",
       "MiniMax", "LLaMA", "LangChain",
       "RAG (Retrieval-Augmented Generation)", "Vector Databases", "Pinecone",
       "Prompt Engineering", "AI Agents", "Tool Calling", "Agentic Workflows",
+      "RLHF-style Evaluation",
     ],
     frameworks: [
       "React 19", "Flutter", "Three.js", "React Three Fiber", "WebGL/GLSL",
       "Node.js", "FastAPI", "Vite", "Tailwind CSS", "MediaPipe Hands",
     ],
+    mobileAndGameDev: [
+      "Unity 6", "C#", "Mobile-first Architecture", "iOS Haptics",
+      "Custom Unity Editor Tooling", "Rewarded-Ad Integration",
+    ],
     computerVision: ["MediaPipe Hands", "Real-time gesture recognition", "Hand landmark detection"],
     deploymentAndTools: [
-      "Docker", "Linux (CLI)", "Vercel", "Railway", "Git", "GitHub",
+      "Docker", "Linux VPS (Hetzner)", "systemd", "launchd", "SSH Tunnels",
+      "Vercel", "Railway", "Git", "GitHub",
       "REST APIs", "API Integration", "CI/CD", "Production Deployment",
       "n8n", "Supabase", "Twilio", "Cursor AI", "VS Code", "Agile",
     ],
@@ -207,10 +235,12 @@ export const PORTFOLIO_DATA = {
     banking: "3 years — RCBC only (Sep 2019 – Sep 2022). BDO Unibank is NOT on the current CV.",
     capstoneGrade: "88/100 High Distinction — LLMs for E-Commerce, Western Sydney University. This is in the Education section, NOT a standalone project.",
     unikreTitle: "Software Engineer (NOT AI Software Engineer) at UNIKRE Trading, Nov 2024 – Jan 2025. Single-bullet role.",
-    alignerr: "Alignerr — AI Training & Evaluation Specialist (Contract), Mar 2026 – Present. RLHF-style evaluation of LLM outputs for leading AI labs — code generation, reasoning accuracy, and response quality.",
-    ninjButlerFramework: "Hermes is the agent framework for Ninja Butler (migrated from OpenClaw) — NOT LangChain. It uses the OpenAI API and MiniMax for language generation. Memory is via the framework's native backend — NOT Supabase.",
-    landlit: "LandLIT is a WhatsApp-native property-management SaaS currently in active development — Next.js 15, TypeScript, Supabase (PostgreSQL), Twilio WhatsApp API, Stripe, and OpenAI API. It does NOT use n8n.",
-    projectCount: "4 live-deployed products: LandLIT, What Was Drawn, Ninja Butler, Core Memories.",
+    soleTrader: "Unice's primary current role is Independent AI Engineer (registered sole trader), Mar 2026 – Present, building and shipping a multi-product portfolio end-to-end. Alignerr is a secondary contract.",
+    alignerr: "Alignerr — AI Training & Evaluation Specialist (Contract), Mar 2026 – Present. RLHF-style evaluation of LLM outputs for leading AI labs — code generation, reasoning accuracy, and response quality. This is a contract alongside her independent (sole trader) work, not her main role.",
+    ninjButlerFramework: "Hermes is the agent framework for Ninja Butler / Ninja Clan HQ (migrated from OpenClaw) — NOT LangChain. It is self-hosted on a Hetzner Linux VPS (NOT Zorin OS) and routes across Claude and Codex (OAuth-based). Integrations include Telegram, Notion, and Todoist (NOT TickTick), plus autonomous content publishing. Memory is via the framework's native backend — NOT Supabase.",
+    landlit: "LandLIT is a WhatsApp-native property-management SaaS currently in active development — Next.js 15, TypeScript, Supabase (PostgreSQL), Twilio WhatsApp API, Stripe-ready, and OpenAI API. It does NOT use n8n.",
+    bobaRush: "Boba Rush is a Unity 6 (C#) casual mobile game, iOS-targeted and in active development (pre-launch) — tap-based bubble-tea gameplay, rewarded ads, iOS haptics, and custom Unity Editor tooling.",
+    projectCount: "Multi-product portfolio: What Was Drawn (web live + native iOS app submitted to the App Store), Ninja Butler / Ninja Clan HQ, and Core Memories are live; LandLIT and Boba Rush are in active development. Do NOT claim a fixed '4 live-deployed products' count.",
     neverSay: [
       "salary figures",
       "visa information",
