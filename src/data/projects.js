@@ -34,8 +34,8 @@ export const PROJECTS = [
     title: 'Ninja Butler',
     subtitle: 'Personal AI Assistant Agent',
     description:
-      'A conversational AI assistant and multi-agent personal OS on Telegram, built on the Hermes agent framework (migrated from OpenClaw). Manages tasks, calendar, diary, briefings, weather, web search, GitHub queries, and autonomous content publishing. Routes across Claude and Codex (OAuth-based). Persistent memory via the agent framework\'s native backend, with Todoist integration. Self-hosted on a Hetzner Linux VPS, running via systemd.',
-    stack: ['Python', 'Hermes', 'Claude', 'Codex', 'Telegram Bot API', 'Notion API', 'Todoist API', 'Hetzner VPS'],
+      'A conversational AI assistant and multi-agent personal OS on Telegram, built on the Hermes agent framework (migrated from OpenClaw). Manages tasks, calendar, diary, briefings, weather, web search, GitHub queries, and autonomous content publishing via Postiz. Routes across Claude and Codex (OAuth-based). Persistent memory via the agent framework\'s native backend, with Todoist integration. Self-hosted on a Hetzner Linux VPS, running via systemd.',
+    stack: ['Python', 'Hermes', 'Claude', 'Codex', 'Telegram Bot API', 'Notion API', 'Todoist API', 'Postiz', 'Hetzner VPS'],
     links: { live: null, github: 'https://github.com/unicebondoc/ninja-butler' },
     color: '#a78bfa',
     glow: 'rgba(167,139,250,0.75)',
