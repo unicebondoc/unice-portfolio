@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "convert-videos": "node scripts/convert-orb-videos.js"
+    "resume:pdf": "node scripts/generate-resume-pdf.js",
+    "convert-videos": "node scripts/convert-orb-videos.js",
+    "deploy": "bash deploy.sh"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.1.4",

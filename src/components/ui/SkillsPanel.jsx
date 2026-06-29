@@ -19,7 +19,8 @@ const CATEGORIES = [
       'Generative AI',
       'OpenAI API (GPT-4o)',
       'Gemini API',
-      'LLaMA (Ollama)',
+      'MiniMax',
+      'LLaMA',
       'LangChain',
       'RAG Pipelines',
       'Vector Databases',
@@ -39,7 +40,7 @@ const CATEGORIES = [
     key: 'frameworks',
     label: 'FRAMEWORKS',
     skills: [
-      'React 18',
+      'React 19',
       'Flutter',
       'Three.js',
       'React Three Fiber',

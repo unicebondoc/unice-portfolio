@@ -173,8 +173,8 @@ export const MEMORIES = [
     orbType: 'primary',
     isPrimary: true,
     description:
-      'A real Shopify business. A real brief. As Software Engineer at UNIKRE Trading, I applied GPT-4 AI content strategies to a live commercial platform — work that fed straight into my Masters capstone and helped earn 88/100. That was the foundation. Then LandLIT: end-to-end workflow automation for real tenants, in production. Then What Was Drawn: gesture-controlled AI, full RAG pipeline, live at whatwasdrawn.com. Then Ninja Butler: self-hosted AI agent on Telegram. Four shipped. Shipping without a net is the only kind that counts.',
-    tags: ['GPT-4', 'OpenAI API', 'LandLIT', 'What Was Drawn', 'Ninja Butler', 'RAG', 'AI Agent', 'Solo Delivery', 'n8n', 'Automation'],
+      'A real Shopify business. A real brief. As Software Engineer at UNIKRE Trading, I applied GPT-4 AI content strategies to a live commercial platform — work that fed straight into my Masters capstone and helped earn 88/100. That was the foundation. Then What Was Drawn: gesture-controlled AI, full RAG pipeline, live at whatwasdrawn.com. Then Ninja Butler: self-hosted AI agent on Telegram. And now LandLIT: a WhatsApp-native property-management SaaS in active development. Shipping without a net is the only kind that counts.',
+    tags: ['GPT-4', 'OpenAI API', 'LandLIT', 'What Was Drawn', 'Ninja Butler', 'RAG', 'AI Agent', 'Solo Delivery', 'Next.js', 'Automation'],
     skills: [],
     link: '',
     videoSrc: '/memories/videos/05-orb-building-web.mp4',

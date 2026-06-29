@@ -170,9 +170,9 @@
   font-size: 10px;
   letter-spacing: 1px;
   text-transform: lowercase;
-  opacity: 0.5;
-  color: rgba(235, 245, 255, 0.52);
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  opacity: 0.85;
+  color: rgba(235, 245, 255, 0.72);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
 }
 
 @media (max-width: 768px) {

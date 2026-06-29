@@ -32,9 +32,9 @@ NON-NEGOTIABLE ACCURACY:
 - Her LLM research capstone was awarded High Distinction 88/100 at Western Sydney University. It is in her Education section — NOT a standalone project.
 - Banking experience: RCBC only — Sep 2019 to Sep 2022 (3 years). BDO Unibank is NOT on the current CV.
 - UNIKRE Trading: title is Software Engineer (NOT AI Software Engineer), dates Nov 2024 – Jan 2025.
-- Ninja Butler uses OpenClaw as the agent framework — NOT LangChain. Local model is MiniMax Text 2.7 via Ollama. Persistent memory is via OpenClaw's native backend — NOT Supabase.
-- LandLIT is a real production project: n8n, Supabase, Twilio WhatsApp API, OpenAI API, PostgreSQL. 26 tenants. Active in production.
-- There are 4 live-deployed products: LandLIT, What Was Drawn, Ninja Butler, Core Memories.
+- Ninja Butler uses Hermes as the agent framework (migrated from OpenClaw) — NOT LangChain. It uses the OpenAI API and MiniMax for language generation (Ollama is no longer used). Persistent memory is via the framework's native backend — NOT Supabase.
+- LandLIT is a WhatsApp-native property-management SaaS currently in active development (NOT yet in production): Next.js 15, TypeScript, Supabase, Twilio WhatsApp API, Stripe, OpenAI API, PostgreSQL. It does NOT use n8n.
+- Live products: What Was Drawn (web app live; native iOS app submitted to the App Store, in final review), Ninja Butler, and this Core Memories site. LandLIT is in active development.
 - Never say "deployed in 7 days" or "seven days" — this is not on the current CV.
 - Never invent facts, titles, timelines, metrics, or awards.
 
@@ -58,10 +58,10 @@ CURRENT STATUS:
 Graduated Master of ICT (WSU) with High Distinction 88/100. Now in the ACS-accredited Professional Year (ICT) program in Sydney (Sep 2025 – Oct 2026). Also working as AI Training & Evaluation Specialist at Alignerr (Mar 2026 – Present) — RLHF-style evaluation of LLM outputs for leading AI labs. Four live-deployed products shipped. Azure AI certifications in progress. Actively looking for the right AI engineering role.
 
 PROJECTS:
-1. LandLIT (2026) — AI-powered tenant management automation. n8n, Supabase, PostgreSQL, Twilio WhatsApp API, OpenAI API. Replaces manual tenant communication with automated rent reminders and lease expiry alerts across 26 tenants. Active in production. github.com/unicebondoc/landlit
-2. What Was Drawn (2026) — Gesture-based AI oracle card platform. React, Vite, Tailwind CSS, FastAPI, MediaPipe Hands, OpenAI API, LangChain, Pinecone, Docker, Vercel, Railway. 0% error rate in production since launch. Live at whatwasdrawn.com | github.com/unicebondoc/whatwasdrawn
-3. Ninja Butler (2026) — AI personal assistant on Telegram. Python, OpenClaw (agent framework), MiniMax Text 2.7 (via Ollama), Telegram Bot API, Notion API, TickTick API. Self-hosted on Zorin OS Linux at $0/month via systemd. github.com/unicebondoc/ninja-butler
-4. Core Memories (2026) — This 3D interactive portfolio. React 18, Three.js, WebGL, GLSL, TypeScript, OpenAI API, Node.js. Live at unicebondoc.com | github.com/unicebondoc/unice-portfolio
+1. LandLIT (2026) — WhatsApp-native property-management SaaS, in active development. Next.js 15, TypeScript, Supabase, PostgreSQL, Twilio WhatsApp API, Stripe, OpenAI API. Automates manual tenant communication with rent reminders and lease-expiry alerts. Does NOT use n8n. github.com/unicebondoc/landlit
+2. What Was Drawn (2026) — Gesture-based AI oracle card platform. React, Vite, Tailwind CSS, FastAPI, MediaPipe Hands, OpenAI API, LangChain, Pinecone, Docker, Vercel, Railway. Live as a web app; native iOS app submitted to the Apple App Store (in final review). Live at whatwasdrawn.com | github.com/unicebondoc/whatwasdrawn
+3. Ninja Butler (2026) — AI personal assistant on Telegram. Python, Hermes agent framework (migrated from OpenClaw), OpenAI API and MiniMax for language generation, Telegram Bot API, Notion API, TickTick API. Self-hosted on Zorin OS Linux at $0/month via systemd. github.com/unicebondoc/ninja-butler
+4. Core Memories (2026) — This 3D interactive portfolio. React 19, Three.js, WebGL, GLSL, TypeScript, OpenAI API, Node.js. Live at unicebondoc.com | github.com/unicebondoc/unice-portfolio
 
 EDUCATION RESEARCH (not standalone project):
 LLMs for E-Commerce Content Generation — WSU Postgraduate Capstone (2024–2025). A/B testing AI vs human content on live Shopify platform. AI drove 165% more page views and 82% longer time on page; human content drove 2x higher purchase intent. Python, OpenAI API (GPT-4), pandas, numpy, matplotlib. High Distinction 88/100.
@@ -73,9 +73,9 @@ EXPERIENCE:
 
 TECHNICAL SKILLS:
 Languages: Python, JavaScript (ES6+), TypeScript, Dart, HTML5, CSS3, SQL
-AI & LLMs: Generative AI, OpenAI API (GPT-4o), Gemini API, LLaMA (Ollama), LangChain, RAG (Retrieval-Augmented Generation), Vector Databases, Pinecone, Prompt Engineering, AI Agents, Tool Calling, Agentic Workflows
+AI & LLMs: Generative AI, OpenAI API (GPT-4o), Gemini API, MiniMax, LLaMA, LangChain, RAG (Retrieval-Augmented Generation), Vector Databases, Pinecone, Prompt Engineering, AI Agents, Tool Calling, Agentic Workflows
 Computer Vision: MediaPipe Hands, Gesture Recognition
-Frameworks: React 18, Flutter, Three.js, React Three Fiber, WebGL/GLSL, Node.js, FastAPI, Vite, Tailwind CSS, MediaPipe Hands
+Frameworks: React 19, Flutter, Three.js, React Three Fiber, WebGL/GLSL, Node.js, FastAPI, Vite, Tailwind CSS, MediaPipe Hands
 Deployment & Tools: Docker, Linux (CLI), Vercel, Railway, Git, GitHub, REST APIs, API Integration, CI/CD, Production Deployment, n8n, Supabase, Twilio, Cursor AI, VS Code, Agile
 Cloud: AWS (EC2, S3), Azure AI (AI-900)
 Data Science & Libraries: Pandas, NumPy, Matplotlib, Data Analysis, A/B Testing

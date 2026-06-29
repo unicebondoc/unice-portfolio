@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Unice Bondoc Resume</title>
+    <style>
+      @page {
+        size: Letter;
+        margin: 0.42in 0.46in;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: #15171a;
+        background: #ffffff;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 8.65pt;
+        line-height: 1.24;
+      }
+
+      .page {
+        width: 100%;
+        min-height: 10.15in;
+      }
+
+      .page-break {
+        break-after: page;
+      }
+
+      header {
+        border-bottom: 1.4pt solid #1d2733;
+        padding-bottom: 7px;
+        margin-bottom: 8px;
+      }
+
+      h1 {
+        margin: 0;
+        color: #0f1720;
+        font-size: 23pt;
+        line-height: 1;
+        letter-spacing: 1.4px;
+      }
+
+      .headline {
+        margin-top: 4px;
+        color: #1e344f;
+        font-size: 10.5pt;
+        font-weight: 700;
+      }
+
+      .contact {
+        margin-top: 4px;
+        color: #2f3842;
+        font-size: 8.25pt;
+      }
+
+      h2 {
+        margin: 8px 0 4px;
+        color: #152235;
+        font-size: 9.6pt;
+        letter-spacing: 0.7px;
+        text-transform: uppercase;
+        border-bottom: 0.65pt solid #c9d2dc;
+        padding-bottom: 2px;
+      }
+
+      h3 {
+        margin: 6px 0 1px;
+        color: #101820;
+        font-size: 8.95pt;
+      }
+
+      p {
+        margin: 0 0 4px;
+      }
+
+      .role-line,
+      .project-line {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        align-items: baseline;
+      }
+
+      .meta {
+        color: #3f4c5c;
+        font-size: 7.9pt;
+        white-space: nowrap;
+      }
+
+      .stack {
+        margin: 1px 0 2px;
+        color: #34485f;
+        font-size: 7.9pt;
+        font-style: italic;
+      }
+
+      ul {
+        margin: 2px 0 4px 13px;
+        padding: 0;
+      }
+
+      li {
+        margin: 1.7px 0;
+        padding-left: 1px;
+      }
+
+      .skills-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 18px;
+        row-gap: 2px;
+        margin-top: 2px;
+      }
+
+      .skill {
+        margin: 0 0 2px;
+      }
+
+      .skill b {
+        color: #102035;
+      }
+
+      .compact-list li {
+        margin: 1px 0;
+      }
+
+      .section-tight h2 {
+        margin-top: 7px;
+      }
+
+      a {
+        color: #183b68;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="page page-break">
+      <header>
+        <h1>UNICE BONDOC</h1>
+        <div class="headline">AI Engineer | Mobile & Full-Stack Developer | LLM, Agent & Game Systems</div>
+        <div class="contact">
+          Sydney, NSW | Full Work Rights | 0492 918 530 | uniceabondoc@gmail.com
+        </div>
+        <div class="contact">
+          linkedin.com/in/unicebondoc | github.com/unicebondoc | unicebondoc.com
+        </div>
+      </header>
+
+      <h2>Summary</h2>
+      <p>
+        AI engineer and full-stack mobile builder with a Master of ICT from Western Sydney University (High Distinction on capstone research: LLMs for E-Commerce Content Generation) and a delivery portfolio across RAG products, multi-agent orchestration, AI workflow automation, computer vision, content generation, Unity mobile game development, and self-hosted production infrastructure. Ships public web products (live at whatwasdrawn.com and unicebondoc.com), private agent systems, mobile games, and PropTech automation as a registered sole trader. Former banking operations manager with 100+ SME client accounts, bringing stakeholder discipline and operational rigour into technical builds.
+      </p>
+
+      <h2>Technical Skills</h2>
+      <div class="skills-grid">
+        <p class="skill"><b>Languages:</b> Python, TypeScript, JavaScript, C#, SQL, Dart, HTML5, CSS3</p>
+        <p class="skill"><b>AI / LLMs:</b> OpenAI API, Claude/Codex workflows, Gemini API, LangChain, RAG, Pinecone, prompt engineering, tool calling, AI agents, RLHF-style evaluation</p>
+        <p class="skill"><b>Backend / Automation:</b> FastAPI, Node.js, n8n, Supabase, PostgreSQL, Twilio WhatsApp, Telegram/Discord bots, Notion API, REST APIs</p>
+        <p class="skill"><b>Frontend / 3D / CV:</b> React, Vite, Tailwind CSS, Three.js, React Three Fiber, WebGL/GLSL, MediaPipe Hands, Flutter</p>
+        <p class="skill"><b>Mobile / Game Dev:</b> Unity 6, C#, mobile-first architecture, iOS haptics, custom Unity Editor tooling, rewarded-ad integration</p>
+        <p class="skill"><b>Infra / DevOps:</b> Docker, Linux VPS, systemd, launchd, SSH tunnels, Vercel, Railway, Git, GitHub, CI/CD, AWS EC2/S3</p>
+        <p class="skill"><b>Data:</b> pandas, NumPy, Matplotlib, data analysis, A/B testing, production smoke testing, quality gates</p>
+      </div>
+
+      <h2>Selected Products & Systems</h2>
+
+      <div class="project-line">
+        <h3>What Was Drawn - Gesture-Based AI Oracle Card Platform</h3>
+        <span class="meta">Jan - Apr 2026 | Sole Developer | Live at whatwasdrawn.com</span>
+      </div>
+      <p class="stack">React, Vite, Tailwind CSS, MediaPipe Hands, FastAPI, OpenAI API, LangChain, Pinecone, Docker, Vercel, Railway | whatwasdrawn.com</p>
+      <ul>
+        <li>Designed, built, and deployed a full-stack RAG web app where users draw cards through real-time webcam hand tracking, with a tap-based mobile fallback.</li>
+        <li>Integrated OpenAI generation with LangChain orchestration and Pinecone vector retrieval for personalised readings grounded in card data.</li>
+        <li>Containerised the FastAPI backend for Railway and deployed the React frontend to Vercel with a custom domain, rate limiting, monetisation hooks, and production smoke checks.</li>
+      </ul>
+
+      <div class="project-line">
+        <h3>Ninja Butler / Ninja Clan HQ - Multi-Agent Personal OS</h3>
+        <span class="meta">Aug 2025 - Present | Sole Developer / Operator</span>
+      </div>
+      <p class="stack">Python, custom multi-channel agent gateway (Node.js), Discord, Telegram Bot API, Notion API, Google Calendar, systemd, Hetzner Linux VPS, multi-model routing (Claude, GPT-Codex, MiniMax)</p>
+      <ul>
+        <li>Built and operate a self-hosted AI control plane spanning Discord, Telegram, Notion, memory, project routing, daily priorities, and background build queues.</li>
+        <li>Maintained production services on a Hetzner VPS with systemd, launchd-managed SSH tunnels, structured service logs, cross-agent state handoffs (via shared changelog file), and reversible config changes.</li>
+        <li>Standardised model routing around task, cost, and latency: GPT-Codex for high-volume automation, Claude for reasoning-heavy planning, MiniMax for media tooling.</li>
+      </ul>
+
+      <div class="project-line">
+        <h3>Mooni Publisher - AI Content Approval Pipeline</h3>
+        <span class="meta">Apr - May 2026 | Sole Developer / Operator</span>
+      </div>
+      <p class="stack">Python, Discord interaction components, multi-model LLM routing (Claude / Codex CLI), GPT Image generation, pytest, systemd, image rendering pipeline</p>
+      <ul>
+        <li>Built an approval-gated Instagram carousel pipeline: human-in-the-loop copy review, edit and rewrite flows, AI image generation, final review, and one-click publishing — all driven from Discord.</li>
+        <li>Reduced live Discord interaction errors to zero through fast-ACK patterns and component lifecycle hardening; split content rewriting from visual styling into independent pipelines for cleaner editorial control.</li>
+        <li>Added persona-anchored LLM prompting for voice consistency, plus pytest-backed quality gates that reject low-quality drafts before they reach the publish stage.</li>
+      </ul>
+
+      <div class="project-line">
+        <h3>LandLIT - WhatsApp-Native PropTech Automation</h3>
+        <span class="meta">Mar 2026 - Present | Sole Developer</span>
+      </div>
+      <p class="stack">Next.js 15, TypeScript, Supabase, PostgreSQL, Twilio WhatsApp API, OpenAI API, Stripe-ready, Vercel</p>
+      <ul>
+        <li>Built property-management automation workflows for rent reminders, lease-expiry alerts, WhatsApp delivery, and dynamic OpenAI-generated tenant communication.</li>
+        <li>Implemented Supabase-backed persistence with JSONL fallback and active-store visibility, designed and validated against a real 26-tenant operating context.</li>
+      </ul>
+    </section>
+
+    <section class="page section-tight">
+      <div class="project-line">
+        <h3>Core Memories - Interactive 3D AI Portfolio</h3>
+        <span class="meta">Late 2025 - Q1 2026 | Sole Developer | Live at unicebondoc.com</span>
+      </div>
+      <p class="stack">React 19, Three.js, React Three Fiber, WebGL, GLSL, TypeScript, OpenAI API, Node.js | unicebondoc.com</p>
+      <ul>
+        <li>Built an immersive 3D portfolio with animated memory orbs, particles, GLSL shader effects, and a portfolio-aware OpenAI chatbot.</li>
+        <li>Maintains the public resume, project proof points, interactive storytelling, and AI-assisted visitor Q&A in a single deployable site.</li>
+      </ul>
+
+      <div class="project-line">
+        <h3>Boba Rush - Unity Casual Mobile Game (iOS-Targeted, Pre-Launch)</h3>
+        <span class="meta">Apr 2026 - Present | Sole Developer | In active development</span>
+      </div>
+      <p class="stack">Unity 6 (6000.4.5f1), C#, mobile-first architecture, iOS haptics, rewarded ads, analytics event pipeline, custom Unity Editor tooling</p>
+      <ul>
+        <li>Architected a tap-based bubble-tea casual game with timed rounds, customer-patience mechanics, combo scoring, speed bonuses, and a rewarded-ad "save order" flow.</li>
+        <li>Implemented full game systems end-to-end: customer queue, recipe data models, ingredient logic, unlock progression, analytics event tracking, iOS-specific haptic feedback, and safe-area handling for modern mobile screens.</li>
+        <li>Authored custom Unity Editor tools (recipe generator, scene builder) to accelerate content creation and iteration.</li>
+      </ul>
+
+      <div class="project-line">
+        <h3>NinjApply - AI Career-Ops SaaS</h3>
+        <span class="meta">Q2 2026 - Present | Sole Developer | Pre-launch, ninjapply.com</span>
+      </div>
+      <p class="stack">Next.js, Supabase, Apify, Playwright, Claude / MiniMax evaluation, Stripe-ready</p>
+      <ul>
+        <li>Productising a career-ops pipeline: role scraping and ranking pipeline operational; LLM-grounded cover-letter generation and Stripe billing pending pre-launch.</li>
+      </ul>
+
+      <h2>Experience</h2>
+      <div class="role-line">
+        <h3>Independent AI Engineer (Sole Trader) - Solo founder, multi-product portfolio</h3>
+        <span class="meta">Mar 2026 - Present | Sydney, Remote</span>
+      </div>
+      <ul>
+        <li>Operate as a registered sole trader after completing Master ICT (High Distinction, WSU, July 2025), focused on building and selling AI + mobile products end-to-end.</li>
+        <li>Design, build, and deploy products across What Was Drawn, Ninja Butler / Ninja Clan HQ, Mooni Publisher, LandLIT, Core Memories, Boba Rush (Unity), and NinjApply (pre-launch).</li>
+        <li>Onboarded with Alignerr (Labelbox) and Outlier as a human-evaluation contractor (qualification / first-task stage).</li>
+      </ul>
+
+      <div class="role-line">
+        <h3>Software Engineer - UNIKRE Trading (WSU Capstone Engagement)</h3>
+        <span class="meta">Nov 2024 - Jan 2025 | Sydney</span>
+      </div>
+      <ul>
+        <li>Capstone-linked engagement applying WSU postgraduate research on LLMs for e-commerce content generation against a live Shopify storefront, implementing GPT-4 content strategies in production.</li>
+        <li>Ran applied A/B analysis where AI-generated content drove 165% more page views and 82% longer time on page, while human copy generated stronger purchase intent.</li>
+      </ul>
+
+      <div class="role-line">
+        <h3>SME Account & Loan Operations Manager - RCBC</h3>
+        <span class="meta">Sep 2019 - Sep 2022 | Philippines</span>
+      </div>
+      <ul>
+        <li>Managed end-to-end operations for 100+ concurrent SME client accounts, coordinating relationship managers, compliance teams, documentation, and external stakeholders under regulatory requirements.</li>
+      </ul>
+
+      <h2>Education</h2>
+      <div class="role-line">
+        <h3>Master of Information and Communications Technology - Western Sydney University</h3>
+        <span class="meta">Jul 2023 - Jul 2025</span>
+      </div>
+      <ul class="compact-list">
+        <li>High Distinction (88/100) on Postgraduate Project A — research project: LLMs for E-Commerce Content Generation.</li>
+        <li>Team Lead - Gachabit: led a 4-person team building a Flutter/Dart gamified habit tracker.</li>
+        <li>Team Lead - AnyLogic Business Simulation: coordinated modelling, analysis, task allocation, and final delivery.</li>
+      </ul>
+
+      <div class="role-line">
+        <h3>Professional Year (ICT), ACS Accredited - Performance Education</h3>
+        <span class="meta">Sep 2025 - Oct 2026</span>
+      </div>
+
+      <div class="role-line">
+        <h3>Bachelor of Communication (Broadcasting) - Bicol University</h3>
+        <span class="meta">Jun 2012 - May 2016</span>
+      </div>
+
+      <h2>Certifications & Professional Development</h2>
+      <ul class="compact-list">
+        <li>AWS Cloud Foundations - Amazon Web Services, Jun 2025</li>
+        <li>ICT Professional Year Program (ACS Accredited) - Performance Education, Sep 2025 - Oct 2026</li>
+      </ul>
+    </section>
+  </body>
+</html>
