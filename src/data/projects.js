@@ -21,7 +21,7 @@ export const PROJECTS = [
     title: 'What Was Drawn',
     subtitle: 'Gesture-Based AI Oracle Card Platform',
     description:
-      'Draw oracle cards using real-time hand gestures via webcam — no buttons, no taps, just your hands. AI generates personalised readings through a full RAG pipeline. Tap-based mobile fallback for devices without camera access. Live as a web app, with a native iOS app submitted to the Apple App Store (in final review).',
+      'Draw oracle cards using real-time hand gestures via webcam — no buttons, no taps, just your hands. AI generates personalised readings through a full RAG pipeline. Tap-based mobile fallback for devices without camera access. The web experience is live, with a native iOS experience upcoming.',
     stack: ['React', 'Vite', 'Tailwind CSS', 'MediaPipe Hands', 'FastAPI', 'OpenAI API', 'LangChain', 'Pinecone', 'Docker', 'Vercel', 'Railway', 'iOS'],
     links: { live: 'https://whatwasdrawn.com', github: 'https://github.com/unicebondoc/whatwasdrawn' },
     color: '#ffd700',
@@ -30,12 +30,25 @@ export const PROJECTS = [
     flagship: true,
   },
   {
-    id: 'ninja-butler',
-    title: 'Ninja Butler',
-    subtitle: 'Personal AI Assistant Agent',
+    id: 'unikre',
+    title: 'UNIKRE',
+    subtitle: 'Quiet Whiskers Brand & Commerce Experience',
     description:
-      'A conversational AI assistant and multi-agent personal OS on Telegram, built on the Hermes agent framework (migrated from OpenClaw). Manages tasks, calendar, diary, briefings, weather, web search, GitHub queries, and autonomous content publishing via Postiz. Routes across Claude and Codex (OAuth-based). Persistent memory via the agent framework\'s native backend, with Todoist integration. Self-hosted on a Hetzner Linux VPS, running via systemd.',
-    stack: ['Python', 'Hermes', 'Claude', 'Codex', 'Telegram Bot API', 'Notion API', 'Todoist API', 'Postiz', 'Hetzner VPS'],
+      'The live brand and commerce home for The Quiet Whiskers Oracle — a 44-card physical deck and guidebook connected to the What Was Drawn digital reading experience. The site presents the product through interactive 3D, motion, real deck imagery, and direct marketplace purchase paths.',
+    stack: ['Next.js', 'React', 'TypeScript', 'React Three Fiber', 'Three.js', 'Framer Motion', 'Vercel'],
+    links: { live: 'https://unikre.com.au', github: 'https://github.com/unicebondoc/unikre-website' },
+    color: '#f59e0b',
+    glow: 'rgba(245,158,11,0.75)',
+    glowSoft: 'rgba(245,158,11,0.22)',
+    flagship: true,
+  },
+  {
+    id: 'ninja-butler',
+    title: 'Ninja Clan',
+    subtitle: 'Personal AI Operating System · Hermes',
+    description:
+      'A private personal AI operating system that began as Ninja Butler on OpenClaw and a repurposed Linux iMac, migrated to an always-on Hetzner Linux VPS, then transitioned to Hermes and evolved into Ninja Clan. It coordinates Telegram, Gmail, Calendar, TickTick, curated memory, research, and Mac build workers through reviewed routing and human approval gates.',
+    stack: ['Python', 'Hermes', 'Claude', 'Codex', 'Telegram Bot API', 'Google APIs', 'TickTick', 'Postiz', 'Hetzner VPS'],
     links: { live: null, github: 'https://github.com/unicebondoc/ninja-butler' },
     color: '#a78bfa',
     glow: 'rgba(167,139,250,0.75)',
@@ -44,9 +57,9 @@ export const PROJECTS = [
   {
     id: 'boba-rush',
     title: 'Boba Rush',
-    subtitle: 'Unity Casual Mobile Game (iOS · Pre-Launch)',
+    subtitle: 'Unity Casual Mobile Game (iOS · TestFlight)',
     description:
-      'A tap-based bubble-tea casual mobile game built in Unity 6 (C#) — timed rounds, customer-patience mechanics, combo scoring, speed bonuses, and a rewarded-ad "save order" flow. Mobile-first architecture with iOS haptics, safe-area handling, an analytics event pipeline, and custom Unity Editor tooling. iOS-targeted, in active development.',
+      'A tap-based bubble-tea casual mobile game built in Unity 6 (C#) — timed rounds, customer-patience mechanics, combo scoring, speed bonuses, and a rewarded-ad "save order" flow. Mobile-first architecture with iOS haptics, safe-area handling, an analytics event pipeline, and custom Unity Editor tooling. Currently available through TestFlight while the launch build is refined.',
     stack: ['Unity 6', 'C#', 'iOS', 'Mobile-first', 'Rewarded Ads', 'Unity Editor Tooling'],
     links: { live: null, github: null },
     color: '#f472b6',

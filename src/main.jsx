@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { Suspense, lazy } from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
 import './styles/global.css'
+
+const ForestExperience = lazy(() => import('./App.jsx'))
+const FastTrackSite = lazy(() => import('./pages/FastTrackSite.jsx'))
 
 // Suppress THREE.Clock deprecation from R3F/drei (we use THREE.Timer; lib will migrate)
 const origWarn = console.warn
@@ -16,6 +18,8 @@ console.error = (...args) => suppressClockDeprecation(args, origError)
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <Suspense fallback={<div className="route-loading" aria-label="Loading portfolio" />}>
+      {window.location.pathname === '/' ? <ForestExperience /> : <FastTrackSite />}
+    </Suspense>
   </React.StrictMode>
 )

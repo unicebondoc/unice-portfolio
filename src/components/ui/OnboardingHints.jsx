@@ -22,8 +22,8 @@ const HINTS = [
   {
     id: 'chest',
     icon: '◈',
-    text: 'Open the chest',
-    sub: 'see my projects',
+    text: 'Open the portfolio',
+    sub: 'view selected work',
     delay: 1100,
   },
   {
@@ -139,7 +139,7 @@ export default function OnboardingHints() {
           pointerEvents: 'none',
         }}
       >
-        click anywhere to explore
+        choose an action to begin
       </div>
     </div>
   )

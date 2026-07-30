@@ -116,6 +116,14 @@ body {
   isolation: isolate;
 }
 
+.route-loading {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(92, 174, 208, 0.14), transparent 28%),
+    #030914;
+}
+
 @media (max-width: 768px) {
   #root {
     position: relative;
@@ -265,4 +273,3 @@ canvas {
     cursor: text !important;
   }
 }
-
