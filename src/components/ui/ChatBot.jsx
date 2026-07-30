@@ -26,7 +26,7 @@ const LOADING_PHRASES = [
 const REVEAL_MS_PER_WORD = 36
 const REVEAL_MS_MIN = 400
 
-export default function ChatBot() {
+export default function ChatBot({ nativeCursor = false }) {
   const activePanel = useStore((s) => s.activePanel)
   const setActivePanel = useStore((s) => s.setActivePanel)
   const isMobile = useStore((s) => s.isMobile)
@@ -151,7 +151,7 @@ export default function ChatBot() {
       {open && (
         <div
           className={`${styles.panel} ${isMobile ? styles.panelMobile : ''}`}
-          style={{ cursor: 'none' }}
+          style={{ cursor: nativeCursor ? 'auto' : 'none' }}
         >
           <div className={styles.header}>
             <div className={styles.title}>✦ TYCHE</div>
