@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import ResumePanel from '../components/ui/ResumePanel'
+import ChatBot from '../components/ui/ChatBot'
+import TycheMascot from '../components/ui/TycheMascot'
+import useStore from '../hooks/useStore'
 import '../styles/fast-track.css'
 
 const PAGE_TITLE = 'Unice Bondoc — AI Engineer & Product Builder'
@@ -406,6 +409,10 @@ export default function FastTrackSite() {
   const [coreOpen, setCoreOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('core-memories')
   const [scrollProgress, setScrollProgress] = useState(0)
+  const activePanel = useStore((state) => state.activePanel)
+  const setActivePanel = useStore((state) => state.setActivePanel)
+  const setLoadingExited = useStore((state) => state.setLoadingExited)
+  const chatOpen = activePanel?.type === 'chat'
 
   const navigateToSection = (id) => {
     const nextHash = `#${id}`
@@ -414,6 +421,7 @@ export default function FastTrackSite() {
   }
 
   useEffect(() => {
+    setLoadingExited(true)
     const legacySection = window.location.pathname === '/about/'
       ? 'about'
       : window.location.pathname === '/writing/'
@@ -478,8 +486,13 @@ export default function FastTrackSite() {
       window.history.scrollRestoration = previousScrollRestoration
       document.body.classList.remove('fast-track-body')
       document.documentElement.classList.remove('fast-track-html')
+      setActivePanel(null)
     }
-  }, [])
+  }, [setActivePanel, setLoadingExited])
+
+  useEffect(() => {
+    if (resumeOpen || coreOpen) setActivePanel(null)
+  }, [coreOpen, resumeOpen, setActivePanel])
 
   return (
     <>
@@ -494,7 +507,7 @@ export default function FastTrackSite() {
           <WritingSections />
         </main>
         <a
-          className={`ft-back-top ${scrollProgress > 0.06 ? 'visible' : ''}`}
+          className={`ft-back-top ${scrollProgress > 0.06 ? 'visible' : ''} ${chatOpen ? 'chat-open' : ''}`}
           href="#core-memories"
           aria-label="Back to the top"
           onClick={(event) => {
@@ -504,6 +517,12 @@ export default function FastTrackSite() {
         >↑ <span>Top</span></a>
         <Footer />
       </div>
+      {!resumeOpen && !coreOpen && (
+        <div className="ft-assistant-layer" aria-label="Tyche AI portfolio guide">
+          <ChatBot nativeCursor />
+          <TycheMascot label="Ask Tyche" />
+        </div>
+      )}
       {resumeOpen && <ResumePanel onClose={() => setResumeOpen(false)} />}
       {coreOpen && <CoreMemoriesModal onClose={() => setCoreOpen(false)} />}
     </>

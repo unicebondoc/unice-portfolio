@@ -83,7 +83,7 @@ function CatSvg({ glowColor = CYAN_GLOW }) {
   )
 }
 
-export default function TycheMascot() {
+export default function TycheMascot({ label = '' }) {
   const rootRef = useRef(null)
   const auraRef = useRef(null)
   const catWrapRef = useRef(null)
@@ -268,6 +268,7 @@ export default function TycheMascot() {
       aria-label="Open chat with Tyche"
       style={{ pointerEvents: 'auto' }}
     >
+      {label && <span className={styles.label}>{label}</span>}
       <div ref={auraRef} className={styles.aura} aria-hidden />
       <div ref={catWrapRef} className={styles.catWrap}>
         <CatSvg glowColor={CYAN_GLOW} />

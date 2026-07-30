@@ -302,8 +302,9 @@
 .ft-footer-links { display: flex; gap: 22px; }
 .ft-footer-links a { color: #dbe8f4; text-decoration: none; font-size: 12px; }
 
-.ft-back-top { position: fixed !important; z-index: 90 !important; right: 24px; bottom: 24px; display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 15px; border: 1px solid rgba(126,221,242,0.28); border-radius: 999px; color: #dff8ff; background: rgba(3,12,24,0.82); box-shadow: 0 12px 34px rgba(0,0,0,0.28); backdrop-filter: blur(16px); text-decoration: none; font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0; transform: translateY(14px); pointer-events: none; transition: opacity 240ms ease, transform 240ms ease, border-color 180ms ease; }
+.ft-back-top { position: fixed !important; z-index: 90 !important; right: 32px; bottom: 112px; display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 15px; border: 1px solid rgba(126,221,242,0.28); border-radius: 999px; color: #dff8ff; background: rgba(3,12,24,0.82); box-shadow: 0 12px 34px rgba(0,0,0,0.28); backdrop-filter: blur(16px); text-decoration: none; font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0; transform: translateY(14px); pointer-events: none; transition: opacity 240ms ease, transform 240ms ease, border-color 180ms ease; }
 .ft-back-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.ft-back-top.chat-open { opacity: 0; transform: translateY(14px); pointer-events: none; }
 .ft-back-top:hover, .ft-back-top:focus-visible { border-color: var(--ft-cyan); }
 
 .fast-track-site a:focus-visible, .fast-track-site button:focus-visible { outline: 2px solid var(--ft-cyan); outline-offset: 4px; }
@@ -375,7 +376,7 @@
   .ft-article { grid-template-columns: 36px 1fr; gap: 14px; }
   .ft-article-arrow { display: none; }
   .ft-footer { flex-direction: column; min-height: 220px; }
-  .ft-back-top { right: 16px; bottom: 16px; width: 42px; padding: 0; justify-content: center; }
+  .ft-back-top { right: 20px; bottom: 82px; width: 42px; padding: 0; justify-content: center; }
   .ft-back-top span { display: none; }
 }
 
