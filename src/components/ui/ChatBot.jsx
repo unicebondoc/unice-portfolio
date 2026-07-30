@@ -116,13 +116,13 @@ export default function ChatBot({ nativeCursor = false }) {
 
   const onSuggestedQuestion = (question) => {
     if (!question || isLoading) return
-    const text = question.replace(/\s*[🌿✦📋🤖🌙🏆📩⚡🔮🚀]\s*$/g, '').trim() || question
+    const text = question.replace(/\s*[🌿✦📋🤖🌙🏆📩⚡🔮🚀]\s*$/gu, '').trim() || question
     setInput(text)
     sendMessage(text)
     setInput('')
   }
 
-  const stripEmoji = (q) => (q || '').replace(/\s*[🌿✦📋🤖🌙🏆📩⚡🔮🚀]\s*$/g, '').trim()
+  const stripEmoji = (q) => (q || '').replace(/\s*[🌿✦📋🤖🌙🏆📩⚡🔮🚀]\s*$/gu, '').trim()
   const hasUserSentMessage = messages.some((m) => m.role === 'user')
   const usedTexts = new Set(
     messages
