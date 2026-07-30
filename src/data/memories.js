@@ -173,8 +173,8 @@ export const MEMORIES = [
     orbType: 'primary',
     isPrimary: true,
     description:
-      'A real Shopify business. A real brief. As Software Engineer at UNIKRE Trading, I applied GPT-4 AI content strategies to a live commercial platform — work that fed straight into my Masters capstone and helped earn 88/100. That was the foundation. Then What Was Drawn: gesture-controlled AI, full RAG pipeline, live on the web and submitted to the App Store. Then Ninja Butler: a self-hosted multi-agent personal OS. LandLIT: WhatsApp-native PropTech automation. And Boba Rush: a Unity mobile game. I ship as a sole trader — web, agents, and games — without a net. The only kind that counts.',
-    tags: ['GPT-4', 'OpenAI API', 'What Was Drawn', 'Ninja Butler', 'LandLIT', 'Boba Rush', 'Unity', 'RAG', 'AI Agent', 'Solo Delivery'],
+      'A real Shopify business. A real brief. As Software Engineer at UNIKRE Trading, I applied GPT-4 AI content strategies to a live commercial platform — work that fed straight into my Masters capstone and helped earn 88/100. That was the foundation. Then What Was Drawn: gesture-controlled AI, a full RAG pipeline, live on the web with iOS upcoming. UNIKRE became its physical-product and commerce home. Ninja Butler transitioned from OpenClaw to Hermes and grew into Ninja Clan. LandLIT explores WhatsApp-native PropTech automation. Boba Rush is now in iOS TestFlight. I ship as a sole trader — products, agents, and games — without a net. The only kind that counts.',
+    tags: ['GPT-4', 'OpenAI API', 'What Was Drawn', 'UNIKRE', 'Ninja Clan', 'Hermes', 'LandLIT', 'Boba Rush', 'Unity', 'RAG', 'AI Agent', 'Solo Delivery'],
     skills: [],
     link: '',
     videoSrc: '/memories/videos/05-orb-building-web.mp4',

@@ -1,7 +1,6 @@
 import { Suspense, useEffect, useLayoutEffect, useRef, useMemo, useState, useCallback } from 'react'
 import { Analytics } from '@vercel/analytics/react'
 import HUD from './components/ui/HUD'
-import SacredArtifacts from './components/ui/SacredArtifacts'
 import IntroOverlay from './components/ui/IntroOverlay'
 import { Canvas, useThree, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
@@ -35,10 +34,99 @@ import ExploreHint from './components/ExploreHint'
 import TreasureChest from './components/ui/TreasureChest'
 import ChatBot from './components/ui/ChatBot'
 import TycheMascot from './components/ui/TycheMascot'
-import MobileArtifactPill from './components/ui/MobileArtifactPill'
 import OnboardingHints from './components/ui/OnboardingHints'
 
 const LERP = 0.08
+
+const PRIMARY_LINKS = [
+  { label: 'Work', href: '/work/' },
+  { label: 'About', href: '/about/' },
+  { label: 'Writing', href: '/writing/' },
+]
+
+function ForestNavigation({ isMobile, hidden, onResume }) {
+  const itemStyle = {
+    flex: isMobile ? 1 : 'none',
+    padding: isMobile ? '9px 3px' : '9px 13px',
+    color: 'rgba(224,240,250,0.78)',
+    background: 'transparent',
+    border: 0,
+    textDecoration: 'none',
+    textAlign: 'center',
+    fontFamily: "'Raleway', sans-serif",
+    fontSize: isMobile ? 7 : 9,
+    fontWeight: 600,
+    letterSpacing: isMobile ? 0.7 : 1.5,
+    textTransform: 'uppercase',
+    whiteSpace: 'nowrap',
+    cursor: 'pointer',
+  }
+
+  return (
+    <nav
+      aria-label="Primary navigation"
+      aria-hidden={hidden}
+      style={{
+        position: 'fixed',
+        zIndex: 160,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: isMobile ? 2 : 6,
+        padding: isMobile ? 5 : 6,
+        left: isMobile ? '50%' : 'auto',
+        right: isMobile ? 'auto' : 28,
+        top: isMobile ? 'auto' : 28,
+        bottom: isMobile ? 82 : 'auto',
+        transform: isMobile ? 'translateX(-50%)' : 'none',
+        width: isMobile ? 'calc(100% - 28px)' : 'auto',
+        maxWidth: isMobile ? 390 : 'none',
+        border: '1px solid rgba(126,221,242,0.2)',
+        borderRadius: 999,
+        background: 'rgba(3,12,24,0.76)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        boxShadow: '0 12px 36px rgba(0,0,0,0.28)',
+        pointerEvents: hidden ? 'none' : 'auto',
+        opacity: hidden ? 0 : 1,
+        transition: 'opacity 300ms ease',
+      }}
+    >
+      {PRIMARY_LINKS.map((link) => (
+        <a
+          key={link.href}
+          href={link.href}
+          tabIndex={hidden ? -1 : 0}
+          style={itemStyle}
+        >
+          {link.label}
+        </a>
+      ))}
+      <button type="button" onClick={onResume} tabIndex={hidden ? -1 : 0} style={itemStyle}>
+        Résumé
+      </button>
+      <span
+        aria-current="page"
+        style={{
+          flex: isMobile ? 1 : 'none',
+          padding: isMobile ? '9px 3px' : '9px 13px',
+          borderRadius: 999,
+          color: '#06101b',
+          background: 'linear-gradient(135deg, #d9f6ff, #7eddf2)',
+          textAlign: 'center',
+          fontFamily: "'Raleway', sans-serif",
+          fontSize: isMobile ? 7 : 9,
+          fontWeight: 700,
+          letterSpacing: isMobile ? 0.7 : 1.5,
+          textTransform: 'uppercase',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        Forest
+      </span>
+    </nav>
+  )
+}
 
 // ── Parallax: mouse-normalized -1..1, lerped; desktop only; drives background / orbs ──
 function ParallaxDriver() {
@@ -165,7 +253,7 @@ function SceneBackground() {
 
   useEffect(() => {
     const loader = new THREE.TextureLoader()
-    loader.load('/background.png', (texture) => {
+    loader.load('/background-optimized.jpg', (texture) => {
       texture.colorSpace = THREE.SRGBColorSpace
       applyAspect(texture)
       scene.background = texture
@@ -583,6 +671,7 @@ function preloadImage(src) {
 }
 
 export default function App() {
+  const isEmbedded = new URLSearchParams(window.location.search).get('embed') === '1'
   const sceneReady   = useStore((s) => s.sceneReady)
   const entranceTime = useStore((s) => s.entranceTime)
   const activePanel  = useStore((s) => s.activePanel)
@@ -610,26 +699,17 @@ export default function App() {
     return localStorage.getItem('portfolioMuted') !== 'false'
   })
 
-  // Single background audio element — loop, volume 0.25, muted until user gesture or saved preference
+  // Background audio stays unloaded until the visitor explicitly enables sound.
   useEffect(() => {
-    audioRef.current = new Audio('/audio/background.mp3')
+    audioRef.current = new Audio()
+    audioRef.current.preload = 'none'
+    audioRef.current.src = '/audio/background-loop.mp3'
     audioRef.current.loop = true
     audioRef.current.volume = 0.25
     audioRef.current.muted = true
 
-    const startAudio = () => {
-      audioRef.current.play().catch(() => {})
-      window.removeEventListener('click', startAudio)
-      window.removeEventListener('touchstart', startAudio)
-    }
-
-    window.addEventListener('click', startAudio)
-    window.addEventListener('touchstart', startAudio)
-
     return () => {
       if (audioRef.current) audioRef.current.pause()
-      window.removeEventListener('click', startAudio)
-      window.removeEventListener('touchstart', startAudio)
     }
   }, [])
 
@@ -647,6 +727,7 @@ export default function App() {
     setIsMuted(newMuted)
     if (audioRef.current) {
       audioRef.current.muted = newMuted
+      if (!newMuted) audioRef.current.play().catch(() => {})
     }
     localStorage.setItem('portfolioMuted', newMuted)
   }, [isMuted])
@@ -774,7 +855,7 @@ export default function App() {
     })()
     ;(async () => {
       await Promise.all([
-        preloadImage('/background.png'),
+        preloadImage('/background-optimized.jpg'),
         preloadImage('/memories/belong.png'),
       ])
       if (!cancelled) setImagesReady(true)
@@ -904,7 +985,7 @@ export default function App() {
           position: 'fixed',
           inset: 0,
           zIndex: -1,
-          backgroundImage: 'url(/background.png)',
+          backgroundImage: 'url(/background-optimized.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           filter: 'blur(24px)',
@@ -1009,45 +1090,19 @@ export default function App() {
           )}
         </div>
 
-        {/* Left edge: no dots — nav is Sacred Artifacts sidebar only */}
+        {!isEmbedded && (
+          <>
+            <ForestNavigation
+              isMobile={isMobile}
+              hidden={Boolean(activePanel)}
+              onResume={() => setActivePanel({ type: 'resume' })}
+            />
 
-      {/* Right side intentionally empty (no fixed elements) */}
-
-        {/* ── Left menu (artifacts) — desktop only: fixed left side, vertically centred ── */}
-        <div
-          data-entrance="artifacts"
-          style={{
-            position: 'fixed',
-            left: '20px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            zIndex: 20,
-            display: isMobile ? 'none' : 'flex',
-            flexDirection: 'column',
-            gap: 0,
-            pointerEvents: 'auto',
-            opacity: activePanel?.type === 'memory' ? 0 : 1,
-            transition: activePanel?.type === 'memory' ? 'opacity 300ms ease-out' : 'opacity 400ms ease-out',
-          }}
-        >
-          <SacredArtifacts />
-        </div>
-
-        {isMobile && (
-          <div
-            style={{
-              pointerEvents: activePanel?.type === 'memory' ? 'none' : 'auto',
-              opacity: activePanel?.type === 'memory' ? 0 : 1,
-              transition: 'opacity 400ms ease-out',
-            }}
-          >
-            <MobileArtifactPill />
-          </div>
+            {/* ── Bottom center: Project treasure chest ── */}
+            <TreasureChest />
+            <OnboardingHints />
+          </>
         )}
-
-        {/* ── Bottom center: Project treasure chest ── */}
-        <TreasureChest />
-        <OnboardingHints />
 
         {/* ── Chat + Tyche (bottom-right): wrapper pointer-events none; Tyche has pointer-events auto ── */}
         <div
@@ -1222,6 +1277,8 @@ export default function App() {
         <div
           ref={mainContentRef}
           id="main-content"
+          role="main"
+          aria-label="Interactive portfolio experience"
           data-entrance="canvas"
           style={{
             position: 'fixed',

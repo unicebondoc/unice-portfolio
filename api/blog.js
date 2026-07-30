@@ -9,6 +9,14 @@ const LIMIT = 2
 
 function decodeEntities(str) {
   return str
+    .replace(/&#x([0-9a-f]+);/gi, (entity, value) => {
+      const codePoint = Number.parseInt(value, 16)
+      try { return String.fromCodePoint(codePoint) } catch { return entity }
+    })
+    .replace(/&#([0-9]+);/g, (entity, value) => {
+      const codePoint = Number.parseInt(value, 10)
+      try { return String.fromCodePoint(codePoint) } catch { return entity }
+    })
     .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
@@ -38,7 +46,11 @@ function extractItems(xml) {
     const pubDate = extractTag(block, 'pubDate')
     // Pull a clean excerpt from description, strip HTML tags
     const descRaw = extractTag(block, 'description')
-    const descStripped = descRaw.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
+    const descStripped = descRaw
+      .replace(/<[^>]+>/g, '')
+      .replace(/Continue reading on Medium\s*»?/gi, '')
+      .replace(/\s+/g, ' ')
+      .trim()
     const excerpt = descStripped.length > 160 ? descStripped.slice(0, 157) + '…' : descStripped
 
     if (title && link) {

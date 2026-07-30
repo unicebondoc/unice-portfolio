@@ -35,8 +35,10 @@ export default function BlogPanel({ onClose }) {
   return (
     <div
       className={styles.backdrop}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="writings-title"
       onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
-      aria-label="Writings"
     >
       <div className={styles.panel} onClick={(e) => e.stopPropagation()}>
         <button
@@ -48,7 +50,7 @@ export default function BlogPanel({ onClose }) {
 
         <header className={styles.header}>
           <span className={styles.sparkle} aria-hidden>❋</span>
-          <h2 className={styles.title}>WRITINGS</h2>
+          <h2 id="writings-title" className={styles.title}>WRITINGS</h2>
           <p className={styles.subtitle}>thoughts & articles</p>
         </header>
 

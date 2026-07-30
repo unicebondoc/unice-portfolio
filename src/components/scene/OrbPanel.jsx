@@ -235,6 +235,9 @@ export default function OrbPanel({
 
   return (
     <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={`memory-title-${m.id}`}
       className={`${styles.anchor} ${mobile ? styles.anchorMobileCenter : styles.anchorCenter} ${visible ? (revealed ? styles.panelVisible : styles.panelEnter) : styles.panelEnter}`}
       style={{
         ['--panel-diameter']: m.videoSrc ? PANEL_SIZE_VIDEO : PANEL_SIZE_DEFAULT,
@@ -427,7 +430,7 @@ export default function OrbPanel({
                 )}
 
                 <p className={styles.metaLine}>{metaLine}</p>
-                <h2 className={styles.title}>{m.title}</h2>
+                <h2 id={`memory-title-${m.id}`} className={styles.title}>{m.title}</h2>
                 <p
                   className={styles.subtitle}
                   style={m.isRoot ? { marginBottom: '8px' } : {}}

@@ -124,7 +124,9 @@ export default function SkillsPanel({ onClose }) {
   return (
     <div
       className={styles.anchor}
-      aria-label="Skills & tech stack"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="skills-title"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div className={styles.panel} onClick={(e) => e.stopPropagation()}>
@@ -137,7 +139,7 @@ export default function SkillsPanel({ onClose }) {
         <div className={styles.headerGlow} aria-hidden />
         <header className={styles.header}>
           <span className={styles.sparkle} aria-hidden>✦</span>
-          <h2 className={styles.title}>SKILLS</h2>
+          <h2 id="skills-title" className={styles.title}>SKILLS</h2>
           <p className={styles.subtitle}>what i know</p>
         </header>
         <div className={styles.grid}>

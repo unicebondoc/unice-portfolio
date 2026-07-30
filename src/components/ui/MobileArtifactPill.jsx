@@ -1,9 +1,9 @@
 /**
  * MobileArtifactPill — labeled floating pill nav for mobile only.
- * Four tabs: Skills, Résumé, Writings, Projects.
- * Projects tab opens an inline bottom-sheet listing all projects; tap any to see the full modal.
+ * Four tabs: Skills, Résumé, Writings, Vault.
+ * Vault opens an inline bottom-sheet listing all projects; tap any to see the full modal.
  */
-import { useState, useCallback, useEffect } from 'react'
+import { Fragment, useState, useCallback, useEffect } from 'react'
 import useStore from '../../hooks/useStore'
 import { PROJECTS } from '../../data/projects'
 
@@ -16,7 +16,12 @@ function ProjectDetailModal({ project, onClose }) {
   }, [])
 
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 3000, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', pointerEvents: 'auto' }}>
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={`mobile-project-title-${project.id}`}
+      style={{ position: 'fixed', inset: 0, zIndex: 2147483647, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', pointerEvents: 'auto' }}
+    >
       {/* backdrop */}
       <div
         onClick={onClose}
@@ -66,7 +71,7 @@ function ProjectDetailModal({ project, onClose }) {
             ✦ Flagship Project ✦
           </p>
         )}
-        <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 20, fontWeight: 700, color: '#fff', margin: '0 0 6px', textAlign: 'center', textShadow: `0 0 20px ${project.glowSoft}` }}>
+        <h2 id={`mobile-project-title-${project.id}`} style={{ fontFamily: "'Cinzel', serif", fontSize: 20, fontWeight: 700, color: '#fff', margin: '0 0 6px', textAlign: 'center', textShadow: `0 0 20px ${project.glowSoft}` }}>
           {project.title}
         </h2>
         <p style={{ fontFamily: "'Raleway', sans-serif", fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: `${project.color}cc`, margin: '0 0 4px', textAlign: 'center' }}>
@@ -119,10 +124,11 @@ function ProjectsSheet({ onClose, onSelectProject }) {
   }, [])
 
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 2500, display: 'flex', alignItems: 'flex-end', pointerEvents: 'auto' }}>
+    <div role="dialog" aria-modal="true" aria-label="Project vault" style={{ position: 'fixed', inset: 0, zIndex: 2147483647, display: 'flex', alignItems: 'flex-end', pointerEvents: 'auto' }}>
       <div onClick={onClose} style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)', opacity: visible ? 1 : 0, transition: 'opacity 0.3s ease', cursor: 'pointer' }} />
       <div style={{
         position: 'relative', zIndex: 1, width: '100%',
+        maxHeight: '82vh', overflowY: 'auto',
         background: 'linear-gradient(180deg, rgba(8,18,40,0.97) 0%, rgba(4,10,24,0.98) 100%)',
         border: '1px solid rgba(100,180,255,0.12)',
         borderRadius: '20px 20px 0 0',
@@ -134,7 +140,7 @@ function ProjectsSheet({ onClose, onSelectProject }) {
       }}>
         <div style={{ width: 36, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.15)', margin: '0 auto 16px' }} />
         <p style={{ fontFamily: "'Cinzel', serif", fontSize: 11, letterSpacing: 4, color: 'rgba(200,230,255,0.6)', textTransform: 'uppercase', textAlign: 'center', margin: '0 0 16px' }}>
-          ✦ Projects
+          ✦ Project Vault
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {PROJECTS.map((p) => (
@@ -252,16 +258,15 @@ export default function MobileArtifactPill() {
           { key: 'skills',    icon: '✦',  label: 'Skills'    },
           { key: 'resume',    icon: '◈',  label: 'Résumé'    },
           { key: 'writings',  icon: '✧',  label: 'Writings'  },
-          { key: 'projects',  icon: '◇',  label: 'Projects'  },
+          { key: 'projects',  icon: '◇',  label: 'Vault'  },
         ].map((tab, i) => {
           const isActive = tab.key === activeArtifact || (tab.key === 'projects' && showProjectsSheet)
           return (
-            <>
+            <Fragment key={tab.key}>
               {i > 0 && (
-                <div key={`sep-${tab.key}`} style={{ width: 1, height: 32, background: 'rgba(255,255,255,0.06)', alignSelf: 'center' }} />
+                <div style={{ width: 1, height: 32, background: 'rgba(255,255,255,0.06)', alignSelf: 'center' }} />
               )}
               <button
-                key={tab.key}
                 type="button"
                 onClick={() => openArtifact(tab.key)}
                 style={{
@@ -283,7 +288,7 @@ export default function MobileArtifactPill() {
                   {tab.label}
                 </span>
               </button>
-            </>
+            </Fragment>
           )
         })}
       </div>
