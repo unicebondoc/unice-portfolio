@@ -186,7 +186,7 @@ function WorkSections() {
 
           <article className="ft-flagship-card amber">
             <div className="ft-card-media unikre">
-              <img src="/projects/unikre-box.jpg" alt="The Quiet Whiskers Oracle deck by UNIKRE" />
+              <img src="/projects/unikre-product-world.jpg" alt="The Quiet Whiskers Oracle deck and illustrated cards by UNIKRE" />
               <span className="ft-status">LIVE BRAND WEBSITE</span>
             </div>
             <div className="ft-card-body">
@@ -240,14 +240,6 @@ function WorkSections() {
         </div>
       </section>
 
-      <section className="ft-cta ft-shell">
-        <p className="ft-kicker">NEXT · THE BUILDER BEHIND THE WORK</p>
-        <h2>The products are proof. Curiosity is the thread.</h2>
-        <div className="ft-hero-actions">
-          <a className="ft-button primary" href="#about">Meet Unice</a>
-          <a className="ft-button" href="#writing">Read the build notes</a>
-        </div>
-      </section>
     </>
   )
 }
@@ -317,9 +309,25 @@ function AboutSections({ onResume }) {
   return (
     <>
       <section id="about" className="ft-hero ft-shell about-hero ft-scroll-section ft-chapter-hero">
-        <p className="ft-kicker">03 · ABOUT UNICE</p>
-        <h2 className="ft-chapter-title">Story first. Systems always.</h2>
-        <p className="ft-hero-copy">I build where systems, stories, and people meet. My path runs from broadcasting and banking operations to AI products, private agents, and mobile games.</p>
+        <div className="ft-about-hero-grid">
+          <div className="ft-about-intro">
+            <p className="ft-kicker">03 · ABOUT UNICE</p>
+            <h2 className="ft-chapter-title">Story first. Systems always.</h2>
+            <p className="ft-hero-copy">I’m Unice Bondoc, an independent AI engineer and product builder in Sydney. I started in broadcasting and banking operations—worlds that taught me how people move through systems when the stakes are real. Today, I turn that instinct into AI products, private agents, and games.</p>
+            <div className="ft-social-row" aria-label="Connect with Unice">
+              <a href="https://www.linkedin.com/in/unicebondoc/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+              <a href="https://github.com/unicebondoc" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+              <a href="https://medium.com/@unicebondoc" target="_blank" rel="noopener noreferrer">Medium ↗</a>
+              <a href="mailto:uniceabondoc@gmail.com">Email ↗</a>
+              <button type="button" onClick={onResume}>Résumé</button>
+            </div>
+          </div>
+          <figure className="ft-portrait-card">
+            <div className="ft-portrait-orbit" aria-hidden />
+            <img src="/profile-unice.jpg" alt="Unice Bondoc in Sydney" />
+            <figcaption><strong>UNICE BONDOC</strong><span>AI engineer · product builder · Sydney</span></figcaption>
+          </figure>
+        </div>
       </section>
 
       <section className="ft-section ft-shell about-grid">

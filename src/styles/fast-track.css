@@ -171,7 +171,7 @@
 .ft-card-media { position: relative; height: 330px; display: grid; place-items: center; overflow: hidden; background: #050b16; }
 .ft-card-media img { width: 100%; height: 100%; object-fit: cover; }
 .ft-card-media.unikre { background: radial-gradient(circle at 50% 42%, rgba(231, 174, 90, 0.24), transparent 46%), #070b13; }
-.ft-card-media.unikre img { width: 76%; height: 88%; object-fit: contain; mix-blend-mode: screen; }
+.ft-card-media.unikre img { width: 100%; height: 100%; min-height: 0; object-fit: contain; }
 .ft-status { position: absolute; top: 18px; left: 18px; padding: 8px 11px; border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 999px; color: #fff; background: rgba(3, 9, 18, 0.72); backdrop-filter: blur(10px); font-size: 8px; font-weight: 600; letter-spacing: 0.16em; }
 .ft-card-body { padding: 32px; }
 .ft-card-body h3, .ft-project-card h3, .ft-now-card h3 { margin: 0; font: 500 30px/1.15 'Cinzel', serif; }
@@ -259,6 +259,20 @@
 @keyframes ftModalEnter { from { opacity: 0; transform: scale(.96) translateY(16px); } }
 
 .about-hero, .writing-hero { min-height: 520px; }
+.ft-about-hero-grid { width: 100%; display: grid; grid-template-columns: minmax(0, 1.22fr) minmax(300px, .78fr); gap: 72px; align-items: center; }
+.ft-about-intro { min-width: 0; }
+.ft-about-intro .ft-chapter-title { font-size: clamp(44px, 5.7vw, 78px); }
+.ft-about-intro .ft-hero-copy { max-width: 760px; font-size: clamp(16px, 1.55vw, 20px); }
+.ft-social-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+.ft-social-row a, .ft-social-row button { min-height: 40px; display: inline-flex; align-items: center; padding: 0 15px; border: 1px solid rgba(126,221,242,.2); border-radius: 999px; color: #dceaf6; background: rgba(5,15,29,.58); text-decoration: none; font: 600 10px 'Raleway', sans-serif; letter-spacing: .07em; cursor: pointer; transition: color 180ms ease, border-color 180ms ease, transform 180ms ease; }
+.ft-social-row a:hover, .ft-social-row a:focus-visible, .ft-social-row button:hover, .ft-social-row button:focus-visible { color: #fff; border-color: rgba(126,221,242,.6); transform: translateY(-2px); }
+.ft-portrait-card { position: relative; width: min(390px, 100%); margin: 0 auto; padding: 18px; border: 1px solid rgba(126,221,242,.2); border-radius: 50% 50% 28px 28px; background: radial-gradient(circle at 50% 34%, rgba(126,221,242,.17), transparent 60%), rgba(4,12,25,.82); box-shadow: 0 34px 100px rgba(0,0,0,.42), 0 0 70px rgba(126,221,242,.09); }
+.ft-portrait-card img { position: relative; z-index: 1; display: block; width: 100%; aspect-ratio: 1; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,.12); }
+.ft-portrait-card figcaption { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 5px; margin-top: 14px; padding: 15px 8px 4px; text-align: center; }
+.ft-portrait-card figcaption strong { font: 600 12px 'Cinzel', serif; letter-spacing: .16em; }
+.ft-portrait-card figcaption span { color: var(--ft-muted); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
+.ft-portrait-orbit { position: absolute; z-index: 0; inset: 6px; border: 1px solid rgba(126,221,242,.14); border-radius: 50%; animation: ftOrbit 16s linear infinite; }
+.ft-portrait-orbit::after { content: ''; position: absolute; width: 8px; height: 8px; top: 12%; right: 13%; border-radius: 50%; background: var(--ft-cyan); box-shadow: 0 0 18px var(--ft-cyan); }
 .about-grid { display: grid; grid-template-columns: 1.35fr 0.65fr; gap: 70px; align-items: start; }
 .ft-about-copy p { margin: 24px 0 0; color: var(--ft-muted); font-size: 17px; line-height: 1.85; }
 .ft-now-card { position: sticky; top: 30px; padding: 30px; border: 1px solid rgba(227, 189, 104, 0.24); border-radius: 22px; background: rgba(8, 17, 31, 0.9); }
@@ -300,7 +314,7 @@
   .ft-nav { gap: 16px; }
   .ft-hero { min-height: 540px; padding-top: 72px; }
   .ft-hero h1, .ft-hero .ft-chapter-title { font-size: clamp(42px, 11vw, 62px); }
-  .ft-hero-grid, .ft-proof-row, .ft-flagship-grid, .ft-project-grid, .about-grid, .ft-timeline, .ft-capability-grid, .ft-core-portal { grid-template-columns: 1fr; }
+  .ft-hero-grid, .ft-proof-row, .ft-flagship-grid, .ft-project-grid, .about-grid, .ft-timeline, .ft-capability-grid, .ft-core-portal, .ft-about-hero-grid { grid-template-columns: 1fr; }
   .ft-project-card:last-child:nth-child(odd) { grid-column: auto; }
   .ft-hero-art { width: min(620px, 100%); margin-top: 28px; transform: none; }
   .ft-hero-art:hover, .ft-hero-art:focus-visible { transform: translateY(-4px); }
@@ -308,6 +322,8 @@
   .ft-project-card { grid-template-columns: 110px 1fr; }
   .ft-project-image, .ft-project-sigil { width: 110px; height: 150px; }
   .ft-now-card { position: relative; top: 0; }
+  .ft-about-hero-grid { gap: 48px; }
+  .ft-portrait-card { width: min(360px, 82vw); }
   .ft-cta { padding: 42px; }
   .ft-core-portal { gap: 48px; }
   .ft-core-stage { width: min(650px, 100%); margin-inline: auto; transform: none; }
@@ -336,6 +352,7 @@
   .ft-proof-row span { min-height: 70px; }
   .ft-section { padding: 76px 0; }
   .ft-card-media { height: 230px; }
+  .ft-card-media.unikre { height: auto; aspect-ratio: 4 / 3; }
   .ft-card-body { padding: 24px; }
   .ft-project-card { grid-template-columns: 1fr; }
   .ft-project-image, .ft-project-sigil { width: 100%; height: 220px; }
@@ -352,6 +369,9 @@
   .ft-core-modal { padding: 0; }
   .ft-core-modal-frame { height: 100%; border: 0; border-radius: 0; }
   .ft-core-modal-bar span { max-width: 190px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ft-about-intro .ft-chapter-title { font-size: clamp(40px, 12vw, 54px); }
+  .ft-social-row { gap: 8px; }
+  .ft-social-row a, .ft-social-row button { min-height: 38px; padding-inline: 13px; }
   .ft-article { grid-template-columns: 36px 1fr; gap: 14px; }
   .ft-article-arrow { display: none; }
   .ft-footer { flex-direction: column; min-height: 220px; }
@@ -364,5 +384,6 @@
   .fast-track-site::before { background-attachment: initial; }
   .ft-art-orbit { animation: none; }
   .ft-core-halo, .ft-core-memory, .ft-core-marquee { animation: none; }
+  .ft-portrait-orbit { animation: none; }
   .ft-reveal { opacity: 1; transform: none; filter: none; transition: none; }
 }
