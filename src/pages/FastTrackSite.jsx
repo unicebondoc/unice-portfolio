@@ -131,7 +131,7 @@ function WorkSections() {
             <p className="ft-kicker">02 · SELECTED WORK · 2024—2026</p>
             <h1>Products with a pulse.</h1>
             <p className="ft-hero-copy">
-              I design and ship AI, mobile, agent, and game systems end to end—combining technical depth with experiences people can feel.
+              AI, mobile, agents, and games—built with the rigour to work and the character to be remembered.
             </p>
             <div className="ft-hero-actions">
               <a className="ft-button primary" href="#flagships">See the work</a>
@@ -158,7 +158,7 @@ function WorkSections() {
       <section id="flagships" className="ft-section ft-shell">
         <div className="ft-section-heading">
           <p className="ft-kicker">THE QUIET WHISKERS UNIVERSE</p>
-          <h2>One product world, two live experiences.</h2>
+          <h2>One world. Two ways to enter.</h2>
           <p>UNIKRE is the brand and physical-product home. What Was Drawn turns the same oracle world into a gesture-controlled AI experience, with native iOS upcoming.</p>
         </div>
 
@@ -242,7 +242,7 @@ function WorkSections() {
 
       <section className="ft-cta ft-shell">
         <p className="ft-kicker">NEXT · THE BUILDER BEHIND THE WORK</p>
-        <h2>Products are the output. Curiosity is the operating system.</h2>
+        <h2>The products are proof. Curiosity is the thread.</h2>
         <div className="ft-hero-actions">
           <a className="ft-button primary" href="#about">Meet Unice</a>
           <a className="ft-button" href="#writing">Read the build notes</a>
@@ -260,7 +260,7 @@ function CoreMemoriesSection({ onLaunch }) {
           <p className="ft-kicker">01 · CORE MEMORIES · INTERACTIVE ORIGIN</p>
           <h2>A portfolio you enter, not just read.</h2>
           <p className="ft-core-lede">
-            Core Memories turns my path—from Manila to Sydney, from operations to AI engineering—into a living forest. Each light is a chapter. Each artifact opens a project. Tyche is the AI familiar who helps visitors find the thread connecting it all.
+            Each light holds a chapter. Each artifact opens a project. Together, they trace a path from Manila to Sydney—and from operations into AI, products, and play. Tyche is the quiet guide through it all.
           </p>
           <div className="ft-core-features" aria-label="Core Memories experience features">
             <div><strong>07</strong><span>memory orbs</span></div>
@@ -319,12 +319,12 @@ function AboutSections({ onResume }) {
       <section id="about" className="ft-hero ft-shell about-hero ft-scroll-section ft-chapter-hero">
         <p className="ft-kicker">03 · ABOUT UNICE</p>
         <h2 className="ft-chapter-title">Story first. Systems always.</h2>
-        <p className="ft-hero-copy">I’m an independent AI engineer and product builder based in Sydney. My path runs from broadcasting and banking operations to research, full-stack delivery, agent systems, and mobile games.</p>
+        <p className="ft-hero-copy">I build where systems, stories, and people meet. My path runs from broadcasting and banking operations to AI products, private agents, and mobile games.</p>
       </section>
 
       <section className="ft-section ft-shell about-grid">
         <div className="ft-about-copy">
-          <h2>I build across the whole product.</h2>
+          <h2>I stay for the whole build.</h2>
           <p>Research, architecture, interfaces, deployment, evaluation, and the awkward final ten percent where a prototype becomes something another person can actually use.</p>
           <p>My Master of ICT capstone at Western Sydney University tested AI-generated content against human-written content in a live commerce setting. The AI content produced 165% more page views and 82% longer time on page; the work received 88/100, High Distinction.</p>
           <p>Today I’m building an interconnected portfolio: customer-facing AI products, an evolving private agent operating system, and mobile game experiments.</p>
@@ -345,7 +345,7 @@ function AboutSections({ onResume }) {
       <section className="ft-section ft-shell">
         <div className="ft-section-heading compact">
           <p className="ft-kicker">EVOLUTION OF AN AGENT SYSTEM</p>
-          <h2>Ninja Butler became Ninja Clan.</h2>
+          <h2>One machine. Then a butler. Now a clan.</h2>
           <p>What began as a local assistant on a repurposed iMac became a dependable private operating system. Each migration solved a real constraint: local experimentation, always-on availability, safer routing, and finally a wider clan of specialised agents.</p>
         </div>
         <div className="ft-timeline">
@@ -357,7 +357,7 @@ function AboutSections({ onResume }) {
       </section>
 
       <section className="ft-section ft-shell">
-        <div className="ft-section-heading compact"><p className="ft-kicker">CORE CAPABILITIES</p><h2>Depth with range.</h2></div>
+        <div className="ft-section-heading compact"><p className="ft-kicker">CORE CAPABILITIES</p><h2>Range, without losing depth.</h2></div>
         <div className="ft-capability-grid">
           <div><strong>AI PRODUCTS</strong><p>LLMs, RAG, evaluation, tool calling, multimodal interactions, computer vision.</p></div>
           <div><strong>FULL-STACK DELIVERY</strong><p>React, TypeScript, Python, FastAPI, Supabase, APIs, Docker, Vercel, Railway.</p></div>
@@ -375,7 +375,7 @@ function WritingSections() {
       <section id="writing" className="ft-hero ft-shell writing-hero ft-scroll-section ft-chapter-hero">
         <p className="ft-kicker">04 · NOTES FROM THE BUILD</p>
         <h2 className="ft-chapter-title">Writing about systems that feel alive.</h2>
-        <p className="ft-hero-copy">Field notes on AI models, product experiments, creative engineering, and the strange decisions behind building technology with a point of view.</p>
+        <p className="ft-hero-copy">Field notes from the strange middle—where AI becomes useful, experiments become products, and unusual ideas earn their place.</p>
       </section>
       <section className="ft-section ft-shell">
         <div className="ft-article-list">
