@@ -146,6 +146,7 @@
 .ft-hero-art::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(140deg, rgba(255,255,255,0.08), transparent 30%, transparent 70%, rgba(31,145,225,0.08)); }
 .ft-hero-art:hover, .ft-hero-art:focus-visible { transform: perspective(1000px) rotateY(0) translateY(-6px); border-color: rgba(126, 221, 242, 0.5); box-shadow: 0 46px 110px rgba(0, 0, 0, 0.54), 0 0 80px rgba(54, 179, 246, 0.17); }
 .ft-hero-art img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.ft-work-art img { aspect-ratio: 1200 / 630; object-fit: contain; }
 .ft-art-orbit { position: absolute; z-index: 2; width: 64%; aspect-ratio: 1; left: 18%; top: 6%; border: 1px solid rgba(126, 221, 242, 0.2); border-radius: 50%; box-shadow: inset 0 0 38px rgba(126, 221, 242, 0.06); animation: ftOrbit 12s linear infinite; }
 .ft-art-orbit::before, .ft-art-orbit::after { content: ''; position: absolute; width: 7px; height: 7px; border-radius: 50%; background: var(--ft-cyan); box-shadow: 0 0 16px var(--ft-cyan); }
 .ft-art-orbit::before { top: 12%; left: 14%; }

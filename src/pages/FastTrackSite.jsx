@@ -138,7 +138,7 @@ function WorkSections() {
               <a className="ft-button" href="#about">Meet the builder</a>
             </div>
           </div>
-          <a className="ft-hero-art" href="#flagships" aria-label="Explore Unice's selected product work">
+          <a className="ft-hero-art ft-work-art" href="#flagships" aria-label="Explore Unice's selected product work">
             <span className="ft-art-orbit" aria-hidden />
             <img
               src="/projects/what-was-drawn.jpg"
