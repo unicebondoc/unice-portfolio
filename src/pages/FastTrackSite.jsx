@@ -80,7 +80,7 @@ function SiteHeader({ activeSection, onNavigate, onResume }) {
         </span>
       </a>
       <nav className="ft-nav" aria-label="Portfolio navigation">
-        <a className={activeSection === 'core-memories' ? 'active' : ''} aria-current={activeSection === 'core-memories' ? 'location' : undefined} href="#core-memories" onClick={(event) => handleSectionClick(event, 'core-memories')}>Core</a>
+        <a className={activeSection === 'core-memories' ? 'active' : ''} aria-current={activeSection === 'core-memories' ? 'location' : undefined} href="#core-memories" onClick={(event) => handleSectionClick(event, 'core-memories')}>Forest</a>
         <a className={activeSection === 'work' ? 'active' : ''} aria-current={activeSection === 'work' ? 'location' : undefined} href="#work" onClick={(event) => handleSectionClick(event, 'work')}>Work</a>
         <a className={activeSection === 'about' ? 'active' : ''} aria-current={activeSection === 'about' ? 'location' : undefined} href="#about" onClick={(event) => handleSectionClick(event, 'about')}>About</a>
         <a className={activeSection === 'writing' ? 'active' : ''} aria-current={activeSection === 'writing' ? 'location' : undefined} href="#writing" onClick={(event) => handleSectionClick(event, 'writing')}>Writing</a>
