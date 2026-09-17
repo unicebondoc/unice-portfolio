@@ -3,48 +3,15 @@ import ResumePanel from '../components/ui/ResumePanel'
 import ChatBot from '../components/ui/ChatBot'
 import TycheMascot from '../components/ui/TycheMascot'
 import useStore from '../hooks/useStore'
+import { PROJECTS } from '../data/projects'
 import '../styles/fast-track.css'
 
-const PAGE_TITLE = 'Unice Bondoc — AI Engineer & Product Builder'
-const PAGE_DESCRIPTION = 'AI, mobile, agent, game, and interactive products designed and shipped by Unice Bondoc.'
+const PAGE_TITLE = 'Unice Bondoc — Founder & Builder | ONQST'
+const PAGE_DESCRIPTION = 'Sydney-based founder and product engineer building AI, software and interactive experiences. Explore selected work and the Core Memories forest.'
 
 function scrollToSection(id, behavior = 'smooth') {
   document.getElementById(id)?.scrollIntoView({ behavior, block: 'start' })
 }
-
-const secondaryProjects = [
-  {
-    name: 'Ninja Clan',
-    eyebrow: 'LIVE SYSTEM · HERMES',
-    description:
-      'A self-hosted personal AI operating system spanning Telegram, Gmail, Calendar, TickTick, and a Mac build worker. It began as Ninja Butler on OpenClaw and a repurposed Linux iMac, moved to an always-on Linux VPS, then transitioned to Hermes and evolved into the wider Ninja Clan system.',
-    proof: 'Multi-agent routing · private VPS runtime · read-only bridges · deterministic daily operations',
-    image: '/projects/ninja-clan.png',
-    imageAlt: 'Ninja Clan cat-ninja emblem',
-    tone: 'violet',
-    links: [{ label: 'View source', href: 'https://github.com/unicebondoc/ninja-butler' }],
-  },
-  {
-    name: 'Boba Rush',
-    eyebrow: 'TESTFLIGHT · UNITY 6',
-    description:
-      'A portrait casual mobile game about serving bubble tea under pressure, with customer patience, combo scoring, rewarded-ad recovery, analytics, haptics, and custom editor tooling.',
-    proof: 'Unity 6 · C# · iOS · gameplay systems · mobile release pipeline',
-    image: '/projects/boba-rush.jpg',
-    imageAlt: 'Boba Rush gameplay showing a bubble tea order',
-    tone: 'rose',
-    links: [],
-  },
-  {
-    name: 'LandLIT',
-    eyebrow: 'IN DEVELOPMENT · PROPTECH',
-    description:
-      'A WhatsApp-native property-management product for rent reminders, lease-expiry alerts, tenant workflows, and operational visibility. Built as an active development project, not presented as a live production deployment.',
-    proof: 'Next.js · TypeScript · Supabase · PostgreSQL · Twilio · OpenAI',
-    tone: 'emerald',
-    links: [{ label: 'View source', href: 'https://github.com/unicebondoc/landlit' }],
-  },
-]
 
 const articles = [
   {
@@ -79,7 +46,7 @@ function SiteHeader({ activeSection, onNavigate, onResume }) {
         <span className="ft-brand-mark">U</span>
         <span>
           <strong>UNICE BONDOC</strong>
-          <small>AI · MOBILE · AGENT SYSTEMS</small>
+          <small>FOUNDER · BUILDER · ONQST</small>
         </span>
       </a>
       <nav className="ft-nav" aria-label="Portfolio navigation">
@@ -114,7 +81,7 @@ function Footer() {
     <footer className="ft-footer">
       <div>
         <strong>BUILDING INTELLIGENT PRODUCTS</strong>
-        <p>Sydney, Australia · Available for product partnerships and thoughtful collaborations.</p>
+        <p>Sydney, Australia · Open to product engineering roles, collaborations, and interesting conversations.</p>
       </div>
       <div className="ft-footer-links">
         <a href="https://www.linkedin.com/in/unicebondoc/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
@@ -125,124 +92,64 @@ function Footer() {
   )
 }
 
-function WorkSections() {
+function ProjectCard({ project, onLaunch }) {
+  return (
+    <article className="ft-flagship-card ft-selected-card" id={`project-${project.id}`}>
+      {project.image ? (
+        <div className="ft-card-media"><img src={project.image} alt={project.imageAlt} loading="lazy" /></div>
+      ) : (
+        <div className="ft-project-monogram" aria-hidden="true" style={{ color: project.color }}>
+          <span>{project.id === 'flatsync' ? 'FS' : 'CC'}</span>
+          <small>{project.id === 'flatsync' ? 'A LITTLE MORE IN SYNC.' : 'BUILT TOGETHER.'}</small>
+        </div>
+      )}
+      <div className="ft-card-body">
+        <p className="ft-kicker">{project.subtitle}</p>
+        <h3>{project.title}</h3>
+        <p>{project.description}</p>
+        <p className="ft-proof">{project.stack.join(' · ')}</p>
+        <details className="ft-case-study">
+          <summary>Read the case study</summary>
+          <dl>
+            <dt>The challenge</dt><dd>{project.caseStudy.challenge}</dd>
+            <dt>My contribution</dt><dd>{project.caseStudy.contribution}</dd>
+            <dt>Where it stands</dt><dd>{project.caseStudy.result}</dd>
+          </dl>
+        </details>
+        <div className="ft-card-actions">
+          {project.links.live && <a className="ft-text-link" href={project.links.live} target="_blank" rel="noopener noreferrer">Visit website ↗</a>}
+          {project.links.github && <a className="ft-text-link" href={project.links.github} target="_blank" rel="noopener noreferrer">View team repository ↗</a>}
+          {project.id === 'core-memories' && <button type="button" className="ft-text-link ft-inline-button" onClick={onLaunch}>Explore the forest ↗</button>}
+          {!project.links.live && !project.links.github && project.id !== 'core-memories' && <a className="ft-text-link" href="mailto:uniceabondoc@gmail.com">Ask me about the work ↗</a>}
+        </div>
+      </div>
+    </article>
+  )
+}
+
+function WorkSections({ onLaunch }) {
   return (
     <>
-      <section id="work" className="ft-hero ft-shell ft-scroll-section">
-        <div className="ft-hero-grid">
-          <div className="ft-hero-content">
-            <p className="ft-kicker">02 · SELECTED WORK · 2024—2026</p>
-            <h1>Products with a pulse.</h1>
-            <p className="ft-hero-copy">
-              AI, mobile, agents, and games—built with the rigour to work and the character to be remembered.
-            </p>
-            <div className="ft-hero-actions">
-              <a className="ft-button primary" href="#flagships">See the work</a>
-              <a className="ft-button" href="#about">Meet the builder</a>
-            </div>
-          </div>
-          <a className="ft-hero-art ft-work-art" href="#flagships" aria-label="Explore Unice's selected product work">
-            <span className="ft-art-orbit" aria-hidden />
-            <img
-              src="/projects/what-was-drawn.jpg"
-              alt="What Was Drawn gesture-controlled oracle experience"
-              fetchPriority="high"
-            />
-            <span className="ft-art-caption"><strong>SELECTED WORK</strong> LIVE AI · MOBILE · INTERACTIVE PRODUCTS <b>EXPLORE ↓</b></span>
-          </a>
-        </div>
-        <div className="ft-proof-row" aria-label="Portfolio overview">
-          <span><strong>02</strong> live customer experiences</span>
-          <span><strong>01</strong> private agent operating system</span>
-          <span><strong>01</strong> iOS game in TestFlight</span>
-        </div>
-      </section>
-
-      <section id="flagships" className="ft-section ft-shell">
+      <section id="work" className="ft-section ft-shell ft-scroll-section">
         <div className="ft-section-heading">
-          <p className="ft-kicker">THE QUIET WHISKERS UNIVERSE</p>
-          <h2>One world. Two ways to enter.</h2>
-          <p>UNIKRE is the brand and physical-product home. What Was Drawn turns the same oracle world into a gesture-controlled AI experience, with native iOS upcoming.</p>
+          <p className="ft-kicker">02 · SELECTED WORK</p>
+          <h2>Three ways I build.</h2>
+          <p>AI that people can interact with. Software that handles everyday complexity. Experiences that feel like somewhere worth exploring.</p>
         </div>
-
-        <div className="ft-flagship-grid">
-          <article className="ft-flagship-card gold">
-            <div className="ft-card-media wwd">
-              <img src="/projects/what-was-drawn.jpg" alt="What Was Drawn oracle card web experience" />
-              <span className="ft-status">WEB LIVE · iOS UPCOMING</span>
-            </div>
-            <div className="ft-card-body">
-              <p className="ft-kicker">GESTURE AI · RAG · COMPUTER VISION</p>
-              <h3>What Was Drawn</h3>
-              <p>Draw oracle cards with real-time hand gestures and receive a personalised three-card reading through a full retrieval-augmented generation pipeline.</p>
-              <ul className="ft-evidence-list">
-                <li>MediaPipe hand tracking with tap-based mobile fallback</li>
-                <li>FastAPI, LangChain, Pinecone, OpenAI, Docker</li>
-                <li>Live web product with a native iOS experience upcoming</li>
-              </ul>
-              <div className="ft-card-actions">
-                <a className="ft-text-link" href="https://www.whatwasdrawn.com/" target="_blank" rel="noopener noreferrer">Visit live site ↗</a>
-                <a className="ft-text-link muted" href="https://github.com/unicebondoc/whatwasdrawn" target="_blank" rel="noopener noreferrer">Source ↗</a>
-              </div>
-            </div>
-          </article>
-
-          <article className="ft-flagship-card amber">
-            <div className="ft-card-media unikre">
-              <img src="/projects/unikre-product-world.jpg" alt="The Quiet Whiskers Oracle deck and illustrated cards by UNIKRE" />
-              <span className="ft-status">LIVE BRAND WEBSITE</span>
-            </div>
-            <div className="ft-card-body">
-              <p className="ft-kicker">BRAND · 3D COMMERCE · PHYSICAL PRODUCT</p>
-              <h3>UNIKRE</h3>
-              <p>A cinematic commerce and brand experience for The Quiet Whiskers Oracle—a 44-card deck and guidebook connected directly to the digital reading experience.</p>
-              <ul className="ft-evidence-list">
-                <li>Interactive 3D product presentation with a real deck render</li>
-                <li>Next.js, React Three Fiber, motion, analytics, commerce CTAs</li>
-                <li>Connects the physical deck, Etsy storefront, and What Was Drawn</li>
-              </ul>
-              <div className="ft-card-actions">
-                <a className="ft-text-link" href="https://unikre.com.au/" target="_blank" rel="noopener noreferrer">Visit live site ↗</a>
-                <a className="ft-text-link muted" href="https://github.com/unicebondoc/unikre-website" target="_blank" rel="noopener noreferrer">Source ↗</a>
-              </div>
-            </div>
-          </article>
+        <div id="flagships" className="ft-selected-grid">
+          {PROJECTS.filter(project => project.flagship).map(project => <ProjectCard key={project.id} project={project} onLaunch={onLaunch} />)}
         </div>
       </section>
-
       <section className="ft-section ft-shell">
-        <div className="ft-section-heading compact">
-          <p className="ft-kicker">SYSTEMS & EXPERIMENTS</p>
-          <h2>Built beyond the browser.</h2>
+        <div className="ft-section-heading">
+          <p className="ft-kicker">BEYOND THE PRODUCT</p>
+          <h2>The business. The systems. The team.</h2>
+          <p>Building also means operating the business, making the underlying systems dependable, and delivering with other people.</p>
         </div>
-        <div className="ft-project-grid">
-          {secondaryProjects.map((project) => (
-            <article className={`ft-project-card ${project.tone}`} key={project.name}>
-              {project.image ? (
-                <div className="ft-project-image"><img src={project.image} alt={project.imageAlt} /></div>
-              ) : (
-                <div className="ft-project-sigil" aria-hidden>{project.name.slice(0, 2).toUpperCase()}</div>
-              )}
-              <div>
-                <p className="ft-kicker">{project.eyebrow}</p>
-                <h3>{project.name}</h3>
-                <p>{project.description}</p>
-                <p className="ft-proof">{project.proof}</p>
-                {project.links.map((link) => (
-                  <a
-                    className="ft-text-link"
-                    href={link.href}
-                    key={link.href}
-                    target={link.href.startsWith('http') ? '_blank' : undefined}
-                    rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  >{link.label} ↗</a>
-                ))}
-              </div>
-            </article>
-          ))}
+        <div className="ft-selected-grid">
+          {PROJECTS.filter(project => !project.flagship).map(project => <ProjectCard key={project.id} project={project} onLaunch={onLaunch} />)}
         </div>
       </section>
-
     </>
   )
 }
@@ -252,10 +159,10 @@ function CoreMemoriesSection({ onLaunch }) {
     <section id="core-memories" className="ft-core-chapter ft-scroll-section">
       <div className="ft-core-portal ft-shell">
         <div className="ft-core-copy">
-          <p className="ft-kicker">01 · CORE MEMORIES · INTERACTIVE ORIGIN</p>
-          <h2>A portfolio you enter, not just read.</h2>
+          <p className="ft-kicker">UNICE BONDOC · FOUNDER & BUILDER AT ONQST</p>
+          <h1>I build things you can step into.</h1>
           <p className="ft-core-lede">
-            Each light holds a chapter. Each artifact opens a project. Together, they trace a path from Manila to Sydney—and from operations into AI, products, and play. Tyche is the quiet guide through it all.
+            AI, software, and interactive experiences—from the first idea to the product and the business around it. I’m Unice, a Sydney-based founder who designs the experience and writes the code. This forest is one piece of my story.
           </p>
           <div className="ft-core-features" aria-label="Core Memories experience features">
             <div><strong>07</strong><span>memory orbs</span></div>
@@ -263,8 +170,8 @@ function CoreMemoriesSection({ onLaunch }) {
             <div><strong>AI</strong><span>Tyche guide</span></div>
           </div>
           <div className="ft-hero-actions">
-            <button className="ft-button primary ft-launch-button" type="button" onClick={onLaunch}>Launch interactive forest</button>
-            <a className="ft-button" href="#work">See what I build ↓</a>
+            <a className="ft-button primary" href="#work">See what I build ↓</a>
+            <button className="ft-button ft-launch-button" type="button" onClick={onLaunch}>Explore the forest</button>
           </div>
         </div>
 
@@ -316,7 +223,7 @@ function AboutSections({ onResume }) {
           <div className="ft-about-intro">
             <p className="ft-kicker">03 · ABOUT UNICE</p>
             <h2 className="ft-chapter-title">Story first. Systems always.</h2>
-            <p className="ft-hero-copy">I’m Unice Bondoc, an independent AI engineer and product builder in Sydney. I started in broadcasting and banking operations—worlds that taught me how people move through systems when the stakes are real. Today, I turn that instinct into AI products, private agents, and games.</p>
+            <p className="ft-hero-copy">I’m Unice Bondoc, founder and builder at ONQST in Sydney. I started in broadcasting and banking operations—worlds that taught me how people move through systems when the stakes are real. Today, I work across product direction, design, software, and the business around what I build.</p>
             <div className="ft-social-row" aria-label="Connect with Unice">
               <a href="https://www.linkedin.com/in/unicebondoc/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
               <a href="https://github.com/unicebondoc" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
@@ -328,7 +235,7 @@ function AboutSections({ onResume }) {
           <figure className="ft-portrait-card">
             <div className="ft-portrait-orbit" aria-hidden />
             <img src="/profile-unice.jpg" alt="Unice Bondoc in Sydney" />
-            <figcaption><strong>UNICE BONDOC</strong><span>AI engineer · product builder · Sydney</span></figcaption>
+            <figcaption><strong>UNICE BONDOC</strong><span>Founder · product engineer · Sydney</span></figcaption>
           </figure>
         </div>
       </section>
@@ -337,23 +244,24 @@ function AboutSections({ onResume }) {
         <div className="ft-about-copy">
           <h2>I stay for the whole build.</h2>
           <p>Research, architecture, interfaces, deployment, evaluation, and the awkward final ten percent where a prototype becomes something another person can actually use.</p>
-          <p>My Master of ICT capstone at Western Sydney University tested AI-generated content against human-written content in a live commerce setting. The AI content produced 165% more page views and 82% longer time on page; the work received 88/100, High Distinction.</p>
-          <p>Today I’m building an interconnected portfolio: customer-facing AI products, an evolving private agent operating system, and mobile game experiments.</p>
+          <p>My Master of ICT capstone at Western Sydney University compared AI-generated and human-written content in a commerce setting. It taught me to evaluate what an AI system actually changes—not just whether its output looks impressive.</p>
+          <p>Today I’m building an interconnected portfolio: customer-facing AI products, a private automation system, and interactive web experiences.</p>
         </div>
         <aside className="ft-now-card">
           <p className="ft-kicker">NOW</p>
-          <h3>Independent AI Engineer</h3>
+          <h3>Founder & Builder · ONQST</h3>
           <ul>
-            <li>Shipping UNIKRE and What Was Drawn</li>
+            <li>Building What Was Drawn and FlatSync</li>
+            <li>Contributing to UNIKRE commerce and operations</li>
             <li>Developing Ninja Clan on Hermes</li>
-            <li>Testing Boba Rush on iOS</li>
+            <li>Building interactive software experiences</li>
             <li>Completing the ACS Professional Year</li>
           </ul>
           <button type="button" className="ft-text-link ft-inline-button" onClick={onResume}>View résumé ↗</button>
         </aside>
       </section>
 
-      <section className="ft-section ft-shell">
+      <section id="system-story" className="ft-section ft-shell">
         <div className="ft-section-heading compact">
           <p className="ft-kicker">EVOLUTION OF AN AGENT SYSTEM</p>
           <h2>One machine. Then a butler. Now a clan.</h2>
@@ -363,7 +271,7 @@ function AboutSections({ onResume }) {
           <div><span>01 · LOCAL FOUNDATION</span><strong>A Linux iMac</strong><p>A retired iMac was converted into an always-available Linux machine: the first private home for experiments, bots, and automation.</p></div>
           <div><span>02 · FIRST ASSISTANT</span><strong>Ninja Butler on OpenClaw</strong><p>A Telegram-first assistant connected conversations, memory, daily operations, and early automation into one working system.</p></div>
           <div><span>03 · INFRASTRUCTURE</span><strong>Moved to a Linux VPS</strong><p>The runtime migrated to Hetzner for reliable 24/7 operation, systemd services, persistent logs, SSH boundaries, and remote access.</p></div>
-          <div><span>04 · CURRENT SYSTEM</span><strong>Hermes and Ninja Clan</strong><p>OpenClaw gave way to Hermes, while Butler grew into specialised agents spanning tasks, email, calendar, research, memory, and Mac build workers.</p></div>
+          <div><span>04 · CURRENT SYSTEM</span><strong>Hermes on the Mac</strong><p>The VPS was retired. Hermes now runs on a Mac, with Obsidian for durable knowledge, TickTick for actions, Google Calendar for time, and human approval gates for consequential actions.</p></div>
         </div>
       </section>
 
@@ -502,7 +410,7 @@ export default function FastTrackSite() {
         <SiteHeader activeSection={activeSection} onNavigate={navigateToSection} onResume={() => setResumeOpen(true)} />
         <main id="content">
           <CoreMemoriesSection onLaunch={() => setCoreOpen(true)} />
-          <WorkSections />
+          <WorkSections onLaunch={() => setCoreOpen(true)} />
           <AboutSections onResume={() => setResumeOpen(true)} />
           <WritingSections />
         </main>

@@ -1065,7 +1065,7 @@ export default function App() {
               padding: 0,
             }}
           >
-            AI ENGINEER
+            FOUNDER & BUILDER
           </p>
           {!isMobile && (
           <p

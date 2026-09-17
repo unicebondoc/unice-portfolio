@@ -9,7 +9,7 @@ const CYAN = '#A8F3FF'
 /**
  * SceneTitle — floating 3D text in the upper canopy.
  *
- * "UNICE" in large Cinzel serif, "AI ENGINEER" as a fine subtitle.
+ * "UNICE" in large Cinzel serif, "FOUNDER & BUILDER" as a fine subtitle.
  * Placed upper-left of center, slightly behind the core arc (z = -0.8)
  * so it feels embedded in the light rays rather than pasted on top.
  *
@@ -65,7 +65,7 @@ export default function SceneTitle() {
         letterSpacing={0.22}
         depthOffset={-1}
       >
-        AI ENGINEER
+        FOUNDER & BUILDER
       </Text>
 
     </group>
