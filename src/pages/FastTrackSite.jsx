@@ -279,7 +279,7 @@ function AboutSections({ onResume }) {
         <div className="ft-section-heading compact"><p className="ft-kicker">CORE CAPABILITIES</p><h2>Range, without losing depth.</h2></div>
         <div className="ft-capability-grid">
           <div><strong>AI PRODUCTS</strong><p>LLMs, RAG, evaluation, tool calling, multimodal interactions, computer vision.</p></div>
-          <div><strong>FULL-STACK DELIVERY</strong><p>React, TypeScript, Python, FastAPI, Supabase, APIs, Docker, Vercel, Railway.</p></div>
+          <div><strong>FULL-STACK DELIVERY</strong><p>React, TypeScript, Python, FastAPI, Supabase, APIs, Docker, Vercel, AWS Lambda, API Gateway.</p></div>
           <div><strong>AGENT SYSTEMS</strong><p>Hermes, deterministic workflows, private runtimes, multi-agent routing, human approval gates.</p></div>
           <div><strong>MOBILE & GAMES</strong><p>Unity 6, C#, iOS, haptics, analytics, gameplay systems, custom editor tooling.</p></div>
         </div>

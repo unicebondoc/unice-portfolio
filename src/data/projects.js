@@ -17,7 +17,9 @@ export const PROJECTS = [
       "FastAPI",
       "LangChain",
       "Pinecone",
-      "OpenAI"
+      "OpenAI",
+      "AWS Lambda",
+      "API Gateway"
     ],
     "links": {
       "live": "https://whatwasdrawn.com",
@@ -25,8 +27,8 @@ export const PROJECTS = [
     },
     "caseStudy": {
       "challenge": "Make an AI interaction feel intentional and approachable, rather than another text box.",
-      "contribution": "Shaped the interaction and built the hand-tracking interface, tap fallback and retrieval-augmented reading flow.",
-      "result": "Public web experience. Mobile builds and store-review work are separate from public mobile availability."
+      "contribution": "Shaped the interaction and built the hand-tracking interface, tap fallback and retrieval-augmented reading flow. Migrated the production billing API from Railway to AWS Lambda and API Gateway while preserving the public API domain.",
+      "result": "Public web experience with its production billing API on AWS. Mobile builds and store-review work are separate from public mobile availability."
     },
     "glow": "#ffd700",
     "glowSoft": "#ffd70033"

@@ -53,6 +53,16 @@ test('Founder positioning and semantic homepage title stay aligned', () => {
 test('Public project set does not accidentally publish additional upcoming work', () => {
   assert.deepEqual(PROJECTS.map((project) => project.id), ['what-was-drawn', 'flatsync', 'core-memories', 'unikre', 'ninja-butler', 'causeconnect'])
 })
+test('What Was Drawn describes the completed AWS billing migration', () => {
+  const wwd = PROJECTS.find((project) => project.id === 'what-was-drawn')
+  const resume = read('public/resume/Unice_Bondoc_Resume.html')
+  assert.match(wwd.caseStudy.contribution, /Migrated the production billing API from Railway to AWS Lambda and API Gateway/)
+  assert.match(wwd.caseStudy.result, /production billing API on AWS/)
+  assert.ok(wwd.stack.includes('AWS Lambda'))
+  assert.ok(wwd.stack.includes('API Gateway'))
+  assert.match(resume, /Migrated the production billing API from Railway to AWS Lambda and API Gateway/)
+  assert.match(read('src/pages/FastTrackSite.jsx'), /AWS Lambda, API Gateway/)
+})
 test('Lead projects and contribution boundaries follow the approved selection', () => {
   assert.deepEqual(PROJECTS.filter(p => p.flagship).map(p => p.id), ['what-was-drawn', 'flatsync', 'core-memories'])
   assert.match(PROJECTS.find(p => p.id === 'flatsync').subtitle, /In testing/)
