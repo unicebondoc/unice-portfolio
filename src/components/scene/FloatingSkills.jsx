@@ -11,8 +11,8 @@ import { MEMORIES } from '../../data/memories'
 
 const SKILLS = [
   'React', 'Three.js', 'Python', 'TypeScript', 'Node.js',
-  'TensorFlow', 'AWS', 'Docker', 'Voiceflow', 'AI/ML',
-  'WebGL', 'Next.js', 'MongoDB', 'REST APIs', 'Git',
+  'Supabase', 'AWS', 'Git', 'Hermes', 'MediaPipe',
+  'WebGL', 'Next.js', 'SQL', 'REST APIs', 'Unity',
 ]
 
 const Z_OFFSET = -3.5 // same as SpiralGroup

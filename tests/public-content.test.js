@@ -1,97 +1,119 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
+import { readFileSync, existsSync } from 'node:fs'
 import { PROJECTS } from '../src/data/projects.js'
 import { MEMORIES } from '../src/data/memories.js'
 import { PORTFOLIO_DATA, getPortfolioDataForAPI } from '../lib/portfolioData.js'
 import { SYSTEM_PROMPT } from '../lib/systemPrompt.js'
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8')
+const project = (id) => PROJECTS.find(item => item.id === id)
+const cvPaths = ['public/resume/Unice_Bondoc_Resume.html', 'public/resume/Unice_Bondoc_CV_Graduate_Software.html']
+const publicText = () => [JSON.stringify(PROJECTS), JSON.stringify(PORTFOLIO_DATA), JSON.stringify(MEMORIES), read('src/pages/FastTrackSite.jsx'), read('index.html'), ...cvPaths.map(read)].join('\n')
 
-test('Core Memories describes its actual primary implementation language', () => {
-  const core = PROJECTS.find((project) => project.id === 'core-memories')
-  assert.ok(core.stack.includes('JavaScript / JSX'))
-  assert.ok(!core.stack.includes('TypeScript'))
+test('ACS internship leads experience and both CVs with contribution boundaries', () => {
+  assert.equal(PORTFOLIO_DATA.experience[0].title, 'Developer / Programmer')
+  assert.equal(PORTFOLIO_DATA.experience[0].type, 'Internship')
+  assert.equal(PORTFOLIO_DATA.experience[1].title, 'Founder & Builder')
+  assert.match(PORTFOLIO_DATA.experience[0].dates, /July 2026/)
+  assert.match(project('causeconnect').caseStudy.contribution, /teammates responsible for backend and authentication/)
+  assert.match(project('causeconnect').caseStudy.result, /sample.*cloud API integration/s)
+  for (const path of cvPaths) {
+    const cv = read(path)
+    assert.match(cv, /Developer \/ Programmer - ACS WIL Internship \(CauseConnect\)/)
+    assert.match(cv, /July 2026 - Present \| Internship team of 10/)
+    assert.ok(cv.indexOf('ACS WIL Internship (CauseConnect)') < cv.indexOf(' - ONQST'))
+    assert.equal((cv.match(/<h1>/g) || []).length, 1)
+  }
 })
 
-test('Unbuilt projects are excluded from every public text source', () => {
-  const surfaces = [JSON.stringify(PROJECTS), JSON.stringify(PORTFOLIO_DATA), JSON.stringify(MEMORIES),
-    read('src/pages/FastTrackSite.jsx'), read('public/resume/Unice_Bondoc_Resume.html'), read('index.html')].join('\n')
-  assert.doesNotMatch(surfaces, /LandLIT|Boba Rush|landlit|boba-rush|Steeped|Claim Zero/i)
+test('Selected apps distinguish public web, fictional demonstration and native release stages', () => {
+  assert.deepEqual(PROJECTS.filter(p => p.flagship).map(p => p.id), ['flatsync', 'landlit', 'what-was-drawn'])
+  assert.match(project('flatsync').subtitle, /Public web app.*Native releases pending/)
+  assert.match(project('landlit').subtitle, /Working prototype.*Fictional-data demo/)
+  assert.match(project('landlit').caseStudy.result, /real customers remains pending/)
+  assert.match(project('what-was-drawn').subtitle, /Public web app.*iOS review pending/)
 })
 
-test('Project links do not send visitors to private repositories', () => {
-  assert.ok(PROJECTS.filter(project => project.id !== 'causeconnect').every(project => !project.links.github))
-  assert.equal(PROJECTS.find(project => project.id === 'causeconnect').links.github, 'https://github.com/acs-wil-wd-team1/social-awareness-web-app')
-  assert.equal(PORTFOLIO_DATA.projects.find(project => project.id === 'causeconnect').githubUrl, 'https://github.com/acs-wil-wd-team1/social-awareness-web-app')
-  assert.match(read('src/pages/FastTrackSite.jsx'), /href=\{project.links.github\}[^>]+>View team repository/)
-  assert.doesNotMatch(read('src/pages/FastTrackSite.jsx'), /github\.com\/unicebondoc\//)
+test('What Was Drawn reflects current readings and completed hosting changes', () => {
+  const wwd = project('what-was-drawn')
+  assert.match(wwd.caseStudy.decision, /Touch is the default.*included reflection text/)
+  assert.match(wwd.caseStudy.contribution, /billing API migrated from Railway to AWS Lambda and API Gateway/)
+  assert.match(wwd.caseStudy.evidence, /private S3\/CloudFront/)
+  assert.ok(!wwd.stack.includes('Pinecone'))
+  assert.ok(!wwd.stack.includes('LangChain'))
+  for (const path of cvPaths) assert.match(read(path), /AWS Lambda\/API Gateway/)
 })
 
-test('AI guide uses the shared project facts and client entrypoints cannot drift', () => {
+test('Interactive work separates development from the released audio edition', () => {
+  assert.match(project('steeped').subtitle, /In development/)
+  assert.match(project('steeped').caseStudy.result, /Public game release.*pending/)
+  assert.match(project('princess-of-alemio').caseStudy.result, /visual novel remains in development.*audio is available on Etsy; Part Two is not included/)
+  assert.doesNotMatch(cvPaths.map(read).join('\n'), /Ninja Meowts|ASP\.NET|shipped Unity game/i)
+})
+
+test('Personal automation describes current Mac tools and human action boundaries', () => {
+  const hermes = project('ninja-butler')
+  for (const term of ['TickTick', 'Google Calendar', 'Telegram', 'Obsidian', 'Mac']) assert.ok(hermes.caseStudy.contribution.includes(term), term)
+  assert.match(hermes.caseStudy.decision, /human approval/)
+  assert.match(hermes.caseStudy.result, /personal operational project/)
+  assert.ok(!PORTFOLIO_DATA.experience.some(entry => /Hermes|Ninja Clan/.test(entry.company)))
+})
+
+test('Project media exists and public source links do not expose private repositories', () => {
+  for (const item of PROJECTS) {
+    if (item.image) assert.ok(existsSync(new URL(`../public${item.image}`, import.meta.url)), item.image)
+    if (item.secondaryImage) assert.ok(existsSync(new URL(`../public${item.secondaryImage}`, import.meta.url)), item.secondaryImage)
+    if (item.id !== 'causeconnect') assert.equal(item.links.github, null)
+  }
+  assert.equal(project('causeconnect').links.github, 'https://github.com/acs-wil-wd-team1/social-awareness-web-app')
+  assert.ok(existsSync(new URL('../public/og-image.jpg', import.meta.url)))
+})
+
+test('Guide facts use the same cases as the page and enforce bounded contributions', () => {
   assert.equal(getPortfolioDataForAPI(), PORTFOLIO_DATA)
-  assert.deepEqual(PORTFOLIO_DATA.projects.map((project) => project.description), PROJECTS.map((project) => project.description))
+  assert.deepEqual(PORTFOLIO_DATA.projects.map(p => p.description), PROJECTS.map(p => p.description))
   assert.match(read('src/data/portfolioData.ts'), /export \{ PORTFOLIO_DATA \} from '\.\.\/\.\.\/lib\/portfolioData.js'/)
   assert.match(read('src/data/systemPrompt.ts'), /export \{ SYSTEM_PROMPT \} from '\.\.\/\.\.\/lib\/systemPrompt.js'/)
   assert.match(SYSTEM_PROMPT, /Do not invent metrics/)
+  assert.match(SYSTEM_PROMPT, /contributionRules/)
 })
 
-test('Unverified headline claims are absent from the draft public surfaces', () => {
-  const surfaces = [JSON.stringify(PORTFOLIO_DATA), JSON.stringify(MEMORIES), SYSTEM_PROMPT,
-    read('src/pages/FastTrackSite.jsx'), read('public/resume/Unice_Bondoc_Resume.html'), read('index.html')].join('\n')
-  assert.doesNotMatch(surfaces, /165%|82%|registered sole trader|Stripe-ready|Next\.js 15|Alignerr|TestFlight/i)
+test('Current pages retain legacy routes, direct CVs and optional forest entry', () => {
+  const page = read('src/pages/FastTrackSite.jsx')
+  assert.equal((page.match(/<h1>/g) || []).length, 1)
+  assert.match(page, /id="project-causeconnect"/)
+  assert.match(page, /id=\{`project-\$\{project.id\}`\}/)
+  assert.match(page, /id="core-memories"/)
+  assert.match(page, /iframe src="\/\?embed=1"/)
+  assert.match(page, /Unice_Bondoc_Resume.pdf/)
+  assert.match(page, /Unice_Bondoc_CV_Graduate_Software.pdf/)
+  assert.match(page, /\/about\//)
+  assert.match(page, /\/writing\//)
+  assert.doesNotMatch(page, /onqst.com\/unice/)
 })
 
-test('Founder positioning and semantic homepage title stay aligned', () => {
-  assert.match(PORTFOLIO_DATA.identity.headline, /Founder & Builder at ONQST/)
-  assert.equal((read('src/pages/FastTrackSite.jsx').match(/<h1>/g) || []).length, 1)
+test('Metadata and preview image align with graduate positioning on every entry', () => {
   for (const path of ['index.html', 'work/index.html', 'about/index.html', 'writing/index.html']) {
-    assert.match(read(path), /Founder & Builder \| ONQST/)
+    const html = read(path)
+    assert.match(html, /ICT Graduate \| Software &amp; Automation/)
+    assert.match(html, /ACS WIL Developer \/ Programmer/)
+    assert.match(html, /og-image.jpg/)
+    assert.doesNotMatch(html, /og-image.png/)
+    const fallback = html.match(/<noscript>([\s\S]*?)<\/noscript>/)[1]
+    const fallbackLinks = [...fallback.matchAll(/<a\s+([^>]+)>/g)]
+    assert.ok(fallbackLinks.length > 0)
+    for (const [, attrs] of fallbackLinks) assert.match(attrs, /style="color: #bfefff;/)
   }
 })
 
-test('Public project set does not accidentally publish additional upcoming work', () => {
-  assert.deepEqual(PROJECTS.map((project) => project.id), ['what-was-drawn', 'flatsync', 'core-memories', 'unikre', 'ninja-butler', 'causeconnect'])
-})
-test('What Was Drawn describes the completed AWS billing migration', () => {
-  const wwd = PROJECTS.find((project) => project.id === 'what-was-drawn')
-  const resume = read('public/resume/Unice_Bondoc_Resume.html')
-  assert.match(wwd.caseStudy.contribution, /Migrated the production billing API from Railway to AWS Lambda and API Gateway/)
-  assert.match(wwd.caseStudy.result, /production billing API on AWS/)
-  assert.ok(wwd.stack.includes('AWS Lambda'))
-  assert.ok(wwd.stack.includes('API Gateway'))
-  assert.match(resume, /Migrated the production billing API from Railway to AWS Lambda and API Gateway/)
-  assert.match(read('src/pages/FastTrackSite.jsx'), /AWS Lambda, API Gateway/)
-})
-test('Lead projects and contribution boundaries follow the approved selection', () => {
-  assert.deepEqual(PROJECTS.filter(p => p.flagship).map(p => p.id), ['what-was-drawn', 'flatsync', 'core-memories'])
-  assert.match(PROJECTS.find(p => p.id === 'flatsync').subtitle, /In testing/)
-  assert.match(PROJECTS.find(p => p.id === 'causeconnect').caseStudy.result, /teammates/)
-  assert.match(PROJECTS.find(p => p.id === 'causeconnect').subtitle, /ACS internship · Developer \/ Programmer/)
-  assert.match(PROJECTS.find(p => p.id === 'causeconnect').description, /team of 10/)
-  assert.match(read('public/resume/Unice_Bondoc_Resume.html'), /CauseConnect - Developer \/ Programmer/)
-  assert.match(read('public/resume/Unice_Bondoc_Resume.html'), /ACS internship \| Team of 10/)
-  assert.match(PROJECTS.find(p => p.id === 'unikre').caseStudy.result, /My contribution/)
-  assert.match(PROJECTS.find(p => p.id === 'ninja-butler').description, /current Hermes runtime is on a Mac/)
+test('Core Memories retains all seven chapters without unsupported claims', () => {
+  assert.deepEqual(MEMORIES.map(m => m.id), ['orb-origin','orb-banking','orb-leap','orb-proof','orb-engineer','orb-becoming','orb-root'])
+  assert.ok(project('core-memories').stack.includes('JavaScript / JSX'))
+  assert.ok(!project('core-memories').stack.includes('TypeScript'))
+  assert.doesNotMatch(JSON.stringify(MEMORIES), /100\+|100 Clients|retrieval-augmented|Solo Delivery/)
 })
 
-test('Public copy omits private UNIKRE relationships and accurately dates the internship', () => {
-  const resume = read('public/resume/Unice_Bondoc_Resume.html')
-  const publicText = [JSON.stringify(PROJECTS), JSON.stringify(PORTFOLIO_DATA), JSON.stringify(MEMORIES), SYSTEM_PROMPT, resume, read('src/pages/FastTrackSite.jsx'), read('index.html')].join('\n')
-  assert.doesNotMatch(publicText, /family[ -]business|family commerce|wife.?s|spouse/i)
-  assert.match(resume, /Jul 2026 - Present/)
-  assert.match(resume, /Expected completion: Oct 2026/)
-})
-
-test('Resume explains every project before listing implementation details', () => {
-  const resume = read('public/resume/Unice_Bondoc_Resume.html')
-  const projects = [...resume.matchAll(/<article class="entry" data-project="([^"]+)">([\s\S]*?)<\/article>/g)]
-  assert.equal(projects.length, 6)
-  for (const [, name, body] of projects) {
-    assert.match(body, /<p class="context">[^<]+<\/p>/, name)
-    assert.ok(body.indexOf('class="context"') < body.indexOf('<ul>'), name)
-  }
-  assert.match(resume, /discovering and exploring social-awareness campaigns/)
-  assert.doesNotMatch(resume, /more than 100|100\+|contribution-cost|money rules|source of truth/)
-  assert.equal((resume.match(/<h1>/g) || []).length, 1)
+test('Public copy omits private relationships, unsupported metrics and unselected projects', () => {
+  assert.doesNotMatch(publicText(), /165%|82%|100\+|more than 100|registered sole trader|Stripe-ready|family[ -]business|wife.?s|spouse|Boba Rush|Claim Zero|NinjApply|visa status/i)
 })

@@ -1,166 +1,116 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Unice Bondoc Resume</title>
-  <style>
-    @page { size: A4; margin: 13mm 14mm; }
-    * { box-sizing: border-box; }
-    body { margin: 0; color: #19232d; background: #fff; font-family: Arial, Helvetica, sans-serif; font-size: 10.5pt; line-height: 1.34; }
-    .page { width: 100%; }
-    .page-break { break-after: page; }
-    header { border-bottom: 1.5pt solid #203950; padding-bottom: 9px; margin-bottom: 10px; }
-    h1 { margin: 0; font-size: 25pt; line-height: 1.1; letter-spacing: 1px; color: #142b40; }
-    .headline { font-size: 11.5pt; font-weight: 700; margin-top: 5px; color: #203950; }
-    .contact { margin-top: 5px; font-size: 9pt; }
-    h2 { margin: 14px 0 6px; padding-bottom: 3px; border-bottom: .6pt solid #bbc9d5; color: #203950; font-size: 10.5pt; text-transform: uppercase; letter-spacing: .75px; }
-    h3 { margin: 0; font-size: 10.5pt; line-height: 1.35; }
-    p { margin: 3px 0 5px; }
-    .entry { margin-top: 10px; break-inside: avoid; }
-    .entry-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-    .meta { flex-shrink: 0; max-width: 36%; text-align: right; font-size: 8.5pt; color: #435669; }
-    .context { color: #253747; }
-    .stack { font-size: 8.5pt; color: #435669; margin-top: 4px; }
-    ul { margin: 4px 0 0; padding-left: 18px; }
-    li { margin: 3px 0; padding-left: 1px; }
-    a { color: #244d70; text-decoration: none; }
-    .skills p { margin: 4px 0; }
-    .continued { margin: 0; border: 0; padding: 0; font-size: 16pt; letter-spacing: .6px; }
-    .page-label { font-size: 8.5pt; color: #536679; margin-top: 5px; }
-    footer { margin-top: 15px; border-top: .6pt solid #c8d3dd; padding-top: 5px; color: #536679; font-size: 8pt; text-align: right; }
-    .education p { margin: 2px 0; }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="author" content="Unice Bondoc" />
+<title>Unice Bondoc - AI Automation &amp; Digital Implementation</title>
+<style>
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; }
+body { margin: 0; color: #202d35; background: #fff; font-family: Arial, Helvetica, sans-serif; font-size: 10pt; line-height: 13.5pt; }
+.page { width: 210mm; height: 297mm; padding: 36pt 42pt 48pt; position: relative; }
+.page + .page { break-before: page; }
+h1, .continued { font-size: 23pt; line-height: 27pt; color: #183a47; margin: 0 0 4pt; font-weight: 700; }
+.headline { font-weight: 700; font-size: 11pt; line-height: 14pt; color: #183a47; margin: 0 0 5pt; }
+.contact { color: #52656e; font-size: 9pt; line-height: 12pt; margin: 0 0 2pt; }
+h2 { color: #183a47; font-size: 10.5pt; line-height: 14pt; text-transform: uppercase; margin: 12pt 0 6pt; break-after: avoid; }
+h3 { color: #202d35; font-size: 10.5pt; line-height: 14pt; margin: 7pt 0 2pt; break-after: avoid; }
+p { margin: 0 0 5pt; }
+.meta { color: #52656e; font-size: 9pt; line-height: 12pt; margin: 0 0 4pt; break-after: avoid; }
+ul { margin: 0; padding-left: 10pt; list-style-type: "- "; }
+li { margin: 0 0 4pt; }
+a { color: #183a47; text-decoration: none; }
+.entry { break-inside: avoid; }
+footer { position: absolute; bottom: 23pt; left: 42pt; right: 42pt; border-top: .5pt solid #bacbd0; padding-top: 6pt; color: #52656e; font-size: 8pt; line-height: 10pt; display: flex; justify-content: space-between; }
+@media screen { body { background: #e9eef0; } .page { background: white; margin: 20px auto; box-shadow: 0 3px 20px #183a4720; } }
+</style>
 </head>
 <body>
-  <section class="page page-break">
-    <header>
-      <h1>UNICE BONDOC</h1>
-      <div class="headline">Founder &amp; Product Engineer | AI &amp; Full-Stack Software</div>
-      <div class="contact">Sydney, Australia | <a href="mailto:uniceabondoc@gmail.com">uniceabondoc@gmail.com</a></div>
-      <div class="contact"><a href="https://www.unicebondoc.com/">unicebondoc.com</a> | <a href="https://www.linkedin.com/in/unicebondoc/">linkedin.com/in/unicebondoc</a> | <a href="https://github.com/unicebondoc">github.com/unicebondoc</a></div>
-    </header>
-
-    <h2>Profile</h2>
-    <p>Product engineer and founder of ONQST, building AI-powered applications, shared-home software and interactive web experiences. Hands-on across product design, React interfaces, Python APIs, AI integration and testing. Combines a Master of ICT with banking operations experience and practical work in e-commerce.</p>
-
-    <h2>Current Experience</h2>
-    <div class="entry">
-      <div class="entry-head"><h3>Founder &amp; Product Engineer - ONQST</h3><span class="meta">Mar 2026 - Present</span></div>
-      <p class="context">Independent business developing software products and interactive experiences.</p>
-      <ul>
-        <li>Define product scope, design interfaces and implement applications from early concepts through testing and release preparation.</li>
-      </ul>
-    </div>
-
-    <h2>Selected Product Work</h2>
-    <article class="entry" data-project="what-was-drawn">
-      <div class="entry-head"><h3>What Was Drawn - AI Oracle-Card App</h3><span class="meta">Public web experience</span></div>
-      <p class="context">A web app where people draw oracle cards using hand gestures and receive AI-generated interpretations grounded in the card material.</p>
-      <ul>
-        <li>Integrated webcam hand tracking with a React interface and a Python/FastAPI backend using retrieval-augmented generation (RAG).</li>
-        <li>Added tap controls so mobile visitors and people without camera access can use the reading flow.</li>
-        <li>Migrated the production billing API from Railway to AWS Lambda and API Gateway, preserving the public domain with encrypted configuration and infrastructure-as-code deployment.</li>
-      </ul>
-      <p class="stack">React, MediaPipe, Python, FastAPI, LangChain, Pinecone, OpenAI, AWS Lambda, API Gateway | <a href="https://www.whatwasdrawn.com/">whatwasdrawn.com</a></p>
-    </article>
-
-    <article class="entry" data-project="flatsync">
-      <div class="entry-head"><h3>FlatSync - Shared-Household App</h3><span class="meta">In testing</span></div>
-      <p class="context">An app that helps housemates coordinate chores, shopping lists and shared bills.</p>
-      <ul>
-        <li>Built household invitations, member permissions, bill splitting and payment confirmation, with shared updates across members.</li>
-        <li>Prepared iOS and Android test builds; added regression tests for bill calculations, conflicting edits and keyboard-accessible interactions.</li>
-      </ul>
-      <p class="stack">React, TypeScript, Capacitor, Supabase, PostgreSQL</p>
-    </article>
-
-    <article class="entry" data-project="core-memories">
-      <div class="entry-head"><h3>Core Memories - Interactive 3D Portfolio</h3><span class="meta">Public web experience</span></div>
-      <p class="context">An explorable forest where visitors discover my work and career story through interactive memory orbs.</p>
-      <ul>
-        <li>Built the 3D environment, animated orbs, shader effects and an AI-assisted portfolio guide.</li>
-        <li>Added a conventional project overview and direct CV/contact paths for visitors who prefer not to explore the 3D experience.</li>
-      </ul>
-      <p class="stack">React, JavaScript/JSX, Three.js, React Three Fiber, WebGL, GLSL | <a href="https://www.unicebondoc.com/">unicebondoc.com</a></p>
-    </article>
-
-    <h2>Core Technical Skills</h2>
-    <div class="skills">
-      <p><b>Application development:</b> JavaScript, TypeScript, React, Next.js, Python, FastAPI, REST APIs, SQL, Supabase, PostgreSQL.</p>
-      <p><b>AI, cloud &amp; delivery:</b> RAG, OpenAI integration, LangChain, Pinecone, MediaPipe, AWS Lambda, API Gateway, CloudFormation/SAM, SSM, Git, Vitest, Docker, Vercel.</p>
-    </div>
-    <footer>Unice Bondoc | 1 / 2</footer>
-  </section>
-
-  <section class="page">
-    <header>
-      <h2 class="continued">UNICE BONDOC</h2>
-      <div class="page-label">Team projects, business operations and professional background</div>
-    </header>
-
-    <h2>Team &amp; Business Contributions</h2>
-    <article class="entry" data-project="causeconnect">
-      <div class="entry-head"><h3>CauseConnect - Developer / Programmer</h3><span class="meta">ACS internship | Team of 10<br />Jul 2026 - Present</span></div>
-      <p class="context">A team-built web application for discovering and exploring social-awareness campaigns.</p>
-      <ul>
-        <li>Implemented campaign homepage and detail views, integrating the team's API and handling routing, response mapping and missing campaign data.</li>
-        <li>Added regression tests and setup documentation; collaborated with backend and authentication teammates on integration reviews.</li>
-      </ul>
-      <p class="stack">React, JavaScript, REST APIs, Vitest, Git | Expected completion: Oct 2026</p>
-    </article>
-
-    <article class="entry" data-project="unikre">
-      <div class="entry-head"><h3>UNIKRE - Commerce &amp; Operations</h3><span class="meta">Software &amp; business operations</span></div>
-      <p class="context">A commerce business selling the Quiet Whiskers Oracle physical card deck.</p>
-      <ul>
-        <li>Built the brand and commerce website, connecting product information with the companion digital experience and marketplace purchase links.</li>
-        <li>Support listings, marketing preparation, order fulfilment and product-cost review alongside the technical work.</li>
-      </ul>
-      <p class="stack">Next.js, React, TypeScript, Three.js | <a href="https://unikre.com.au/">unikre.com.au</a></p>
-    </article>
-
-    <article class="entry" data-project="ninja-clan">
-      <div class="entry-head"><h3>Ninja Clan / Hermes - Personal Automation</h3><span class="meta">Private system | Mac-hosted</span></div>
-      <p class="context">A personal automation system connecting task management, calendar, messaging and project knowledge.</p>
-      <ul>
-        <li>Configured integrations and workflows across TickTick, Google Calendar, Telegram and Obsidian, with human approval for consequential actions.</li>
-        <li>Migrated the Hermes runtime from earlier Linux/VPS infrastructure to macOS and retired the VPS.</li>
-      </ul>
-      <p class="stack">Python, Hermes, macOS, launchd, APIs</p>
-    </article>
-
-    <h2>Earlier Experience</h2>
-    <div class="entry">
-      <div class="entry-head"><h3>Software Engineer - UNIKRE Trading</h3><span class="meta">Nov 2024 - Jan 2025 | Sydney</span></div>
-      <p class="context">Western Sydney University capstone engagement focused on AI-generated e-commerce content.</p>
-      <ul>
-        <li>Compared AI-generated and human-written storefront content using Python-based analysis to evaluate its use in a Shopify commerce setting.</li>
-      </ul>
-    </div>
-    <div class="entry">
-      <div class="entry-head"><h3>SME Account &amp; Loan Operations Manager - RCBC</h3><span class="meta">Sep 2019 - Sep 2022<br />Philippines</span></div>
-      <ul>
-        <li>Coordinated small-business account and loan operations across relationship managers, compliance teams, documentation and external stakeholders.</li>
-      </ul>
-    </div>
-
-    <h2>Education</h2>
-    <div class="education">
-      <div class="entry">
-        <h3>Master of Information and Communications Technology</h3>
-        <p>Western Sydney University | 2023 - 2025</p>
-      </div>
-      <div class="entry">
-        <h3>Professional Year (ICT), ACS Accredited</h3>
-        <p>Performance Education | In progress</p>
-      </div>
-      <div class="entry">
-        <h3>Bachelor of Communication (Broadcasting)</h3>
-        <p>Bicol University, Philippines | 2012 - 2016</p>
-      </div>
-    </div>
-    <footer>Unice Bondoc | 2 / 2</footer>
-  </section>
+<section class="page"><div class="page-content">
+<h1>UNICE BONDOC</h1>
+<p class="headline">ICT Graduate | AI Automation &amp; Digital Implementation</p>
+<p class="contact">Sydney, Australia | <a href="mailto:uniceabondoc@gmail.com">uniceabondoc@gmail.com</a></p>
+<p class="contact"><a href="https://unicebondoc.com">unicebondoc.com</a> | <a href="https://linkedin.com/in/unicebondoc">linkedin.com/in/unicebondoc</a> | <a href="https://github.com/unicebondoc">github.com/unicebondoc</a></p>
+<h2>Profile</h2>
+<p>Master of ICT graduate with a background in banking operations and hands-on experience delivering AI-assisted software projects. I connect practical business needs with tools, workflows and clear documentation, drawing on an ACS WIL internship and independent product work. Seeking a graduate or junior role in AI automation, systems implementation or technology operations where I can contribute and grow with an experienced team.</p>
+<h2>Relevant strengths</h2>
+<ul>
+<li><strong>Business and delivery:</strong> stakeholder coordination, operational documentation, product requirements, workflow improvement and user-focused testing.</li>
+<li><strong>AI and automation:</strong> ChatGPT/Codex, Claude, Hermes, API-connected workflows and human approval steps for consequential actions.</li>
+<li><strong>Project technologies:</strong> Python, JavaScript, React, TypeScript, SQL, Supabase, Git and AWS. Used in AI-assisted project delivery; examples below.</li>
+</ul>
+<h2>Relevant experience</h2>
+<article class="entry" data-project="developer-programmer-acs-wil-internship-causeconnect"><h3>Developer / Programmer - ACS WIL Internship (CauseConnect)</h3>
+<p class="meta">July 2026 - Present | Internship team of 10</p>
+<ul>
+<li>Contribute campaign homepage, detail and account-related interface work to a team application for discovering social-awareness campaigns.</li>
+<li>Prepare regression checks, setup guidance and demonstration documentation; coordinate with teammates responsible for backend and authentication services.</li>
+<li>Test frontend and local integration behaviour while documenting that the hosted demonstration uses sample data and cloud API integration remains in progress.</li>
+</ul>
+</article>
+<article class="entry" data-project="founder-product-engineer-onqst"><h3>Founder &amp; Builder - ONQST</h3>
+<p class="meta">Mar 2026 - Present | Independent product studio | <a href="https://onqst.com">onqst.com</a></p>
+<ul>
+<li>Direct product scope, user journeys and release preparation for web applications and interactive experiences, using AI-assisted development tools.</li>
+<li>Translate everyday needs into features such as household invitations, permissions, shared bills, reflection journals and account recovery.</li>
+<li>Coordinate implementation, review test results and prepare release documentation, distinguishing prototypes, tested features and public releases.</li>
+</ul>
+</article>
+<article class="entry" data-project="sme-account-loan-operations-manager-rcbc"><h3>SME Account &amp; Loan Operations Manager - RCBC</h3>
+<p class="meta">Sep 2019 - Sep 2022 | Philippines</p>
+<ul>
+<li>Coordinated small-business account and loan operations across relationship managers, compliance teams, documentation and external stakeholders.</li>
+</ul>
+</article>
+<h2>Education</h2>
+<p><strong>Master of Information and Communications Technology</strong> - Western Sydney University | 2023 - 2025</p>
+<p><strong>Professional Year (ICT), ACS Accredited</strong> - Performance Education | In progress</p>
+<p><strong>Bachelor of Communication (Broadcasting)</strong> - Bicol University, Philippines | 2012 - 2016</p>
+</div><footer><span>12 October 2026</span><span>Unice Bondoc | 1 / 2</span></footer></section>
+<section class="page"><div class="page-content">
+<div class="continued">UNICE BONDOC</div>
+<p class="headline">Project evidence and earlier technical engagement</p>
+<h2>Selected projects</h2>
+<article class="entry" data-project="ninja-clan-hermes-personal-automation"><h3>Ninja Clan / Hermes - Personal Automation</h3>
+<p class="meta">Personal project | Mac-hosted system</p>
+<ul>
+<li>Configured workflows connecting TickTick tasks, Google Calendar, Telegram and curated Obsidian project knowledge.</li>
+<li>Defined where actions, schedules and durable notes belong, with human approval before consequential external actions.</li>
+<li>Moved the working environment from earlier Linux/VPS infrastructure to a Mac, documenting operating boundaries and continuity for AI-assisted work.</li>
+</ul>
+</article>
+<article class="entry" data-project="what-was-drawn-reflection-web-app"><h3>What Was Drawn - Reflection Web App</h3>
+<p class="meta">Public web app | <a href="https://whatwasdrawn.com">whatwasdrawn.com</a></p>
+<ul>
+<li>Delivered an AI-assisted product build with touch-based card draws, included reflection text, optional gestures and an account-scoped journal.</li>
+<li>Coordinated the production billing API migration to AWS Lambda/API Gateway and the web hosting move to private S3/CloudFront, with release checks and the public domain preserved.</li>
+<li>Technologies: React, Capacitor, Supabase, MediaPipe, Python and AWS. Native iOS release remains pending.</li>
+</ul>
+</article>
+<article class="entry" data-project="flatsync-shared-household-app"><h3>FlatSync - Shared-Household App</h3>
+<p class="meta">Public web app | <a href="https://flatsync.onqst.com">flatsync.onqst.com</a></p>
+<ul>
+<li>Developed a shared-home experience using AI-assisted tools, covering invitations, member permissions, chores, shopping and shared bills.</li>
+<li>Prepared regression coverage for bill calculations, conflicting edits and accessible interactions. Web access is available; native releases remain pending.</li>
+<li>Technologies: React, TypeScript, Capacitor, Supabase and PostgreSQL.</li>
+</ul>
+</article>
+<article class="entry" data-project="landlit-property-operations-prototype"><h3>LandLIT - Property Operations Prototype</h3>
+<p class="meta">Working prototype and public fictional-data demo | <a href="https://landlit-preview.vercel.app">landlit-preview.vercel.app</a></p>
+<ul>
+<li>Built an AI-assisted property-operations prototype connecting contracts, rent records, utilities and monthly exports.</li>
+<li>Verified local persistence, controlled registration and encrypted restore. The public demo uses fictional data; deployment for real customers remains pending.</li>
+<li>Technologies: Next.js, React, TypeScript and Drizzle.</li>
+</ul>
+</article>
+<h2>Earlier technical engagement</h2>
+<article class="entry" data-project="software-engineer-unikre-trading"><h3>Software Engineer - UNIKRE Trading</h3>
+<p class="meta">Nov 2024 - Jan 2025 | Western Sydney University capstone engagement</p>
+<ul>
+<li>Compared AI-generated and human-written storefront content using Python-based analysis in a Shopify commerce setting.</li>
+</ul>
+</article>
+</div><footer><span>12 October 2026</span><span>Unice Bondoc | 2 / 2</span></footer></section>
 </body>
 </html>

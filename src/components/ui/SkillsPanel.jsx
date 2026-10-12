@@ -8,111 +8,77 @@ import styles from './SkillsPanel.module.css'
 
 const CATEGORIES = [
   {
-    key: 'languages',
-    label: 'LANGUAGES',
-    skills: ['Python', 'TypeScript', 'JavaScript (ES6+)', 'C#', 'Dart', 'SQL', 'HTML5', 'CSS3'],
+    "key": "delivery",
+    "label": "WORKFLOW & DELIVERY",
+    "skills": [
+      "Stakeholder Coordination",
+      "Workflow Documentation",
+      "Requirements",
+      "Regression Checks",
+      "Release Preparation"
+    ]
   },
   {
-    key: 'ai',
-    label: 'AI & LLMs',
-    skills: [
-      'Generative AI',
-      'OpenAI API (GPT-4o)',
-      'Claude / Codex Workflows',
-      'Gemini API',
-      'MiniMax',
-      'LLaMA',
-      'LangChain',
-      'RAG Pipelines',
-      'Vector Databases',
-      'Pinecone',
-      'Prompt Engineering',
-      'AI Agents',
-      'Tool Calling',
-      'Agentic Workflows',
-      'RLHF-style Evaluation',
-    ],
+    "key": "web",
+    "label": "WEB PROJECT TECHNOLOGIES",
+    "skills": [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "JavaScript",
+      "Python",
+      "SQL",
+      "Supabase",
+      "PostgreSQL",
+      "Drizzle"
+    ]
   },
   {
-    key: 'gamedev',
-    label: 'MOBILE & GAME DEV',
-    skills: [
-      'Unity 6',
-      'C#',
-      'Mobile-first Architecture',
-      'iOS Haptics',
-      'Custom Unity Editor Tooling',
-      'Rewarded-Ad Integration',
-    ],
+    "key": "ai",
+    "label": "AI-ASSISTED WORKFLOWS",
+    "skills": [
+      "ChatGPT / Codex",
+      "Claude",
+      "Hermes",
+      "API Integration",
+      "Human Approval Steps"
+    ]
   },
   {
-    key: 'vision',
-    label: 'COMPUTER VISION',
-    skills: ['MediaPipe Hands', 'Gesture Recognition'],
+    "key": "cloud",
+    "label": "DEPLOYMENT & TOOLS",
+    "skills": [
+      "Git / GitHub",
+      "AWS Lambda",
+      "API Gateway",
+      "S3 / CloudFront",
+      "Vercel"
+    ]
   },
   {
-    key: 'frameworks',
-    label: 'FRAMEWORKS',
-    skills: [
-      'React 19',
-      'Flutter',
-      'Three.js',
-      'React Three Fiber',
-      'WebGL / GLSL',
-      'Node.js',
-      'FastAPI',
-      'Vite',
-      'Tailwind CSS',
-    ],
+    "key": "interactive",
+    "label": "INTERACTIVE PROJECTS",
+    "skills": [
+      "Three.js",
+      "React Three Fiber",
+      "WebGL",
+      "Capacitor",
+      "MediaPipe",
+      "Unity",
+      "C# in Unity"
+    ]
   },
   {
-    key: 'deploy',
-    label: 'DEPLOYMENT & TOOLS',
-    skills: [
-      'Docker',
-      'Linux VPS (Hetzner)',
-      'systemd',
-      'SSH Tunnels',
-      'Vercel',
-      'Git / GitHub',
-      'REST APIs',
-      'API Integration',
-      'CI/CD',
-      'Production Deployment',
-      'n8n',
-      'Supabase',
-      'Twilio',
-      'Cursor AI',
-      'VS Code',
-      'Agile',
-    ],
-  },
-  {
-    key: 'cloud',
-    label: 'CLOUD',
-    skills: [
-      'AWS Lambda',
-      'API Gateway',
-      'CloudFormation / SAM',
-      'AWS Systems Manager',
-      'Azure AI (AI-900)',
-    ],
-  },
-  {
-    key: 'datascience',
-    label: 'DATA SCIENCE & LIBRARIES',
-    skills: ['Pandas', 'NumPy', 'Matplotlib', 'Data Analysis', 'A/B Testing'],
-  },
-  {
-    key: 'delivery',
-    label: 'PROJECT DELIVERY',
-    skills: [
-      'IT Project Management',
-      'Stakeholder Coordination',
-      'Requirements Gathering',
-      'Risk Management',
-    ],
-  },
+    "key": "research",
+    "label": "CAPSTONE RESEARCH",
+    "skills": [
+      "Python Analysis",
+      "Pandas",
+      "NumPy",
+      "Matplotlib",
+      "Content Evaluation"
+    ]
+  }
 ]
 
 function buildGrouped() {
@@ -141,8 +107,8 @@ export default function SkillsPanel({ onClose }) {
         <div className={styles.headerGlow} aria-hidden />
         <header className={styles.header}>
           <span className={styles.sparkle} aria-hidden>✦</span>
-          <h2 id="skills-title" className={styles.title}>SKILLS</h2>
-          <p className={styles.subtitle}>what i know</p>
+          <h2 id="skills-title" className={styles.title}>TOOLS & PRACTICE</h2>
+          <p className={styles.subtitle}>used in my AI-assisted project work</p>
         </header>
         <div className={styles.grid}>
           {grouped.map((cat) => (

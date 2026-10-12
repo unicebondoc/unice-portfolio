@@ -9,3 +9,4 @@ tmp/pdfs/
 
 # Local backup of pre-converted video (do not commit)
 public/memories/belong-web-original.mp4
+.vercel
