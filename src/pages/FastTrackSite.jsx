@@ -6,9 +6,9 @@ import useStore from '../hooks/useStore'
 import { PROJECTS } from '../data/projects'
 import '../styles/fast-track.css'
 
-const PAGE_TITLE = 'Unice Bondoc — ICT Graduate | Software & Automation'
-const PAGE_DESCRIPTION = 'Sydney ICT graduate and ACS WIL Developer / Programmer. Explore my team experience, AI-assisted software projects, interactive work and CV.'
-const CV_SOFTWARE = '/resume/Unice_Bondoc_CV_Graduate_Software.pdf'
+const PAGE_TITLE = 'Unice Bondoc — Software Developer | AI & Automation'
+const PAGE_DESCRIPTION = 'Sydney software developer building web applications, AI-assisted workflows and interactive products. Explore project contributions, team experience and my CV.'
+const CV_SOFTWARE = '/resume/Unice_Bondoc_CV_Software_Development.pdf'
 
 function scrollToSection(id, behavior = 'smooth') {
   const target = document.getElementById(id)
@@ -43,16 +43,16 @@ function HiringHero({ onResume }) {
   return (
     <section id="intro" className="ft-hiring-hero ft-shell ft-scroll-section">
       <div className="ft-hiring-copy">
-        <p className="ft-kicker">ICT GRADUATE · SYDNEY, AUSTRALIA</p>
+        <p className="ft-kicker">SOFTWARE DEVELOPER · SYDNEY</p>
         <h1>People, processes.<br /><em>Working software.</em></h1>
-        <p className="ft-hiring-lede">I’m Unice Bondoc, a Developer / Programmer in an ACS WIL internship team. My background combines banking operations with software, workflow and interactive-product work through ONQST, using AI-assisted development tools.</p>
-        <p className="ft-role-intent">Seeking graduate and junior opportunities in software, AI automation and systems implementation.</p>
+        <p className="ft-hiring-lede">I’m Unice Bondoc. I build practical software and connected workflows through ONQST, using AI-assisted development tools. My work combines banking operations experience with web applications, automation and interactive products. I also contribute as a Developer / Programmer in an ACS WIL internship team.</p>
+        <p className="ft-role-intent">Software development, AI automation and systems implementation.</p>
         <div className="ft-hero-actions"><a className="ft-button primary" href="#experience">Explore my experience ↓</a><button className="ft-button" type="button" onClick={onResume}>View CV</button><a className="ft-text-link" href="mailto:uniceabondoc@gmail.com">Get in touch ↗</a></div>
-        <div className="ft-cv-options"><span>Download PDF:</span><a href="/resume/Unice_Bondoc_Resume.pdf" target="_blank" rel="noopener noreferrer">Automation & systems</a><a href={CV_SOFTWARE} target="_blank" rel="noopener noreferrer">Graduate software</a></div>
+        <div className="ft-cv-options"><span>Download PDF:</span><a href="/resume/Unice_Bondoc_Resume.pdf" target="_blank" rel="noopener noreferrer">Automation & systems</a><a href={CV_SOFTWARE} target="_blank" rel="noopener noreferrer">Software development</a></div>
       </div>
       <figure className="ft-hiring-portrait">
         <img src="/profile-unice.jpg" alt="Unice Bondoc in Sydney" width="640" height="640" fetchPriority="high" />
-        <figcaption><span>CURRENTLY</span><strong>Learning. Building.<br />Contributing with a team.</strong><small>ACS WIL internship · ONQST projects</small></figcaption>
+        <figcaption><span>CURRENTLY</span><strong>Products. Workflows.<br />Team delivery.</strong><small>ACS WIL internship · ONQST projects</small></figcaption>
       </figure>
     </section>
   )
@@ -135,7 +135,7 @@ function WritingSections() {
 
 function Footer() {
   return (
-    <footer className="ft-footer"><div><p className="ft-kicker">LET’S CONNECT</p><strong>Ready to contribute. Keen to keep learning.</strong><p>Sydney · Graduate and junior software, automation and systems opportunities.</p></div><div className="ft-footer-links"><a href="mailto:uniceabondoc@gmail.com">Email</a><a href="https://www.linkedin.com/in/unicebondoc/" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://onqst.com/" target="_blank" rel="noopener noreferrer">ONQST ↗</a></div></footer>
+    <footer className="ft-footer"><div><p className="ft-kicker">LET’S CONNECT</p><strong>Let’s build something useful.</strong><p>Software development, AI automation and systems implementation · Sydney.</p></div><div className="ft-footer-links"><a href="mailto:uniceabondoc@gmail.com">Email</a><a href="https://www.linkedin.com/in/unicebondoc/" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://onqst.com/" target="_blank" rel="noopener noreferrer">ONQST ↗</a></div></footer>
   )
 }
 

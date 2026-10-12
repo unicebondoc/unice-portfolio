@@ -6,7 +6,7 @@ import puppeteer from 'puppeteer'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const root = path.resolve(__dirname, '..')
-const resumes = ['Unice_Bondoc_Resume', 'Unice_Bondoc_CV_Graduate_Software']
+const resumes = ['Unice_Bondoc_Resume', 'Unice_Bondoc_CV_Software_Development']
 
 const browserCandidates = [
   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
@@ -41,6 +41,14 @@ try {
       printBackground: true,
       preferCSSPageSize: true,
     })
+    if (name === 'Unice_Bondoc_CV_Software_Development') {
+      for (const extension of ['html', 'pdf']) {
+        fs.copyFileSync(
+          path.join(root, `public/resume/${name}.${extension}`),
+          path.join(root, `public/resume/Unice_Bondoc_CV_Graduate_Software.${extension}`),
+        )
+      }
+    }
     console.log(`Generated ${output}`)
   }
 } finally {

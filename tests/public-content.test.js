@@ -8,7 +8,7 @@ import { SYSTEM_PROMPT } from '../lib/systemPrompt.js'
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8')
 const project = (id) => PROJECTS.find(item => item.id === id)
-const cvPaths = ['public/resume/Unice_Bondoc_Resume.html', 'public/resume/Unice_Bondoc_CV_Graduate_Software.html']
+const cvPaths = ['public/resume/Unice_Bondoc_Resume.html', 'public/resume/Unice_Bondoc_CV_Software_Development.html']
 const publicText = () => [JSON.stringify(PROJECTS), JSON.stringify(PORTFOLIO_DATA), JSON.stringify(MEMORIES), read('src/pages/FastTrackSite.jsx'), read('index.html'), ...cvPaths.map(read)].join('\n')
 
 test('ACS internship leads experience and both CVs with contribution boundaries', () => {
@@ -87,17 +87,17 @@ test('Current pages retain legacy routes, direct CVs and optional forest entry',
   assert.match(page, /id="core-memories"/)
   assert.match(page, /iframe src="\/\?embed=1"/)
   assert.match(page, /Unice_Bondoc_Resume.pdf/)
-  assert.match(page, /Unice_Bondoc_CV_Graduate_Software.pdf/)
+  assert.match(page, /Unice_Bondoc_CV_Software_Development.pdf/)
   assert.match(page, /\/about\//)
   assert.match(page, /\/writing\//)
   assert.doesNotMatch(page, /onqst.com\/unice/)
 })
 
-test('Metadata and preview image align with graduate positioning on every entry', () => {
+test('Metadata and preview image align with professional positioning on every entry', () => {
   for (const path of ['index.html', 'work/index.html', 'about/index.html', 'writing/index.html']) {
     const html = read(path)
-    assert.match(html, /ICT Graduate \| Software &amp; Automation/)
-    assert.match(html, /ACS WIL Developer \/ Programmer/)
+    assert.match(html, /Software Developer \| AI &amp; Automation/)
+    assert.match(html, /Sydney software developer/)
     assert.match(html, /og-image.jpg/)
     assert.doesNotMatch(html, /og-image.png/)
     const fallback = html.match(/<noscript>([\s\S]*?)<\/noscript>/)[1]
@@ -116,4 +116,17 @@ test('Core Memories retains all seven chapters without unsupported claims', () =
 
 test('Public copy omits private relationships, unsupported metrics and unselected projects', () => {
   assert.doesNotMatch(publicText(), /165%|82%|100\+|more than 100|registered sole trader|Stripe-ready|family[ -]business|wife.?s|spouse|Boba Rush|Claim Zero|NinjApply|visa status/i)
+})
+
+test('Public positioning leads professional contributions without career-level labels', () => {
+  const surfaces = [JSON.stringify(PORTFOLIO_DATA.identity), JSON.stringify(MEMORIES), read('src/pages/FastTrackSite.jsx'), ...cvPaths.map(read), ...['index.html','work/index.html','about/index.html','writing/index.html'].map(read)].join('\n')
+  assert.doesNotMatch(surfaces, /\bgraduate\b|\bjunior\b|entry.level/i)
+  assert.match(PORTFOLIO_DATA.identity.headline, /Software Developer/)
+  assert.ok(PORTFOLIO_DATA.education.some(entry => entry.qualification === 'Master of Information and Communications Technology'))
+  assert.match(read('src/pages/FastTrackSite.jsx'), /ACS WIL Internship · CauseConnect/)
+})
+
+test('Existing software CV links serve the current software-development variant', () => {
+  assert.equal(read('public/resume/Unice_Bondoc_CV_Graduate_Software.html'), read('public/resume/Unice_Bondoc_CV_Software_Development.html'))
+  assert.deepEqual(readFileSync(new URL('../public/resume/Unice_Bondoc_CV_Graduate_Software.pdf', import.meta.url)), readFileSync(new URL('../public/resume/Unice_Bondoc_CV_Software_Development.pdf', import.meta.url)))
 })
