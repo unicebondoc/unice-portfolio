@@ -87,10 +87,9 @@ export const MEMORIES = [
     tags: ["RCBC", "Banking Operations", "Documentation", "Philippines", "Stakeholder Coordination"],
     skills: [],
     link: '',
-    videoSrc: '/memories/videos/03-orb-pressure-web.mp4',
-    videoPoster: '/memories/posters/orb-banking.jpg',
-    videoCaption: 'Illustrated chapter scene · 5 seconds',
-    videoHint: 'Manila city, office environment, structured professional setting — anything that feels like discipline and precision',
+    imageSrc: '/memories/banking-operations-cutout.webp',
+    imageAlt: 'Photographic cutout of Unice in her navy banking uniform with yellow trim, holding a blue Next teller please sign',
+    imageCaption: 'RCBC · Photograph from my banking career',
     isFuture: false,
   },
 
