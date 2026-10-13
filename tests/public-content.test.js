@@ -5,11 +5,13 @@ import { PROJECTS } from '../src/data/projects.js'
 import { MEMORIES } from '../src/data/memories.js'
 import { PORTFOLIO_DATA, getPortfolioDataForAPI } from '../lib/portfolioData.js'
 import { SYSTEM_PROMPT } from '../lib/systemPrompt.js'
+import { FOREST_NODES } from '../src/data/forestNodes.js'
+import { forestTarget, resolveForestLocation, forestNodeForReference } from '../src/data/forestNavigation.js'
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8')
 const project = (id) => PROJECTS.find(item => item.id === id)
 const cvPaths = ['public/resume/Unice_Bondoc_Resume.html', 'public/resume/Unice_Bondoc_CV_Software_Development.html']
-const publicText = () => [JSON.stringify(PROJECTS), JSON.stringify(PORTFOLIO_DATA), JSON.stringify(MEMORIES), read('src/pages/FastTrackSite.jsx'), read('index.html'), ...cvPaths.map(read)].join('\n')
+const publicText = () => [JSON.stringify(PROJECTS), JSON.stringify(PORTFOLIO_DATA), JSON.stringify(MEMORIES), read('src/pages/ForestPortfolio.jsx'), read('index.html'), ...cvPaths.map(read)].join('\n')
 
 test('ACS internship leads experience and both CVs with contribution boundaries', () => {
   assert.equal(PORTFOLIO_DATA.experience[0].title, 'Developer / Programmer')
@@ -92,19 +94,38 @@ test('Guide facts use the same cases as the page and enforce bounded contributio
   assert.match(SYSTEM_PROMPT, /contributionRules/)
 })
 
-test('Current pages retain legacy routes, direct CVs and optional forest entry', () => {
-  const page = read('src/pages/FastTrackSite.jsx')
-  const world = read('src/components/portfolio/PortfolioWorld.jsx')
-  assert.equal(((page + world).match(/<h1(?:\s|>)/g) || []).length, 1)
-  assert.match(page, /id="project-causeconnect"/)
-  assert.match(page, /id=\{`project-\$\{project.id\}`\}/)
-  assert.match(page, /id="core-memories"/)
-  assert.match(page, /iframe[^>]*src="\/\?embed=1"/)
+test('One forest contains all projects, journey and direct CV navigation', () => {
+  const page = read('src/pages/ForestPortfolio.jsx')
+  const entry = read('src/main.jsx')
+  const scene = read('src/components/scene/PortfolioForestScene.jsx')
+  assert.equal((page.match(/<h1(?:\s|>)/g) || []).length, 1)
+  assert.match(entry, /<ForestPortfolio \/>/)
+  assert.doesNotMatch(entry, /FastTrackSite|isEmbeddedForest/)
+  assert.doesNotMatch(page, /<iframe|Enter the.*forest|Explore the forest/)
+  assert.equal((scene.match(/<Canvas(?:\s|>)/g) || []).length, 1)
+  assert.deepEqual(FOREST_NODES.map(node => node.id), ['flatsync','landlit','what-was-drawn','steeped','princess-of-alemio','causeconnect','journey'])
   assert.match(page, /Unice_Bondoc_Resume.pdf/)
   assert.match(page, /Unice_Bondoc_CV_Software_Development.pdf/)
-  assert.match(page, /\/about\//)
-  assert.match(page, /\/writing\//)
-  assert.doesNotMatch(page, /onqst.com\/unice/)
+  for (const node of FOREST_NODES) assert.ok(existsSync(new URL(`../public${node.image}`, import.meta.url)))
+})
+
+test('Legacy case links and browser navigation resolve inside the same forest', () => {
+  for (const item of PROJECTS) {
+    const target = forestTarget({ kind: 'project', id: item.id })
+    const url = new URL(target, 'https://www.unicebondoc.com')
+    assert.deepEqual(resolveForestLocation(url), { kind: 'project', id: item.id })
+  }
+  for (const kind of ['work','journey','experience','about','writing','cv','contact']) {
+    assert.deepEqual(resolveForestLocation(new URL(forestTarget({ kind }), 'https://www.unicebondoc.com')), { kind })
+  }
+  assert.deepEqual(resolveForestLocation({ pathname:'/work/' }), { kind:'work' })
+  assert.deepEqual(resolveForestLocation({ pathname:'/about/' }), { kind:'about' })
+  assert.deepEqual(resolveForestLocation({ pathname:'/writing/' }), { kind:'writing' })
+  assert.equal(resolveForestLocation({ pathname:'/work/', hash:'#world' }), null)
+  assert.deepEqual(resolveForestLocation({ hash:'#core-memories' }), { kind:'journey' })
+  assert.deepEqual(resolveForestLocation({ hash:'#orb-proof' }), { kind:'journey', chapter:'orb-proof' })
+  assert.equal(resolveForestLocation({ pathname:'/', search:'?embed=1' }), null)
+  assert.equal(MEMORIES.find(memory => memory.id === 'orb-becoming').isFuture, false)
 })
 
 test('Metadata and preview image align with professional positioning on every entry', () => {
@@ -133,14 +154,23 @@ test('Public copy omits private relationships, unsupported metrics and unselecte
 })
 
 test('Public positioning leads professional contributions without career-level labels', () => {
-  const surfaces = [JSON.stringify(PORTFOLIO_DATA.identity), JSON.stringify(MEMORIES), read('src/pages/FastTrackSite.jsx'), ...cvPaths.map(read), ...['index.html','work/index.html','about/index.html','writing/index.html'].map(read)].join('\n')
+  const surfaces = [JSON.stringify(PORTFOLIO_DATA.identity), JSON.stringify(MEMORIES), read('src/pages/ForestPortfolio.jsx'), ...cvPaths.map(read), ...['index.html','work/index.html','about/index.html','writing/index.html'].map(read)].join('\n')
   assert.doesNotMatch(surfaces, /\bgraduate\b|\bjunior\b|entry.level/i)
   assert.match(PORTFOLIO_DATA.identity.headline, /Software Developer/)
   assert.ok(PORTFOLIO_DATA.education.some(entry => entry.qualification === 'Master of Information and Communications Technology'))
-  assert.match(read('src/pages/FastTrackSite.jsx'), /ACS WIL Internship · CauseConnect/)
+  assert.ok(PORTFOLIO_DATA.experience[0].company.includes('ACS WIL Internship'))
 })
 
 test('Existing software CV links serve the current software-development variant', () => {
   assert.equal(read('public/resume/Unice_Bondoc_CV_Graduate_Software.html'), read('public/resume/Unice_Bondoc_CV_Software_Development.html'))
   assert.deepEqual(readFileSync(new URL('../public/resume/Unice_Bondoc_CV_Graduate_Software.pdf', import.meta.url)), readFileSync(new URL('../public/resume/Unice_Bondoc_CV_Software_Development.pdf', import.meta.url)))
+})
+
+test('Tyche references identify real nodes in the unified forest', () => {
+  for (const memory of MEMORIES) assert.equal(forestNodeForReference(memory.id), 'journey')
+  for (const node of FOREST_NODES.filter(item => item.kind === 'project')) assert.equal(forestNodeForReference(`orb-project-${node.id}`), node.id)
+  assert.equal(forestNodeForReference('orb-project-private-client'), null)
+  assert.equal(forestNodeForReference('orb-unverified-award'), null)
+  assert.equal(forestNodeForReference(null), null)
+  assert.match(SYSTEM_PROMPT, /one forest and its field journal/)
 })

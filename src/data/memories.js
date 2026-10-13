@@ -169,7 +169,7 @@ export const MEMORIES = [
     visualTier: 'primary',
     orbType: 'primary',
     isPrimary: true,
-    description: "What Was Drawn is a reflection companion with touch draws, optional gestures and a saved journal. FlatSync brings chores, shopping and household bills together on the web. LandLIT connects property records in a working prototype with a fictional-data demo. I use AI-assisted development tools to shape these projects, review interactions, test workflows and prepare releases. Their current stage and my contribution are explained in the main portfolio.",
+    description: "What Was Drawn is a reflection companion with touch draws, optional gestures and a saved journal. FlatSync brings chores, shopping and household bills together on the web. LandLIT connects property records in a working prototype with a fictional-data demo. I use AI-assisted development tools to shape these projects, review interactions, test workflows and prepare releases. Open a project memory to see its current stage, my contribution and the evidence.",
     tags: ["AI-assisted Development", "What Was Drawn", "FlatSync", "LandLIT", "Testing", "Product Direction"],
     skills: [],
     link: '',
@@ -204,7 +204,7 @@ export const MEMORIES = [
     link: '',
     videoSrc: '/memories/videos/08-orb-becoming-web.mp4',
     videoHint: 'Sydney daily life, studying, laptop at café, city lights, anything that feels like now and what\'s coming',
-    isFuture: true,
+    isFuture: false,
   },
 
   // ─── ROOT — IDENTITY (bottom centre) ────────────────────────────────────
@@ -230,7 +230,7 @@ export const MEMORIES = [
     visualTier: 'primary',
     orbType: 'primary',
     isPrimary: true,
-    description: "Communication, banking operations, ICT study and project work are all parts of my story. This forest is a creative way to explore that journey. For my current internship, contribution cases and CV, follow the main portfolio — the work keeps developing, and so do I.",
+    description: "Communication, banking operations, ICT study and project work are all parts of my story. My journey, current team experience, project cases and CV all live here in this forest. The work keeps developing, and so do I.",
     tags: ["Software Developer", "Communication", "Operations", "AI-assisted Projects", "Sydney"],
     skills: [],
     link: '',

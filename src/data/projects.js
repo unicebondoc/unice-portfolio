@@ -199,8 +199,8 @@ export const PROJECTS = [
   {
     "id": "core-memories",
     "title": "Core Memories",
-    "subtitle": "Optional interactive portfolio",
-    "description": "An explorable forest of career chapters, project artifacts and an AI-assisted guide.",
+    "subtitle": "Interactive portfolio · One living forest",
+    "description": "One interactive forest connecting project worlds, career chapters and a readable hiring journal.",
     "stack": [
       "React",
       "JavaScript / JSX",
@@ -218,13 +218,14 @@ export const PROJECTS = [
     },
     "caseStudy": {
       "challenge": "Offer an expressive way to explore a career without hiding useful information from a recruiter.",
-      "contribution": "I shaped the forest, visual direction and AI-assisted interactive implementation, alongside a conventional route to experience, work and contact.",
-      "decision": "Make the 3D experience optional; retain direct links, a text overview and the CV.",
-      "evidence": "The public portfolio offers both the forest and this conventional page, with reduced-motion and direct navigation options.",
-      "result": "A public creative work sample. Explore it when you want the longer story."
+      "contribution": "I shape the visual direction and AI-assisted interactive implementation, bringing project cases, career chapters, experience and CV into one explorable forest.",
+      "decision": "Keep direct project, experience and CV navigation available in the same world; provide usable controls when graphics are unavailable.",
+      "evidence": "The forest combines project artwork with actual case screenshots and seven career chapters. Keyboard controls, reduced motion and direct journal links support access.",
+      "result": "A working interactive portfolio. Project evidence, personal history and both CV variants are available within the same forest."
     },
-    "image": "/projects/core-memories-forest.jpg",
-    "imageAlt": "Core Memories forest with glowing career-story orbs",
+    "image": "/projects/core-memories-unified.webp",
+    "imageAlt": "Actual unified Core Memories portfolio with six project worlds and Unice’s portrait root",
+    "imageCaption": "Actual browser preview · one forest for projects, career and CV",
     "glow": "#7eddf2",
     "glowSoft": "#7eddf233"
   },

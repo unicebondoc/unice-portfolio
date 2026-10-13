@@ -1,8 +1,6 @@
 import { useState, useCallback, useRef } from 'react'
 import useStore from './useStore'
 
-const MEMORY_TAG_RE = /\[MEMORY:(orb-\d+)\]/gi
-
 const INITIAL_MESSAGE = {
   role: 'assistant',
   text: "Ah, a visitor. 🐾 I'm Tyche — Unice's cat and the unofficial guardian of this forest. Ask me about her work, her story, or make a case for why your team deserves her. I'm listening. 🌿",
