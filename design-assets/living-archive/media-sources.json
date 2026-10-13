@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "preparedDateSydney": "2026-10-13",
+  "status": "local-media-preparation-not-publication",
+  "method": {
+    "tool": "cwebp",
+    "quality": 86,
+    "transformation": "Full-frame WebP export only. No crop, resize, retouch or generated pixels."
+  },
+  "posters": [
+    {
+      "projectId": "causeconnect",
+      "origin": {
+        "path": "/Users/unice/claude OS/acs-wil-team1/worktrees/stage3-campaign-submission/infra/dist/causeconnect-demo-McywMd/hosted-homepage.png",
+        "width": 1280,
+        "height": 1606,
+        "bytes": 182166,
+        "sha256": "ebd1bceed39e5f16693b127e1b2566cbd8a52156b0cf523b14a9f5e5a34e3a26"
+      },
+      "export": {
+        "path": "/Users/unice/Projects/Personal/unice-portfolio/public/projects/causeconnect-sample.webp",
+        "width": 1280,
+        "height": 1606,
+        "bytes": 132370,
+        "sha256": "d5cb11aec51034244b254640b904d0b7401d360b7f4442824e72dd899ca53430"
+      },
+      "servedPath": "/projects/causeconnect-sample.webp",
+      "suggestedCaption": "Hosted frontend preview \u00b7 sample data \u00b7 backend integration pending",
+      "stage": "Hosted sample frontend with guest view and fictional campaigns; does not establish real accounts, backend writes, API integration or final assessed deployment.",
+      "visualPrivacyReview": "Inspected original and exported frame; sample/fictional interface or gameplay only, no real account or customer details visible."
+    },
+    {
+      "projectId": "steeped",
+      "origin": {
+        "path": "/Users/unice/Projects/Games/Steeped 3D Prototype/Evidence/codex-r13j-film-005329/frames/f02105.jpg",
+        "width": 1280,
+        "height": 720,
+        "bytes": 152052,
+        "sha256": "536417268f4df7134c3e3a90839713bfd967ac139e052eddcd0d31f07350f8a9"
+      },
+      "export": {
+        "path": "/Users/unice/Projects/Personal/unice-portfolio/public/projects/steeped-gameplay.webp",
+        "width": 1280,
+        "height": 720,
+        "bytes": 115628,
+        "sha256": "841802ee5d5f820ade74c3eb73c9311aabbeeb43db0adb5cddbf7bfcb7588b64"
+      },
+      "servedPath": "/projects/steeped-gameplay.webp",
+      "suggestedCaption": "Actual r13j gameplay \u00b7 development preview",
+      "stage": "Actual Mac r13j QA capture showing tea-whisk gameplay with fictional character; public game release, store and owner creative acceptance remain pending.",
+      "visualPrivacyReview": "Inspected original and exported frame; sample/fictional interface or gameplay only, no real account or customer details visible."
+    },
+    {
+      "projectId": "landlit",
+      "origin": {
+        "path": "/Users/unice/Projects/Business/landlit/public-preview/verification/ph-first-production-demo-desktop.png",
+        "width": 1440,
+        "height": 1841,
+        "bytes": 283689,
+        "sha256": "0cb53fdcae7da044678c5fceb62c8f208034a0d146615e7dec89555d162a7654"
+      },
+      "export": {
+        "path": "/Users/unice/Projects/Personal/unice-portfolio/public/projects/landlit-ph-demo.webp",
+        "width": 1440,
+        "height": 1841,
+        "bytes": 116458,
+        "sha256": "5e44469a41b2fafcf71f3c7704af435e0678503adff70abea3b0dcf216fbe537"
+      },
+      "servedPath": "/projects/landlit-ph-demo.webp",
+      "suggestedCaption": "PH-first fictional sample dashboard \u00b7 no real accounts, payments or messages",
+      "stage": "Actual published PH-first static showcase demonstration, with explicit fictional PHP sample data; customer-service hosting, real payments, messages and accounts remain outside this showcase.",
+      "visualPrivacyReview": "Inspected original and exported frame; sample/fictional interface or gameplay only, no real account or customer details visible."
+    }
+  ],
+  "movieSourcePointers": [
+    {
+      "projectId": "steeped",
+      "sourcePath": "/Users/unice/Projects/Games/Steeped 3D Prototype/Evidence/codex-r13j-film-005329/loop-film.mp4",
+      "width": 1280,
+      "height": 720,
+      "durationSeconds": 148.949,
+      "bytes": 48626444,
+      "stage": "Actual development QA gameplay; any prepared excerpt retains development status.",
+      "excerptExport": null,
+      "note": "Pointer only. Root will add exact prepared excerpt, hash, timing and playback receipt."
+    },
+    {
+      "projectId": "steeped",
+      "sourcePath": "/Users/unice/Projects/Games/Steeped 3D Prototype/Evidence/codex-r13j-film-first-day-005614/loop-film.mp4",
+      "width": 1280,
+      "height": 720,
+      "durationSeconds": 139.712,
+      "bytes": 46613786,
+      "stage": "Actual development QA first-day gameplay; not public-release evidence.",
+      "excerptExport": null,
+      "note": "Pointer only. Root will add exact prepared excerpt, hash, timing and playback receipt."
+    },
+    {
+      "projectId": "flatsync",
+      "sourcePath": "/Users/unice/claude OS/sites/onqst/assets/flatsync-demo.mp4",
+      "width": 1920,
+      "height": 1080,
+      "durationSeconds": 26.866667,
+      "bytes": 2011142,
+      "stage": "Existing product demonstration used by ONQST; independent native-release status remains pending.",
+      "excerptExport": null,
+      "note": "Pointer only. Root will add exact prepared excerpt, hash, timing and playback receipt."
+    }
+  ],
+  "boundaries": [
+    "Original source media preserved.",
+    "No credentials, real customer records, private external URLs or account information included.",
+    "Local preparation does not establish underlying-product release or authorize publication."
+  ],
+  "servedLoops": [
+    {
+      "output": "/projects/steeped-gameplay-loop.mp4",
+      "source": "/Users/unice/Projects/Games/Steeped 3D Prototype/Evidence/codex-r13j-film-005329/loop-film.mp4",
+      "startSeconds": 70,
+      "durationSeconds": 8,
+      "process": "Bounded silent H.264 excerpt, 768px width, 24fps; real source pixels, no generated interface",
+      "sha256": "749e6c07021826c1cc7db8dfc0998f43ea7b710ae3e7502a489f72b8b2fa1ddf",
+      "bytes": 183979
+    },
+    {
+      "output": "/projects/flatsync-demo-loop.mp4",
+      "source": "/Users/unice/claude OS/sites/onqst/assets/flatsync-demo.mp4",
+      "startSeconds": 2,
+      "durationSeconds": 10,
+      "process": "Bounded silent H.264 excerpt, 768px width, 24fps; real source pixels, no generated interface",
+      "sha256": "ff7f1592078fcb24b9cec817934706046d6ff724c51e5fa4e825a07e0138fcf9",
+      "bytes": 123593
+    }
+  ],
+  "portraitLoop": {
+    "output": "/profile-unice-living-loop.mp4",
+    "source": "Owner-approved portrait to Google Flow, Omni1.1Flash, 8s, one output",
+    "generationId": "b90c2011-674a-4bee-a9eb-6cf4ad5eec58",
+    "quotedCredits": 12,
+    "approval": "Owner approved exact portrait destination and at most12existingcredits on13October2026",
+    "bytes": 391014,
+    "sha256": "c1e26e0fc2ab889ad926ff5583cf2e5a31e7c1d85d089bfc610dea1969ba3530",
+    "process": "Delivery resize512px, no audio, H.264faststart; approved portrait poster retained",
+    "acceptance": "Generated and reviewed for identity continuity; final owner creative acceptance pending"
+  }
+}

@@ -78,6 +78,7 @@ test('Personal automation describes current Mac tools and human action boundarie
 test('Project media exists and public source links do not expose private repositories', () => {
   for (const item of PROJECTS) {
     if (item.image) assert.ok(existsSync(new URL(`../public${item.image}`, import.meta.url)), item.image)
+    if (item.video) assert.ok(existsSync(new URL(`../public${item.video}`, import.meta.url)), item.video)
     if (item.secondaryImage) assert.ok(existsSync(new URL(`../public${item.secondaryImage}`, import.meta.url)), item.secondaryImage)
     if (item.id !== 'causeconnect') assert.equal(item.links.github, null)
   }
@@ -173,4 +174,17 @@ test('Tyche references identify real nodes in the unified forest', () => {
   assert.equal(forestNodeForReference('orb-unverified-award'), null)
   assert.equal(forestNodeForReference(null), null)
   assert.match(SYSTEM_PROMPT, /one forest and its field journal/)
+})
+
+test('Project orbs use the same actual media and stages as their case studies', () => {
+  for (const node of FOREST_NODES.filter(item => item.kind === 'project')) {
+    assert.equal(node.image, project(node.id).image)
+    assert.equal(node.video, project(node.id).video)
+    assert.doesNotMatch(node.image, /\/world\/orb-/)
+  }
+  assert.match(project('causeconnect').imageCaption, /sample data.*backend integration pending/)
+  assert.match(project('steeped').videoCaption, /Actual r13j gameplay.*development preview/)
+  const identity = FOREST_NODES.find(item => item.id === 'journey')
+  assert.ok(existsSync(new URL(`../public${identity.video}`, import.meta.url)))
+  assert.doesNotMatch(read('src/components/scene/PortfolioForestScene.jsx'), /HeartOfTree|octahedronGeometry/)
 })

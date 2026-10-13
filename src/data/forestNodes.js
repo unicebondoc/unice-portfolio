@@ -1,18 +1,18 @@
 import { PROJECTS } from './projects.js'
 
 const WORLDS = [
-  ['flatsync', 'A shared home', '/world/orb-flatsync.webp'],
-  ['landlit', 'Property, connected', '/world/orb-landlit.webp'],
-  ['what-was-drawn', 'A moment to reflect', '/world/orb-what-was-drawn.webp'],
-  ['steeped', 'Tea & focus', '/world/orb-steeped.webp'],
-  ['princess-of-alemio', 'A story to step into', '/world/orb-alemio.webp'],
-  ['causeconnect', 'ACS WIL · Team of 10', '/world/orb-core-memories.webp'],
+  ['flatsync', 'A shared home', [0.5, 0.64]],
+  ['landlit', 'Property, connected', [0.44, 0.69]],
+  ['what-was-drawn', 'A moment to reflect', [0.5, 0.5]],
+  ['steeped', 'Tea & focus', [0.48, 0.5]],
+  ['princess-of-alemio', 'A story to step into', [0.43, 0.5]],
+  ['causeconnect', 'ACS WIL · Team of 10', [0.5, 0.69]],
 ]
 
 export const FOREST_NODES = [
-  ...WORLDS.map(([id, label, image]) => {
+  ...WORLDS.map(([id, label, mediaFocus]) => {
     const project = PROJECTS.find(item => item.id === id)
-    return { id, title: project.title, label, image, color: project.color, kind: 'project' }
+    return { id, title: project.title, label, image: project.image, video: project.video, mediaFocus, color: project.color, kind: 'project' }
   }),
-  { id: 'journey', title: 'Unice', label: 'The story at the roots', image: '/profile-unice-approved.webp', color: '#d6d9ad', kind: 'journey' },
+  { id: 'journey', title: 'Unice', label: 'The heart of this world', image: '/profile-unice-approved.webp', video: '/profile-unice-living-loop.mp4', mediaFocus: [0.5, 0.59], color: '#d6d9ad', kind: 'journey' },
 ]

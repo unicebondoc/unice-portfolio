@@ -26,6 +26,10 @@ export const PROJECTS = [
       "evidence": "Frontend regression checks, local integration checks and setup/demo documentation support the work. Team review and API handover remain part of delivery.",
       "result": "Hosted sample demonstration; cloud API integration remains in progress. This is an internship team contribution, not sole ownership of the application."
     },
+    "image": "/projects/causeconnect-sample.webp",
+    "imageAlt": "Actual CauseConnect hosted homepage with fictional campaign data",
+    "imageKind": "dashboard",
+    "imageCaption": "Hosted frontend · sample data · backend integration pending",
     "glow": "#f3b9aa",
     "glowSoft": "#f3b9aa33"
   },
@@ -55,6 +59,8 @@ export const PROJECTS = [
       "evidence": "Regression coverage checks bill calculations, conflicting edits and keyboard-accessible interactions. The public web app is available to try.",
       "result": "Public web access is available. Native iOS and Android releases remain pending."
     },
+    "video": "/projects/flatsync-demo-loop.mp4",
+    "videoCaption": "Actual web-demo recording · fictional household · native releases pending",
     "image": "/projects/flatsync-live.webp",
     "imageAlt": "Actual FlatSync mobile-web screen showing a fictional household",
     "imageKind": "phone",
@@ -87,7 +93,7 @@ export const PROJECTS = [
       "evidence": "Local checks cover persistence, controlled registration and encrypted restore. The public demonstration uses fictional data and does not transact.",
       "result": "A working prototype with a public fictional-data demo. Deployment for real customers remains pending."
     },
-    "image": "/projects/landlit-fictional-demo.png",
+    "image": "/projects/landlit-ph-demo.webp",
     "imageAlt": "LandLIT fictional Australian sample dashboard with a demo disclosure",
     "imageKind": "dashboard",
     "imageCaption": "Fictional sample dashboard · no real accounts or transactions",
@@ -155,10 +161,12 @@ export const PROJECTS = [
       "evidence": "The tested local r13j owner preview has Mac and simulator checks covering sessions, recovery and story state. Physical-device and owner creative acceptance remain separate.",
       "result": "A tested local preview is available for owner review. Public game release and store acceptance remain pending."
     },
-    "image": "/projects/steeped-world.webp",
-    "imageAlt": "Existing Steeped tea-room world artwork with a reading visitor",
+    "image": "/projects/steeped-gameplay.webp",
+    "imageAlt": "Actual Steeped r13j tea-making gameplay preview",
     "imageKind": "wide",
-    "imageCaption": "Development world preview",
+    "imageCaption": "Actual r13j gameplay · development preview · release acceptance pending",
+    "video": "/projects/steeped-gameplay-loop.mp4",
+    "videoCaption": "Actual r13j gameplay recording · development preview · release acceptance pending",
     "linkLabel": "Explore the development site",
     "glow": "#a9cfae",
     "glowSoft": "#a9cfae33"

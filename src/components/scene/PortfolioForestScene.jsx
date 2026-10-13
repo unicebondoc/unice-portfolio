@@ -1,12 +1,12 @@
 import { Component, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
-import { Billboard, Html } from '@react-three/drei'
 import * as THREE from 'three'
-import HeartOfTree from './HeartOfTree'
+import MemoryGlassNode from './MemoryGlassNode'
 
 const CAMERA_Z = 8
 const CAMERA_FOV = 60
 const BACKGROUND = '/background-optimized.jpg'
+const HEART_POSITION = [0, -0.22, -0.3]
 
 // Positions are screen proportions, converted once to world coordinates for
 // each viewport. They reserve the upper-left title and the lower navigation.
@@ -17,7 +17,7 @@ const DESKTOP_POSITIONS = {
   steeped: [22, 67],
   'princess-of-alemio': [62, 66],
   causeconnect: [83, 72],
-  journey: [44, 81],
+  journey: [50, 52],
 }
 const TALL_POSITIONS = {
   flatsync: [22, 35],
@@ -26,16 +26,16 @@ const TALL_POSITIONS = {
   steeped: [21, 60],
   'princess-of-alemio': [60, 65],
   causeconnect: [82, 73],
-  journey: [44, 81],
+  journey: [50, 52],
 }
 const MOBILE_POSITIONS = {
   flatsync: [25, 36],
   landlit: [75, 36],
-  'what-was-drawn': [25, 53],
-  steeped: [75, 53],
+  'what-was-drawn': [20, 53],
+  steeped: [80, 53],
   'princess-of-alemio': [25, 70],
   causeconnect: [75, 70],
-  journey: [50, 84],
+  journey: [50, 52],
 }
 
 function getLayout(nodes, width, height) {
@@ -48,17 +48,17 @@ function getLayout(nodes, width, height) {
   const halfAngle = THREE.MathUtils.degToRad(CAMERA_FOV / 2)
   return nodes.map((node, index) => {
     const screen = positions[node.id] ?? [25 + (index % 3) * 25, 35 + Math.floor(index / 3) * 24]
-    const z = node.id === 'journey' ? 0.25 : -0.1 - (index % 3) * 0.12
+    const z = node.id === 'journey' ? HEART_POSITION[2] : -0.1 - (index % 3) * 0.12
     const worldHeight = 2 * Math.tan(halfAngle) * (CAMERA_Z - z)
     const worldWidth = worldHeight * width / height
-    const radius = baseDiameter * (node.id === 'journey' ? compact ? 0.67 : 0.76 : 1) * worldHeight / height / 2
+    const radius = baseDiameter * (node.id === 'journey' ? 1.15 : 1) * worldHeight / height / 2
     return {
       ...node,
       index,
       compact,
       radius,
       screen,
-      position: [(screen[0] / 100 - 0.5) * worldWidth, (0.5 - screen[1] / 100) * worldHeight, z],
+      position: node.id === 'journey' ? HEART_POSITION : [(screen[0] / 100 - 0.5) * worldWidth, (0.5 - screen[1] / 100) * worldHeight, z],
     }
   })
 }
@@ -131,8 +131,8 @@ function CameraMotion({ selected, reducedMotion }) {
       const visibleHeight = 2 * Math.tan(THREE.MathUtils.degToRad(CAMERA_FOV / 2)) * distance
       const visibleWidth = visibleHeight * size.width / size.height
       // The journal occupies the right half. A parallel camera pan keeps the
-      // selected memory at 22% screen width and 53% height in the open forest.
-      target.set(selected.position[0] + visibleWidth * 0.28, selected.position[1] + visibleHeight * 0.03, selected.position[2] + distance)
+      // selected memory at 20% screen width and 53% height in the open forest.
+      target.set(selected.position[0] + visibleWidth * 0.3, selected.position[1] + visibleHeight * 0.03, selected.position[2] + distance)
     } else target.set(0, 0, CAMERA_Z)
     if (reducedMotion) {
       // No panning/zooming when reduced motion is requested.
@@ -238,80 +238,6 @@ function ForestParticles({ compact }) {
   return <points geometry={geometry} raycast={() => null}><shaderMaterial ref={material} uniforms={uniforms} vertexShader={PARTICLE_VERTEX} fragmentShader={PARTICLE_FRAGMENT} transparent depthWrite={false} blending={THREE.AdditiveBlending} /></points>
 }
 
-function MemoryNode({ node, texture, selected, hovered, highlighted, muted, onSelect, onHover, reducedMotion }) {
-  const group = useRef(null)
-  const glow = useRef(null)
-  const imageMaterial = useRef(null)
-  const ripple = useRef(null)
-  const rippleMaterial = useRef(null)
-  const selectedAt = useRef(-100)
-  const previousSelected = useRef(false)
-  const { clock } = useThree()
-  const portrait = node.kind === 'journey' || node.id === 'journey'
-  const active = selected || hovered || highlighted
-  useEffect(() => {
-    texture.colorSpace = THREE.SRGBColorSpace
-    texture.needsUpdate = true
-  }, [texture])
-  useEffect(() => {
-    if (selected && !previousSelected.current) selectedAt.current = clock.elapsedTime
-    previousSelected.current = selected
-  }, [selected, clock])
-  useFrame(({ clock: frameClock }, delta) => {
-    if (!group.current) return
-    const t = frameClock.elapsedTime
-    group.current.position.y = node.position[1] + (reducedMotion ? 0 : Math.sin(t * 0.32 + node.index * 1.3) * node.radius * 0.06)
-    const targetScale = selected || hovered || (highlighted && !reducedMotion) ? 1.05 : 1
-    const scale = reducedMotion ? targetScale : THREE.MathUtils.damp(group.current.scale.x, targetScale, 4, delta)
-    group.current.scale.setScalar(scale)
-    if (glow.current) glow.current.opacity = active ? 0.12 : reducedMotion ? 0.025 : 0.027 + Math.sin(t * 0.7 + node.index) * 0.008
-    if (imageMaterial.current) imageMaterial.current.opacity = reducedMotion ? muted ? 0.3 : 1 : THREE.MathUtils.damp(imageMaterial.current.opacity, muted ? 0.3 : 1, 4, delta)
-    if (ripple.current && rippleMaterial.current) {
-      const phase = (t - selectedAt.current) / 0.9
-      const visible = !reducedMotion && phase >= 0 && phase < 1
-      ripple.current.visible = visible
-      if (visible) {
-        ripple.current.scale.setScalar(1 + phase * 0.55)
-        rippleMaterial.current.opacity = (1 - phase) * 0.5
-      }
-    }
-  })
-  const select = (event) => { event.stopPropagation(); onSelect?.(node.id) }
-  const beginHover = (event) => { event.stopPropagation(); onHover(node.id) }
-  const endHover = () => onHover(null)
-  return (
-    <group ref={group} position={node.position}>
-      <mesh raycast={() => null}><sphereGeometry args={[node.radius * 1.13, 24, 16]} /><meshBasicMaterial ref={glow} color={node.color} transparent opacity={0.027} depthWrite={false} blending={THREE.AdditiveBlending} toneMapped={false} /></mesh>
-      <Billboard>
-        <mesh onClick={select} onPointerOver={beginHover} onPointerOut={endHover}>
-          {portrait ? <circleGeometry args={[node.radius, 48]} /> : <planeGeometry args={[node.radius * 2.1, node.radius * 2.1]} />}
-          <meshBasicMaterial ref={imageMaterial} map={texture} transparent alphaTest={0.025} depthWrite={false} toneMapped={false} side={THREE.DoubleSide} />
-        </mesh>
-        {portrait && <mesh raycast={() => null}><ringGeometry args={[node.radius * 1.02, node.radius * 1.04, 48]} /><meshBasicMaterial color={node.color} transparent opacity={active ? 0.9 : 0.4} depthWrite={false} toneMapped={false} /></mesh>}
-        {highlighted && !portrait && <mesh raycast={() => null}><ringGeometry args={[node.radius * 1.07, node.radius * 1.085, 48]} /><meshBasicMaterial color={node.color} transparent opacity={0.55} depthWrite={false} toneMapped={false} /></mesh>}
-        <mesh ref={ripple} visible={false} raycast={() => null}><ringGeometry args={[node.radius * 1.08, node.radius * 1.1, 48]} /><meshBasicMaterial ref={rippleMaterial} color={node.color} transparent opacity={0} depthWrite={false} toneMapped={false} /></mesh>
-      </Billboard>
-      <Html center position={[0, -node.radius * (portrait ? 1.37 : 1.12), 0.06]} zIndexRange={[25, 15]} style={{ pointerEvents: 'auto', opacity: muted ? 0.16 : 1, transition: reducedMotion ? 'none' : 'opacity 220ms ease' }}>
-        <button
-          type="button"
-          className={`pf-node ${selected ? 'is-selected' : ''} ${highlighted ? 'is-pulsed' : ''} ${muted ? 'is-muted' : ''}`}
-          data-kind={node.kind}
-          aria-label={nodeAccessibleLabel(node)}
-          aria-pressed={selected}
-          onClick={select}
-          onFocus={() => onHover(node.id)}
-          onBlur={endHover}
-          onPointerOver={beginHover}
-          onPointerOut={endHover}
-          style={{ '--pf-node-color': node.color, '--node-color': node.color, minWidth: portrait ? 108 : node.compact ? 120 : 145, maxWidth: node.compact ? 166 : 230, whiteSpace: 'nowrap' }}
-        >
-          <span className="pf-node-label">{node.title}</span>
-          <small className="pf-node-kind">{node.label || (portrait ? 'My journey & experience' : node.id === 'causeconnect' ? 'ACS team project' : 'Explore project')}</small>
-        </button>
-      </Html>
-    </group>
-  )
-}
 
 function ContextGuard({ onFailure }) {
   const gl = useThree((state) => state.gl)
@@ -326,14 +252,14 @@ function ContextGuard({ onFailure }) {
   return null
 }
 
-function ForestContent({ nodes, selectedId, pulseId, onSelect, reducedMotion, onReady, onFailure }) {
+function ForestContent({ nodes, selectedId, pulseId, journalOpen, onSelect, reducedMotion, onReady, onFailure }) {
   const { size } = useThree()
   const [hoveredId, setHoveredId] = useState(null)
   const paths = useMemo(() => [BACKGROUND, ...nodes.map((node) => node.image)], [nodes])
   const textures = useLoader(THREE.TextureLoader, paths)
   const placed = useMemo(() => getLayout(nodes, size.width, size.height), [nodes, size.width, size.height])
   const selected = placed.find((node) => node.id === selectedId)
-  const root = useMemo(() => [0, -0.22, -0.3], [])
+  const root = HEART_POSITION
   const ready = useRef(false)
   const readyCallback = useRef(onReady)
   readyCallback.current = onReady
@@ -351,20 +277,17 @@ function ForestContent({ nodes, selectedId, pulseId, onSelect, reducedMotion, on
       <ambientLight intensity={0.5} />
       <pointLight position={[0, 1, 3]} color={selected?.color ?? '#a4efff'} intensity={0.8} distance={14} decay={2} />
       {!reducedMotion && <ForestParticles compact={size.width <= 700} />}
-      <group position={[root[0], root[1] - 0.5 * 0.55, root[2]]} scale={0.55}>
-        {reducedMotion ? <mesh position={[0, 0.5, 0]}><octahedronGeometry args={[0.18, 0]} /><meshBasicMaterial color="#ffe5b3" toneMapped={false} /></mesh> : <HeartOfTree />}
-      </group>
       {placed.map((node, index) => (
         <group key={node.id}>
-          <StaticTendril node={node} root={root} active={node.id === selectedId || node.id === hoveredId || node.id === pulseId} reducedMotion={reducedMotion} />
-          <MemoryNode node={node} texture={textures[index + 1]} selected={node.id === selectedId} hovered={node.id === hoveredId} highlighted={node.id === pulseId} muted={Boolean(selectedId) && node.id !== selectedId} onSelect={onSelect} onHover={setHoveredId} reducedMotion={reducedMotion} />
+          {node.id !== 'journey' && <StaticTendril node={node} root={root} active={node.id === selectedId || node.id === hoveredId || node.id === pulseId} reducedMotion={reducedMotion} />}
+          <MemoryGlassNode node={node} texture={textures[index + 1]} selected={node.id === selectedId} hovered={node.id === hoveredId} highlighted={node.id === pulseId} muted={Boolean(selectedId) && node.id !== selectedId} covered={Boolean(journalOpen) && size.width <= 700} onSelect={onSelect} onHover={setHoveredId} reducedMotion={reducedMotion} />
         </group>
       ))}
     </>
   )
 }
 
-export default function PortfolioForestScene({ nodes = [], selectedId, pulseId = null, onSelect, reducedMotion = false, onReady, onError }) {
+export default function PortfolioForestScene({ nodes = [], selectedId, pulseId = null, journalOpen = false, onSelect, reducedMotion = false, onReady, onError }) {
   const [failed, setFailed] = useState(false)
   const errorReported = useRef(false)
   const errorCallback = useRef(onError)
@@ -400,7 +323,7 @@ export default function PortfolioForestScene({ nodes = [], selectedId, pulseId =
           fallback="Use Work, My journey or CV to explore this portfolio if your browser does not display the forest canvas."
           style={{ position: 'absolute', inset: 0, touchAction: 'manipulation' }}
         >
-          <Suspense fallback={null}><ForestContent nodes={nodes} selectedId={selectedId} pulseId={pulseId} onSelect={onSelect} reducedMotion={reducedMotion} onReady={onReady} onFailure={reportFailure} /></Suspense>
+          <Suspense fallback={null}><ForestContent nodes={nodes} selectedId={selectedId} pulseId={pulseId} journalOpen={journalOpen} onSelect={onSelect} reducedMotion={reducedMotion} onReady={onReady} onFailure={reportFailure} /></Suspense>
         </Canvas>
       </SceneBoundary>}
     </div>
