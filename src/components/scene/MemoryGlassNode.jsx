@@ -16,7 +16,10 @@ const GLASS_FRAGMENT = `
   uniform sampler2D uVideo;
   uniform float uPosterAspect;
   uniform float uVideoAspect;
-  uniform vec2 uFocus;
+  uniform vec2 uPosterFocus;
+  uniform vec2 uVideoFocus;
+  uniform float uPosterZoom;
+  uniform float uVideoZoom;
   uniform vec2 uPointer;
   uniform vec3 uTint;
   uniform float uTime;
@@ -27,9 +30,10 @@ const GLASS_FRAGMENT = `
   uniform float uHasVideo;
   uniform float uPortrait;
   varying vec2 vUv;
-  vec2 mediaUV(vec2 uv, float aspect) {
+  vec2 mediaUV(vec2 uv, float aspect, vec2 sourceFocus, float zoom) {
     vec2 crop = aspect > 1. ? vec2(1. / aspect, 1.) : vec2(1., aspect);
-    vec2 focus = clamp(uFocus, crop * .5, 1. - crop * .5);
+    crop /= max(1., zoom);
+    vec2 focus = clamp(sourceFocus, crop * .5, 1. - crop * .5);
     return clamp((uv - .5) * crop + focus, vec2(.001), vec2(.999));
   }
   void main() {
@@ -46,8 +50,8 @@ const GLASS_FRAGMENT = `
     streak *= smoothstep(.55, .95, radius);
     vec2 lensUV = vUv + p * radius * radius * mix(.007, .001, uPortrait);
     lensUV += vec2(sin(uTime * .095), cos(uTime * .075)) * .008 * (1. - uPortrait);
-    vec4 poster = texture2D(uPoster, mediaUV(lensUV, uPosterAspect));
-    vec4 moving = texture2D(uVideo, mediaUV(lensUV, uVideoAspect));
+    vec4 poster = texture2D(uPoster, mediaUV(lensUV, uPosterAspect, uPosterFocus, uPosterZoom));
+    vec4 moving = texture2D(uVideo, mediaUV(lensUV, uVideoAspect, uVideoFocus, uVideoZoom));
     if (uHasVideo > .5) moving = sRGBTransferEOTF(moving);
     vec4 content = mix(poster, moving, uVideoMix);
     float glassEdge = smoothstep(.84, .99, radius);
@@ -158,13 +162,19 @@ export default function MemoryGlassNode({ node, texture, selected, hovered, high
   const posterAspect = (texture.image?.width || 1) / (texture.image?.height || 1)
   const focusX = node.mediaFocus?.[0] ?? 0.5
   const focusY = node.mediaFocus?.[1] ?? 0.5
+  const videoFocusX = node.videoFocus?.[0] ?? focusX
+  const videoFocusY = node.videoFocus?.[1] ?? focusY
+  const posterZoom = node.mediaZoom ?? 1
+  const videoZoom = node.videoZoom ?? posterZoom
   const uniforms = useMemo(() => ({
     uPoster: { value: texture }, uVideo: { value: texture },
     uPosterAspect: { value: posterAspect }, uVideoAspect: { value: posterAspect },
-    uFocus: { value: new THREE.Vector2(focusX, focusY) }, uPointer: { value: new THREE.Vector2() },
+    uPosterFocus: { value: new THREE.Vector2(focusX, focusY) },
+    uVideoFocus: { value: new THREE.Vector2(videoFocusX, videoFocusY) },
+    uPosterZoom: { value: posterZoom }, uVideoZoom: { value: videoZoom }, uPointer: { value: new THREE.Vector2() },
     uTint: { value: new THREE.Color(node.color) }, uTime: { value: 0 },
     uActive: { value: 0 }, uOpacity: { value: 1 }, uBrightness: { value: 1 }, uVideoMix: { value: 0 }, uHasVideo: { value: 0 }, uPortrait: { value: portrait ? 1 : 0 },
-  }), [texture, posterAspect, focusX, focusY, node.color, portrait])
+  }), [texture, posterAspect, focusX, focusY, videoFocusX, videoFocusY, posterZoom, videoZoom, node.color, portrait])
   useEffect(() => { texture.colorSpace = THREE.SRGBColorSpace; texture.needsUpdate = true }, [texture])
   useEffect(() => {
     if (selected && !previousSelected.current) rippleAt.current = clock.elapsedTime

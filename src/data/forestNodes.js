@@ -14,5 +14,7 @@ export const FOREST_NODES = [
     const project = PROJECTS.find(item => item.id === id)
     return { id, title: project.title, label, image: project.image, video: project.video, mediaFocus, color: project.color, kind: 'project' }
   }),
-  { id: 'journey', title: 'Unice', label: 'The heart of this world', image: '/profile-unice-approved.webp', video: '/profile-unice-calm-loop.mp4', mediaFocus: [0.5, 0.59], color: '#d6d9ad', kind: 'journey' },
+  // The square photograph and tall video need their own face-centred crops.
+  // A small video inset gives horizontal focus room without moving the orb.
+  { id: 'journey', title: 'Unice', label: 'The heart of this world', image: '/profile-unice-approved.webp', video: '/profile-unice-calm-loop.mp4', mediaFocus: [0.46, 0.60], mediaZoom: 1.85, videoFocus: [0.45, 0.60], videoZoom: 1.12, color: '#d6d9ad', kind: 'journey' },
 ]
