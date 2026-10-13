@@ -810,10 +810,14 @@ export default function App() {
   // Escape closes the active panel
   useEffect(() => {
     const onKeyDown = (e) => {
-      if (e.key === 'Escape' && activePanel) requestClosePanel()
+      if (e.key === 'Escape' && activePanel) {
+        e.preventDefault()
+        e.stopImmediatePropagation()
+        requestClosePanel()
+      }
     }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
+    window.addEventListener('keydown', onKeyDown, true)
+    return () => window.removeEventListener('keydown', onKeyDown, true)
   }, [activePanel, requestClosePanel])
 
   // Page transition: when opening Skills or Writings, drift canvas back; when closing, bring back

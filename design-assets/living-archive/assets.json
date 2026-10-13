@@ -1,0 +1,109 @@
+{
+  "date": "2026-10-13",
+  "method": "Built-in imagegen; WebP delivery exports via cwebp; PNG masters preserved",
+  "assets": [
+    {
+      "path": "public/world/tyche-guide.webp",
+      "bytes": 52272,
+      "sha256": "78834971c66aa790be1d9fd855282b75a4880f9ae09995fe4ace1011c01a6c36",
+      "width": 400,
+      "height": 400,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        253
+      ]
+    },
+    {
+      "path": "public/world/orb-what-was-drawn.webp",
+      "bytes": 207192,
+      "sha256": "f435c798c5fd39db7cd29b54247dabab976fafc6a5ef7c985ae95c9827fa2293",
+      "width": 640,
+      "height": 640,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        253
+      ]
+    },
+    {
+      "path": "public/world/orb-landlit.webp",
+      "bytes": 157646,
+      "sha256": "1f383f03825d969171eb81eb6059cb62f96eb0ef881998af931e8621c26862f1",
+      "width": 640,
+      "height": 640,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ]
+    },
+    {
+      "path": "public/world/memory-grove.webp",
+      "bytes": 492234,
+      "sha256": "3f7ec1dc78d710293f003edd7ef3d60a75613f605a68869d7e288c684f8b3764",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "alpha_extrema": null
+    },
+    {
+      "path": "public/world/orb-core-memories.webp",
+      "bytes": 196632,
+      "sha256": "2ef8c1b03d80a5dcac4583ae4d0ae60b6c05d3ac84b2cbc1d9451bdeaff13f95",
+      "width": 640,
+      "height": 640,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        253
+      ]
+    },
+    {
+      "path": "public/world/orb-steeped.webp",
+      "bytes": 159208,
+      "sha256": "ec945ee31dbff1d9548ee3ce677f4f77f4f79169637ba590cc4ff533c6b082b9",
+      "width": 640,
+      "height": 640,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ]
+    },
+    {
+      "path": "public/world/orb-alemio.webp",
+      "bytes": 175734,
+      "sha256": "0b35b07574e57e05a9db594d17e9680972b75207f94788b30a5946247861bd33",
+      "width": 640,
+      "height": 640,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ]
+    },
+    {
+      "path": "public/world/orb-flatsync.webp",
+      "bytes": 208848,
+      "sha256": "bd08fd4ebc2bd47c552637e06a531d991b39194ff417f035fae46a0b5b0826c3",
+      "width": 640,
+      "height": 640,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        253
+      ]
+    },
+    {
+      "path": "public/profile-unice-approved.webp",
+      "bytes": 82824,
+      "sha256": "ef365a4e761af5f27ad41550fa4c314f35b12136e8b02c2f6f4cd539d11560c6",
+      "width": 768,
+      "height": 768,
+      "mode": "RGB",
+      "alpha_extrema": null
+    }
+  ],
+  "total_initial_art_bytes": 1732590
+}

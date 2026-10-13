@@ -48,7 +48,7 @@
   inset: 0;
   pointer-events: none;
   opacity: 0.2;
-  background-image: url('/background-optimized.jpg');
+  background-image: url('/world/memory-grove.webp');
   background-size: cover;
   background-position: center;
   mix-blend-mode: screen;
@@ -515,3 +515,30 @@
   .ft-project-figure img { transition: none; }
   .ft-project-figure a:hover img { transform: none; }
 }
+
+/* The Living Archive: direct hiring content beneath the memory world. */
+.fast-track-body.ft-modal-open, .fast-track-html.ft-modal-open { overflow: hidden !important; }
+.ft-header { min-height: 76px; border-radius: 0; background: rgba(3, 11, 20, .86); }
+.ft-brand-mark { border-radius: 12px; transform: rotate(-8deg); color: #d9c69b; border-color: #d9c69b55; }
+.ft-nav { gap: 24px; }
+.ft-nav a, .ft-nav button { min-height: 44px; display: inline-flex; align-items: center; }
+.ft-section-heading h2 { letter-spacing: -.035em; }
+.ft-experience-card { border-radius: 8px; background: linear-gradient(130deg, #0e2937ed, #061520ed); border-color: #a3deea40; }
+.ft-experience-followup { border-radius: 8px; }
+.ft-internship-record { border-color: #cbb9e838; background: linear-gradient(135deg, #181b31cb, #091624db); }
+.ft-internship-record .ft-stage-tag { flex-shrink: 0; background: #cbb9e810; border-color: #cbb9e82d; color: #e1d6f4; }
+.ft-earlier-experience { margin: 24px 0; padding: 14px 0; border-block: 1px solid var(--ft-border); }
+.ft-earlier-experience summary { color: #c7d2df; cursor: pointer; font-size: 13px; line-height: 1.7; }
+.ft-earlier-experience p { font-size: 13px; }
+.ft-selected-card { border-radius: 8px; }
+.ft-case-study { border-color: #a3deea25; }
+.ft-section-heading > p:last-child { max-width: 710px; }
+@media (max-width: 860px) { .ft-nav { gap: 15px; } .ft-nav a, .ft-nav button { font-size: 10px; } }
+@media (max-width: 700px) { .ft-header { min-height: 67px; } .ft-internship-record .ft-stage-tag { align-self: flex-start; } }
+.ft-tyche-launcher { position: fixed; z-index: 150; right: 26px; bottom: 22px; display: flex; align-items: flex-end; gap: 3px; padding: 0; border: 0; background: transparent; color: #d7ece9; cursor: pointer; }
+.ft-tyche-launcher img { width: 86px; height: 86px; object-fit: contain; filter: drop-shadow(0 0 11px #90d5e455); transition: transform 240ms ease; }
+.ft-tyche-launcher span { margin-bottom: 16px; padding: 7px 12px; border: 1px solid #b8dfd83d; border-radius: 20px; background: #061722eb; font-size: 10px; letter-spacing: .03em; backdrop-filter: blur(10px); }
+.ft-tyche-launcher:hover img { transform: translateY(-3px); }
+.ft-tyche-launcher:focus-visible { outline: 2px solid #a3deea; outline-offset: 5px; }
+@media (max-width: 700px) { .ft-tyche-launcher { right: 12px; bottom: 12px; gap: 7px; align-items: center; padding: 4px 10px 4px 8px; border: 1px solid #b8dfd83d; border-radius: 30px; background: #061722eb; backdrop-filter: blur(10px); } .ft-tyche-launcher img { order: -1; width: 31px; height: 31px; } .ft-tyche-launcher span { margin: 0; padding: 0; border: 0; background: transparent; font-size: 10px; } }
+@media (prefers-reduced-motion: reduce) { .ft-tyche-launcher img { transition: none; } .ft-tyche-launcher:hover img { transform: none; } }

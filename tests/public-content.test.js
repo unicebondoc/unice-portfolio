@@ -35,6 +35,19 @@ test('Selected apps distinguish public web, fictional demonstration and native r
   assert.match(project('what-was-drawn').subtitle, /Public web app.*iOS review pending/)
 })
 
+test('UNIKRE is explicit software internship evidence before supporting banking history', () => {
+  const unikre = PORTFOLIO_DATA.experience.find(entry => entry.company === 'UNIKRE Trading')
+  assert.equal(unikre.title, 'Software Engineer (Internship)')
+  assert.equal(unikre.type, 'Internship')
+  assert.match(unikre.dates, /Nov(?:ember)? 2024.*Jan(?:uary)? 2025/)
+  assert.doesNotMatch(PORTFOLIO_DATA.identity.summary, /banking/i)
+  for (const path of cvPaths) {
+    const cv = read(path)
+    assert.match(cv, /Software Engineer \(Internship\) - UNIKRE Trading/)
+    assert.ok(cv.indexOf('Software Engineer (Internship) - UNIKRE Trading') < cv.indexOf('RCBC'))
+  }
+})
+
 test('What Was Drawn reflects current readings and completed hosting changes', () => {
   const wwd = project('what-was-drawn')
   assert.match(wwd.caseStudy.decision, /Touch is the default.*included reflection text/)
@@ -81,11 +94,12 @@ test('Guide facts use the same cases as the page and enforce bounded contributio
 
 test('Current pages retain legacy routes, direct CVs and optional forest entry', () => {
   const page = read('src/pages/FastTrackSite.jsx')
-  assert.equal((page.match(/<h1>/g) || []).length, 1)
+  const world = read('src/components/portfolio/PortfolioWorld.jsx')
+  assert.equal(((page + world).match(/<h1(?:\s|>)/g) || []).length, 1)
   assert.match(page, /id="project-causeconnect"/)
   assert.match(page, /id=\{`project-\$\{project.id\}`\}/)
   assert.match(page, /id="core-memories"/)
-  assert.match(page, /iframe src="\/\?embed=1"/)
+  assert.match(page, /iframe[^>]*src="\/\?embed=1"/)
   assert.match(page, /Unice_Bondoc_Resume.pdf/)
   assert.match(page, /Unice_Bondoc_CV_Software_Development.pdf/)
   assert.match(page, /\/about\//)
