@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { Billboard, Html } from '@react-three/drei'
 import * as THREE from 'three'
+import ProjectMemoryVessel from './ProjectMemoryVessel'
 
 const GLASS_VERTEX = `
   varying vec2 vUv;
@@ -195,8 +196,8 @@ export default function MemoryGlassNode({ node, texture, selected, hovered, high
     if (mayPlay) video.play()
     else if (video.videoRef.current && !video.videoRef.current.paused) video.videoRef.current.pause()
     const showVideo = Boolean(mayPlay && video.media && !video.videoRef.current?.paused)
-    if (glass.current) {
-      const values = glass.current.uniforms
+    {
+      const values = uniforms
       values.uTime.value = reducedMotion ? 0 : t + node.index * 1.7
       values.uPointer.value.set(reducedMotion || !hovered ? 0 : hoverPoint.x, reducedMotion || !hovered ? 0 : hoverPoint.y)
       values.uActive.value = reducedMotion ? active ? 1 : 0 : THREE.MathUtils.damp(values.uActive.value, active ? 1 : 0, 4, delta)
@@ -221,13 +222,20 @@ export default function MemoryGlassNode({ node, texture, selected, hovered, high
   })
   const select = (event) => { event.stopPropagation(); rippleAt.current = clock.elapsedTime; if (!reducedMotion) video.play(true); onSelect?.(node.id) }
   const beginHover = (event) => { event.stopPropagation(); if (!hovered) rippleAt.current = clock.elapsedTime; onHover(node.id) }
-  const moveLight = (event) => { if (event.uv) hoverPoint.set((event.uv.x - 0.5) * 2, (event.uv.y - 0.5) * 2) }
+  const moveLight = (event) => {
+    if (portrait && event.uv) hoverPoint.set((event.uv.x - 0.5) * 2, (event.uv.y - 0.5) * 2)
+    else if (event.point && group.current) {
+      const hit = group.current.worldToLocal(event.point.clone())
+      hoverPoint.set(THREE.MathUtils.clamp(hit.x / node.radius, -1, 1), THREE.MathUtils.clamp(hit.y / node.radius, -1, 1))
+    }
+  }
   const endHover = () => { hoverPoint.set(0, 0); onHover(null) }
   const focus = () => { rippleAt.current = clock.elapsedTime; onHover(node.id) }
   return (
     <group ref={group} position={node.position}>
       <mesh renderOrder={-20} raycast={() => null}><sphereGeometry args={[node.radius * 1.11, 24, 16]} /><meshBasicMaterial ref={glow} color={node.color} transparent opacity={0.024} depthWrite={false} blending={THREE.AdditiveBlending} toneMapped={false} /></mesh>
       <Billboard>
+        {portrait ? <>
         {/* All disks follow the branch/glow passes. Their circular shader still
             discards outside pixels and blends the glass edge naturally. */}
         <mesh renderOrder={10} onClick={select} onPointerOver={beginHover} onPointerMove={moveLight} onPointerOut={endHover}>
@@ -235,10 +243,11 @@ export default function MemoryGlassNode({ node, texture, selected, hovered, high
           <shaderMaterial ref={glass} uniforms={uniforms} vertexShader={GLASS_VERTEX} fragmentShader={GLASS_FRAGMENT} transparent depthWrite={false} toneMapped={false} side={THREE.DoubleSide} />
         </mesh>
         <mesh renderOrder={11} raycast={() => null}><ringGeometry args={[node.radius * 1.017, node.radius * 1.025, 64]} /><meshBasicMaterial color={node.color} transparent opacity={active ? 0.65 : 0.19} depthWrite={false} toneMapped={false} /></mesh>
-        <mesh ref={ripple} renderOrder={12} visible={false} raycast={() => null}><ringGeometry args={[node.radius * 1.07, node.radius * 1.083, 48]} /><meshBasicMaterial ref={rippleMaterial} color={node.color} transparent opacity={0} depthWrite={false} toneMapped={false} /></mesh>
+        </> : <ProjectMemoryVessel radius={node.radius} uniforms={uniforms} posterAspect={posterAspect} videoAspect={video.media?.aspect} compact={node.compact} reducedMotion={reducedMotion} onClick={select} onPointerOver={beginHover} onPointerMove={moveLight} onPointerOut={endHover} />}
+        <mesh ref={ripple} renderOrder={24} visible={false} raycast={() => null}><ringGeometry args={[node.radius * 1.07, node.radius * 1.083, 48]} /><meshBasicMaterial ref={rippleMaterial} color={node.color} transparent opacity={0} depthWrite={false} toneMapped={false} /></mesh>
       </Billboard>
       <Html center position={[0, -node.radius * 1.2, 0.06]} zIndexRange={[25, 15]} style={{ pointerEvents: 'auto', opacity: muted ? 0.16 : 1, transition: reducedMotion ? 'none' : 'opacity 220ms ease' }}>
-        <button ref={label} type="button" className={`pf-node ${selected ? 'is-selected' : ''} ${highlighted ? 'is-pulsed' : ''} ${muted ? 'is-muted' : ''}`} data-kind={node.kind} data-preview-type="image" data-media-source={node.image} aria-label={`${node.title} — ${portrait ? 'my journey and experience' : 'project case study'}`} aria-pressed={selected} onClick={select} onFocus={focus} onBlur={endHover} onPointerOver={beginHover} onPointerOut={endHover} style={{ '--pf-node-color': node.color, '--node-color': node.color, width: node.compact ? node.labelWidth : 'max-content', minWidth: node.compact ? node.labelWidth : 145, maxWidth: node.compact ? node.labelWidth : 230, whiteSpace: 'normal' }}>
+        <button ref={label} type="button" className={`pf-node ${selected ? 'is-selected' : ''} ${highlighted ? 'is-pulsed' : ''} ${muted ? 'is-muted' : ''}`} data-kind={node.kind} data-media-fit={portrait ? 'portrait-focus' : 'complete-frame'} data-vessel={portrait ? 'portrait' : '3d-glass'} data-poster-aspect={posterAspect} data-video-aspect={video.media?.aspect} data-preview-type="image" data-media-source={node.image} aria-label={`${node.title} — ${portrait ? 'my journey and experience' : 'project case study'}`} aria-pressed={selected} onClick={select} onFocus={focus} onBlur={endHover} onPointerOver={beginHover} onPointerOut={endHover} style={{ '--pf-node-color': node.color, '--node-color': node.color, width: node.compact ? node.labelWidth : 'max-content', minWidth: node.compact ? node.labelWidth : 145, maxWidth: node.compact ? node.labelWidth : 230, whiteSpace: 'normal' }}>
           <span className="pf-node-label">{node.title}</span><small className="pf-node-kind">{portrait && node.compact ? 'My journey' : node.label || (portrait ? 'My journey & experience' : node.id === 'causeconnect' ? 'ACS team project' : 'Explore project')}</small>
         </button>
       </Html>
