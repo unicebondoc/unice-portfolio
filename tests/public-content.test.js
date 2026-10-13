@@ -18,8 +18,8 @@ test('ACS internship leads experience and both CVs with contribution boundaries'
   assert.equal(PORTFOLIO_DATA.experience[0].type, 'Internship')
   assert.equal(PORTFOLIO_DATA.experience[1].title, 'Founder & Builder')
   assert.match(PORTFOLIO_DATA.experience[0].dates, /July 2026/)
-  assert.match(project('causeconnect').caseStudy.contribution, /teammates responsible for backend and authentication/)
-  assert.match(project('causeconnect').caseStudy.result, /sample.*cloud API integration/s)
+  assert.match(project('causeconnect').caseStudy.contribution, /Node\.js\/Express APIs.*authenticated creation.*MySQL persistence/)
+  assert.match(project('causeconnect').caseStudy.result, /merged into the team repository.*sample data.*team contribution, not sole ownership/s)
   for (const path of cvPaths) {
     const cv = read(path)
     assert.match(cv, /Developer \/ Programmer - ACS WIL Internship \(CauseConnect\)/)
@@ -185,7 +185,7 @@ test('Project orbs use the same actual media and stages as their case studies', 
     assert.equal(node.video, project(node.id).video)
     assert.doesNotMatch(node.image, /\/world\/orb-/)
   }
-  assert.match(project('causeconnect').imageCaption, /sample data.*backend integration pending/)
+  assert.match(project('causeconnect').imageCaption, /Hosted frontend preview.*fictional campaign data/)
   assert.match(project('steeped').videoCaption, /Actual r13j gameplay.*development preview/)
   const identity = FOREST_NODES.find(item => item.id === 'journey')
   assert.ok(existsSync(new URL(`../public${identity.video}`, import.meta.url)))

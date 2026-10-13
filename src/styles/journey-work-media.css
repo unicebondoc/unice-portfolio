@@ -1,0 +1,107 @@
+.jwm {
+  --jwm-ink: #f3f3e9;
+  --jwm-muted: #c5d8d7;
+  --jwm-line: #b9d6c94d;
+  position: relative;
+  min-width: 0;
+  margin: 24px 0;
+  color: var(--jwm-ink);
+  font: 400 16px/1.5 system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.jwm p, .jwm figure { margin: 0; }
+.jwm a { color: inherit; text-decoration: none; }
+.jwm a:focus-visible { outline: 3px solid #f1e6c7; outline-offset: 5px; }
+.jwm img { display: block; max-width: 100%; object-fit: contain; }
+.jwm a:hover .jwm-project-label strong, .jwm a:hover .jwm-strand-action { text-decoration: underline; text-underline-offset: 4px; }
+
+.jwm-project-intro {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 26px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--jwm-line);
+}
+.jwm-human-anchor { flex: 0 0 82px; width: 82px; height: 82px; border-radius: 4px; }
+.jwm .jwm-identity { font-size: 18px; font-weight: 600; }
+.jwm .jwm-context { margin-top: 3px; color: var(--jwm-muted); font-size: 16px; }
+.jwm-branch-tip { flex: 1; align-self: center; min-width: 12px; height: 1px; background: linear-gradient(90deg, var(--jwm-line), transparent); }
+
+.jwm-project-spread {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: start;
+  gap: 28px 24px;
+}
+.jwm-project { min-width: 0; grid-column: span 6; }
+.jwm-project-what-was-drawn, .jwm-project-princess-of-alemio { grid-column: span 7; }
+.jwm-project-flatsync, .jwm-project-causeconnect { grid-column: span 5; }
+.jwm-preview {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 210px;
+  margin-bottom: 8px;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid color-mix(in srgb, var(--jwm-accent) 30%, transparent);
+  border-radius: 6px;
+  background: radial-gradient(ellipse at 50% 105%, color-mix(in srgb, var(--jwm-accent) 13%, transparent), transparent 70%), #061b22;
+  box-shadow: 0 12px 30px #010c143b;
+}
+.jwm-preview img { width: 100%; height: 100%; }
+.jwm-preview-phone img { width: auto; max-width: 100%; }
+.jwm-project-label { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 44px; font-size: 16px; }
+.jwm-project-label strong { min-width: 0; font-weight: 600; line-height: 1.4; }
+.jwm-project-label > span { flex: 0 0 auto; color: var(--jwm-accent, #d0e7d3); }
+.jwm-stage { display: block; color: var(--jwm-muted); font-size: 16px; line-height: 1.5; }
+.jwm .jwm-media-caption { margin-top: 24px; padding-top: 14px; border-top: 1px solid var(--jwm-line); color: var(--jwm-muted); font-size: 16px; line-height: 1.5; }
+
+.jwm-present-spread {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 24px;
+  align-items: start;
+}
+.jwm .jwm-present-portrait { min-width: 0; margin: 0; position: sticky; top: 12px; }
+.jwm-present-portrait img { width: 100%; height: auto; border-radius: 5px; box-shadow: 0 20px 45px #010c1466; }
+.jwm-present-portrait figcaption { margin-top: 14px; color: var(--jwm-muted); font-size: 16px; line-height: 1.5; }
+.jwm-work-strands { position: relative; display: grid; gap: 28px; min-width: 0; }
+.jwm-work-strands::before { content: ''; position: absolute; left: -13px; top: 12px; bottom: 10px; width: 1px; background: linear-gradient(transparent, #b7d7c96b 15%, #b7d7c96b 80%, transparent); pointer-events: none; }
+.jwm-studio-strand, .jwm-team-strand { position: relative; display: block; min-width: 0; }
+.jwm-studio-strand::before, .jwm-team-strand::before { content: ''; position: absolute; left: -16px; top: 11px; width: 7px; height: 7px; border-radius: 50%; background: var(--jwm-accent, #cbe6bd); box-shadow: 0 0 12px #d1ecd147; pointer-events: none; }
+.jwm-strand-number { display: block; margin-bottom: 14px; color: #d1e2d5; font-size: 16px; line-height: 1.5; }
+.jwm-studio-name { display: block; margin: 0 0 8px; color: #f1f0e7; font: 600 clamp(30px, 5vw, 42px)/1.05 system-ui, sans-serif; letter-spacing: -.065em; }
+.jwm-strand-role { display: block; margin-bottom: 3px; font-size: 16px; font-weight: 600; }
+.jwm-strand-action { display: flex; align-items: center; justify-content: space-between; min-height: 44px; gap: 12px; margin-top: 8px; color: #e0eccd; font-size: 16px; font-weight: 600; }
+.jwm-team-preview { display: flex; align-items: center; justify-content: center; width: 100%; height: 200px; box-sizing: border-box; padding: 6px; border: 1px solid #f3b9aa4d; border-radius: 5px; background: radial-gradient(ellipse at bottom, #f3b9aa16, transparent 72%), #061b22; }
+.jwm-team-preview img { width: 100%; height: 100%; }
+.jwm-team-context { display: block; margin-top: 8px; color: var(--jwm-muted); font-size: 16px; line-height: 1.5; }
+
+@media (max-width: 600px) {
+  .jwm-project-spread { gap: 26px 18px; }
+  .jwm-project-what-was-drawn, .jwm-project-princess-of-alemio, .jwm-project-flatsync, .jwm-project-causeconnect { grid-column: span 6; }
+  .jwm-preview { height: 190px; padding: 6px; }
+  .jwm-present-spread { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .jwm .jwm-present-portrait { position: static; max-width: 360px; margin: 0 auto; }
+  .jwm-work-strands { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+  .jwm-work-strands::before, .jwm-studio-strand::before, .jwm-team-strand::before { display: none; }
+}
+
+@media (max-width: 440px) {
+  .jwm-project-intro { gap: 14px; }
+  .jwm-human-anchor { flex-basis: 72px; width: 72px; height: 72px; }
+  .jwm-branch-tip { display: none; }
+  .jwm-project-spread { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+  .jwm-project-spread > .jwm-project { grid-column: auto; }
+  .jwm-preview { height: auto; min-height: 140px; padding: 8px; }
+  .jwm-preview img { width: 100%; height: auto; max-height: 360px; }
+  .jwm-preview-phone img { width: auto; height: 360px; max-width: 100%; }
+  .jwm-work-strands { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .jwm-studio-strand { padding-bottom: 18px; border-bottom: 1px solid var(--jwm-line); }
+  .jwm-team-preview { height: auto; min-height: 180px; padding: 8px; }
+  .jwm-team-preview img { width: 100%; height: auto; max-height: 360px; }
+}

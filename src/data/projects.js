@@ -50,6 +50,9 @@ export const PROJECTS = [
     "stack": [
       "React",
       "JavaScript",
+      "Node.js",
+      "Express",
+      "MySQL",
       "REST APIs",
       "Vitest",
       "Git"
@@ -63,15 +66,15 @@ export const PROJECTS = [
     },
     "caseStudy": {
       "challenge": "Turn campaign data into clear homepage, detail and account-related journeys while coordinating with a team.",
-      "contribution": "I contribute interface work, regression checks, setup guidance and demonstration documentation, alongside teammates responsible for backend and authentication services.",
-      "decision": "Keep hosted sample data and local API integration distinct, so a successful demonstration does not hide an unfinished backend handover.",
-      "evidence": "Frontend regression checks, local integration checks and setup/demo documentation support the work. Team review and API handover remain part of delivery.",
-      "result": "Hosted sample demonstration; cloud API integration remains in progress. This is an internship team contribution, not sole ownership of the application."
+      "contribution": "I contributed React interfaces and Node.js/Express APIs for public-user campaign submission, including category retrieval, input validation, authenticated creation and MySQL persistence.",
+      "decision": "The server assigns campaign ownership and pending status; client input cannot override them.",
+      "evidence": "My merged contribution includes backend and integration checks for authenticated creation, server-owned fields, pending-campaign privacy and invalid input.",
+      "result": "Campaign-submission work is merged into the team repository. The preview shown here uses sample data. This is a team contribution, not sole ownership of the application."
     },
     "image": "/projects/causeconnect-sample.webp",
     "imageAlt": "Actual CauseConnect hosted homepage with fictional campaign data",
     "imageKind": "dashboard",
-    "imageCaption": "Hosted frontend · sample data · backend integration pending",
+    "imageCaption": "Hosted frontend preview · fictional campaign data",
     "glow": "#f3b9aa",
     "glowSoft": "#f3b9aa33"
   },
@@ -146,7 +149,7 @@ export const PROJECTS = [
       "result": "A working prototype with a public fictional-data demo. Deployment for real customers remains pending."
     },
     "image": "/projects/landlit-ph-demo.webp",
-    "imageAlt": "LandLIT fictional Australian sample dashboard with a demo disclosure",
+    "imageAlt": "Actual LandLIT Philippine fictional-data demo dashboard",
     "imageKind": "dashboard",
     "imageCaption": "Fictional sample dashboard · no real accounts or transactions",
     "glow": "#f29b83",
