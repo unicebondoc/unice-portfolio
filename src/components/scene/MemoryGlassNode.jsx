@@ -21,7 +21,6 @@ const GLASS_FRAGMENT = `
   uniform vec2 uVideoFocus;
   uniform float uPosterZoom;
   uniform float uVideoZoom;
-  uniform vec2 uPointer;
   uniform vec3 uTint;
   uniform float uTime;
   uniform float uActive;
@@ -45,7 +44,7 @@ const GLASS_FRAGMENT = `
     vec3 normal = normalize(vec3(p, dome));
     float fresnel = pow(1. - dome, 2.3);
     float drift = sin(uTime * .18) * .055;
-    vec3 light = normalize(vec3(-.42 + drift + uPointer.x * .25, .68 + uPointer.y * .2, .74));
+    vec3 light = normalize(vec3(-.42 + drift, .68, .74));
     float shine = pow(max(0., dot(normal, light)), 35.);
     float streak = exp(-pow(p.x * .85 + p.y * .4 + .44 + drift, 2.) * 260.);
     streak *= smoothstep(.55, .95, radius);
@@ -155,7 +154,6 @@ export default function MemoryGlassNode({ node, texture, selected, hovered, high
   const rippleAt = useRef(-100)
   const previousSelected = useRef(false)
   const projected = useMemo(() => new THREE.Vector3(), [])
-  const hoverPoint = useMemo(() => new THREE.Vector2(), [])
   const { clock } = useThree()
   const portrait = node.kind === 'journey' || node.id === 'journey'
   const active = selected || hovered || highlighted
@@ -172,7 +170,7 @@ export default function MemoryGlassNode({ node, texture, selected, hovered, high
     uPosterAspect: { value: posterAspect }, uVideoAspect: { value: posterAspect },
     uPosterFocus: { value: new THREE.Vector2(focusX, focusY) },
     uVideoFocus: { value: new THREE.Vector2(videoFocusX, videoFocusY) },
-    uPosterZoom: { value: posterZoom }, uVideoZoom: { value: videoZoom }, uPointer: { value: new THREE.Vector2() },
+    uPosterZoom: { value: posterZoom }, uVideoZoom: { value: videoZoom },
     uTint: { value: new THREE.Color(node.color) }, uTime: { value: 0 },
     uActive: { value: 0 }, uOpacity: { value: 1 }, uBrightness: { value: 1 }, uVideoMix: { value: 0 }, uHasVideo: { value: 0 }, uPortrait: { value: portrait ? 1 : 0 },
   }), [texture, posterAspect, focusX, focusY, videoFocusX, videoFocusY, posterZoom, videoZoom, node.color, portrait])
@@ -184,11 +182,14 @@ export default function MemoryGlassNode({ node, texture, selected, hovered, high
   useFrame(({ clock: frameClock, camera }, delta) => {
     if (!group.current) return
     const t = frameClock.elapsedTime
-    // The portrait remains at the exact tendril nexus; its light alone breathes.
-    group.current.position.y = node.position[1] + (reducedMotion || portrait ? 0 : Math.sin(t * 0.32 + node.index * 1.3) * node.radius * 0.045)
-    const targetScale = selected || hovered || (highlighted && !reducedMotion) ? 1.045 : 1
-    group.current.scale.setScalar(reducedMotion ? targetScale : THREE.MathUtils.damp(group.current.scale.x, targetScale, 4, delta))
-    if (glow.current) glow.current.opacity = active ? 0.095 : reducedMotion ? 0.018 : 0.024 + Math.sin(t * 0.6 + node.index) * 0.007
+    // Keep the media and its native label anchored together. Hover feedback is
+    // light only, so entering a target never moves that target under the pointer.
+    group.current.position.y = node.position[1]
+    group.current.scale.setScalar(1)
+    if (glow.current) {
+      const glowTarget = active ? 0.075 : reducedMotion ? 0.018 : 0.024 + Math.sin(t * 0.6 + node.index) * 0.007
+      glow.current.opacity = reducedMotion ? glowTarget : THREE.MathUtils.damp(glow.current.opacity, glowTarget, 5, delta)
+    }
     group.current.getWorldPosition(projected)
     projected.project(camera)
     const visible = Math.abs(projected.x) < 1.12 && Math.abs(projected.y) < 1.12 && projected.z < 1
@@ -199,7 +200,6 @@ export default function MemoryGlassNode({ node, texture, selected, hovered, high
     {
       const values = uniforms
       values.uTime.value = reducedMotion ? 0 : t + node.index * 1.7
-      values.uPointer.value.set(reducedMotion || !hovered ? 0 : hoverPoint.x, reducedMotion || !hovered ? 0 : hoverPoint.y)
       values.uActive.value = reducedMotion ? active ? 1 : 0 : THREE.MathUtils.damp(values.uActive.value, active ? 1 : 0, 4, delta)
       values.uBrightness.value = reducedMotion ? muted ? 0.3 : 1 : THREE.MathUtils.damp(values.uBrightness.value, muted ? 0.3 : 1, 4, delta)
       values.uVideo.value = video.media?.texture ?? texture
@@ -221,16 +221,9 @@ export default function MemoryGlassNode({ node, texture, selected, hovered, high
     }
   })
   const select = (event) => { event.stopPropagation(); rippleAt.current = clock.elapsedTime; if (!reducedMotion) video.play(true); onSelect?.(node.id) }
-  const beginHover = (event) => { event.stopPropagation(); if (!hovered) rippleAt.current = clock.elapsedTime; onHover(node.id) }
-  const moveLight = (event) => {
-    if (portrait && event.uv) hoverPoint.set((event.uv.x - 0.5) * 2, (event.uv.y - 0.5) * 2)
-    else if (event.point && group.current) {
-      const hit = group.current.worldToLocal(event.point.clone())
-      hoverPoint.set(THREE.MathUtils.clamp(hit.x / node.radius, -1, 1), THREE.MathUtils.clamp(hit.y / node.radius, -1, 1))
-    }
-  }
-  const endHover = () => { hoverPoint.set(0, 0); onHover(null) }
-  const focus = () => { rippleAt.current = clock.elapsedTime; onHover(node.id) }
+  const beginHover = (event) => { event.stopPropagation(); onHover(node.id) }
+  const endHover = () => onHover(null)
+  const focus = () => onHover(node.id)
   return (
     <group ref={group} position={node.position}>
       <mesh renderOrder={-20} raycast={() => null}><sphereGeometry args={[node.radius * 1.11, 24, 16]} /><meshBasicMaterial ref={glow} color={node.color} transparent opacity={0.024} depthWrite={false} blending={THREE.AdditiveBlending} toneMapped={false} /></mesh>
@@ -238,16 +231,16 @@ export default function MemoryGlassNode({ node, texture, selected, hovered, high
         {portrait ? <>
         {/* All disks follow the branch/glow passes. Their circular shader still
             discards outside pixels and blends the glass edge naturally. */}
-        <mesh renderOrder={10} onClick={select} onPointerOver={beginHover} onPointerMove={moveLight} onPointerOut={endHover}>
+        <mesh renderOrder={10} onClick={select} onPointerOver={beginHover} onPointerOut={endHover}>
           <planeGeometry args={[node.radius * 2, node.radius * 2]} />
           <shaderMaterial ref={glass} uniforms={uniforms} vertexShader={GLASS_VERTEX} fragmentShader={GLASS_FRAGMENT} transparent depthWrite={false} toneMapped={false} side={THREE.DoubleSide} />
         </mesh>
         <mesh renderOrder={11} raycast={() => null}><ringGeometry args={[node.radius * 1.017, node.radius * 1.025, 64]} /><meshBasicMaterial color={node.color} transparent opacity={active ? 0.65 : 0.19} depthWrite={false} toneMapped={false} /></mesh>
-        </> : <ProjectMemoryVessel radius={node.radius} uniforms={uniforms} posterAspect={posterAspect} videoAspect={video.media?.aspect} compact={node.compact} reducedMotion={reducedMotion} onClick={select} onPointerOver={beginHover} onPointerMove={moveLight} onPointerOut={endHover} />}
+        </> : <ProjectMemoryVessel radius={node.radius} uniforms={uniforms} posterAspect={posterAspect} videoAspect={video.media?.aspect} compact={node.compact} reducedMotion={reducedMotion} onClick={select} onPointerOver={beginHover} onPointerOut={endHover} />}
         <mesh ref={ripple} renderOrder={24} visible={false} raycast={() => null}><ringGeometry args={[node.radius * 1.07, node.radius * 1.083, 48]} /><meshBasicMaterial ref={rippleMaterial} color={node.color} transparent opacity={0} depthWrite={false} toneMapped={false} /></mesh>
       </Billboard>
       <Html center position={[0, -node.radius * 1.2, 0.06]} zIndexRange={[25, 15]} style={{ pointerEvents: 'auto', opacity: muted ? 0.16 : 1, transition: reducedMotion ? 'none' : 'opacity 220ms ease' }}>
-        <button ref={label} type="button" className={`pf-node pf-node-floating ${selected ? 'is-selected' : ''} ${highlighted ? 'is-pulsed' : ''} ${muted ? 'is-muted' : ''}`} data-kind={node.kind} data-media-fit={portrait ? 'portrait-focus' : 'complete-frame'} data-vessel={portrait ? 'portrait' : '3d-glass'} data-poster-aspect={posterAspect} data-video-aspect={video.media?.aspect} data-preview-type="image" data-media-source={node.image} aria-label={`${node.title} — ${portrait ? 'my journey and experience' : 'project case study'}`} aria-pressed={selected} onClick={select} onFocus={focus} onBlur={endHover} onPointerOver={beginHover} onPointerOut={endHover} style={{ '--pf-node-color': node.color, '--node-color': node.color, width: node.compact ? node.labelWidth : 'max-content', minWidth: node.compact ? node.labelWidth : 145, maxWidth: node.compact ? node.labelWidth : 230, whiteSpace: 'normal' }}>
+        <button ref={label} type="button" className={`pf-node pf-node-floating ${selected ? 'is-selected' : ''} ${highlighted ? 'is-pulsed' : ''} ${muted ? 'is-muted' : ''}`} data-kind={node.kind} data-media-fit={portrait ? 'portrait-focus' : 'complete-frame'} data-vessel={portrait ? 'portrait' : '3d-glass'} data-poster-aspect={posterAspect} data-video-aspect={video.media?.aspect} data-preview-type="image" data-media-source={node.image} aria-label={`${node.title} — ${portrait ? 'my journey and experience' : 'project case study'}`} aria-pressed={selected} onClick={select} onFocus={focus} onBlur={endHover} onPointerEnter={beginHover} onPointerLeave={endHover} style={{ '--pf-node-color': node.color, '--node-color': node.color, width: node.compact ? node.labelWidth : 'max-content', minWidth: node.compact ? node.labelWidth : 145, maxWidth: node.compact ? node.labelWidth : 230, whiteSpace: 'normal' }}>
           <span className="pf-node-label">{node.title}</span><small className="pf-node-kind">{portrait && node.compact ? 'My journey' : node.label || (portrait ? 'My journey & experience' : node.id === 'causeconnect' ? 'ACS team project' : 'Explore project')}</small>
         </button>
       </Html>

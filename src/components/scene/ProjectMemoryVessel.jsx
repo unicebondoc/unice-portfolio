@@ -89,7 +89,7 @@ export default function ProjectMemoryVessel({ radius, uniforms, posterAspect, vi
     uPosterHalfSize: { value: new THREE.Vector2() },
     uVideoHalfSize: { value: new THREE.Vector2() },
   }), [uniforms])
-  useFrame((_, delta) => {
+  useFrame(() => {
     if (!vessel.current) return
     // R3F keeps the mounted material across metadata updates. Update its
     // vectors directly when the video reveals a different source aspect.
@@ -97,9 +97,8 @@ export default function ProjectMemoryVessel({ radius, uniforms, posterAspect, vi
       media.current.uniforms.uPosterHalfSize.value.set(poster.halfWidth, poster.halfHeight)
       media.current.uniforms.uVideoHalfSize.value.set(moving.halfWidth, moving.halfHeight)
     }
-    const pointer = uniforms.uPointer.value
-    vessel.current.rotation.y = reducedMotion ? 0 : THREE.MathUtils.damp(vessel.current.rotation.y, pointer.x * .12, 4, delta)
-    vessel.current.rotation.x = reducedMotion ? 0 : THREE.MathUtils.damp(vessel.current.rotation.x, -pointer.y * .08, 4, delta)
+    // The complete project frame stays still while its glass light responds.
+    vessel.current.rotation.set(0, 0, 0)
     orbit.current.rotation.z = -.4 + (reducedMotion ? 0 : Math.sin(uniforms.uTime.value * .2) * .08)
     if (ring.current) ring.current.color.copy(uniforms.uTint.value).multiplyScalar(uniforms.uBrightness.value * (.75 + uniforms.uActive.value * .25))
     if (bowl.current) bowl.current.color.set('#073847').multiplyScalar(uniforms.uBrightness.value)

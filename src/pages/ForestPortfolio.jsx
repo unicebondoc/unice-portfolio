@@ -7,6 +7,7 @@ import { FOREST_NODES } from '../data/forestNodes.js'
 import { forestTarget, resolveForestLocation, forestNodeForReference } from '../data/forestNavigation.js'
 import useStore from '../hooks/useStore.js'
 import ProjectDemo, { AudioEdition } from '../components/ui/ProjectDemo.jsx'
+import AnimatedTyche from '../components/ui/AnimatedTyche.jsx'
 import '../styles/forest-portfolio.css'
 
 const ForestScene = lazy(() => import('../components/scene/PortfolioForestScene.jsx'))
@@ -25,6 +26,15 @@ function useReducedMotion() {
     return () => query.removeEventListener('change', update)
   }, [])
   return reduced
+}
+
+function MotionPreference({ reducedMotion, prefersReducedMotion, onToggle, descriptionId }) {
+  return <div className="pf-motion-preference">
+    <button type="button" className="pf-motion-switch" role="switch" aria-checked={!reducedMotion} aria-describedby={descriptionId} disabled={prefersReducedMotion} onClick={onToggle}>
+      <span>Motion effects</span><span className="pf-switch-track" aria-hidden><span /></span>
+    </button>
+    <p id={descriptionId}>{prefersReducedMotion ? 'Reduced by your device preference.' : 'Gentle movement in the forest.'}</p>
+  </div>
 }
 
 function ContactLinks() {
@@ -70,7 +80,7 @@ function WorkIndex({ navigate }) {
 function Journey({ initialChapter, reducedMotion }) {
   const [chapter, setChapter] = useState(() => MEMORIES.find(item => item.id === initialChapter) || MEMORIES.find(item => item.id === 'orb-root'))
   useEffect(() => { if (initialChapter) { const match = MEMORIES.find(item => item.id === initialChapter); if (match) setChapter(match) } }, [initialChapter])
-  return <div className="pf-journey"><p className="pf-journal-lede">The same curiosity runs through all of it: story, a change of country, learning to test an idea, and the worlds I’m building now.</p><div className="pf-chapter-list" aria-label="Career chapters">{MEMORIES.map(memory => <button type="button" key={memory.id} aria-pressed={memory.id === chapter.id} onClick={() => setChapter(memory)} style={{ '--pf-memory-color': memory.color }}><span aria-hidden>◈</span><small>{memory.year}</small><span>{memory.id === 'orb-root' ? 'Here, now' : memory.labelShort.replace(/^.*? · /, '')}</span></button>)}</div><article className="pf-chapter" key={chapter.id}><p className="pf-stage">{chapter.subtitle}</p><h3>{chapter.title}</h3>{chapter.id === 'orb-root' ? <><LoopPreview src="/profile-unice-calm-loop.mp4" poster="/profile-unice-approved.webp" label="Unice living portrait" reducedMotion={reducedMotion} /><p className="pf-portrait-caption">Living portrait · animated from my approved photograph</p></> : chapter.videoSrc && <ProjectDemo key={chapter.videoSrc} variant="memory" title={chapter.labelShort.replace(/^.*? · /, '')} demo={{ src: chapter.videoSrc, poster: chapter.videoPoster, caption: chapter.videoCaption, hasAudio: false }} />}<p>{chapter.description}</p><ul className="pf-technologies">{chapter.tags.map(tag => <li key={tag}>{tag}</li>)}</ul></article></div>
+  return <div className="pf-journey"><p className="pf-journal-lede">The same curiosity runs through all of it: story, a change of country, learning to test an idea, and the worlds I’m building now.</p><div className="pf-chapter-list" aria-label="Career chapters">{MEMORIES.map(memory => <button type="button" key={memory.id} aria-pressed={memory.id === chapter.id} onClick={() => setChapter(memory)} style={{ '--pf-memory-color': memory.color }}><span aria-hidden>◈</span><small>{memory.year}</small><span>{memory.id === 'orb-root' ? 'Here, now' : memory.labelShort.replace(/^.*? · /, '')}</span></button>)}</div><article className="pf-chapter" key={chapter.id}><p className="pf-stage">{chapter.subtitle}</p><h3>{chapter.title}</h3>{chapter.id === 'orb-root' ? <><LoopPreview src="/profile-unice-founder-loop.mp4" poster="/profile-unice-founder-landscape.webp" label="Unice at her studio desk — landscape founder portrait" reducedMotion={reducedMotion} /><p className="pf-portrait-caption">Founder portrait · created from my photograph</p></> : chapter.videoSrc && <ProjectDemo key={chapter.videoSrc} variant="memory" title={chapter.labelShort.replace(/^.*? · /, '')} demo={{ src: chapter.videoSrc, poster: chapter.videoPoster, caption: chapter.videoCaption, hasAudio: false }} />}<p>{chapter.description}</p><ul className="pf-technologies">{chapter.tags.map(tag => <li key={tag}>{tag}</li>)}</ul></article></div>
 }
 
 function Experience({ navigate }) {
@@ -108,7 +118,7 @@ function Journal({ panel, navigate, onClose, reducedMotion }) {
     return () => window.removeEventListener('keydown', keydown)
   }, [onClose])
   useEffect(() => { scrollRef.current.scrollTop = 0; journalRef.current.scrollTop = 0; headingRef.current?.focus({ preventScroll: true }) }, [panel.kind, panel.id])
-  return <div className="pf-journal-layer"><button type="button" className="pf-journal-backdrop" aria-label="Close journal and return to the forest" tabIndex={-1} onClick={onClose} /><section ref={journalRef} className="pf-journal" role="dialog" aria-modal="true" aria-labelledby="pf-journal-title" style={{ '--pf-memory-color': project?.color || '#b9e6db' }}><header className="pf-journal-header"><div><p className="pf-eyebrow">THE FIELD JOURNAL <span aria-hidden>/</span> {project ? 'PROJECT MEMORY' : 'UNICE’S WORLD'}</p><h2 id="pf-journal-title" ref={headingRef} tabIndex={-1}>{title}</h2></div><button type="button" className="pf-journal-close" aria-label="Close journal" onClick={onClose}><span aria-hidden>×</span></button></header><nav className="pf-journal-tabs" aria-label="Journal sections">{[['work', 'Work'], ['journey', 'Journey'], ['experience', 'Experience'], ['cv', 'CV']].map(([kind, label]) => <button key={kind} type="button" aria-current={panel.kind === kind ? 'page' : undefined} onClick={() => navigate({ kind })}>{label}</button>)}</nav><div className="pf-journal-scroll" ref={scrollRef}>{project ? <ProjectCase project={project} navigate={navigate} reducedMotion={reducedMotion} /> : panel.kind === 'work' ? <WorkIndex navigate={navigate} /> : panel.kind === 'journey' ? <Journey initialChapter={panel.chapter} reducedMotion={reducedMotion} /> : panel.kind === 'experience' ? <Experience navigate={navigate} /> : panel.kind === 'about' ? <About navigate={navigate} /> : panel.kind === 'writing' ? <Writing /> : panel.kind === 'cv' ? <CV /> : <><p className="pf-journal-lede">Software development, AI automation and systems implementation · Sydney.</p><ContactLinks /></>}</div><footer className="pf-journal-foot"><span aria-hidden>✧</span><span>The forest stays with you.</span><button type="button" onClick={onClose}>Return to the world ↙</button></footer></section></div>
+  return <div className="pf-journal-layer"><button type="button" className="pf-journal-backdrop" aria-label="Close journal and return to the forest" tabIndex={-1} onClick={onClose} /><section ref={journalRef} className="pf-journal" role="dialog" aria-modal="true" aria-labelledby="pf-journal-title" style={{ '--pf-memory-color': project?.color || '#b9e6db' }}><header className="pf-journal-header"><div><p className="pf-eyebrow">THE FIELD JOURNAL <span aria-hidden>/</span> {project ? 'PROJECT MEMORY' : 'UNICE’S WORLD'}</p><h2 id="pf-journal-title" ref={headingRef} tabIndex={-1}>{title}</h2></div><button type="button" className="pf-journal-close" aria-label="Close journal" onClick={onClose}><span aria-hidden>×</span></button></header><nav className="pf-journal-tabs" aria-label="Journal sections">{[['work', 'Work'], ['journey', 'Journey'], ['experience', 'Experience'], ['cv', 'CV']].map(([kind, label]) => <button key={kind} type="button" aria-current={panel.kind === kind || (kind === 'work' && panel.kind === 'project') ? 'page' : undefined} onClick={() => navigate({ kind })}>{label}</button>)}</nav><div className="pf-journal-scroll" ref={scrollRef}>{project ? <ProjectCase project={project} navigate={navigate} reducedMotion={reducedMotion} /> : panel.kind === 'work' ? <WorkIndex navigate={navigate} /> : panel.kind === 'journey' ? <Journey initialChapter={panel.chapter} reducedMotion={reducedMotion} /> : panel.kind === 'experience' ? <Experience navigate={navigate} /> : panel.kind === 'about' ? <About navigate={navigate} /> : panel.kind === 'writing' ? <Writing /> : panel.kind === 'cv' ? <CV /> : <><p className="pf-journal-lede">Software development, AI automation and systems implementation · Sydney.</p><ContactLinks /></>}</div><footer className="pf-journal-foot"><span aria-hidden>✧</span><span>The forest stays with you.</span><button type="button" onClick={onClose}>Return to the world ↙</button></footer></section></div>
 }
 
 export default function ForestPortfolio() {
@@ -116,6 +126,7 @@ export default function ForestPortfolio() {
   const [ready, setReady] = useState(false)
   const [graphicsError, setGraphicsError] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [displayOpen, setDisplayOpen] = useState(false)
   const [seen, setSeen] = useState([])
   const [guideOpened, setGuideOpened] = useState(false)
   const triggerRef = useRef(null)
@@ -135,6 +146,7 @@ export default function ForestPortfolio() {
     const url = forestTarget(next)
     if (location.pathname + location.hash !== url) history.pushState(null, '', url)
     setMenuOpen(false)
+    setDisplayOpen(false)
     setActivePanel(null)
     setPanel(next)
     if (next?.kind === 'project' && FOREST_NODES.some(node => node.id === next.id)) setSeen(previous => previous.includes(next.id) ? previous : [...previous, next.id])
@@ -154,17 +166,33 @@ export default function ForestPortfolio() {
     const viewport = () => setViewport(1, matchMedia('(max-width: 700px)').matches)
     viewport()
     window.addEventListener('resize', viewport)
-    const route = () => { setActivePanel(null); setPanel(resolveForestLocation(window.location)); setMenuOpen(false) }
+    const route = () => { setActivePanel(null); setPanel(resolveForestLocation(window.location)); setMenuOpen(false); setDisplayOpen(false) }
     window.addEventListener('popstate', route)
     window.addEventListener('hashchange', route)
     return () => { document.documentElement.classList.remove('pf-document'); document.body.classList.remove('pf-document'); window.removeEventListener('resize', viewport); window.removeEventListener('popstate', route); window.removeEventListener('hashchange', route) }
   }, [setLoadingExited, setActivePanel, setViewport])
   useEffect(() => {
-    if (!chatOpen && !menuOpen) return
-    const close = event => { if (event.key === 'Escape') { setMenuOpen(false); setActivePanel(null); worldRef.current?.querySelector(chatOpen ? '.pf-tyche' : '.pf-menu-toggle')?.focus() } }
+    if (!chatOpen && !menuOpen && !displayOpen) return
+    const close = event => {
+      if (event.key !== 'Escape') return
+      setMenuOpen(false)
+      setDisplayOpen(false)
+      setActivePanel(null)
+      worldRef.current?.querySelector(chatOpen ? '.pf-tyche' : displayOpen ? '.pf-display-toggle' : '.pf-menu-toggle')?.focus()
+    }
     window.addEventListener('keydown', close)
     return () => window.removeEventListener('keydown', close)
-  }, [chatOpen, menuOpen, setActivePanel])
+  }, [chatOpen, menuOpen, displayOpen, setActivePanel])
+  useEffect(() => {
+    if (!menuOpen && !displayOpen) return
+    const closeOutside = event => {
+      if (event.target instanceof Element && event.target.closest('.pf-header-tools')) return
+      setMenuOpen(false)
+      setDisplayOpen(false)
+    }
+    window.addEventListener('pointerdown', closeOutside)
+    return () => window.removeEventListener('pointerdown', closeOutside)
+  }, [menuOpen, displayOpen])
   const selectedId = panel?.kind === 'project' ? (FOREST_NODES.some(node => node.id === panel.id) ? panel.id : null) : panel?.kind === 'journey' ? 'journey' : null
   return <div className={`pf-portfolio ${panel ? 'pf-journal-open' : ''} ${ready ? 'pf-world-ready' : ''} ${reducedMotion ? 'pf-motion-paused' : ''}`} data-graphics-error={graphicsError || undefined}>
     <div className="pf-world-layer" aria-hidden={panel ? true : undefined} inert={panel ? true : undefined} ref={worldRef}>
@@ -172,9 +200,26 @@ export default function ForestPortfolio() {
       <div className="pf-canvas-layer"><Suspense fallback={null}><ForestScene nodes={FOREST_NODES} journalOpen={Boolean(panel)} selectedId={selectedId} pulseId={pulseId} onSelect={selectNode} reducedMotion={reducedMotion} onReady={onReady} onError={onError} /></Suspense></div>
       <div className="pf-ambient-shade" aria-hidden />
       <a className="pf-skip" href={forestTarget({ kind: 'work' })} onClick={event => { event.preventDefault(); navigate({ kind: 'work' }) }}>Go straight to work and CV</a>
-      <header className="pf-header"><a className="pf-brand" href="/#world" onClick={event => { event.preventDefault(); navigate(null) }} aria-label="Unice Bondoc — the world"><span className="pf-brand-mark" aria-hidden>U</span><span><strong>Unice Bondoc</strong><small>SOFTWARE · SYSTEMS · STORIES</small></span></a><nav className="pf-desktop-nav" aria-label="Portfolio navigation"><a href="/#world" onClick={event => { event.preventDefault(); navigate(null) }}>World</a>{NAVIGATION.map(([kind, label]) => <a key={kind} href={forestTarget({ kind })} onClick={event => { event.preventDefault(); navigate({ kind }) }}>{label}</a>)}<a className="pf-nav-cv" href="/#cv" onClick={event => { event.preventDefault(); navigate({ kind: 'cv' }) }}>CV ↗</a></nav><button className="pf-menu-toggle" type="button" aria-expanded={menuOpen} aria-controls="pf-mobile-menu" onClick={() => setMenuOpen(!menuOpen)}>Menu <span aria-hidden>{menuOpen ? '−' : '+'}</span></button>{menuOpen && <nav id="pf-mobile-menu" className="pf-mobile-menu" aria-label="Mobile portfolio navigation">{NAVIGATION.map(([kind, label]) => <a key={kind} href={forestTarget({ kind })} onClick={event => { event.preventDefault(); worldRef.current?.querySelector('.pf-menu-toggle')?.focus(); navigate({ kind }) }}>{label}</a>)}<a href="/#cv" onClick={event => { event.preventDefault(); worldRef.current?.querySelector('.pf-menu-toggle')?.focus(); navigate({ kind: 'cv' }) }}>View CV ↗</a></nav>}</header>
+      <header className="pf-header">
+        <a className="pf-brand" href="/#world" onClick={event => { event.preventDefault(); navigate(null) }} aria-label="Unice Bondoc — the world"><span className="pf-brand-mark" aria-hidden>U</span><span><strong>Unice Bondoc</strong><small>SOFTWARE · SYSTEMS · STORIES</small></span></a>
+        <div className="pf-header-tools">
+          <nav className="pf-desktop-nav" aria-label="Portfolio navigation">
+            <a href="/#world" aria-current={!panel ? 'page' : undefined} onClick={event => { event.preventDefault(); navigate(null) }}>World</a>
+            {NAVIGATION.map(([kind, label]) => <a key={kind} href={forestTarget({ kind })} aria-current={panel?.kind === kind || (kind === 'work' && panel?.kind === 'project') ? 'page' : undefined} onClick={event => { event.preventDefault(); navigate({ kind }) }}>{label}</a>)}
+            <a className="pf-nav-cv" href="/#cv" aria-current={panel?.kind === 'cv' ? 'page' : undefined} onClick={event => { event.preventDefault(); navigate({ kind: 'cv' }) }}>CV <span aria-hidden>↗</span></a>
+          </nav>
+          <div className="pf-display-control">
+            <button className="pf-display-toggle" type="button" aria-label="Display settings" aria-expanded={displayOpen} aria-controls="pf-display-panel" onClick={() => { setDisplayOpen(value => !value); setMenuOpen(false) }}>
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M4 7h7m4 0h5M4 17h3m4 0h9" /><circle cx="13" cy="7" r="2" /><circle cx="9" cy="17" r="2" /></svg>
+            </button>
+            {displayOpen && <div className="pf-display-panel" id="pf-display-panel"><p className="pf-menu-heading">Make yourself at home</p><MotionPreference reducedMotion={reducedMotion} prefersReducedMotion={prefersReducedMotion} onToggle={() => setMotionPaused(value => !value)} descriptionId="pf-display-motion-description" /></div>}
+          </div>
+          <button className="pf-menu-toggle" type="button" aria-expanded={menuOpen} aria-controls="pf-mobile-menu" onClick={() => { setMenuOpen(value => !value); setDisplayOpen(false) }}>Menu <span className="pf-menu-symbol" aria-hidden>{menuOpen ? '−' : '+'}</span></button>
+          {menuOpen && <nav id="pf-mobile-menu" className="pf-mobile-menu" aria-label="Mobile portfolio navigation"><p className="pf-menu-heading">Explore the world</p>{NAVIGATION.map(([kind, label]) => <a key={kind} href={forestTarget({ kind })} aria-current={panel?.kind === kind ? 'page' : undefined} onClick={event => { event.preventDefault(); worldRef.current?.querySelector('.pf-menu-toggle')?.focus(); navigate({ kind }) }}><span>{label}</span><span aria-hidden>↗</span></a>)}<div className="pf-menu-links"><a href="/#cv" onClick={event => { event.preventDefault(); worldRef.current?.querySelector('.pf-menu-toggle')?.focus(); navigate({ kind: 'cv' }) }}>CV ↗</a><a href="/#contact" onClick={event => { event.preventDefault(); worldRef.current?.querySelector('.pf-menu-toggle')?.focus(); navigate({ kind: 'contact' }) }}>Contact ↗</a></div><MotionPreference reducedMotion={reducedMotion} prefersReducedMotion={prefersReducedMotion} onToggle={() => setMotionPaused(value => !value)} descriptionId="pf-menu-motion-description" /></nav>}
+        </div>
+      </header>
       <main className="pf-introduction" aria-label="Unice Bondoc interactive portfolio"><p className="pf-eyebrow">SYDNEY · FOUNDER OF ONQST</p><h1>Follow a spark.<br /><em>Find a world.</em></h1><p className="pf-identity-line">Software Developer<br /><span>AI Automation, Apps & Games</span></p></main>
-      <footer className="pf-world-footer"><div className="pf-world-hint" role="status"><span className="pf-small-compass" aria-hidden>✧</span><span>{graphicsError ? 'Choose a memory, or go straight to the journal.' : ready ? 'Choose a glowing memory. The forest will follow.' : 'The forest is waking. Your journal is ready.'}<small>{seen.length ? `${seen.length} of 6 project memories explored this visit` : 'Click or Tab to explore · CV and work always within reach'}</small></span></div><div className="pf-footer-actions"><a className="pf-mobile-shortcut" href="/#work" onClick={event => { event.preventDefault(); navigate({ kind: 'work' }) }}>Work</a><a className="pf-mobile-shortcut" href="/#cv" onClick={event => { event.preventDefault(); navigate({ kind: 'cv' }) }}>CV</a><button type="button" className="pf-motion-toggle" aria-label={prefersReducedMotion ? 'Motion reduced' : motionPaused ? 'Play motion' : 'Pause motion'} aria-pressed={reducedMotion} disabled={prefersReducedMotion} onClick={() => setMotionPaused(previous => !previous)}><span className="pf-motion-long">{prefersReducedMotion ? 'Motion reduced' : motionPaused ? 'Play motion' : 'Pause motion'}</span><span className="pf-motion-short" aria-hidden>{prefersReducedMotion ? 'Still' : motionPaused ? 'Play' : 'Pause'}</span></button><a href="/#contact" onClick={event => { event.preventDefault(); navigate({ kind: 'contact' }) }}>Get in touch ↗</a><button type="button" className="pf-tyche" aria-label={chatOpen ? 'Close chat with Tyche' : 'Ask Tyche about Unice’s work'} aria-expanded={chatOpen} onClick={() => { setGuideOpened(true); setActivePanel(chatOpen ? null : { type: 'chat' }) }}><span>{chatOpen ? 'Close chat' : 'Ask Tyche'}</span><img src="/world/tyche-guide.webp" width="80" height="80" alt="" /></button></div></footer>
+      <footer className="pf-world-footer"><div className="pf-world-hint" role="status"><span className="pf-small-compass" aria-hidden>✧</span><span>{graphicsError ? 'Choose a memory, or go straight to the journal.' : ready ? 'Choose a glowing memory. The forest will follow.' : 'The forest is waking. Your journal is ready.'}<small>{seen.length ? `${seen.length} of 6 project memories explored this visit` : 'Click or Tab to explore · CV and work always within reach'}</small></span></div><div className="pf-footer-actions"><a className="pf-mobile-shortcut" href="/#work" onClick={event => { event.preventDefault(); navigate({ kind: 'work' }) }}>Work</a><a className="pf-mobile-shortcut" href="/#cv" onClick={event => { event.preventDefault(); navigate({ kind: 'cv' }) }}>CV</a><a href="/#contact" onClick={event => { event.preventDefault(); navigate({ kind: 'contact' }) }}>Contact ↗</a><div className="pf-guide-slot"><button type="button" className="pf-tyche" aria-label={chatOpen ? 'Close chat with Tyche' : 'Ask Tyche about Unice’s work'} aria-expanded={chatOpen} onClick={() => { setGuideOpened(true); setActivePanel(chatOpen ? null : { type: 'chat' }) }}><span>{chatOpen ? 'Close chat' : 'Ask Tyche'}</span><AnimatedTyche reducedMotion={reducedMotion} /></button></div></div></footer>
       {guideOpened && <Suspense fallback={null}><ChatBot nativeCursor /></Suspense>}
     </div>
     {panel && <Journal panel={panel} navigate={navigate} onClose={closeJournal} reducedMotion={reducedMotion} />}

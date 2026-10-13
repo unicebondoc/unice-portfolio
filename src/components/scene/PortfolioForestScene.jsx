@@ -88,7 +88,7 @@ function NativeFallback({ nodes, selectedId, onSelect }) {
   )
 }
 
-function Background({ texture, reducedMotion }) {
+function Background({ texture }) {
   const { scene, size } = useThree()
   const background = useMemo(() => {
     const copy = texture.clone()
@@ -114,19 +114,12 @@ function Background({ texture, reducedMotion }) {
     return () => { if (scene.background === background) scene.background = null }
   }, [background, scene, size.width, size.height, texture])
   useEffect(() => () => background.dispose(), [background])
-  useFrame(({ pointer }) => {
-    if (reducedMotion || size.width <= 700) return
-    const maxX = Math.min(0.003, baseOffset.current.x)
-    const maxY = Math.min(0.003, baseOffset.current.y)
-    background.offset.x = baseOffset.current.x - pointer.x * maxX
-    background.offset.y = baseOffset.current.y - pointer.y * maxY
-  })
   return null
 }
 
 function CameraMotion({ selected, reducedMotion }) {
   const { camera, invalidate, size } = useThree()
-  const target = useMemo(() => new THREE.Vector3(), [])
+  const target = useMemo(() => new THREE.Vector3(0, 0, CAMERA_Z), [])
   const look = useMemo(() => new THREE.Vector3(0, 0, 0), [])
   useEffect(() => {
     if (selected && size.width > 700 && !reducedMotion) {
@@ -144,12 +137,13 @@ function CameraMotion({ selected, reducedMotion }) {
       camera.lookAt(look)
       invalidate()
     }
-  }, [selected, reducedMotion, camera, invalidate, size.width, target, look])
-  useFrame(({ pointer }, delta) => {
+  }, [selected, reducedMotion, camera, invalidate, size.width, size.height, target, look])
+  useFrame((_, delta) => {
     if (reducedMotion) return
-    const parallax = size.width <= 700 ? 0 : 0.018
-    camera.position.x = THREE.MathUtils.damp(camera.position.x, target.x + pointer.x * parallax, 2.5, delta)
-    camera.position.y = THREE.MathUtils.damp(camera.position.y, target.y + pointer.y * parallax, 2.5, delta)
+    // Camera framing changes only when a project is deliberately selected.
+    // Pointer motion must not shift projected labels or their hit targets.
+    camera.position.x = THREE.MathUtils.damp(camera.position.x, target.x, 2.5, delta)
+    camera.position.y = THREE.MathUtils.damp(camera.position.y, target.y, 2.5, delta)
     camera.position.z = THREE.MathUtils.damp(camera.position.z, target.z, 2.5, delta)
     look.set(camera.position.x, camera.position.y, camera.position.z - CAMERA_Z)
     camera.lookAt(look)
@@ -277,7 +271,7 @@ function ForestContent({ nodes, selectedId, pulseId, journalOpen, onSelect, redu
   return (
     <>
       <ContextGuard onFailure={onFailure} />
-      <Background texture={textures[0]} reducedMotion={reducedMotion} />
+      <Background texture={textures[0]} />
       <CameraMotion selected={selected} reducedMotion={reducedMotion} />
       <ambientLight intensity={0.5} />
       <pointLight position={[0, 1, 3]} color={selected?.color ?? '#a4efff'} intensity={0.8} distance={14} decay={2} />
