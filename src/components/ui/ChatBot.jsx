@@ -52,8 +52,12 @@ export default function ChatBot({ nativeCursor = false }) {
 
   useEffect(() => {
     if (!open) return
+    const returnFocus = document.activeElement
     const t = setTimeout(() => inputRef.current?.focus(), 50)
-    return () => clearTimeout(t)
+    return () => {
+      clearTimeout(t)
+      if (returnFocus?.isConnected) requestAnimationFrame(() => returnFocus.focus())
+    }
   }, [open])
 
   useEffect(() => {
@@ -151,6 +155,8 @@ export default function ChatBot({ nativeCursor = false }) {
       {open && (
         <div
           className={`${styles.panel} ${isMobile ? styles.panelMobile : ''}`}
+          role="dialog"
+          aria-label="Chat with Tyche"
           style={{ cursor: nativeCursor ? 'auto' : 'none' }}
         >
           <div className={styles.header}>

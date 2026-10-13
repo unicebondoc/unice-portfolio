@@ -11,8 +11,8 @@ const HEART_POSITION = [0, -0.22, -0.3]
 // Positions are screen proportions, converted once to world coordinates for
 // each viewport. They reserve the upper-left title and the lower navigation.
 const DESKTOP_POSITIONS = {
-  flatsync: [22, 39],
-  landlit: [50, 28],
+  flatsync: [35, 42],
+  landlit: [50, 26],
   'what-was-drawn': [77, 38],
   steeped: [22, 67],
   'princess-of-alemio': [62, 66],
@@ -20,7 +20,7 @@ const DESKTOP_POSITIONS = {
   journey: [50, 52],
 }
 const TALL_POSITIONS = {
-  flatsync: [22, 35],
+  flatsync: [35, 42],
   landlit: [53, 28],
   'what-was-drawn': [80, 40],
   steeped: [21, 60],
@@ -39,7 +39,7 @@ const MOBILE_POSITIONS = {
 }
 
 function getLayout(nodes, width, height) {
-  const compact = width <= 700
+  const compact = width <= 1000
   const tall = height > width * 1.05
   const positions = compact ? MOBILE_POSITIONS : tall ? TALL_POSITIONS : DESKTOP_POSITIONS
   const baseDiameter = compact
@@ -56,6 +56,7 @@ function getLayout(nodes, width, height) {
       ...node,
       index,
       compact,
+      labelWidth: compact ? Math.min(126, Math.max(88, width * 0.28)) : undefined,
       radius,
       screen,
       position: node.id === 'journey' ? HEART_POSITION : [(screen[0] / 100 - 0.5) * worldWidth, (0.5 - screen[1] / 100) * worldHeight, z],
@@ -80,7 +81,7 @@ function nodeAccessibleLabel(node) {
 function NativeFallback({ nodes, selectedId, onSelect }) {
   return (
     <div className="pf-scene-fallback" role="group" aria-label="Portfolio memories" style={{ position: 'absolute', inset: 0, overflow: 'auto', padding: '210px 24px 110px', background: `linear-gradient(180deg, #03101f55, #03101fc9), url(${BACKGROUND}) center / cover`, display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', alignContent: 'center', gap: 14 }}>
-      {nodes.map((node) => <button key={node.id} type="button" className="pf-node pf-node-fallback" aria-label={nodeAccessibleLabel(node)} aria-pressed={selectedId === node.id} onClick={() => onSelect?.(node.id)} style={{ '--node-color': node.color, minHeight: 150, padding: '12px 8px', border: `1px solid ${node.color || '#7eddf2'}80`, color: '#eef6ee', background: '#041321e6', fontFamily: 'Raleway, sans-serif', cursor: 'pointer', whiteSpace: 'normal' }}><img src={node.image} alt="" width="80" height="80" style={{ display: 'block', width: 80, height: 80, margin: '0 auto 8px', objectFit: 'contain', borderRadius: node.kind === 'journey' ? '50%' : 0 }} /><strong className="pf-node-label">{node.title}</strong><small className="pf-node-kind" style={{ display: 'block', marginTop: 5, color: '#bcd0d4', fontSize: 10 }}>{node.label || (node.kind === 'journey' ? 'My journey' : 'View project')}</small></button>)}
+      {nodes.map((node) => <button key={node.id} type="button" className="pf-node pf-node-fallback" aria-label={nodeAccessibleLabel(node)} aria-pressed={selectedId === node.id} onClick={() => onSelect?.(node.id)} style={{ '--node-color': node.color, minHeight: 150, padding: '12px 8px', border: `1px solid ${node.color || '#7eddf2'}80`, color: '#eef6ee', background: '#041321e6', fontFamily: 'Raleway, sans-serif', cursor: 'pointer', whiteSpace: 'normal' }}><img src={node.image} alt="" width="80" height="80" style={{ display: 'block', width: 80, height: 80, margin: '0 auto 8px', objectFit: 'contain', borderRadius: node.kind === 'journey' ? '50%' : 0 }} /><strong className="pf-node-label">{node.title}</strong><small className="pf-node-kind" style={{ display: 'block', marginTop: 5, color: '#bcd0d4', fontSize: '0.875rem' }}>{node.label || (node.kind === 'journey' ? 'My journey' : 'View project')}</small></button>)}
     </div>
   )
 }
