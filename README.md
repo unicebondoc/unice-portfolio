@@ -1,13 +1,14 @@
 # Core Memories — one living forest
 
-Unice Bondoc’s hiring portfolio at https://www.unicebondoc.com. One mounted React Three Fiber forest connects six project memories, the portrait root, all seven career chapters and a readable field journal. Project selection focuses the camera, lights its tendril and brings the case alongside the world. There is no second forest, map or launch iframe.
+Unice Bondoc’s hiring portfolio at https://www.unicebondoc.com. One mounted React Three Fiber forest connects six project memories, the central living portrait, all seven career chapters and a readable field journal. Project selection focuses the camera, lights its tendril and brings the case alongside the world. There is no second forest, map or launch iframe.
 
-The journal contains actual project screenshots, personal contribution, decisions, evidence and release stages. Work, Experience, About, Writing, both CV variants and contact remain directly reachable. The approved pearl-earring/diamond-pendant portrait appears at the roots and in About.
+The journal contains actual project screenshots, personal contribution, decisions, evidence and release stages. Work, Experience, About, Writing, both CV variants and contact remain directly reachable. The approved pearl-earring/diamond-pendant portrait replaces the gold diamond at the tree heart. Its new eight-second silent loop also appears in the current journey chapter; About retains the approved photograph.
 
 ## Source and routes
 
 - `src/pages/ForestPortfolio.jsx`: identity, same-world navigation, journal, journey videos, CV and guide.
-- `src/components/scene/PortfolioForestScene.jsx`: one Canvas, original forest texture, project art, static tendrils, camera focus, particles, native projected labels and error fallback.
+- `src/components/scene/PortfolioForestScene.jsx`: one Canvas, original forest texture, actual project media, static tendrils, camera focus, particles, native projected labels and error fallback.
+- `src/components/scene/MemoryGlassNode.jsx`: glass shader, pointer reflection, image drift, video colour conversion, bounded loop lifecycle and image fallback.
 - `src/data/forestNodes.js`: six scene projects and portrait root, derived from shared project facts.
 - `src/data/forestNavigation.js`: URL/deep-link resolution and guide-reference mapping.
 - `src/data/projects.js` and `lib/portfolioData.js`: shared cases, experience and bounded guide knowledge.
@@ -25,7 +26,7 @@ Original `App.jsx`, `MemoryOrb`, `FastTrackSite` and the split `PortfolioWorld` 
 - Reduced motion stops camera pan/zoom, idle sway, ripples and particle loops; the renderer uses demand frames.
 - Static tendril geometry is memoized; no React updates or geometry recreation every animation frame.
 - Texture/renderer/context failures retain project names, thumbnails and the same hiring journal.
-- Story videos load on request, have native controls and do not autoplay; leaving the chapter unmounts its player.
+- Original story videos load on request with native controls. The new portrait, FlatSync demo and Steeped gameplay use muted loops; visible journal previews play only with motion enabled. Offscreen, hidden-tab and covered phone-scene clips pause; reduced motion and Pause motion keep still posters. Leaving a case/chapter unmounts its player. Video failures retain the image without failing the forest.
 - Navigation is available while the forest loads. There is no forced 2.5-second wait.
 - Tyche chat is loaded on demand. Story references highlight the portrait root; project references map to validated scene nodes. Provider response generation remains an existing server feature.
 - Exploration progress lasts for the mounted page and has no account or persistent tracking.
@@ -45,6 +46,6 @@ npm run test:content
 npm run build
 ```
 
-Original forest atmosphere and story videos are reused. The miniature-world art and Tyche are served from `public/world/`; their PNG masters, exact generation prompts and hash/dimension receipt remain in `design-assets/living-archive/`. The rejected split-grove artwork is retained as history. Illustrations are atmosphere, not fabricated product evidence; actual screenshots remain in the journal.
+Original forest atmosphere and historical story videos are reused. Current orbs show actual project screenshots and bounded source-recording excerpts, including PH-first fictional LandLIT data, the CauseConnect sample frontend and Steeped r13j gameplay. Four still previews move through a subtle glass shader; they are not represented as recorded product interactions. The new portrait was generated once in Google Flow after the owner approved the photograph destination and a12-existing-credit limit. Real-media provenance is in `design-assets/living-archive/media-sources.json`. Tyche remains in `public/world/`; retired miniature-world art, masters and generation receipts are retained as history.
 
 Vercel project: `unicebondocs-projects/unice-portfolio`. Verify the linked project before consequential operations. Dated Career handoffs distinguish local build, browser checks, owner feedback and current publication. No public feed post, application or outreach is implied by a site update.
