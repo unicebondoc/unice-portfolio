@@ -9,6 +9,7 @@ The journal contains actual project screenshots, personal contribution, decision
 - `src/pages/ForestPortfolio.jsx`: identity, same-world navigation, journal, journey videos, CV and guide.
 - `src/components/scene/PortfolioForestScene.jsx`: one Canvas, original forest texture, actual project media, static tendrils, camera focus, particles, native projected labels and error fallback.
 - `src/components/scene/MemoryGlassNode.jsx`: glass shader, pointer reflection, image drift, video colour conversion, bounded loop lifecycle and image fallback.
+- `src/components/ui/ProjectDemo.jsx`: user-started native video/audio, captions, transcripts, credit links and playback cleanup.
 - `src/data/forestNodes.js`: six scene projects and portrait root, derived from shared project facts.
 - `src/data/forestNavigation.js`: URL/deep-link resolution and guide-reference mapping.
 - `src/data/projects.js` and `lib/portfolioData.js`: shared cases, experience and bounded guide knowledge.
@@ -26,7 +27,7 @@ Original `App.jsx`, `MemoryOrb`, `FastTrackSite` and the split `PortfolioWorld` 
 - Reduced motion stops camera pan/zoom, idle sway, ripples and particle loops; the renderer uses demand frames.
 - Static tendril geometry is memoized; no React updates or geometry recreation every animation frame.
 - Texture/renderer/context failures retain project names, thumbnails and the same hiring journal.
-- Original story videos load on request with native controls. The new portrait, FlatSync demo and Steeped gameplay use muted loops; visible journal previews play only with motion enabled. Offscreen, hidden-tab and covered phone-scene clips pause; reduced motion and Pause motion keep still posters. Leaving a case/chapter unmounts its player. Video failures retain the image without failing the forest.
+- Original story videos load on request with native controls. Portrait and short project-orb loops stay muted; reduced motion and Pause motion keep still posters. FlatSync’s opened case has the full approved 27-second narrated demo, native controls, English captions and transcript. Alemio’s case has the existing 2m58 audio edition sample with transcript, attribution and complete credits. Both begin only on explicit Play. Steeped uses its existing silent gameplay excerpt: source film rules prohibit exporting the recorded sound from this Mac. Sound players pause when their media/control area leaves view or the tab hides, never resume automatically, and unmount when a case closes. Only one DOM recording plays at once; silent orb textures remain separate. Playback failures offer the file link and retain the journal/forest.
 - Navigation is available while the forest loads. There is no forced 2.5-second wait.
 - Tyche chat is loaded on demand. Story references highlight the portrait root; project references map to validated scene nodes. Provider response generation remains an existing server feature.
 - Exploration progress lasts for the mounted page and has no account or persistent tracking.

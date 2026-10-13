@@ -1,3 +1,45 @@
+const TRANSCRIPT_FLATSYNC = [
+  "Always the one reminding the house?",
+  "Make it a team thing with FlatSync.",
+  "Share the chores, and see who's doing what.",
+  "Keep one shopping list, so everyone knows what's needed.",
+  "Record shared costs, and see who owes whom.",
+  "Payments happen outside the app.",
+  "A little less chasing. A lot more living.",
+  "Try the free web app, and install it from your browser."
+]
+
+const TRANSCRIPT_ALEMIO = [
+  "Narrator: The Sacrifice: Princess of Alemio. Written by Unice Bondoc. Part One: The Fallen Kingdom.",
+  "Narrator: Chapter One. The Door in Kimilar.",
+  "Narrator: Alicia stepped through the portal into a quiet park. The portal closed behind her. It was evening. A man was sitting on a bench nearby. When he saw her, he gripped the edge of the bench. His lips parted. For a moment, no words came.",
+  "Malcolm: Excuse me.",
+  "Narrator: He got to his feet so quickly that Alicia stepped back. He stopped at once, leaving the path between them.",
+  "Alicia: Do I know you?",
+  "Narrator: He looked as though he was about to answer. Then his eyes dropped to the ground. He took a slow breath.",
+  "Malcolm: No.",
+  "Narrator: She felt as though she knew him, but she couldn't remember meeting him. Neither of them spoke for a moment.",
+  "Alicia: Are you sure? You looked surprised to see me.",
+  "Malcolm: That portal hasn't opened in a year.",
+  "Alicia: A year?",
+  "Narrator: Alicia looked back. There was only a stone arch with ivy growing over it. She could see a wall through the gap where the light had been. A moment ago, she had been somewhere else. She was certain of that much.",
+  "Alicia: There was a room. I was standing beside a door like that one.",
+  "Malcolm: What happened before that?",
+  "Narrator: She tried to remember how she had reached the room. Nothing came. Not the way in. Not the day before. She looked at him again. His coat was worn at the elbows, and there was mud on his boots. He was waiting for an answer she could not give him.",
+  "Alicia: Where am I?",
+  "Malcolm: Kimilar. That's the town hall behind you.",
+  "Narrator: She turned far enough to read the name above the entrance, keeping him in sight. Kimilar. The letters were easy to understand. The place meant nothing to her. She knew how to read, how to speak, how to be careful with a stranger. Why couldn't she remember where she lived?",
+  "Alicia: Can the portal take me back?",
+  "Malcolm: It connects this park to the palace in Alemio. But a strange storm has cut off the kingdom. I don't know how to open it from here.",
+  "Narrator: She reached up and pressed her hand against the stone. Nothing happened. Her robe slipped aside, showing the gold handle of a sword at her hip. She knew its weight before she looked down. Her fingers found the handle without searching.",
+  "Malcolm: You should cover the gold before you go into town.",
+  "Alicia: Why?",
+  "Malcolm: Someone might try to take it.",
+  "Narrator: She pulled her robe over the sword. He hadn't stepped closer. His worn pack still rested against the bench.",
+  "Malcolm: There's a guesthouse in the town centre, next to the guard post. The guards watch that area all night. I can show you.",
+  "Alicia: But you are a stranger."
+]
+
 // Shared public facts for the hiring page, forest and AI guide.
 export const PROJECTS = [
   {
@@ -58,6 +100,16 @@ export const PROJECTS = [
       "decision": "Household membership and money calculations need explicit rules; accessible feedback must explain a failed or conflicting update.",
       "evidence": "Regression coverage checks bill calculations, conflicting edits and keyboard-accessible interactions. The public web app is available to try.",
       "result": "Public web access is available. Native iOS and Android releases remain pending."
+    },
+    "demo": {
+      "src": "/projects/flatsync-narrated-demo.mp4",
+      "poster": "/projects/flatsync-narrated-poster.png",
+      "caption": "Narrated web preview · 27 seconds · native releases pending",
+      "hasAudio": true,
+      "captions": "/projects/flatsync-narrated-demo.vtt",
+      "transcript": TRANSCRIPT_FLATSYNC,
+      "disclosure": "Example household · Illustrated clay scenes · Synthetic narration · Original FlatSync music. Payments happen outside the app.",
+      "credits": "/projects/flatsync-demo-credits.txt"
     },
     "video": "/projects/flatsync-demo-loop.mp4",
     "videoCaption": "Actual web-demo recording · fictional household · native releases pending",
@@ -165,6 +217,11 @@ export const PROJECTS = [
     "imageAlt": "Actual Steeped r13j tea-making gameplay preview",
     "imageKind": "wide",
     "imageCaption": "Actual r13j gameplay · development preview · release acceptance pending",
+    "demo": {
+      "src": "/projects/steeped-gameplay-loop.mp4",
+      "caption": "Silent gameplay preview · development build · release pending",
+      "hasAudio": false
+    },
     "video": "/projects/steeped-gameplay-loop.mp4",
     "videoCaption": "Actual r13j gameplay recording · development preview · release acceptance pending",
     "linkLabel": "Explore the development site",
@@ -200,6 +257,15 @@ export const PROJECTS = [
     "imageKind": "wide",
     "imageCaption": "Visual-novel development scene",
     "secondaryImage": "/projects/alemio-audio.webp",
+    "audioPreview": {
+      "src": "/projects/alemio-audio-preview.mp3",
+      "title": "Princess of Alemio · Audio edition",
+      "caption": "Part One audio drama · Opening excerpt · 2 minutes 58 seconds",
+      "transcript": TRANSCRIPT_ALEMIO,
+      "disclosure": "A separate audio edition from the visual novel. Original synthetic voices; the opening sample includes its published music and sound mix.",
+      "attribution": "Music: Beautiful Oblivion by Scott Buckley, CC BY 4.0. Sound effects: Sword Clash and Sword Clash 2 by Gravity Sound, CC BY 4.0; complete sources and changes in the credits.",
+      "credits": "/projects/alemio-audio-credits.txt"
+    },
     "linkLabel": "View the editions at ONQST",
     "glow": "#b8a8ed",
     "glowSoft": "#b8a8ed33"

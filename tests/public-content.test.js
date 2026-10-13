@@ -79,6 +79,9 @@ test('Project media exists and public source links do not expose private reposit
   for (const item of PROJECTS) {
     if (item.image) assert.ok(existsSync(new URL(`../public${item.image}`, import.meta.url)), item.image)
     if (item.video) assert.ok(existsSync(new URL(`../public${item.video}`, import.meta.url)), item.video)
+    for (const media of [item.demo, item.audioPreview].filter(Boolean)) {
+      for (const src of [media.src,media.poster,media.captions,media.credits].filter(Boolean)) assert.ok(existsSync(new URL(`../public${src}`, import.meta.url)), src)
+    }
     if (item.secondaryImage) assert.ok(existsSync(new URL(`../public${item.secondaryImage}`, import.meta.url)), item.secondaryImage)
     if (item.id !== 'causeconnect') assert.equal(item.links.github, null)
   }
@@ -187,4 +190,21 @@ test('Project orbs use the same actual media and stages as their case studies', 
   const identity = FOREST_NODES.find(item => item.id === 'journey')
   assert.ok(existsSync(new URL(`../public${identity.video}`, import.meta.url)))
   assert.doesNotMatch(read('src/components/scene/PortfolioForestScene.jsx'), /HeartOfTree|octahedronGeometry/)
+})
+
+test('Full narrated demos retain approved captions, credits and edition boundaries', () => {
+  const flat = project('flatsync').demo
+  assert.equal(flat.hasAudio, true)
+  assert.ok(flat.transcript.includes('Payments happen outside the app.'))
+  assert.equal(flat.transcript.length, 8)
+  assert.equal((read(`public${flat.captions}`).match(/ --> /g) || []).length, 8)
+  assert.match(read(`public${flat.credits}`), /synthetic stock voice/)
+  assert.notEqual(flat.src, project('flatsync').video)
+  assert.equal(project('steeped').demo.hasAudio, false)
+  assert.equal(project('steeped').demo.src, project('steeped').video)
+  const audio = project('princess-of-alemio').audioPreview
+  assert.match(audio.disclosure, /separate audio edition/)
+  assert.match(audio.attribution, /Scott Buckley.*CC BY 4.0/)
+  assert.match(read(`public${audio.credits}`), /Sword Clash 2/)
+  assert.ok(audio.transcript.some(line => line.startsWith('Alicia:')))
 })

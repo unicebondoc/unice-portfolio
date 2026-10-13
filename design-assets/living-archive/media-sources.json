@@ -25,7 +25,7 @@
         "sha256": "d5cb11aec51034244b254640b904d0b7401d360b7f4442824e72dd899ca53430"
       },
       "servedPath": "/projects/causeconnect-sample.webp",
-      "suggestedCaption": "Hosted frontend preview \u00b7 sample data \u00b7 backend integration pending",
+      "suggestedCaption": "Hosted frontend preview · sample data · backend integration pending",
       "stage": "Hosted sample frontend with guest view and fictional campaigns; does not establish real accounts, backend writes, API integration or final assessed deployment.",
       "visualPrivacyReview": "Inspected original and exported frame; sample/fictional interface or gameplay only, no real account or customer details visible."
     },
@@ -46,7 +46,7 @@
         "sha256": "841802ee5d5f820ade74c3eb73c9311aabbeeb43db0adb5cddbf7bfcb7588b64"
       },
       "servedPath": "/projects/steeped-gameplay.webp",
-      "suggestedCaption": "Actual r13j gameplay \u00b7 development preview",
+      "suggestedCaption": "Actual r13j gameplay · development preview",
       "stage": "Actual Mac r13j QA capture showing tea-whisk gameplay with fictional character; public game release, store and owner creative acceptance remain pending.",
       "visualPrivacyReview": "Inspected original and exported frame; sample/fictional interface or gameplay only, no real account or customer details visible."
     },
@@ -67,7 +67,7 @@
         "sha256": "5e44469a41b2fafcf71f3c7704af435e0678503adff70abea3b0dcf216fbe537"
       },
       "servedPath": "/projects/landlit-ph-demo.webp",
-      "suggestedCaption": "PH-first fictional sample dashboard \u00b7 no real accounts, payments or messages",
+      "suggestedCaption": "PH-first fictional sample dashboard · no real accounts, payments or messages",
       "stage": "Actual published PH-first static showcase demonstration, with explicit fictional PHP sample data; customer-service hosting, real payments, messages and accounts remain outside this showcase.",
       "visualPrivacyReview": "Inspected original and exported frame; sample/fictional interface or gameplay only, no real account or customer details visible."
     }
@@ -157,5 +157,79 @@
       "process": "Delivery resize512px, no audio, H.264faststart; approved portrait poster retained",
       "acceptance": "Generated and reviewed for identity continuity; final owner creative acceptance pending"
     }
-  ]
+  ],
+  "userStartedMedia": {
+    "preparedDateSydney": "2026-10-13",
+    "playback": "Full project recordings load on explicit Play with native controls. Silent short excerpts remain in forest orbs. Offscreen, hidden-tab and closed-case players pause; no automatic resume.",
+    "flatsync": {
+      "durationSeconds": 26.866667,
+      "hasAudio": true,
+      "audio": "Original approved synthetic narration and original music, unchanged",
+      "approvalEvidence": "/Users/unice/claude OS/docs/brain/vault/02-onqst/handoffs/2026-10-09-website-voiced-flatsync-live.md",
+      "captions": "8 English cues and matching transcript",
+      "stage": "Published web app; native releases pending",
+      "files": [
+        {
+          "source": "/Users/unice/claude OS/flatsync/release/marketing/2026-10-09-narrated-web/flatsync-web-voiced.mp4",
+          "output": "/Users/unice/Projects/Personal/unice-portfolio/public/projects/flatsync-narrated-demo.mp4",
+          "sha256": "f537c59703b4fe43ae5e1733d8d2bafb0e80f8ae55e4145585794c557f0b0dbe",
+          "bytes": 2011142,
+          "copyExact": true
+        },
+        {
+          "source": "/Users/unice/claude OS/flatsync/release/marketing/2026-10-09-narrated-web/flatsync-web-poster.png",
+          "output": "/Users/unice/Projects/Personal/unice-portfolio/public/projects/flatsync-narrated-poster.png",
+          "sha256": "b1ac2d7960c7c3d76db9dd93f1223348af49d9f8636356eec335845bfdd850aa",
+          "bytes": 1100691,
+          "copyExact": true
+        },
+        {
+          "source": "/Users/unice/claude OS/flatsync/release/marketing/2026-10-09-narrated-web/flatsync-web.vtt",
+          "output": "/Users/unice/Projects/Personal/unice-portfolio/public/projects/flatsync-narrated-demo.vtt",
+          "sha256": "ea70c08ff85963acccbc13687f03df09142bb4157a270e76eab7d9ba63392ad7",
+          "bytes": 619,
+          "copyExact": true
+        },
+        {
+          "source": "/Users/unice/claude OS/sites/onqst/assets/flatsync-demo-credits.txt",
+          "output": "/Users/unice/Projects/Personal/unice-portfolio/public/projects/flatsync-demo-credits.txt",
+          "sha256": "5e263eae9bef4adf43c6bf3d543471f1f5add8b4ce1dc94ffa5df20274278cee",
+          "bytes": 17726,
+          "copyExact": true
+        }
+      ]
+    },
+    "alemio": {
+      "durationSeconds": 178.237313,
+      "hasAudio": true,
+      "edition": "Part One audio drama opening excerpt, separate from the development visual novel",
+      "audio": "Existing public sample copied exactly, original synthetic voices and published music/SFX mix retained",
+      "attribution": "Beautiful Oblivion by Scott Buckley, CC BY 4.0; Sword Clash and Sword Clash 2 by Gravity Sound, CC BY 4.0. Full sources and modifications remain in linked credits.",
+      "transcriptSource": "/Users/unice/claude OS/sites/onqst/assets/alemio-preview-transcript.txt",
+      "files": [
+        {
+          "source": "/Users/unice/claude OS/sites/onqst/assets/alemio-preview.mp3",
+          "output": "/Users/unice/Projects/Personal/unice-portfolio/public/projects/alemio-audio-preview.mp3",
+          "sha256": "85e610d3035a028caa556c6cc3434d246d7916ffdf7c5b54a45ec668735ed6d2",
+          "bytes": 4280198,
+          "copyExact": true
+        },
+        {
+          "source": "/Users/unice/claude OS/sites/onqst/assets/alemio-preview-credits.txt",
+          "output": "/Users/unice/Projects/Personal/unice-portfolio/public/projects/alemio-audio-credits.txt",
+          "sha256": "9cf3300c1807ac4b6c81bccefa8fa96a6f84fe28f68c3158b9dda6686ac5b64d",
+          "bytes": 4917,
+          "copyExact": true
+        }
+      ]
+    },
+    "steeped": {
+      "hasAudio": false,
+      "servedPath": "/projects/steeped-gameplay-loop.mp4",
+      "reason": "The r13j films include Sound Effect Lab recordings whose project provenance forbids films leaving this Mac. Only the existing silent excerpt is public. No restricted recording or sound was copied.",
+      "rule": "/Users/unice/Projects/Games/Steeped 3D Prototype/AGENTS.md:42",
+      "filmReceipt": "/Users/unice/Projects/Games/Steeped 3D Prototype/Evidence/codex-r13j-film-005329/receipt.json:2"
+    },
+    "otherProjectPreviews": "No current source audio was verified for the still-image LandLIT, What Was Drawn or CauseConnect orb previews. No sound was invented."
+  }
 }

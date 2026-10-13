@@ -6,6 +6,7 @@ import { PORTFOLIO_DATA } from '../../lib/portfolioData.js'
 import { FOREST_NODES } from '../data/forestNodes.js'
 import { forestTarget, resolveForestLocation, forestNodeForReference } from '../data/forestNavigation.js'
 import useStore from '../hooks/useStore.js'
+import ProjectDemo, { AudioEdition } from '../components/ui/ProjectDemo.jsx'
 import '../styles/forest-portfolio.css'
 
 const ForestScene = lazy(() => import('../components/scene/PortfolioForestScene.jsx'))
@@ -51,10 +52,11 @@ function ProjectCase({ project, navigate, reducedMotion }) {
   return <article className="pf-case" id={`project-${project.id}`} style={{ '--pf-memory-color': project.color }}>
     <p className="pf-stage"><span aria-hidden>◈</span>{project.subtitle}</p>
     <p className="pf-case-purpose">{project.description}</p>
-    {project.image && <figure className={`pf-case-image pf-case-image-${project.video ? 'video' : project.imageKind || 'wide'}`} >{project.video ? <LoopPreview src={project.video} poster={project.image} label={`${project.title} actual project recording`} reducedMotion={reducedMotion} /> : <a href={project.image} target="_blank" rel="noopener noreferrer" aria-label={`Open ${project.title} image`}><img src={project.image} alt={project.imageAlt} width="680" height="430" /></a>}<figcaption>{(project.video ? project.videoCaption : project.imageCaption) || 'Project image'}</figcaption></figure>}
+    {project.demo ? <ProjectDemo demo={project.demo} title={project.title} poster={project.image} /> : project.image && <figure className={`pf-case-image pf-case-image-${project.video ? 'video' : project.imageKind || 'wide'}`} >{project.video ? <LoopPreview src={project.video} poster={project.image} label={`${project.title} actual project recording`} reducedMotion={reducedMotion} /> : <a href={project.image} target="_blank" rel="noopener noreferrer" aria-label={`Open ${project.title} image`}><img src={project.image} alt={project.imageAlt} width="680" height="430" /></a>}<figcaption>{(project.video ? project.videoCaption : project.imageCaption) || 'Project image'}</figcaption></figure>}
     <div className="pf-contribution"><p className="pf-eyebrow">MY CONTRIBUTION</p><p>{project.caseStudy.contribution}</p></div>
     <dl className="pf-case-facts"><div><dt>The problem</dt><dd>{project.caseStudy.challenge}</dd></div><div><dt>A decision that mattered</dt><dd>{project.caseStudy.decision}</dd></div><div><dt>Evidence</dt><dd>{project.caseStudy.evidence}</dd></div><div><dt>Where it stands</dt><dd>{project.caseStudy.result}</dd></div></dl>
     {project.secondaryImage && <figure className="pf-case-image"><img src={project.secondaryImage} alt="Princess of Alemio separate audio edition" width="680" height="430" /><figcaption>Audio is a separate edition from the visual novel</figcaption></figure>}
+    {project.audioPreview && <AudioEdition audio={project.audioPreview} title={project.title} />}
     <ul className="pf-technologies" aria-label="Tools and technologies">{project.stack.map(item => <li key={item}>{item}</li>)}</ul>
     <div className="pf-case-actions">{project.links.live && <a className="pf-button" href={project.links.live} target="_blank" rel="noopener noreferrer">{project.linkLabel || (project.id === 'landlit' ? 'Explore fictional demo' : 'Explore the project')} ↗</a>}{project.links.github && <a className="pf-button" href={project.links.github} target="_blank" rel="noopener noreferrer">Team repository ↗</a>}<a href={forestTarget({ kind: 'work' })} onClick={event => { event.preventDefault(); navigate({ kind: 'work' }) }}>All work</a></div>
   </article>
@@ -97,7 +99,7 @@ function Journal({ panel, navigate, onClose, reducedMotion }) {
     const keydown = event => {
       if (event.key === 'Escape') { event.preventDefault(); onClose() }
       if (event.key !== 'Tab') return
-      const items = [...journalRef.current.querySelectorAll('button, a[href], summary, video, [tabindex="0"]')].filter(element => !element.disabled && element.getClientRects().length)
+      const items = [...journalRef.current.querySelectorAll('button, a[href], summary, video, audio, [tabindex="0"]')].filter(element => !element.disabled && element.getClientRects().length)
       const first = items[0], last = items.at(-1)
       if (event.shiftKey && (document.activeElement === first || document.activeElement === headingRef.current)) { event.preventDefault(); last?.focus() }
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus() }
