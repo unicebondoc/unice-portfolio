@@ -1,6 +1,7 @@
 .pd-demo,.pd-audio-edition { margin:24px 0; padding:0; border:1px solid #a6c6c447; border-radius:6px; background:#071923; color:#edf4ef; overflow:hidden; }
 .pd-video-frame { background:#020a10; aspect-ratio:16/9; }
 .pd-video-frame video { display:block; width:100%; height:100%; max-height:none; object-fit:contain; background:#020a10; }
+.pd-memory .pd-video-frame video { width:100%; height:100%; max-height:none; margin:0; border:0; border-radius:0; object-fit:contain; }
 .pd-toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; padding:16px; }
 .pd-play-button { display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:44px; max-width:100%; padding:11px 14px; border:1px solid #acd6c6; border-radius:4px; background:#173d40; color:#f4faf5; font:600 16px/1.4 system-ui,sans-serif; text-align:left; cursor:pointer; }
 .pd-play-button>span { flex-shrink:0; font-size:13px; }

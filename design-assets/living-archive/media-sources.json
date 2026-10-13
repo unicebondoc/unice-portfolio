@@ -231,5 +231,98 @@
       "filmReceipt": "/Users/unice/Projects/Games/Steeped 3D Prototype/Evidence/codex-r13j-film-005329/receipt.json:2"
     },
     "otherProjectPreviews": "No current source audio was verified for the still-image LandLIT, What Was Drawn or CauseConnect orb previews. No sound was invented."
+  },
+  "journeyPosters": {
+    "preparedDateSydney": "2026-10-13",
+    "purpose": "Make existing chapter videos visible before Play; all six non-root players previously had preload none with no poster",
+    "files": [
+      {
+        "chapterId": "orb-origin",
+        "video": "/memories/videos/01-orb-origin-web.mp4",
+        "videoSha256": "cab6f402b5d9f384658a80a60dd78946816e538ca7624b43a0f1ab9058b82ab4",
+        "durationSeconds": 5.03125,
+        "hasAudio": false,
+        "poster": "/memories/posters/orb-origin.jpg",
+        "posterBytes": 33206,
+        "posterSha256": "e088e8abe84f6d742b74aa302b11c5e07a7b0178b7c4d68635fb6009ddf1c8b3",
+        "sourceFrameSeconds": 1.6,
+        "visualClassification": "Illustrated chapter scene",
+        "transformation": "Existing video frame decoded to full-frame JPEG; no crop, retouch or generated pixels",
+        "originGenerationReceipt": "Not established in this audit; historical public clip reused without claiming original generation method"
+      },
+      {
+        "chapterId": "orb-banking",
+        "video": "/memories/videos/03-orb-pressure-web.mp4",
+        "videoSha256": "54865f8f18554e0aac462107bb28aadd4d99cb3808bbcbc7f7726fdf32d944e1",
+        "durationSeconds": 5.03125,
+        "hasAudio": false,
+        "poster": "/memories/posters/orb-banking.jpg",
+        "posterBytes": 29128,
+        "posterSha256": "307982e330673b80aac7fbed43f1922fbbd6422887e89e7117987e190167c9a2",
+        "sourceFrameSeconds": 1.6,
+        "visualClassification": "Illustrated chapter scene",
+        "transformation": "Existing video frame decoded to full-frame JPEG; no crop, retouch or generated pixels",
+        "originGenerationReceipt": "Not established in this audit; historical public clip reused without claiming original generation method"
+      },
+      {
+        "chapterId": "orb-leap",
+        "video": "/memories/videos/04-orb-reinvention-web.mp4",
+        "videoSha256": "c781f3a80ba861a8a15ef26851213d5a06dc3b8a60b1b47704e01228069e6299",
+        "durationSeconds": 5.03125,
+        "hasAudio": false,
+        "poster": "/memories/posters/orb-leap.jpg",
+        "posterBytes": 46491,
+        "posterSha256": "74e5b905d719883b9492527bdf990c5bac60312e4c48e6a7667903602dbe8edb",
+        "sourceFrameSeconds": 1.6,
+        "visualClassification": "Illustrated chapter scene",
+        "transformation": "Existing video frame decoded to full-frame JPEG; no crop, retouch or generated pixels",
+        "originGenerationReceipt": "Not established in this audit; historical public clip reused without claiming original generation method"
+      },
+      {
+        "chapterId": "orb-proof",
+        "video": "/memories/videos/06-orb-proof-web.mp4",
+        "videoSha256": "e8fb5af33abf3829faec2ff8ee589677b1e28acdfb61ecb82208d4732f9f83d1",
+        "durationSeconds": 4.766667,
+        "hasAudio": false,
+        "poster": "/memories/posters/orb-proof.jpg",
+        "posterBytes": 48132,
+        "posterSha256": "1c52d1013688dac4ac4869c376d1a1ddfbba2034389414ead963e16566e809a3",
+        "sourceFrameSeconds": 1.6,
+        "visualClassification": "Graduation footage",
+        "transformation": "Existing video frame decoded to full-frame JPEG; no crop, retouch or generated pixels",
+        "originGenerationReceipt": "Not established in this audit; historical public clip reused without claiming original generation method"
+      },
+      {
+        "chapterId": "orb-engineer",
+        "video": "/memories/videos/05-orb-building-web.mp4",
+        "videoSha256": "30f56f79323feb11605e4d252e616df7262f8cea8f5f47c8c39ae15ae7fdc71d",
+        "durationSeconds": 5.03125,
+        "hasAudio": false,
+        "poster": "/memories/posters/orb-engineer.jpg",
+        "posterBytes": 39041,
+        "posterSha256": "5a5fb9f5bbcb93b62dfd8c129ce7ac27fee5cd35efaa804efbc6cc7aef9adeca",
+        "sourceFrameSeconds": 1.6,
+        "visualClassification": "Illustrated chapter scene",
+        "transformation": "Existing video frame decoded to full-frame JPEG; no crop, retouch or generated pixels",
+        "originGenerationReceipt": "Not established in this audit; historical public clip reused without claiming original generation method"
+      },
+      {
+        "chapterId": "orb-becoming",
+        "video": "/memories/videos/08-orb-becoming-web.mp4",
+        "videoSha256": "676aa3c3c11c4e76fc0dfbbf3ba4dc0607d5dbff07522fd88c30bc798a1badcb",
+        "durationSeconds": 5.03125,
+        "hasAudio": false,
+        "poster": "/memories/posters/orb-becoming.jpg",
+        "posterBytes": 43414,
+        "posterSha256": "9a0b0a5a26e5c3fe79a31f9b9f03664179cafc18b1fe515789bb619d8490ff71",
+        "sourceFrameSeconds": 1.6,
+        "visualClassification": "Illustrated chapter scene",
+        "transformation": "Existing video frame decoded to full-frame JPEG; no crop, retouch or generated pixels",
+        "originGenerationReceipt": "Not established in this audit; historical public clip reused without claiming original generation method"
+      }
+    ],
+    "root": "Approved calm portrait loop and photograph unchanged",
+    "audio": "Existing six chapter files have no audio stream. No soundtrack added or generated",
+    "provenanceLimit": "Historical already-published clips; individual creation/rights receipts not located. Five visuals labelled illustrated chapter scenes; graduation labelled footage."
   }
 }

@@ -27,7 +27,7 @@ function readableDuration(seconds) {
   return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`
 }
 
-function useUserStartedMedia(src, withAudio) {
+function useUserStartedMedia(src, withAudio, mediaKind = 'recording') {
   const mediaRef = useRef(null)
   const playbackAreaRef = useRef(null)
   const [playing, setPlaying] = useState(false)
@@ -49,7 +49,7 @@ function useUserStartedMedia(src, withAudio) {
     const onDuration = () => setDuration(readableDuration(media.duration))
     const onError = () => {
       setPlaying(false)
-      setError('This recording could not load here. You can open the media file directly below.')
+      setError(`This ${mediaKind} could not load here. You can open the media file directly below.`)
     }
     const onHidden = () => { if (document.hidden) media.pause() }
     const listeners = { play: onPlay, pause: onPause, ended: onEnded, seeked: onSeeked, loadedmetadata: onDuration, durationchange: onDuration, error: onError }
@@ -68,7 +68,7 @@ function useUserStartedMedia(src, withAudio) {
       Object.entries(listeners).forEach(([name, handler]) => media.removeEventListener(name, handler))
       releasePlaybackGuard()
     }
-  }, [src])
+  }, [src, mediaKind])
 
   const togglePlayback = () => {
     const media = mediaRef.current
@@ -121,15 +121,17 @@ function captionTracks(captions) {
   return items.map(track => typeof track === 'string' ? { src: track } : track).filter(track => track?.src)
 }
 
-export default function ProjectDemo({ demo, title, poster }) {
+export default function ProjectDemo({ demo, title, poster, variant = 'demo' }) {
   const captionId = useId()
-  const { mediaRef, playbackAreaRef, playing, ended, duration, error, togglePlayback } = useUserStartedMedia(demo.src, Boolean(demo.hasAudio))
+  const isMemory = variant === 'memory'
+  const { mediaRef, playbackAreaRef, playing, ended, duration, error, togglePlayback } = useUserStartedMedia(demo.src, Boolean(demo.hasAudio), isMemory ? 'story video' : 'recording')
   const tracks = captionTracks(demo.captions)
-  const action = playing ? `Pause ${title} demo` : `${ended ? 'Replay' : 'Play'} ${title} ${demo.hasAudio ? 'demo with sound' : 'silent demo'}`
-  return <figure className="pd-demo">
+  const action = isMemory ? `${playing ? 'Pause' : ended ? 'Replay' : 'Play'} ${title} memory` : playing ? `Pause ${title} demo` : `${ended ? 'Replay' : 'Play'} ${title} ${demo.hasAudio ? 'demo with sound' : 'silent demo'}`
+  const soundStatus = isMemory ? `Memory video${demo.hasAudio ? ' · Sound available' : ''}` : demo.hasAudio ? 'Sound available' : 'Silent recording'
+  return <figure className={`pd-demo${isMemory ? ' pd-memory' : ''}`}>
     <div ref={playbackAreaRef} className="pd-playback-area">
-    <div className="pd-video-frame"><video key={demo.src} ref={mediaRef} src={demo.src} poster={demo.poster || poster} controls playsInline preload="none" aria-label={`${title} demo`} aria-describedby={demo.caption ? captionId : undefined}>{tracks.map((track, index) => <track key={track.src} kind={track.kind || 'captions'} src={track.src} srcLang={track.srclang || track.srcLang || track.language || 'en'} label={track.label || 'English'} default={index === 0} />)}</video></div>
-    <div className="pd-toolbar"><button type="button" className="pd-play-button" onClick={togglePlayback}><span aria-hidden="true">{playing ? 'Ⅱ' : '▶'}</span>{action}</button><span className="pd-media-status">{demo.hasAudio ? 'Sound available' : 'Silent recording'}{duration && ` · ${duration}`}</span></div>
+    <div className="pd-video-frame"><video key={demo.src} ref={mediaRef} src={demo.src} poster={demo.poster || poster} controls playsInline preload={isMemory ? 'metadata' : 'none'} aria-label={`${title} ${isMemory ? 'story video' : 'demo'}`} aria-describedby={demo.caption ? captionId : undefined}>{tracks.map((track, index) => <track key={track.src} kind={track.kind || 'captions'} src={track.src} srcLang={track.srclang || track.srcLang || track.language || 'en'} label={track.label || 'English'} default={index === 0} />)}</video></div>
+    <div className="pd-toolbar"><button type="button" className="pd-play-button" onClick={togglePlayback}><span aria-hidden="true">{playing ? 'Ⅱ' : '▶'}</span>{action}</button><span className="pd-media-status">{soundStatus}{duration && ` · ${duration}`}</span></div>
     </div>
     {demo.caption && <figcaption id={captionId}>{demo.caption}</figcaption>}
     <Disclosure text={demo.disclosure} />
