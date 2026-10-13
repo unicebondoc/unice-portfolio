@@ -133,14 +133,29 @@
     }
   ],
   "portraitLoop": {
-    "output": "/profile-unice-living-loop.mp4",
-    "source": "Owner-approved portrait to Google Flow, Omni1.1Flash, 8s, one output",
-    "generationId": "b90c2011-674a-4bee-a9eb-6cf4ad5eec58",
-    "quotedCredits": 12,
-    "approval": "Owner approved exact portrait destination and at most12existingcredits on13October2026",
-    "bytes": 391014,
-    "sha256": "c1e26e0fc2ab889ad926ff5583cf2e5a31e7c1d85d089bfc610dea1969ba3530",
-    "process": "Delivery resize512px, no audio, H.264faststart; approved portrait poster retained",
-    "acceptance": "Generated and reviewed for identity continuity; final owner creative acceptance pending"
-  }
+    "output": "/profile-unice-calm-loop.mp4",
+    "source": "Existing owner-approved Google Flow8secondresult, retained6.00-7.75s",
+    "process": "Forward/reverse micro-loop slowed15percent; sourcefacepixelsretained; no new generation or facial editing; no audio",
+    "durationSeconds": 4.041667,
+    "width": 512,
+    "height": 910,
+    "fps": 24,
+    "bytes": 194006,
+    "sha256": "78a57ffaef7c39886deef3517390c9a6fc924cd279209918bef1525da2ba3351",
+    "ownerCorrection": "Remove longclosedeyes,pursedlipsandexpressivetilt; keep restrainedopen-eyedprofessionalpresentation",
+    "stage": "Editedexistingclip; independentframe review passes; owner creative acceptance separate"
+  },
+  "portraitLoopHistory": [
+    {
+      "output": "/profile-unice-living-loop.mp4",
+      "source": "Owner-approved portrait to Google Flow, Omni1.1Flash, 8s, one output",
+      "generationId": "b90c2011-674a-4bee-a9eb-6cf4ad5eec58",
+      "quotedCredits": 12,
+      "approval": "Owner approved exact portrait destination and at most12existingcredits on13October2026",
+      "bytes": 391014,
+      "sha256": "c1e26e0fc2ab889ad926ff5583cf2e5a31e7c1d85d089bfc610dea1969ba3530",
+      "process": "Delivery resize512px, no audio, H.264faststart; approved portrait poster retained",
+      "acceptance": "Generated and reviewed for identity continuity; final owner creative acceptance pending"
+    }
+  ]
 }

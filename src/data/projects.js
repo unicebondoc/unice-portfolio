@@ -231,7 +231,7 @@ export const PROJECTS = [
       "evidence": "The forest combines project artwork with actual case screenshots and seven career chapters. Keyboard controls, reduced motion and direct journal links support access.",
       "result": "A working interactive portfolio. Project evidence, personal history and both CV variants are available within the same forest."
     },
-    "image": "/projects/core-memories-media-orbs.webp",
+    "image": "/projects/core-memories-calm-heart.webp",
     "imageAlt": "Actual unified Core Memories portfolio with six project worlds and Unice’s portrait root",
     "imageCaption": "Actual browser preview · one forest for projects, career and CV",
     "glow": "#7eddf2",

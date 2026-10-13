@@ -2,7 +2,7 @@
 
 Unice Bondoc’s hiring portfolio at https://www.unicebondoc.com. One mounted React Three Fiber forest connects six project memories, the central living portrait, all seven career chapters and a readable field journal. Project selection focuses the camera, lights its tendril and brings the case alongside the world. There is no second forest, map or launch iframe.
 
-The journal contains actual project screenshots, personal contribution, decisions, evidence and release stages. Work, Experience, About, Writing, both CV variants and contact remain directly reachable. The approved pearl-earring/diamond-pendant portrait replaces the gold diamond at the tree heart. Its new eight-second silent loop also appears in the current journey chapter; About retains the approved photograph.
+The journal contains actual project screenshots, personal contribution, decisions, evidence and release stages. Work, Experience, About, Writing, both CV variants and contact remain directly reachable. The approved pearl-earring/diamond-pendant portrait replaces the gold diamond at the tree heart. Its revised four-second silent loop from the calm, open-eyed tail of the existing generation also appears in the current journey chapter; About retains the approved photograph.
 
 ## Source and routes
 
@@ -46,6 +46,6 @@ npm run test:content
 npm run build
 ```
 
-Original forest atmosphere and historical story videos are reused. Current orbs show actual project screenshots and bounded source-recording excerpts, including PH-first fictional LandLIT data, the CauseConnect sample frontend and Steeped r13j gameplay. Four still previews move through a subtle glass shader; they are not represented as recorded product interactions. The new portrait was generated once in Google Flow after the owner approved the photograph destination and a12-existing-credit limit. Real-media provenance is in `design-assets/living-archive/media-sources.json`. Tyche remains in `public/world/`; retired miniature-world art, masters and generation receipts are retained as history.
+Original forest atmosphere and historical story videos are reused. Current orbs show actual project screenshots and bounded source-recording excerpts, including PH-first fictional LandLIT data, the CauseConnect sample frontend and Steeped r13j gameplay. Four still previews move through a subtle glass shader; they are not represented as recorded product interactions. The original portrait video was generated once in Google Flow under the owner-approved photograph destination and12-credit limit. After the owner rejected its acting, the current quiet four-second loop was edited locally from its open-eyed tail; no further generation or credits were used. Branches and particles render behind opaque media interiors; dimming changes brightness rather than making the portrait transparent. Real-media provenance is in `design-assets/living-archive/media-sources.json`. Tyche remains in `public/world/`; retired miniature-world art, masters and generation receipts are retained as history.
 
 Vercel project: `unicebondocs-projects/unice-portfolio`. Verify the linked project before consequential operations. Dated Career handoffs distinguish local build, browser checks, owner feedback and current publication. No public feed post, application or outreach is implied by a site update.

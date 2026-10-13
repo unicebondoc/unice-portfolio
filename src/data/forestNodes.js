@@ -14,5 +14,5 @@ export const FOREST_NODES = [
     const project = PROJECTS.find(item => item.id === id)
     return { id, title: project.title, label, image: project.image, video: project.video, mediaFocus, color: project.color, kind: 'project' }
   }),
-  { id: 'journey', title: 'Unice', label: 'The heart of this world', image: '/profile-unice-approved.webp', video: '/profile-unice-living-loop.mp4', mediaFocus: [0.5, 0.59], color: '#d6d9ad', kind: 'journey' },
+  { id: 'journey', title: 'Unice', label: 'The heart of this world', image: '/profile-unice-approved.webp', video: '/profile-unice-calm-loop.mp4', mediaFocus: [0.5, 0.59], color: '#d6d9ad', kind: 'journey' },
 ]

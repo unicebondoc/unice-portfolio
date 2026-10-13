@@ -175,8 +175,10 @@ function StaticTendril({ node, active, reducedMotion, root }) {
   })
   return (
     <group raycast={() => null}>
-      <mesh geometry={geometry}><meshBasicMaterial color={active ? node.color : '#acbdc6'} transparent opacity={active ? 0.8 : 0.18} depthWrite={false} toneMapped={false} /></mesh>
-      {!reducedMotion && <mesh ref={dot}><sphereGeometry args={[active ? 0.025 : 0.018, 8, 8]} /><meshBasicMaterial color={active ? node.color : '#d7edeb'} transparent opacity={active ? 0.8 : 0.37} depthWrite={false} toneMapped={false} /></mesh>}
+      {/* Transparent mesh origins do not describe the tube's full depth. Draw
+          the entire branch pass before every orb instead of relying on z sort. */}
+      <mesh geometry={geometry} renderOrder={-30}><meshBasicMaterial color={active ? node.color : '#acbdc6'} transparent opacity={active ? 0.8 : 0.18} depthWrite={false} toneMapped={false} /></mesh>
+      {!reducedMotion && <mesh ref={dot} renderOrder={-29}><sphereGeometry args={[active ? 0.025 : 0.018, 8, 8]} /><meshBasicMaterial color={active ? node.color : '#d7edeb'} transparent opacity={active ? 0.8 : 0.37} depthWrite={false} toneMapped={false} /></mesh>}
     </group>
   )
 }
@@ -235,7 +237,7 @@ function ForestParticles({ compact }) {
   }, [compact])
   useEffect(() => () => geometry.dispose(), [geometry])
   useFrame(({ clock }) => { if (material.current) material.current.uniforms.uTime.value = clock.elapsedTime })
-  return <points geometry={geometry} raycast={() => null}><shaderMaterial ref={material} uniforms={uniforms} vertexShader={PARTICLE_VERTEX} fragmentShader={PARTICLE_FRAGMENT} transparent depthWrite={false} blending={THREE.AdditiveBlending} /></points>
+  return <points geometry={geometry} renderOrder={-40} raycast={() => null}><shaderMaterial ref={material} uniforms={uniforms} vertexShader={PARTICLE_VERTEX} fragmentShader={PARTICLE_FRAGMENT} transparent depthWrite={false} blending={THREE.AdditiveBlending} /></points>
 }
 
 
