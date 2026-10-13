@@ -23,6 +23,19 @@ const LOADING_PHRASES = [
   'Consulting the roots… 🐾',
   'Tyche is thinking… ✦',
 ]
+const COMPACT_GREETING = 'I’m Tyche. Ask me about Unice’s work.'
+const QUESTION_LABELS = {
+  'What has she built?': 'Projects',
+  'Why should I hire her?': 'Hiring fit',
+  'Can she manage projects?': 'Team experience',
+  'What are her AI skills?': 'AI skills',
+  'Tell me her story': 'Her story',
+  'What is her standout project?': 'Standout work',
+  'How can I contact her?': 'Contact',
+  'What makes her different?': 'Her approach',
+  "What's she working on now?": 'Current work',
+  'Is she a good fit for startups?': 'Startup fit',
+}
 const REVEAL_MS_PER_WORD = 36
 const REVEAL_MS_MIN = 400
 
@@ -36,6 +49,7 @@ export default function ChatBot({ nativeCursor = false }) {
   const [input, setInput] = useState('')
   const [loadingPhrase, setLoadingPhrase] = useState(LOADING_PHRASES[0])
   const [revealedText, setRevealedText] = useState('')
+  const panelRef = useRef(null)
   const listRef = useRef(null)
   const inputRef = useRef(null)
   const revealEndRef = useRef(false)
@@ -52,19 +66,25 @@ export default function ChatBot({ nativeCursor = false }) {
 
   useEffect(() => {
     if (!open) return
+    // Remember the opener for this chat session, not a field focused during a
+    // later responsive layout change.
     const returnFocus = document.activeElement
-    const t = setTimeout(() => inputRef.current?.focus(), 50)
     return () => {
-      clearTimeout(t)
       if (returnFocus?.isConnected) requestAnimationFrame(() => returnFocus.focus())
     }
   }, [open])
 
   useEffect(() => {
     if (!open) return
+    const t = setTimeout(() => (isMobile ? panelRef.current : inputRef.current)?.focus({ preventScroll: true }), 50)
+    return () => clearTimeout(t)
+  }, [open, isMobile])
+
+  useEffect(() => {
+    if (!open) return
     const el = listRef.current
     if (!el) return
-    el.scrollTop = el.scrollHeight
+    el.scrollTop = messages.some(message => message.role === 'user') ? el.scrollHeight : 0
   }, [open, messages.length, isLoading, revealedText])
 
   // Rotate loading phrase while waiting
@@ -136,33 +156,26 @@ export default function ChatBot({ nativeCursor = false }) {
   const availableQuestions = SUGGESTED_QUESTIONS.filter(
     (q) => !usedTexts.has(stripEmoji(q).toLowerCase())
   )
-  const chipsToShow = availableQuestions.slice(0, 3)
+  const chipsToShow = availableQuestions.slice(0, 2)
   const lastMessage = messages[messages.length - 1]
   const showChipsAfterReply = lastMessage?.role === 'assistant' && !isLoading && !pendingReply
   const showChips = (!hasUserSentMessage || showChipsAfterReply) && chipsToShow.length > 0
 
   return (
-    <div
-      className={styles.wrap}
-      style={{
-        position: 'fixed',
-        ...(isMobile
-          ? { left: 0, right: 0, bottom: 0, top: 'auto', zIndex: 2147483646 }
-          : { right: open ? 100 : 24, bottom: 24, zIndex: 2147483646 }),
-        pointerEvents: 'none',
-      }}
-    >
+    <div className={`${styles.wrap} ${isMobile ? styles.wrapMobile : ''}`}>
       {open && (
         <div
-          className={`${styles.panel} ${isMobile ? styles.panelMobile : ''}`}
+          ref={panelRef}
+          className={`${styles.panel} ${isMobile ? styles.panelMobile : ''} ${!hasUserSentMessage ? styles.panelWelcome : ''}`}
           role="dialog"
+          tabIndex={-1}
           aria-label="Chat with Tyche"
           style={{ cursor: nativeCursor ? 'auto' : 'none' }}
         >
           <div className={styles.header}>
             <div className={styles.title}>✦ TYCHE</div>
             <div className={styles.headerActions}>
-              <button
+              {hasUserSentMessage && <button
                 type="button"
                 onClick={clearMessages}
                 className={styles.clear}
@@ -170,7 +183,7 @@ export default function ChatBot({ nativeCursor = false }) {
                 title="Clear chat"
               >
                 Clear
-              </button>
+              </button>}
               <button
                 type="button"
                 onClick={() => setActivePanel(null)}
@@ -189,7 +202,7 @@ export default function ChatBot({ nativeCursor = false }) {
                   key={idx}
                   className={`${styles.msg} ${m.role === 'user' ? styles.msgUser : styles.msgAssistant}`}
                 >
-                  {m.role === 'assistant' ? cleanReply(m.text) : m.text}
+                  {idx === 0 && m.role === 'assistant' ? COMPACT_GREETING : m.role === 'assistant' ? cleanReply(m.text) : m.text}
                 </div>
               ))}
               {pendingReply && (
@@ -215,8 +228,9 @@ export default function ChatBot({ nativeCursor = false }) {
                     className={styles.chip}
                     onClick={() => onSuggestedQuestion(q)}
                     disabled={isLoading}
+                    title={stripEmoji(q)}
                   >
-                    {q}
+                    {QUESTION_LABELS[stripEmoji(q)] || stripEmoji(q)}
                   </button>
                 ))}
             </div>
@@ -233,7 +247,7 @@ export default function ChatBot({ nativeCursor = false }) {
               ref={inputRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask the tree…"
+              placeholder="Ask about Unice…"
               className={styles.input}
               aria-label="Message input"
               disabled={isLoading}

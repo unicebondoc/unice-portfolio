@@ -116,6 +116,10 @@ html.pf-document, body.pf-document { width:100%; height:100%; min-width:0; overf
 .pf-chapter-list small { color:#d5e6df; font-size:.875rem; }
 .pf-chapter h3 { margin:10px 0 18px; }
 .pf-chapter video { display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:contain; background:#020b13; border:1px solid #b1cec128; border-radius:4px; margin-bottom:18px; }
+.pf-now-portrait { margin:0 0 22px; }
+.pf-now-portrait-frame { aspect-ratio:16/9; display:flex; justify-content:center; overflow:hidden; border-radius:8px; background:linear-gradient(90deg,#071b22bb,#071b2270,#071b22bb),url('/background-optimized.jpg') center/cover; }
+.pf-now-portrait-frame img { display:block; flex:0 0 auto; width:56.25%; height:100%; object-fit:contain; }
+.pf-now-portrait figcaption { margin-top:10px; color:#c9ddd8; font-size:.875rem; line-height:1.5; }
 .pf-experience { margin-top:23px; }
 .pf-experience>article { padding:23px 0; border-top:1px solid #b2d2cf26; }
 .pf-experience h3 { margin-top:8px; }

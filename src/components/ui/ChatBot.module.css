@@ -1,19 +1,33 @@
 /* ── Chat: mystical relic panel, Tyche-integrated ───────────────────────────── */
 
 .wrap {
+  position: fixed;
+  z-index: 2147483646;
+  right: max(28px, env(safe-area-inset-right));
+  bottom: calc(108px + env(safe-area-inset-bottom));
+  width: 344px;
+  max-width: calc(100vw - 32px);
   pointer-events: none;
+}
+
+.wrapMobile {
+  right: max(12px, env(safe-area-inset-right));
+  bottom: calc(88px + env(safe-area-inset-bottom));
+  width: min(350px, calc(100vw - 24px));
+  max-width: calc(100vw - 24px);
 }
 
 .panel {
   pointer-events: auto;
   position: relative;
   z-index: 2147483648;
-  width: min(340px, 88vw);
-  max-width: calc(100vw - 24px);
-  height: 460px;
+  width: 100%;
+  max-width: 100%;
+  height: 380px;
   min-height: 0;
-  max-height: calc(100svh - 48px);
-  margin-bottom: 12px;
+  max-height: calc(100dvh - 132px - env(safe-area-inset-bottom));
+  margin-bottom: 0;
+  outline: none;
   background: linear-gradient(
     165deg,
     #081830 0%,
@@ -35,18 +49,18 @@
   flex-direction: column;
 }
 
-/* Mobile: bottom sheet, full width, comfortable height */
+/* A small floating conversation leaves the forest and guide visible. */
 .panelMobile {
-  width: 100%;
-  max-width: none;
-  height: 70svh;
+  height: min(340px, 42dvh);
   min-height: 0;
-  max-height: calc(100svh - max(12px, env(safe-area-inset-top)));
-  margin-bottom: 0;
-  border-radius: 24px 24px 0 0;
-  border-bottom: none;
-  box-shadow: 0 -8px 48px rgba(0, 0, 0, 0.4), 0 0 60px rgba(0, 180, 220, 0.05);
+  max-height: calc(100dvh - 104px - env(safe-area-inset-bottom));
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.42);
 }
+
+/* Let the short welcome fit its content; a conversation gets the bounded panel. */
+.panel.panelWelcome { height: auto; }
+.panelMobile.panelWelcome { max-height: min(340px, 42dvh); }
 
 .header {
   flex: 0 0 auto;
@@ -55,7 +69,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 14px 16px;
+  padding: 7px 12px;
   border-bottom: 1px solid rgba(0, 220, 255, 0.12);
   background: linear-gradient(180deg, rgba(0, 220, 255, 0.06) 0%, transparent 100%);
 }
@@ -132,15 +146,15 @@
 
 .body {
   flex: 0 0 auto;
-  padding: 16px 16px 0;
+  padding: 12px 12px 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
 .msg {
-  max-width: 88%;
-  padding: 12px 14px;
+  max-width: 94%;
+  padding: 9px 11px;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   font-family: system-ui, -apple-system, sans-serif;
@@ -208,7 +222,7 @@
 
 .suggested {
   flex: 0 0 auto;
-  padding: 12px 16px 16px;
+  padding: 10px 12px 12px;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -220,7 +234,7 @@
   background: rgba(0, 240, 255, 0.06);
   border: 1px solid rgba(0, 240, 255, 0.25);
   border-radius: 20px;
-  padding: 6px 14px;
+  padding: 6px 11px;
   min-height: 44px;
   max-width: 100%;
   font-size: .875rem;
@@ -245,7 +259,7 @@
 
 .inputRow {
   flex: 0 0 auto;
-  padding: 14px 16px;
+  padding: 10px 12px;
   border-top: 1px solid rgba(0, 220, 255, 0.1);
   display: flex;
   flex-wrap: wrap;
@@ -255,13 +269,12 @@
 }
 
 .panelMobile .inputRow {
-  padding: 16px;
-  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  padding: 10px 12px;
 }
 
 .input {
   pointer-events: auto;
-  flex: 1 1 160px;
+  flex: 1 1 140px;
   min-width: 0;
   height: 44px;
   min-height: 44px;
@@ -287,7 +300,7 @@
   pointer-events: auto;
   height: 44px;
   min-height: 44px;
-  padding: 0 18px;
+  padding: 0 13px;
   border-radius: 14px;
   border: 1px solid rgba(0, 220, 255, 0.3);
   font-family: system-ui, -apple-system, sans-serif;
@@ -330,14 +343,23 @@
   backdrop-filter: blur(14px);
 }
 
-/* Keep the visible controls usable when browser zoom or landscape makes the
-   available viewport short; only the conversation needs its own scroll area. */
-@media (max-height: 500px) {
-  .panel { height: calc(100svh - 48px); }
-  .panelMobile { height: calc(100svh - max(12px, env(safe-area-inset-top))); }
-  .header { padding-block: 8px; }
-  .inputRow,.panelMobile .inputRow { padding-block: 8px; }
-  .panelMobile .inputRow { padding-bottom: max(8px, env(safe-area-inset-bottom)); }
+/* On very short windows, use the available height instead of squeezing the
+   fixed-size close/input controls out of the panel. The conversation scrolls. */
+@media (max-height: 400px) {
+  .wrap { bottom: calc(88px + env(safe-area-inset-bottom)); }
+  .panel { height: calc(100dvh - 104px - env(safe-area-inset-bottom)); max-height: calc(100dvh - 104px - env(safe-area-inset-bottom)); }
+  .panelMobile { height: min(340px, 42dvh); }
+  .header { padding-block: 4px; }
+  .inputRow,.panelMobile .inputRow { padding-block: 6px; }
+}
+
+/* Below a phone keyboard or in short landscape, preserve room for the
+   conversation as well as the 44px controls. */
+@media (max-height: 360px) {
+  .wrap { bottom: calc(56px + env(safe-area-inset-bottom)); }
+  .panel { height: min(260px, calc(100dvh - 72px - env(safe-area-inset-bottom))); max-height: calc(100dvh - 72px - env(safe-area-inset-bottom)); }
+  .panelMobile { height: min(240px, calc(100dvh - 72px - env(safe-area-inset-bottom))); }
+  .panelMobile.panelWelcome { max-height: min(240px, calc(100dvh - 72px - env(safe-area-inset-bottom))); }
 }
 
 .panel :is(button,input):focus-visible {
