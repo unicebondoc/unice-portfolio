@@ -1,7 +1,6 @@
 .jwm {
   --jwm-ink: #f3f3e9;
   --jwm-muted: #c5d8d7;
-  --jwm-line: #b9d6c94d;
   position: relative;
   min-width: 0;
   margin: 24px 0;
@@ -49,17 +48,13 @@
   display: grid;
   grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
   gap: 24px;
-  align-items: start;
+  align-items: center;
 }
 .jwm-now-portrait { min-width: 0; }
 .jwm-now-portrait img { width: 100%; height: auto; border-radius: 5px; box-shadow: 0 20px 45px #010c1466; }
-.jwm-work-strands { position: relative; display: grid; gap: 28px; min-width: 0; }
-.jwm-work-strands::before { content: ''; position: absolute; left: -13px; top: 12px; bottom: 10px; width: 1px; background: linear-gradient(transparent, #b7d7c96b 15%, #b7d7c96b 80%, transparent); pointer-events: none; }
-.jwm-studio-strand, .jwm-team-strand { position: relative; display: block; min-width: 0; min-height: 44px; }
-.jwm-studio-strand::before, .jwm-team-strand::before { content: ''; position: absolute; left: -16px; top: 11px; width: 7px; height: 7px; border-radius: 50%; background: var(--jwm-accent, #cbe6bd); box-shadow: 0 0 12px #d1ecd147; pointer-events: none; }
-.jwm-strand-label { display: block; margin-bottom: 14px; color: #d1e2d5; font-size: 16px; line-height: 1.5; }
+.jwm-now-studio { min-width: 0; width: 100%; }
+.jwm-studio-strand { display: block; min-width: 0; min-height: 44px; }
 .jwm-studio-name { display: block; margin: 0 0 8px; color: #f1f0e7; font: 600 clamp(30px, 5vw, 42px)/1.05 system-ui, sans-serif; letter-spacing: -.065em; }
-.jwm-team-name { display: block; margin-bottom: 8px; font-size: 18px; font-weight: 600; line-height: 1.4; }
 .jwm-strand-role { display: block; margin-bottom: 3px; font-size: 16px; font-weight: 600; }
 .jwm-strand-action { display: flex; align-items: center; justify-content: space-between; min-height: 44px; gap: 12px; margin-top: 8px; color: #e0eccd; font-size: 16px; font-weight: 600; }
 @media (max-width: 600px) {
@@ -68,8 +63,6 @@
   .jwm-preview { height: 190px; padding: 6px; }
   .jwm-now-spread { grid-template-columns: minmax(0, 1fr); gap: 24px; }
   .jwm-now-portrait { max-width: 360px; margin: 0 auto; }
-  .jwm-work-strands { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
-  .jwm-work-strands::before, .jwm-studio-strand::before, .jwm-team-strand::before { display: none; }
 }
 
 @media (max-width: 440px) {
@@ -78,6 +71,4 @@
   .jwm-preview { height: auto; min-height: 140px; padding: 8px; }
   .jwm-preview img { width: 100%; height: auto; max-height: 360px; }
   .jwm-preview-phone img { width: auto; height: 360px; max-width: 100%; }
-  .jwm-work-strands { grid-template-columns: minmax(0, 1fr); gap: 24px; }
-  .jwm-studio-strand { padding-bottom: 18px; border-bottom: 1px solid var(--jwm-line); }
 }

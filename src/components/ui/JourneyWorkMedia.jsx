@@ -40,27 +40,19 @@ function ProjectsSpread({ navigate }) {
   </div>
 }
 
-function NowSpread({ navigate }) {
-  const causeconnect = PROJECTS.find(project => project.id === 'causeconnect')
+function NowSpread() {
   return <div className="jwm jwm-now">
     <div className="jwm-now-spread">
       <div className="jwm-now-portrait">
         <img src={PORTRAIT} alt="Unice Bondoc wearing a taupe blazer, pearl earrings and diamond pendant" width="768" height="768" loading="lazy" decoding="async" />
       </div>
-      <div className="jwm-work-strands">
+      <div className="jwm-now-studio">
         <a href="https://onqst.com/" target="_blank" rel="noopener noreferrer" className="jwm-studio-strand">
           <strong className="jwm-studio-name">ONQST</strong>
           <span className="jwm-strand-role">Founder &amp; Builder</span>
-          <span className="jwm-stage">Personal product work</span>
+          <span className="jwm-stage">Independent product studio</span>
           <span className="jwm-strand-action">Visit ONQST <span aria-hidden="true">↗</span></span>
         </a>
-        {causeconnect && <JourneyLink target={{ kind: 'project', id: causeconnect.id }} navigate={navigate} className="jwm-team-strand" style={{ '--jwm-accent': causeconnect.color }}>
-          <span className="jwm-strand-label">Selected experience</span>
-          <strong className="jwm-team-name">{causeconnect.title}</strong>
-          <span className="jwm-strand-role">Developer / Programmer</span>
-          <span className="jwm-stage">React · Node.js/Express · MySQL</span>
-          <span className="jwm-strand-action">My contribution <span aria-hidden="true">↗</span></span>
-        </JourneyLink>}
       </div>
     </div>
   </div>
@@ -68,6 +60,6 @@ function NowSpread({ navigate }) {
 
 export default function JourneyWorkMedia({ kind, navigate }) {
   if (kind === 'projects') return <ProjectsSpread navigate={navigate} />
-  if (kind === 'now') return <NowSpread navigate={navigate} />
+  if (kind === 'now') return <NowSpread />
   return null
 }
