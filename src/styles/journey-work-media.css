@@ -57,7 +57,7 @@
 .jwm-work-strands::before { content: ''; position: absolute; left: -13px; top: 12px; bottom: 10px; width: 1px; background: linear-gradient(transparent, #b7d7c96b 15%, #b7d7c96b 80%, transparent); pointer-events: none; }
 .jwm-studio-strand, .jwm-team-strand { position: relative; display: block; min-width: 0; min-height: 44px; }
 .jwm-studio-strand::before, .jwm-team-strand::before { content: ''; position: absolute; left: -16px; top: 11px; width: 7px; height: 7px; border-radius: 50%; background: var(--jwm-accent, #cbe6bd); box-shadow: 0 0 12px #d1ecd147; pointer-events: none; }
-.jwm-strand-number { display: block; margin-bottom: 14px; color: #d1e2d5; font-size: 16px; line-height: 1.5; }
+.jwm-strand-label { display: block; margin-bottom: 14px; color: #d1e2d5; font-size: 16px; line-height: 1.5; }
 .jwm-studio-name { display: block; margin: 0 0 8px; color: #f1f0e7; font: 600 clamp(30px, 5vw, 42px)/1.05 system-ui, sans-serif; letter-spacing: -.065em; }
 .jwm-team-name { display: block; margin-bottom: 8px; font-size: 18px; font-weight: 600; line-height: 1.4; }
 .jwm-strand-role { display: block; margin-bottom: 3px; font-size: 16px; font-weight: 600; }
