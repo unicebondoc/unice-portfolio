@@ -15,7 +15,8 @@ html.pf-document, body.pf-document { width:100%; height:100%; min-width:0; overf
 .pf-desktop-nav a:hover { color:#fff; }
 .pf-desktop-nav .pf-nav-cv { padding:9px 14px; border:1px solid #b9d6c448; border-radius:2px; background:#17363265; color:#dfecd9; }
 .pf-menu-toggle,.pf-mobile-menu,.pf-mobile-shortcut,.pf-footer-actions>.pf-mobile-shortcut { display:none; }
-.pf-introduction { position:absolute; z-index:5; top:108px; left:28px; max-width:300px; padding:16px 18px; border:1px solid #a3c9c926; border-radius:6px; background:#071923; pointer-events:none; transition:opacity 300ms; }
+.pf-introduction { position:absolute; z-index:5; top:108px; left:28px; max-width:300px; padding:16px 18px; border:0; background:transparent; pointer-events:none; isolation:isolate; text-shadow:0 1px 3px #010c14,0 2px 10px #010c14; transition:opacity 300ms; }
+.pf-introduction::before { content:''; position:absolute; z-index:-1; inset:-30px -38px; background:radial-gradient(ellipse,rgba(2,13,21,.94) 20%,rgba(2,13,21,.78) 48%,rgba(2,13,21,.28) 67%,transparent 82%); }
 .pf-eyebrow { color:#c1dcdb; font-size:.875rem; font-weight:600; letter-spacing:.07em; line-height:1.7; }
 .pf-introduction h1 { margin-top:10px; font:500 clamp(1.75rem,2.4vw,2rem)/1.15 'Cinzel',Georgia,serif; letter-spacing:-.045em; }
 .pf-introduction h1 em { color:#c2e8df; font-style:normal; }
@@ -35,10 +36,14 @@ html.pf-document, body.pf-document { width:100%; height:100%; min-width:0; overf
 .pf-skip:focus { transform:none; }
 .pf-portfolio :is(button,a,summary):focus-visible { outline:3px solid #f1e6c7; outline-offset:5px; }
 /* Native labels are projected by the one WebGL scene. */
-.pf-node { display:flex; flex-direction:column; align-items:center; justify-content:center; min-width:130px; min-height:44px; padding:9px 12px; border:1px solid #bfd0c82e; border-radius:3px; color:#e8ede4; background:#071923; font-family:inherit; text-align:center; cursor:pointer; box-shadow:0 5px 20px #0004; transition:border-color 200ms,background 200ms; }
-.pf-node-label,.pf-node strong { display:block; font:500 1rem/1.4 'Cinzel',Georgia,serif; white-space:normal; }
-.pf-node-kind,.pf-node small { display:block; margin-top:4px; color:#cfdddd; font-size:.875rem; line-height:1.4; letter-spacing:0; }
-.pf-node:hover,.pf-node.is-selected,.pf-node[aria-pressed=true] { border-color:var(--pf-node-color,#b7ddd7); background:#0b2832; }
+.pf-node { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; min-width:130px; min-height:44px; padding:9px 12px; border:0; border-radius:0; color:#fffdf3; background:transparent; font-family:inherit; text-align:center; cursor:pointer; isolation:isolate; }
+/* A feathered pool of shade gives text contrast without a card silhouette. */
+.pf-node-floating::before { content:''; position:absolute; z-index:-1; inset:-12px -18px; pointer-events:none; background:radial-gradient(ellipse,rgba(2,12,21,.9) 15%,rgba(2,12,21,.73) 38%,rgba(2,12,21,.3) 58%,transparent 74%); }
+.pf-node-label,.pf-node strong { display:block; font:600 1rem/1.4 system-ui,sans-serif; white-space:normal; text-shadow:0 1px 2px #010710,0 0 6px #010710,0 2px 12px #010710; }
+.pf-node-kind,.pf-node small { display:block; margin-top:4px; color:#e5efee; font-size:.875rem; line-height:1.4; letter-spacing:0; text-shadow:0 1px 3px #010710,0 0 7px #010710; }
+.pf-node-floating::after { content:''; position:absolute; inset:auto 35% 1px; height:1px; pointer-events:none; background:linear-gradient(90deg,transparent,var(--pf-node-color,#b7ddd7),transparent); opacity:.45; transform:scaleX(.6); transition:opacity 200ms,transform 200ms; }
+.pf-node-floating:hover::after,.pf-node-floating:focus-visible::after,.pf-node-floating.is-selected::after { opacity:1; transform:scaleX(1); }
+.pf-node-floating:hover .pf-node-label,.pf-node-floating.is-selected .pf-node-label { color:#fff; }
 .pf-journal-layer { position:absolute; z-index:100; inset:0; }
 .pf-journal-backdrop { position:absolute; inset:0; width:100%; height:100%; border:0; background:linear-gradient(90deg,#020a144a,#020a1488); cursor:default; }
 .pf-journal { position:absolute; top:24px; right:24px; bottom:24px; width:min(720px,60vw); display:flex; flex-direction:column; overflow:hidden; border:1px solid color-mix(in srgb,var(--pf-memory-color) 30%,transparent); border-radius:5px; background:linear-gradient(145deg,#102b35,#071923); box-shadow:0 24px 80px #01060ccc,inset 0 0 80px #94ced306; font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; font-weight:400; backdrop-filter:blur(22px); animation:pfJournalArrive 360ms ease-out; }
@@ -132,7 +137,7 @@ html.pf-document, body.pf-document { width:100%; height:100%; min-width:0; overf
 @keyframes pfJournalArrive { from { opacity:0; transform:translateX(20px); } to { opacity:1; transform:none; } }
 /* Motion is part of the world, while every reading surface stays still. */
 .pf-ambient-shade { position:absolute; z-index:2; inset:0; pointer-events:none; background:radial-gradient(ellipse 500px 460px at 4% 12%,#021321b8 0%,#02132170 45%,transparent 100%),linear-gradient(180deg,#020c1578 0%,transparent 16%,transparent 87%,#020c1566 100%); }
-.pf-node.is-pulsed { border-color:var(--pf-node-color,#b7ddd7); box-shadow:0 0 22px color-mix(in srgb,var(--pf-node-color,#b7ddd7) 35%,transparent); }
+.pf-node.is-pulsed::after { opacity:1; transform:scaleX(1); }
 .pf-motion-short { display:none; }
 .pf-motion-toggle { min-height:44px; padding:8px 12px; border:1px solid #b9d6c478; border-radius:24px; background:#061923; color:#e0eee7; font:500 1rem/1.4 system-ui,sans-serif; cursor:pointer; }
 .pf-case-image video { display:block; width:100%; max-height:360px; background:#04121b; object-fit:contain; }
@@ -170,7 +175,7 @@ html.pf-document, body.pf-document { width:100%; height:100%; min-width:0; overf
  .pf-introduction .pf-eyebrow { font-size:.875rem; letter-spacing:.035em; }
  .pf-identity-line { margin-top:9px; font-size:1rem; line-height:1.5; }
  .pf-node { min-height:44px; padding:8px 6px; }
- .pf-node-label,.pf-node strong { font:600 .875rem/1.35 system-ui,sans-serif; }
+ .pf-node-label,.pf-node strong { font:600 .9375rem/1.35 system-ui,sans-serif; }
  .pf-node-kind,.pf-node small { display:none; }
 }
 @media(max-width:700px) {
@@ -194,7 +199,7 @@ html.pf-document, body.pf-document { width:100%; height:100%; min-width:0; overf
  .pf-tyche img { width:44px; height:44px; }
  .pf-tyche span { display:none; }
  .pf-node { min-height:44px; padding:8px 6px; }
- .pf-node-label,.pf-node strong { font:600 .875rem/1.35 system-ui,sans-serif; white-space:normal; overflow-wrap:normal; }
+ .pf-node-label,.pf-node strong { font:600 .9375rem/1.35 system-ui,sans-serif; white-space:normal; overflow-wrap:normal; }
  .pf-node-kind,.pf-node small { display:none; }
  .pf-node-fallback .pf-node-kind { display:block; }
  .pf-journal { inset:8px; width:auto; height:auto; border-radius:8px; }

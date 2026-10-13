@@ -16,7 +16,7 @@ const DESKTOP_POSITIONS = {
   'what-was-drawn': [77, 38],
   steeped: [22, 67],
   'princess-of-alemio': [62, 66],
-  causeconnect: [83, 72],
+  causeconnect: [83, 69],
   journey: [50, 52],
 }
 const TALL_POSITIONS = {
@@ -31,10 +31,10 @@ const TALL_POSITIONS = {
 const MOBILE_POSITIONS = {
   flatsync: [25, 36],
   landlit: [75, 36],
-  'what-was-drawn': [20, 53],
-  steeped: [80, 53],
-  'princess-of-alemio': [25, 70],
-  causeconnect: [75, 70],
+  'what-was-drawn': [18, 55],
+  steeped: [82, 55],
+  'princess-of-alemio': [25, 74],
+  causeconnect: [75, 74],
   journey: [50, 52],
 }
 
@@ -51,12 +51,14 @@ function getLayout(nodes, width, height) {
     const z = node.id === 'journey' ? HEART_POSITION[2] : -0.1 - (index % 3) * 0.12
     const worldHeight = 2 * Math.tan(halfAngle) * (CAMERA_Z - z)
     const worldWidth = worldHeight * width / height
-    const radius = baseDiameter * (node.id === 'journey' ? 1.15 : 1) * worldHeight / height / 2
+    // Enlarge project vessels without changing the approved central portrait.
+    const diameterScale = node.id === 'journey' ? 1.15 : compact ? 1.1 : 1.22
+    const radius = baseDiameter * diameterScale * worldHeight / height / 2
     return {
       ...node,
       index,
       compact,
-      labelWidth: compact ? Math.min(126, Math.max(88, width * 0.28)) : undefined,
+      labelWidth: compact ? Math.min(132, Math.max(104, width * 0.3)) : undefined,
       radius,
       screen,
       position: node.id === 'journey' ? HEART_POSITION : [(screen[0] / 100 - 0.5) * worldWidth, (0.5 - screen[1] / 100) * worldHeight, z],
