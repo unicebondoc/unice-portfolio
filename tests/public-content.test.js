@@ -6,7 +6,7 @@ import { MEMORIES } from '../src/data/memories.js'
 import { PORTFOLIO_DATA, getPortfolioDataForAPI } from '../lib/portfolioData.js'
 import { SYSTEM_PROMPT } from '../lib/systemPrompt.js'
 import { FOREST_NODES } from '../src/data/forestNodes.js'
-import { forestTarget, resolveForestLocation, forestNodeForReference } from '../src/data/forestNavigation.js'
+import { canonicalChapterId, forestTarget, resolveForestLocation, forestNodeForReference } from '../src/data/forestNavigation.js'
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8')
 const project = (id) => PROJECTS.find(item => item.id === id)
@@ -128,8 +128,18 @@ test('Legacy case links and browser navigation resolve inside the same forest', 
   assert.equal(resolveForestLocation({ pathname:'/work/', hash:'#world' }), null)
   assert.deepEqual(resolveForestLocation({ hash:'#core-memories' }), { kind:'journey' })
   assert.deepEqual(resolveForestLocation({ hash:'#orb-proof' }), { kind:'journey', chapter:'orb-proof' })
+  for (const pathname of ['/', '/work/']) {
+    assert.deepEqual(resolveForestLocation({ pathname, hash:'#orb-becoming' }), { kind:'journey', chapter:'orb-root' })
+  }
+  const currentChapterTarget = forestTarget({ kind:'journey', chapter:'orb-becoming' })
+  assert.equal(currentChapterTarget, '/#orb-root')
+  assert.deepEqual(resolveForestLocation(new URL(currentChapterTarget, 'https://www.unicebondoc.com')), { kind:'journey', chapter:'orb-root' })
+  assert.equal(canonicalChapterId('orb-becoming'), 'orb-root')
+  for (const id of [...MEMORIES.map(memory => memory.id), 'orb-unverified-award', null, undefined]) {
+    assert.equal(canonicalChapterId(id), id)
+  }
   assert.equal(resolveForestLocation({ pathname:'/', search:'?embed=1' }), null)
-  assert.equal(MEMORIES.find(memory => memory.id === 'orb-becoming').isFuture, false)
+  assert.equal(MEMORIES.find(memory => memory.id === 'orb-root').isFuture, false)
 })
 
 test('Metadata and preview image align with professional positioning on every entry', () => {
@@ -146,8 +156,10 @@ test('Metadata and preview image align with professional positioning on every en
   }
 })
 
-test('Core Memories retains all seven chapters without unsupported claims', () => {
-  assert.deepEqual(MEMORIES.map(m => m.id), ['orb-origin','orb-banking','orb-leap','orb-proof','orb-engineer','orb-becoming','orb-root'])
+test('Core Memories has six distinct chapters with Present merged into Now', () => {
+  assert.deepEqual(MEMORIES.map(m => m.id), ['orb-origin','orb-banking','orb-leap','orb-proof','orb-engineer','orb-root'])
+  const guideChapterIds = SYSTEM_PROMPT.match(/Journey IDs: ([^.]+)\./)[1].split(', ')
+  assert.deepEqual(guideChapterIds, MEMORIES.map(memory => memory.id))
   assert.ok(project('core-memories').stack.includes('JavaScript / JSX'))
   assert.ok(!project('core-memories').stack.includes('TypeScript'))
   assert.doesNotMatch(JSON.stringify(MEMORIES), /100\+|100 Clients|retrieval-augmented|Solo Delivery/)
@@ -172,6 +184,7 @@ test('Existing software CV links serve the current software-development variant'
 
 test('Tyche references identify real nodes in the unified forest', () => {
   for (const memory of MEMORIES) assert.equal(forestNodeForReference(memory.id), 'journey')
+  assert.equal(forestNodeForReference('orb-becoming'), 'journey')
   for (const node of FOREST_NODES.filter(item => item.kind === 'project')) assert.equal(forestNodeForReference(`orb-project-${node.id}`), node.id)
   assert.equal(forestNodeForReference('orb-project-private-client'), null)
   assert.equal(forestNodeForReference('orb-unverified-award'), null)

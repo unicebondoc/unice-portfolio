@@ -297,7 +297,7 @@ export const PROJECTS = [
       "challenge": "Offer an expressive way to explore a career without hiding useful information from a recruiter.",
       "contribution": "I shape the visual direction and AI-assisted interactive implementation, bringing project cases, career chapters, experience and CV into one explorable forest.",
       "decision": "Keep direct project, experience and CV navigation available in the same world; provide usable controls when graphics are unavailable.",
-      "evidence": "The forest combines project artwork with actual case screenshots and seven career chapters. Keyboard controls, reduced motion and direct journal links support access.",
+      "evidence": "The forest combines project artwork with actual case screenshots and six career chapters. Keyboard controls, reduced motion and direct journal links support access.",
       "result": "A working interactive portfolio. Project evidence, personal history and both CV variants are available within the same forest."
     },
     "image": "/projects/core-memories-calm-heart.webp",

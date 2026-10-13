@@ -1,6 +1,6 @@
 /**
  * Core Memories — career and personal journey orbs.
- * 6 story orbs + 1 root identity orb = 7 total.
+ * 5 story chapters + 1 current identity chapter = 6 total.
  * Colors: red, yellow/gold, purple, blue — user-specified palette.
  * Each orb is a chapter in the story a hiring manager needs to hear.
  */
@@ -14,15 +14,14 @@ const ORB_PALETTES = {
   softPurple:  { fill: 'rgba(196,181,253,0.48)', glow: '#a78bfa', innerLight: '#ede9fe', core: '#c4b5fd' },
 }
 
-// Mobile scattered positions — 6 orbs + root
+// Legacy mobile scattered positions — 5 story chapters + root
 const SCATTERED_MOBILE_POSITIONS = [
   [-2.4, -2.6, 0.1],  // 0 orb-origin
   [2.2,  -2.0, 0.3],  // 1 orb-banking
   [-2.6,  0.4, 0.2],  // 2 orb-leap
   [2.4,   1.6, 0.4],  // 3 orb-proof  (hero — larger)
   [-2.0,  3.2, 0.3],  // 4 orb-engineer
-  [1.4,   4.6, 0.1],  // 5 orb-becoming
-  [0.0,  -3.2, 0],    // 6 orb-root
+  [0.0,  -3.2, 0],    // 5 orb-root
 ]
 
 function mobilePositionsForMemories(list) {
@@ -174,39 +173,11 @@ export const MEMORIES = [
     visualTier: 'primary',
     orbType: 'primary',
     isPrimary: true,
-    description: "What Was Drawn is a reflection companion with touch draws, optional gestures and a saved journal. FlatSync brings chores, shopping and household bills together on the web. LandLIT connects property records in a working prototype with a fictional-data demo. I use AI-assisted development tools to shape these projects, review interactions, test workflows and prepare releases. Open a project memory to see its current stage, my contribution and the evidence.",
-    tags: ["AI-assisted Development", "What Was Drawn", "FlatSync", "LandLIT", "Testing", "Product Direction"],
+    description: "These projects turn ideas into applications, connected workflows and interactive worlds. Each preview opens a case with my contribution, its current stage and the evidence behind it.",
+    tags: ["Applications", "Interactive Products", "Systems", "Testing", "Product Direction"],
     skills: [],
     link: '',
     workMedia: 'projects',
-    isFuture: false,
-  },
-
-  // ─── 6. BECOMING — SOFT PURPLE ──────────────────────────────────────────
-  {
-    id: 'orb-becoming',
-    tier: 'core',
-    title: "Products and Teamwork",
-    subtitle: "ACS WIL INTERNSHIP · ONQST · 2026",
-    year: '2026',
-    emotion: 'Ambition',
-    icon: '🚀',
-    category: 'present',
-    orbPalette: 'softPurple',
-    color: '#c4b5fd',
-    glowColor: '#a78bfa',
-    image: '/memories/orb-06.svg',
-    labelShort: '2026 · Present',
-    position: [1.5, 4.0, -0.3],
-    scaleMult: 1.1,
-    visualTier: 'primary',
-    orbType: 'primary',
-    isPrimary: true,
-    description: "I am a Developer / Programmer in a ten-person ACS WIL internship team working on CauseConnect. Alongside that, I direct AI-assisted product work through ONQST and am completing my Professional Year. My work connects software development, AI automation and systems implementation with practical user needs and clear documentation.",
-    tags: ["ACS WIL", "Internship", "ONQST", "Professional Year", "Open to Work", "Sydney", "2026"],
-    skills: [],
-    link: '',
-    workMedia: 'present',
     isFuture: false,
   },
 
@@ -225,16 +196,15 @@ export const MEMORIES = [
     color: '#f0b840',
     glowColor: '#d4a853',
     image: '/memories/belong.png',
-    videoSrc: '/memories/videos/09-orb-root-web.mp4',
-    videoHint: 'your best intro clip — portrait, selfie video, this is you',
+    workMedia: 'now',
     labelShort: 'Now · Unice',
     position: [0, -0.8, 0],
     scaleMult: 1.4,
     visualTier: 'primary',
     orbType: 'primary',
     isPrimary: true,
-    description: "Communication, banking operations, ICT study and project work are all parts of my story. My journey, current team experience, project cases and CV all live here in this forest. The work keeps developing, and so do I.",
-    tags: ["Software Developer", "Communication", "Operations", "AI-assisted Projects", "Sydney"],
+    description: "Alongside my product and team work, I am completing the ACS-accredited Professional Year in Sydney. My focus is software development, AI automation and systems implementation.",
+    tags: ["Software Development", "AI Automation", "Systems Implementation", "Professional Year", "Sydney"],
     skills: [],
     link: '',
     isFuture: false,

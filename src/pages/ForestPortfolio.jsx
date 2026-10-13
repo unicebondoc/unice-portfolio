@@ -4,7 +4,7 @@ import { PROJECTS } from '../data/projects.js'
 import { MEMORIES } from '../data/memories.js'
 import { PORTFOLIO_DATA } from '../../lib/portfolioData.js'
 import { FOREST_NODES } from '../data/forestNodes.js'
-import { forestTarget, resolveForestLocation, forestNodeForReference } from '../data/forestNavigation.js'
+import { forestTarget, resolveForestLocation, forestNodeForReference, canonicalChapterId } from '../data/forestNavigation.js'
 import useStore from '../hooks/useStore.js'
 import ProjectDemo, { AudioEdition } from '../components/ui/ProjectDemo.jsx'
 import AnimatedTyche from '../components/ui/AnimatedTyche.jsx'
@@ -79,12 +79,9 @@ function WorkIndex({ navigate }) {
 }
 
 function Journey({ initialChapter, navigate }) {
-  const [chapter, setChapter] = useState(() => MEMORIES.find(item => item.id === initialChapter) || MEMORIES.find(item => item.id === 'orb-root'))
+  const [chapter, setChapter] = useState(() => MEMORIES.find(item => item.id === canonicalChapterId(initialChapter)) || MEMORIES.find(item => item.id === 'orb-root'))
   useEffect(() => {
-    if (initialChapter) {
-      const match = MEMORIES.find(item => item.id === initialChapter)
-      if (match) setChapter(match)
-    }
+    setChapter(MEMORIES.find(item => item.id === canonicalChapterId(initialChapter)) || MEMORIES.find(item => item.id === 'orb-root'))
   }, [initialChapter])
   const chapterName = chapter.labelShort.replace(/^.*? · /, '')
   return <div className="pf-journey">
@@ -92,9 +89,7 @@ function Journey({ initialChapter, navigate }) {
     <div className="pf-chapter-list" aria-label="Career chapters">{MEMORIES.map(memory => <button type="button" key={memory.id} aria-pressed={memory.id === chapter.id} onClick={() => navigate({ kind: 'journey', chapter: memory.id })} style={{ '--pf-memory-color': memory.color }}><span aria-hidden>◈</span><small>{memory.year}</small><span>{memory.id === 'orb-root' ? 'Here, now' : memory.labelShort.replace(/^.*? · /, '')}</span></button>)}</div>
     <article className="pf-chapter" key={chapter.id}>
       <p className="pf-stage">{chapter.subtitle}</p><h3>{chapter.title}</h3>
-      {chapter.id === 'orb-root' ? <figure className="pf-now-portrait">
-        <div className="pf-now-portrait-frame"><img src="/profile-unice-approved.webp" alt="Unice Bondoc wearing her taupe blazer, pearl earrings and diamond pendant" width="768" height="768" /></div><figcaption>Unice Bondoc · Founder of ONQST</figcaption>
-      </figure> : chapter.workMedia ? <JourneyWorkMedia kind={chapter.workMedia} navigate={navigate} /> : chapter.imageSrc ? <figure className="pf-chapter-photo">
+      {chapter.workMedia ? <JourneyWorkMedia kind={chapter.workMedia} navigate={navigate} /> : chapter.imageSrc ? <figure className="pf-chapter-photo">
         <a href={chapter.imageSrc} target="_blank" rel="noopener noreferrer" aria-label={`Open ${chapterName} photograph in a new tab`}><img src={chapter.imageSrc} alt={chapter.imageAlt} /></a><figcaption>{chapter.imageCaption}</figcaption>
       </figure> : chapter.videoSrc && <ProjectDemo key={chapter.videoSrc} variant="memory" title={chapterName} demo={{ src: chapter.videoSrc, poster: chapter.videoPoster, caption: chapter.videoCaption, hasAudio: Boolean(chapter.videoHasAudio), aspectRatio: chapter.videoAspectRatio, captions: chapter.videoCaptions, transcript: chapter.videoTranscript }} />}
       <p>{chapter.description}</p><ul className="pf-technologies">{chapter.tags.map(tag => <li key={tag}>{tag}</li>)}</ul>

@@ -30,11 +30,6 @@ function ProjectImage({ project, className = '' }) {
 function ProjectsSpread({ navigate }) {
   const projects = PROJECT_ORDER.map(id => PROJECTS.find(project => project.id === id)).filter(Boolean)
   return <div className="jwm jwm-projects">
-    <div className="jwm-project-intro">
-      <img className="jwm-human-anchor" src={PORTRAIT} alt="Unice Bondoc in her approved taupe-blazer portrait" width="768" height="768" loading="lazy" decoding="async" />
-      <div><p className="jwm-identity">Unice Bondoc</p><p className="jwm-context">Product work &amp; team delivery</p></div>
-      <span className="jwm-branch-tip" aria-hidden="true" />
-    </div>
     <div className="jwm-project-spread">
       {projects.map(project => <JourneyLink key={project.id} target={{ kind: 'project', id: project.id }} navigate={navigate} className={`jwm-project jwm-project-${project.id}`} style={{ '--jwm-accent': project.color }}>
         <span className={`jwm-preview jwm-preview-${project.imageKind || 'wide'}`}><ProjectImage project={project} /></span>
@@ -42,18 +37,16 @@ function ProjectsSpread({ navigate }) {
         <span className="jwm-stage">{project.subtitle}</span>
       </JourneyLink>)}
     </div>
-    <p className="jwm-media-caption">Actual project previews · Approved portrait</p>
   </div>
 }
 
-function PresentSpread({ navigate }) {
+function NowSpread({ navigate }) {
   const causeconnect = PROJECTS.find(project => project.id === 'causeconnect')
-  return <div className="jwm jwm-present">
-    <div className="jwm-present-spread">
-      <figure className="jwm-present-portrait">
+  return <div className="jwm jwm-now">
+    <div className="jwm-now-spread">
+      <div className="jwm-now-portrait">
         <img src={PORTRAIT} alt="Unice Bondoc wearing a taupe blazer, pearl earrings and diamond pendant" width="768" height="768" loading="lazy" decoding="async" />
-        <figcaption>Unice Bondoc · Sydney</figcaption>
-      </figure>
+      </div>
       <div className="jwm-work-strands">
         <a href="https://onqst.com/" target="_blank" rel="noopener noreferrer" className="jwm-studio-strand">
           <span className="jwm-strand-number" aria-hidden="true">01 / STUDIO</span>
@@ -64,19 +57,18 @@ function PresentSpread({ navigate }) {
         </a>
         {causeconnect && <JourneyLink target={{ kind: 'project', id: causeconnect.id }} navigate={navigate} className="jwm-team-strand" style={{ '--jwm-accent': causeconnect.color }}>
           <span className="jwm-strand-number" aria-hidden="true">02 / TEAM</span>
-          <span className="jwm-team-preview"><ProjectImage project={causeconnect} /></span>
-          <span className="jwm-project-label"><strong>{causeconnect.title}</strong><span aria-hidden="true">↗</span></span>
-          <span className="jwm-stage">{causeconnect.subtitle}</span>
-          <span className="jwm-team-context">Team of 10 · Hosted sample demo</span>
+          <strong className="jwm-team-name">{causeconnect.title}</strong>
+          <span className="jwm-strand-role">Developer / Programmer</span>
+          <span className="jwm-stage">ACS WIL internship · Team of 10</span>
+          <span className="jwm-strand-action">My contribution <span aria-hidden="true">↗</span></span>
         </JourneyLink>}
       </div>
     </div>
-    <p className="jwm-media-caption">Approved portrait + actual CauseConnect sample screen</p>
   </div>
 }
 
 export default function JourneyWorkMedia({ kind, navigate }) {
   if (kind === 'projects') return <ProjectsSpread navigate={navigate} />
-  if (kind === 'present') return <PresentSpread navigate={navigate} />
+  if (kind === 'now') return <NowSpread navigate={navigate} />
   return null
 }
