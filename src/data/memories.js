@@ -58,10 +58,9 @@ export const MEMORIES = [
     tags: ['Broadcasting', 'Bicol University', 'Philippines', 'Storytelling', 'Communication'],
     skills: [],
     link: '',
-    videoSrc: '/memories/videos/01-orb-origin-web.mp4',
-    videoPoster: '/memories/posters/orb-origin.jpg',
-    videoCaption: 'Illustrated chapter scene · 5 seconds',
-    videoHint: 'Philippines footage, Bicol, childhood, anything that feels like a beginning',
+    imageSrc: '/memories/bachelors-graduation-cutout.webp',
+    imageAlt: 'Photographic cutout of Unice in her graduation cap and gown holding her Bicol University graduation folder',
+    imageCaption: 'Bachelor of Communication in Broadcasting · Bicol University · Graduation photograph',
     isFuture: false,
   },
 
