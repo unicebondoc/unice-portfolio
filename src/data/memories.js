@@ -116,10 +116,9 @@ export const MEMORIES = [
     tags: ['Career Pivot', 'Philippines → Australia', 'Sydney', 'Master\'s Enrolment', 'WSU'],
     skills: [],
     link: '',
-    videoSrc: '/memories/videos/04-orb-reinvention-web.mp4',
-    videoPoster: '/memories/posters/orb-leap.jpg',
-    videoCaption: 'Illustrated chapter scene · 5 seconds',
-    videoHint: 'airport, packing, arriving in Sydney, harbour bridge, ocean — anything that feels like crossing a threshold',
+    imageSrc: '/memories/leap-sydney-harbour.webp',
+    imageAlt: 'Unice seated by Sydney Harbour holding a camera, with the Harbour Bridge and city skyline across the water',
+    imageCaption: 'Sydney Harbour · Personal photograph',
     isFuture: false,
   },
 
