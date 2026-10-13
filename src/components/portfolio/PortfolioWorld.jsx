@@ -159,8 +159,8 @@ export default function PortfolioWorld({ onCaseStudy, onForest, onResume }) {
           </div>
 
           <div className={`pw-wayfinder ${selected ? 'has-destination' : ''}`} style={{ '--pw-cat-x': `${selected ? selected.x < 50 ? selected.x + 13 : selected.x - 13 : 45}%`, '--pw-cat-y': `${selected ? selected.y < 50 ? selected.y + 10 : selected.y + 2 : 86}%`, '--pw-cat-mobile-x': '49%', '--pw-cat-mobile-y': `${selected?.mobileY ?? 88}%`, '--pw-cat-color': selected?.color ?? '#7eddf2' }} aria-hidden="true"><WayfinderCat /></div>
-          <div className={`pw-map-footer ${selected ? 'has-open-memory' : ''}`}><p id="pw-map-instructions"><span className="pw-instruction-spark" aria-hidden="true">✧</span> {selected ? selected.memory : 'Choose a memory. Follow your curiosity.'}</p>{selected ? <a className="pw-open-memory" href="#pw-world-details" aria-label={`Open ${selected.title} memory details`}>Open this memory <span aria-hidden="true">↓</span></a> : <span className="pw-keyboard-note">Tab to explore · Enter to select</span>}</div>
         </div>
+        <div className={`pw-map-footer ${selected ? 'has-open-memory' : ''}`}><p id="pw-map-instructions"><span className="pw-instruction-spark" aria-hidden="true">✧</span> {selected ? selected.memory : 'Choose a memory. Follow your curiosity.'}</p>{selected ? <a className="pw-open-memory" href="#pw-world-details" aria-label={`Open ${selected.title} memory details`}>Open this memory <span aria-hidden="true">↓</span></a> : <span className="pw-keyboard-note">Tab to explore · Enter to select</span>}</div>
       </div>
 
       <div className="pw-details-wrap ft-shell">
