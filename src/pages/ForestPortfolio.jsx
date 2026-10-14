@@ -165,6 +165,20 @@ function Journal({ panel, navigate, onClose, reducedMotion }) {
 
 export default function ForestPortfolio() {
   const [panel, setPanel] = useState(() => resolveForestLocation(window.location))
+  useEffect(() => {
+    const isWriting = panel?.kind === 'writing'
+    const title = isWriting ? 'Unice Bondoc — Writing & Stories' : 'Unice Bondoc — Software Developer | AI & Automation'
+    const description = isWriting
+      ? 'Personal essays, product stories and technical notes by Unice Bondoc, a Sydney software developer and founder of ONQST. Read the stories behind the work.'
+      : 'Sydney software developer and founder of ONQST, building applications, workflows and interactive products. Explore the work, writing and journey.'
+    const canonical = `https://www.unicebondoc.com${window.location.pathname}`
+    document.title = title
+    document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonical)
+    document.querySelector('meta[name="description"]')?.setAttribute('content', description)
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', title)
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', description)
+    document.querySelector('meta[property="og:url"]')?.setAttribute('content', canonical)
+  }, [panel?.kind])
   const [ready, setReady] = useState(false)
   const [graphicsError, setGraphicsError] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
