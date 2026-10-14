@@ -2,6 +2,7 @@ import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react'
 import { Analytics } from '@vercel/analytics/react'
 import { PROJECTS } from '../data/projects.js'
 import { MEMORIES } from '../data/memories.js'
+import { MEDIUM_PROFILE, WRITINGS } from '../data/writing.js'
 import { PORTFOLIO_DATA } from '../../lib/portfolioData.js'
 import { FOREST_NODES } from '../data/forestNodes.js'
 import { forestTarget, resolveForestLocation, forestNodeForReference, canonicalChapterId } from '../data/forestNavigation.js'
@@ -15,8 +16,9 @@ const ForestScene = lazy(() => import('../components/scene/PortfolioForestScene.
 const ChatBot = lazy(() => import('../components/ui/ChatBot.jsx'))
 const CV_MAIN = '/resume/Unice_Bondoc_Resume.pdf'
 const CV_SOFTWARE = '/resume/Unice_Bondoc_CV_Software_Development.pdf'
-const JOURNAL_NAMES = { work: 'The work', journey: 'The story at the roots', experience: 'Experience', about: 'A curious mind', writing: 'Notes from the build', cv: 'The CV', contact: 'Let’s make something useful' }
+const JOURNAL_NAMES = { work: 'The work', journey: 'The story at the roots', experience: 'Experience', about: 'A curious mind', writing: 'In my own words', cv: 'The CV', contact: 'Let’s make something useful' }
 const NAVIGATION = [['work', 'Work'], ['journey', 'My journey'], ['experience', 'Experience'], ['about', 'About'], ['writing', 'Writing']]
+const WRITING_DATE = new Intl.DateTimeFormat('en-AU', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
 
 function useReducedMotion() {
   const [reduced, setReduced] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
@@ -78,21 +80,47 @@ function WorkIndex({ navigate }) {
   return <div><p className="pf-journal-lede">Applications, connected workflows and stories you can step inside. Each case explains what I contributed and where the work stands.</p><div className="pf-work-index">{selected.map((project, index) => <a href={forestTarget({ kind: 'project', id: project.id })} onClick={event => { event.preventDefault(); navigate({ kind: 'project', id: project.id }) }} className="pf-work-entry" key={project.id} style={{ '--pf-memory-color': project.color }}><span className="pf-entry-number">{String(index + 1).padStart(2, '0')}</span><span><strong>{project.title}</strong><small>{project.subtitle}</small><p>{project.description}</p></span><span className="pf-entry-arrow" aria-hidden>↗</span></a>)}</div><p className="pf-eyebrow pf-support-heading">OTHER THREADS</p><div className="pf-other-work">{PROJECTS.filter(item => ['support', 'forest'].includes(item.group)).map(project => <a key={project.id} href={forestTarget({ kind: 'project', id: project.id })} onClick={event => { event.preventDefault(); navigate({ kind: 'project', id: project.id }) }}><strong>{project.id === 'core-memories' ? 'How this forest was built' : project.title}</strong><small>{project.subtitle}</small><span aria-hidden>↗</span></a>)}</div></div>
 }
 
+function WritingCard({ writing, compact = false }) {
+  const Title = compact ? 'strong' : 'h3'
+  return <a className={compact ? 'pf-chapter-writing-link' : 'pf-writing-entry'} href={writing.url} target="_blank" rel="noopener noreferrer">
+    <span className="pf-writing-meta"><time dateTime={writing.publishedAt}>{WRITING_DATE.format(new Date(`${writing.publishedAt}T00:00:00Z`))}</time> · {writing.category}</span>
+    <Title className="pf-writing-title">{compact ? writing.journeyLabel || writing.title : writing.title}</Title>
+    {!compact && <p>{writing.description}</p>}
+    <span className="pf-writing-action">Read on Medium <span aria-hidden="true">↗</span></span>
+  </a>
+}
+
 function Journey({ initialChapter, navigate }) {
   const [chapter, setChapter] = useState(() => MEMORIES.find(item => item.id === canonicalChapterId(initialChapter)) || MEMORIES.find(item => item.id === 'orb-root'))
   useEffect(() => {
     setChapter(MEMORIES.find(item => item.id === canonicalChapterId(initialChapter)) || MEMORIES.find(item => item.id === 'orb-root'))
   }, [initialChapter])
   const chapterName = chapter.labelShort.replace(/^.*? · /, '')
+  const relatedWriting = (chapter.writingIds || []).map(id => WRITINGS.find(writing => writing.id === id)).filter(Boolean)
+  const openWriting = event => {
+    if (typeof navigate !== 'function' || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+    event.preventDefault()
+    navigate({ kind: 'writing' })
+  }
   return <div className="pf-journey">
-    <p className="pf-journal-lede">The same curiosity runs through all of it: story, a change of country, learning to test an idea, and the worlds I’m building now.</p>
+    <p className="pf-journal-lede">From Bicol to Sydney, from stories to systems. Each chapter gave me something I carry into the next: a voice, care in the details, a new direction and a reason to keep asking questions.</p>
     <div className="pf-chapter-list" aria-label="Career chapters">{MEMORIES.map(memory => <button type="button" key={memory.id} aria-pressed={memory.id === chapter.id} onClick={() => navigate({ kind: 'journey', chapter: memory.id })} style={{ '--pf-memory-color': memory.color }}><span aria-hidden>◈</span><small>{memory.year}</small><span>{memory.id === 'orb-root' ? 'Here, now' : memory.labelShort.replace(/^.*? · /, '')}</span></button>)}</div>
     <article className="pf-chapter" key={chapter.id}>
       <p className="pf-stage">{chapter.subtitle}</p><h3>{chapter.title}</h3>
       {chapter.workMedia ? <JourneyWorkMedia kind={chapter.workMedia} navigate={navigate} /> : chapter.imageSrc ? <figure className="pf-chapter-photo">
         <a href={chapter.imageSrc} target="_blank" rel="noopener noreferrer" aria-label={`Open ${chapterName} photograph in a new tab`}><img src={chapter.imageSrc} alt={chapter.imageAlt} /></a><figcaption>{chapter.imageCaption}</figcaption>
       </figure> : chapter.videoSrc && <ProjectDemo key={chapter.videoSrc} variant="memory" title={chapterName} demo={{ src: chapter.videoSrc, poster: chapter.videoPoster, caption: chapter.videoCaption, hasAudio: Boolean(chapter.videoHasAudio), aspectRatio: chapter.videoAspectRatio, captions: chapter.videoCaptions, transcript: chapter.videoTranscript }} />}
-      <p>{chapter.description}</p><ul className="pf-technologies">{chapter.tags.map(tag => <li key={tag}>{tag}</li>)}</ul>
+      <div className="pf-chapter-prose">
+        <p>{chapter.description}</p>
+        {chapter.continuation && <p>{chapter.continuation}</p>}
+        {chapter.reflection && <p className="pf-chapter-reflection">{chapter.reflection}</p>}
+      </div>
+      {relatedWriting.length > 0 && <section className="pf-chapter-writing" aria-labelledby={`pf-chapter-writing-${chapter.id}`}>
+        <h4 id={`pf-chapter-writing-${chapter.id}`}>In my own words</h4>
+        <div>{relatedWriting.map(writing => <WritingCard key={writing.id} writing={writing} compact />)}</div>
+        <a className="pf-inline-link" href={forestTarget({ kind: 'writing' })} onClick={openWriting}>More writing <span aria-hidden="true">↗</span></a>
+      </section>}
+      <ul className="pf-technologies">{chapter.tags.map(tag => <li key={tag}>{tag}</li>)}</ul>
     </article>
   </div>
 }
@@ -106,7 +134,7 @@ function About({ navigate }) {
 }
 
 function Writing() {
-  return <div><p className="pf-journal-lede">Notes on making software feel like somewhere you can go.</p><a className="pf-writing-entry" href="https://medium.com/@unicebondoc/i-made-a-forest-because-i-didnt-know-how-else-to-tell-you-who-i-am-24282209e85a" target="_blank" rel="noopener noreferrer"><small>10 MARCH 2026 · MEDIUM</small><h3>I Didn’t Build a Portfolio.<br />I Built a Place.</h3><p>The story behind Core Memories and exploring a portfolio through an interactive world.</p><span>Read the story ↗</span></a><a className="pf-inline-link" href="https://medium.com/@unicebondoc" target="_blank" rel="noopener noreferrer">More writing on Medium ↗</a></div>
+  return <div className="pf-writing"><p className="pf-journal-lede">Personal essays, product stories and technical notes from my journey and the work I’m building.</p><div className="pf-writing-list">{WRITINGS.map(writing => <WritingCard key={writing.id} writing={writing} />)}</div><a className="pf-inline-link" href={MEDIUM_PROFILE} target="_blank" rel="noopener noreferrer">My Medium profile <span aria-hidden="true">↗</span></a></div>
 }
 
 function CV() {
@@ -132,7 +160,7 @@ function Journal({ panel, navigate, onClose, reducedMotion }) {
     return () => window.removeEventListener('keydown', keydown)
   }, [onClose])
   useEffect(() => { scrollRef.current.scrollTop = 0; journalRef.current.scrollTop = 0; headingRef.current?.focus({ preventScroll: true }) }, [panel.kind, panel.id])
-  return <div className="pf-journal-layer"><button type="button" className="pf-journal-backdrop" aria-label="Close journal and return to the forest" tabIndex={-1} onClick={onClose} /><section ref={journalRef} className="pf-journal" role="dialog" aria-modal="true" aria-labelledby="pf-journal-title" style={{ '--pf-memory-color': project?.color || '#b9e6db' }}><header className="pf-journal-header"><div><p className="pf-eyebrow">THE FIELD JOURNAL <span aria-hidden>/</span> {project ? 'PROJECT MEMORY' : 'UNICE’S WORLD'}</p><h2 id="pf-journal-title" ref={headingRef} tabIndex={-1}>{title}</h2></div><button type="button" className="pf-journal-close" aria-label="Close journal" onClick={onClose}><span aria-hidden>×</span></button></header><nav className="pf-journal-tabs" aria-label="Journal sections">{[['work', 'Work'], ['journey', 'Journey'], ['experience', 'Experience'], ['cv', 'CV']].map(([kind, label]) => <button key={kind} type="button" aria-current={panel.kind === kind || (kind === 'work' && panel.kind === 'project') ? 'page' : undefined} onClick={() => navigate({ kind })}>{label}</button>)}</nav><div className="pf-journal-scroll" ref={scrollRef}>{project ? <ProjectCase project={project} navigate={navigate} reducedMotion={reducedMotion} /> : panel.kind === 'work' ? <WorkIndex navigate={navigate} /> : panel.kind === 'journey' ? <Journey initialChapter={panel.chapter} navigate={navigate} /> : panel.kind === 'experience' ? <Experience navigate={navigate} /> : panel.kind === 'about' ? <About navigate={navigate} /> : panel.kind === 'writing' ? <Writing /> : panel.kind === 'cv' ? <CV /> : <><p className="pf-journal-lede">Software development, AI automation and systems implementation · Sydney.</p><ContactLinks /></>}</div><footer className="pf-journal-foot"><span aria-hidden>✧</span><span>The forest stays with you.</span><button type="button" onClick={onClose}>Return to the world ↙</button></footer></section></div>
+  return <div className="pf-journal-layer"><button type="button" className="pf-journal-backdrop" aria-label="Close journal and return to the forest" tabIndex={-1} onClick={onClose} /><section ref={journalRef} className="pf-journal" role="dialog" aria-modal="true" aria-labelledby="pf-journal-title" style={{ '--pf-memory-color': project?.color || '#b9e6db' }}><header className="pf-journal-header"><div><p className="pf-eyebrow">THE FIELD JOURNAL <span aria-hidden>/</span> {project ? 'PROJECT MEMORY' : 'UNICE’S WORLD'}</p><h2 id="pf-journal-title" ref={headingRef} tabIndex={-1}>{title}</h2></div><button type="button" className="pf-journal-close" aria-label="Close journal" onClick={onClose}><span aria-hidden>×</span></button></header><nav className="pf-journal-tabs" aria-label="Journal sections">{[['work', 'Work'], ['journey', 'Journey'], ['experience', 'Experience'], ['writing', 'Writing'], ['cv', 'CV']].map(([kind, label]) => <button key={kind} type="button" aria-current={panel.kind === kind || (kind === 'work' && panel.kind === 'project') ? 'page' : undefined} onClick={() => navigate({ kind })}>{label}</button>)}</nav><div className="pf-journal-scroll" ref={scrollRef}>{project ? <ProjectCase project={project} navigate={navigate} reducedMotion={reducedMotion} /> : panel.kind === 'work' ? <WorkIndex navigate={navigate} /> : panel.kind === 'journey' ? <Journey initialChapter={panel.chapter} navigate={navigate} /> : panel.kind === 'experience' ? <Experience navigate={navigate} /> : panel.kind === 'about' ? <About navigate={navigate} /> : panel.kind === 'writing' ? <Writing /> : panel.kind === 'cv' ? <CV /> : <><p className="pf-journal-lede">Software development, AI automation and systems implementation · Sydney.</p><ContactLinks /></>}</div><footer className="pf-journal-foot"><span aria-hidden>✧</span><span>The forest stays with you.</span><button type="button" onClick={onClose}>Return to the world ↙</button></footer></section></div>
 }
 
 export default function ForestPortfolio() {

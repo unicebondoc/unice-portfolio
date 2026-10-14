@@ -2,7 +2,7 @@
 
 Unice Bondoc’s hiring portfolio at https://www.unicebondoc.com. One mounted React Three Fiber forest connects six project memories, the central living portrait, six distinct career chapters and a readable field journal. Project selection focuses the camera, lights its tendril and brings the case alongside the world. There is no second forest, map or launch iframe.
 
-The journal contains actual project screenshots, personal contribution, decisions, evidence and release stages. Work, Experience, About, Writing, both CV variants and contact remain directly reachable. The approved pearl-earring/diamond-pendant portrait replaces the gold diamond at the tree heart. Its revised four-second silent loop from the calm, open-eyed tail of the existing generation stays in the central orb. Now combines the approved still photograph with the ONQST role and product-site link; About also retains the approved photograph.
+The journal contains actual project screenshots, personal contribution, decisions, evidence and release stages. Six connected Journey chapters pair verified history with reflective prose and contextual links to Unice’s published essays; Writing presents three selected articles and the full Medium archive. Work, Experience, About, Writing, both CV variants and contact remain directly reachable. The approved pearl-earring/diamond-pendant portrait replaces the gold diamond at the tree heart. Its revised four-second silent loop from the calm, open-eyed tail of the existing generation stays in the central orb. Now combines the approved still photograph with the ONQST role and product-site link; About also retains the approved photograph.
 
 ## Source and routes
 
@@ -13,7 +13,8 @@ The journal contains actual project screenshots, personal contribution, decision
 - `src/data/forestNodes.js`: six scene projects and portrait root, derived from shared project facts.
 - `src/data/forestNavigation.js`: URL/deep-link resolution and guide-reference mapping.
 - `src/data/projects.js` and `lib/portfolioData.js`: shared cases, experience and bounded guide knowledge.
-- `src/data/memories.js`: six career chapters, retained inside the root’s journal.
+- `src/data/memories.js`: six connected career chapters with context, reflection and writing references inside the root’s journal.
+- `src/data/writing.js`: selected published article titles, dates, links and public-opening descriptions; shared with the guide.
 
 All Vite entry routes (`/`, `/work/`, `/about/`, `/writing/`) mount the same experience. Existing `#project-*` links open the relevant journal case. `#core-memories` and old story IDs open the journey. `/?embed=1` resolves to this same world for compatibility. Browser Back/Forward restores the selected page/case without rebuilding a separate experience.
 
@@ -33,6 +34,8 @@ Original `App.jsx`, `MemoryOrb`, `FastTrackSite` and the split `PortfolioWorld` 
 - Exploration progress lasts for the mounted page and has no account or persistent tracking.
 
 ## Facts and CVs
+
+Writing descriptions use verified public openings; member-only conclusions, historical technical benchmarks and private personal history are not inferred. The reflective Journey connects the established life and work facts without inventing incidents or hardship.
 
 ACS WIL remains first in relevant experience: Developer / Programmer, internship team of ten, July 2026–present. ONQST is Founder & Builder. UNIKRE Trading is Software Engineer (Internship), November 2024–January 2025, distinct from later commerce contributions. Banking is brief supporting history and does not lead the identity.
 

@@ -62,9 +62,9 @@ html.pf-document, body.pf-document { width:100%; height:100%; min-width:0; overf
 .pf-journal-close { flex:0 0 44px; width:44px; height:44px; display:grid; place-items:center; border:0; border-radius:50%; background:transparent; color:#dfede4; font:300 28px/1 Georgia,serif; cursor:pointer; }
 .pf-journal-close:hover { background:#b5d6cd10; }
 .pf-journal-tabs { display:flex; flex-wrap:wrap; align-items:center; gap:6px 18px; margin:0 29px; padding:0 0 9px; border-bottom:1px solid #b3d0ce2b; flex-shrink:0; }
-.pf-journal-tabs button { position:relative; min-height:44px; padding:9px 2px; border:0; color:#cadeda; background:none; font:500 1rem/1.4 system-ui,sans-serif; cursor:pointer; }
+.pf-journal-tabs button { position:relative; flex:0 0 auto; max-width:100%; min-height:44px; padding:9px 2px; border:0; color:#cadeda; background:none; font:500 1rem/1.4 system-ui,sans-serif; cursor:pointer; }
 .pf-journal-tabs button[aria-current] { color:#f6f5e7; }
-.pf-journal-tabs button::after { content:''; position:absolute; inset:auto 0 -10px; height:2px; background:var(--pf-memory-color); opacity:0; transition:opacity 180ms; }
+.pf-journal-tabs button::after { content:''; position:absolute; inset:auto 0 2px; height:2px; background:var(--pf-memory-color); opacity:0; transition:opacity 180ms; }
 .pf-journal-tabs button[aria-current]::after { opacity:1; }
 .pf-journal-tabs button:hover { color:#fffdf1; }
 .pf-journal-scroll { flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:26px 29px 31px; overflow-wrap:anywhere; scrollbar-width:thin; scrollbar-color:#8aaeb653 transparent; }
@@ -115,6 +115,15 @@ html.pf-document, body.pf-document { width:100%; height:100%; min-width:0; overf
 .pf-chapter-list button:hover { color:#fff; }
 .pf-chapter-list small { color:#d5e6df; font-size:.875rem; }
 .pf-chapter h3 { margin:10px 0 18px; }
+.pf-chapter-prose { max-width:65ch; margin-top:22px; }
+.pf-chapter-prose p { margin:0; }
+.pf-chapter-prose p+p { margin-top:18px; }
+.pf-journal-scroll .pf-chapter-reflection { max-width:48ch; margin:24px 0 0; color:#eaddc4; font:italic 400 1.125rem/1.7 Georgia,serif; }
+.pf-chapter-writing { margin-top:28px; }
+.pf-chapter-writing h4 { margin:0 0 12px; color:#d5e6d9; font:600 1rem/1.5 system-ui,sans-serif; }
+.pf-chapter-writing-link { display:block; min-height:44px; padding:16px 0; border-top:1px solid #b2d2cf2c; color:#edf2e9; text-decoration:none; }
+.pf-chapter-writing-link .pf-writing-title { display:block; margin-top:8px; font:600 1rem/1.5 system-ui,sans-serif; }
+.pf-chapter-writing .pf-inline-link { gap:8px; margin-top:3px; }
 .pf-chapter video { display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:contain; background:#020b13; border:1px solid #b1cec128; border-radius:4px; margin-bottom:18px; }
 .pf-chapter-photo { margin:0 0 22px; }
 .pf-chapter-photo a { display:flex; justify-content:center; background:radial-gradient(ellipse at center,#c7ddd312,transparent 70%); border-radius:8px; overflow:hidden; }
@@ -147,9 +156,11 @@ html.pf-document, body.pf-document { width:100%; height:100%; min-width:0; overf
 .pf-contact-links { display:flex; flex-wrap:wrap; gap:16px; padding-top:23px; margin-top:23px; border-top:1px solid #b2d2cf26; }
 .pf-contact-links a { display:inline-flex; align-items:center; min-height:44px; color:#e0eee7; font-size:1rem; text-decoration:none; }
 .pf-writing-entry { display:block; margin:25px 0; padding:25px 23px; border:1px solid #b2d2cf2c; border-radius:4px; background:#2955411b; color:#dfeadf; text-decoration:none; }
-.pf-writing-entry small { color:#d3e5df; font-size:.875rem; letter-spacing:.08em; }
 .pf-writing-entry h3 { margin:17px 0; font-size:24px; }
-.pf-writing-entry span { display:block; margin-top:20px; font-size:1rem; color:#e0eee7; }
+.pf-writing-meta { display:block; color:#d3e5df; font:400 1rem/1.5 system-ui,sans-serif; }
+.pf-writing-action { display:inline-flex; align-items:center; gap:8px; min-height:44px; margin-top:10px; color:#e0eee7; font:500 1rem/1.5 system-ui,sans-serif; }
+.pf-writing-entry .pf-writing-action { margin-top:16px; }
+.pf-writing-entry:hover .pf-writing-title,.pf-chapter-writing-link:hover .pf-writing-title { text-decoration:underline; text-underline-offset:4px; }
 .pf-cv-choices { display:grid; gap:15px; margin-top:25px; }
 .pf-cv-choices article { border:1px solid #b2d2cf32; border-radius:3px; padding:23px 20px; background:#2b55431b; }
 .pf-cv-choices h3 { font-size:23px; margin-top:8px; }
