@@ -1,0 +1,33 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:06.000
+LandLIT connects rental records, balances and next decisions. This is a fictional Philippine demo.
+
+2
+00:00:06.000 --> 00:00:13.000
+A property links to its tenancies, rent terms and account balances.
+
+3
+00:00:13.000 --> 00:00:21.000
+Agreement metadata stays connected to the relevant tenancy. No private contract is shown.
+
+4
+00:00:21.000 --> 00:00:28.000
+Unit 202 has ₱22,000 charged, ₱11,000 recorded and ₱11,000 remaining.
+
+5
+00:00:28.000 --> 00:00:36.000
+A fictional ₱5,500 receipt reduces the balance to ₱5,500 and updates the reminder draft.
+
+6
+00:00:36.000 --> 00:00:44.000
+Recording the remaining balance brings it to ₱0. The reminder is suppressed; no message is sent.
+
+7
+00:00:44.000 --> 00:00:55.000
+Reports offer clearly labelled fictional CSV and JSON exports, alongside the sample action history.
+
+8
+00:00:55.000 --> 00:01:00.000
+These actions change only this browser tab’s sample data. Reload resets the demo. No money or message is sent.

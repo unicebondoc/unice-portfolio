@@ -130,6 +130,15 @@
       "process": "Bounded silent H.264 excerpt, 768px width, 24fps; real source pixels, no generated interface",
       "sha256": "ff7f1592078fcb24b9cec817934706046d6ff724c51e5fa4e825a07e0138fcf9",
       "bytes": 123593
+    },
+    {
+      "output": "/projects/landlit-demo-loop.mp4",
+      "source": "/projects/landlit-demo.mp4",
+      "startSeconds": 28,
+      "durationSeconds": 16,
+      "process": "Actual partial-to-settled fictional receipt workflow; full-frame640x360 silent H.264 excerpt; no crop or generated interface",
+      "sha256": "ee2ada308489da1a11d33b489cd47bb4037554eb1ee36bb467e5e89f5b5bdcf6",
+      "bytes": 84044
     }
   ],
   "portraitLoop": {
@@ -230,7 +239,44 @@
       "rule": "/Users/unice/Projects/Games/Steeped 3D Prototype/AGENTS.md:42",
       "filmReceipt": "/Users/unice/Projects/Games/Steeped 3D Prototype/Evidence/codex-r13j-film-005329/receipt.json:2"
     },
-    "otherProjectPreviews": "No current source audio was verified for the still-image LandLIT, What Was Drawn or CauseConnect orb previews. No sound was invented."
+    "otherProjectPreviews": "No current source audio was verified for the LandLIT public showcase or the still-image What Was Drawn and CauseConnect previews. No soundtrack was invented.",
+    "landlit": {
+      "preparedDateSydney": "2026-10-14",
+      "sourceURL": "https://landlit-preview.vercel.app/#demo",
+      "durationSeconds": 60,
+      "hasAudio": false,
+      "method": "Actual Chrome screencast of the fictional public showcase, retaining recorded UI transitions. Ten takes with final reading holds adjusted; no action speed-up, interface generation or crop. Complete1280x672 viewport with48px stage ribbon.",
+      "scope": "Fictional browser sample only. No production or genuine financial operations.",
+      "captionTranscript": "English caption track and matching in-page transcript explain the actual recorded actions.",
+      "receipt": "/Users/unice/claude OS/docs/brain/vault/06-career/documents/hiring-refresh-2026-10-12/landlit-demo-recording/Media_Receipt.json",
+      "files": [
+        {
+          "output": "/projects/landlit-demo.mp4",
+          "sha256": "9900e5ea136210a35aefed8de576b1e81a5a3e95918433a77d602cd8699f2d4b",
+          "bytes": 1323870
+        },
+        {
+          "output": "/projects/landlit-demo-poster.webp",
+          "sha256": "78b35afb9df7eb4974696a5e699731dc8fa7cbebeb44deb76bd0a480b8c1c2aa",
+          "bytes": 62306
+        },
+        {
+          "output": "/projects/landlit-demo-loop.mp4",
+          "sha256": "ee2ada308489da1a11d33b489cd47bb4037554eb1ee36bb467e5e89f5b5bdcf6",
+          "bytes": 84044
+        },
+        {
+          "output": "/projects/landlit-demo.vtt",
+          "sha256": "5b62b2f1dbfaf3f39633b3d20806c61c6e9b12fa0fbd1e15d0de9899f9d1d838",
+          "bytes": 1009
+        },
+        {
+          "output": "/projects/landlit-demo-credits.txt",
+          "sha256": "81cd5624e585e3c578e902b44a076a43f719dfe3d1eccb4a2713825708c15eef",
+          "bytes": 1167
+        }
+      ]
+    }
   },
   "journeyPosters": {
     "preparedDateSydney": "2026-10-13",

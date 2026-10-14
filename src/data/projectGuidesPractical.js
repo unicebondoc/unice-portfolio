@@ -31,12 +31,12 @@ export const PRACTICAL_GUIDES = {
   landlit: {
     overview: "LandLIT connects property records, contracts, rent, utilities and monthly reporting for small rental operators. Its workflow makes balances and unresolved decisions traceable to the records behind them.",
     demo: {
-      kind: "image",
-      intro: "A screenshot of the Philippine fictional-data dashboard. Open the interactive demo below to explore sample records and try its receipt workflow. Changes reset on reload; no money or message is sent.",
+      kind: "video",
+      intro: "This one-minute recording shows the actual Philippine fictional-data demo: connected properties and agreements, a partial receipt, a settled balance and the action history. Use fullscreen to read the interface, or follow the captions and transcript.",
       steps: [
-        { title: "Read the snapshot", text: "Compare recorded receipts with the remaining balance. The sample dashboard keeps those figures separate from tenancies and items awaiting review." },
-        { title: "Find the exception", text: "The next-decisions area highlights a partial receipt, an unconfirmed processing state and a held account. Each points to a different review need." },
-        { title: "Explore the sample", text: "Open the public demo to try the fictional receipt workflow. Sample changes stay within that browser tab and reset on reload; no money or message is sent." },
+        { title: "Follow connected records", text: "A property opens its tenancies. The sample agreement then shows the same tenant, unit, rent and reviewed terms." },
+        { title: "Watch the balance change", text: "Unit 202 starts with ₱11,000 remaining. A fictional ₱5,500 receipt updates both the balance and reminder; recording the rest brings it to ₱0 and suppresses the reminder." },
+        { title: "See the trail behind the totals", text: "Reports provide clearly labelled fictional CSV and JSON exports. The action history retains the two sample receipts and reminder preparation. These are browser sample records, with no real payment or message." },
       ],
     },
     workflow: [

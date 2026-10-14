@@ -11,6 +11,17 @@ const TRANSCRIPT_FLATSYNC = [
   "Try the free web app, and install it from your browser."
 ]
 
+const TRANSCRIPT_LANDLIT = [
+  "LandLIT connects rental records, balances and next decisions. This is a fictional Philippine demo.",
+  "A property links to its tenancies, rent terms and account balances.",
+  "Agreement metadata stays connected to the relevant tenancy. No private contract is shown.",
+  "Unit 202 has ₱22,000 charged, ₱11,000 recorded and ₱11,000 remaining.",
+  "A fictional ₱5,500 receipt reduces the balance to ₱5,500 and updates the reminder draft.",
+  "Recording the remaining balance brings it to ₱0. The reminder is suppressed; no message is sent.",
+  "Reports offer clearly labelled fictional CSV and JSON exports, alongside the sample action history.",
+  "These actions change only this browser tab’s sample data. Reload resets the demo. No money or message is sent."
+]
+
 const TRANSCRIPT_ALEMIO = [
   "Narrator: The Sacrifice: Princess of Alemio. Written by Unice Bondoc. Part One: The Fallen Kingdom.",
   "Narrator: Chapter One. The Door in Kimilar.",
@@ -140,7 +151,7 @@ export const PROJECTS = [
     "flagship": true,
     "group": "featured",
     "links": {
-      "live": "https://landlit-preview.vercel.app/",
+      "live": "https://landlit-preview.vercel.app/#demo",
       "github": null
     },
     "caseStudy": {
@@ -150,6 +161,19 @@ export const PROJECTS = [
       "evidence": "Checks cover linked financial records, workspace permissions, persistence and encrypted recovery. The public showcase uses fictional data and does not transact; final cloud document-storage and recovery verification remains in progress.",
       "result": "A fictional public showcase and protected Philippine manual-beta deployment exist. Signup is closed; onboarding for real customers remains pending."
     },
+    "demo": {
+      "src": "/projects/landlit-demo.mp4",
+      "poster": "/projects/landlit-demo-poster.webp",
+      "aspectRatio": "16 / 9",
+      "caption": "Recorded web demo · 60 seconds · fictional Philippine data",
+      "hasAudio": false,
+      "captions": "/projects/landlit-demo.vtt",
+      "transcript": TRANSCRIPT_LANDLIT,
+      "disclosure": "Actual interface recording with sample records. Changes reset on reload; no money or message is sent. Silent, with English captions and a transcript. Backend implementation is described separately below.",
+      "credits": "/projects/landlit-demo-credits.txt"
+    },
+    "video": "/projects/landlit-demo-loop.mp4",
+    "videoCaption": "Actual fictional-data receipt workflow · silent excerpt",
     "image": "/projects/landlit-ph-demo.webp",
     "imageAlt": "Actual LandLIT Philippine fictional-data demo dashboard",
     "imageKind": "dashboard",

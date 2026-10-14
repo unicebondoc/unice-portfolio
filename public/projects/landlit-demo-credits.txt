@@ -1,0 +1,11 @@
+LandLIT — actual fictional-data web-demo recording
+
+Product and interface: Unice Bondoc / ONQST.
+Recorded on 14 October 2026 from https://landlit-preview.vercel.app/#demo
+Actual browser footage using seeded fictional sample records; no generated interface or real transactions.
+Fictional Philippine/PHP portfolio. Actions affect only in-memory sample data and reset on reload. No payment provider, bank transfer, email, collection or signature is involved. Agreement preview contains metadata only.
+
+Editing: ten source takes joined into a 60-second video. Original UI transitions retain their timing; final still reading holds are adjusted. Full 1280 × 672 viewport is preserved, with a 48-pixel explanatory ribbon. No crop, optical-flow interpolation or action speed-up. Silent; the source showcase has no soundtrack. English captions and text transcript explain the recorded actions.
+Orb preview: actual 16-second receipt-workflow excerpt, muted.
+
+This public showcase does not establish production authentication, database persistence, secure document upload or customer acceptance. Those are described separately with their own evidence in the project guide.
