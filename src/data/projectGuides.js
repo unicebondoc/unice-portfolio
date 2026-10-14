@@ -31,9 +31,10 @@ export const PROJECT_GUIDES = {
       { title: 'Camera without certainty claims', text: 'Optional MediaPipe gestures and card matching are separate from the ordinary reading. Synthetic recognition tests support regression checks; real printed-card performance still needs physical-camera testing.' },
     ],
     built: [
-      'I lead the reading flow, touch and camera interaction review, and release preparation.',
-      'I migrated the production billing API from Railway to AWS Lambda and API Gateway while preserving its public domain.',
-      'I review and test journal isolation, interrupted saves, billing recovery and the packaged web/native experience.',
+      { area: 'Frontend & native packaging', text: 'I built the React question, shuffle, three-card selection, reveal and interpretation flow, with touch/keyboard controls and journal navigation, and packaged it with Capacitor for iOS and retained Android builds.' },
+      { area: 'Billing backend', text: 'I developed the Python billing service on AWS Lambda and API Gateway and migrated it from Railway, preserving its domain. It integrates Stripe, RevenueCat, authenticated requests and duplicate-event/retry handling.' },
+      { area: 'Journal & account data', text: 'I implemented separate guest and account journals, Supabase synchronization, pending-save feedback, retry and export, with lifecycle guards against stale requests and cross-account reading exposure.' },
+      { area: 'Camera interaction', text: 'I integrated optional MediaPipe gestures and physical-card matching, with card/orientation confirmation, camera recovery and a manual 44-card picker. Touch remains the default.' },
     ],
     status: 'The web app is public. iOS review remains pending; native Android publication is paused. Physical-card camera performance, screen-reader journeys and completed Apple transactions remain separate testing work.',
   },

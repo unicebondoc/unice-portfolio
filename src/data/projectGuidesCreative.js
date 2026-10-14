@@ -1,6 +1,6 @@
 export const CREATIVE_GUIDES = {
   steeped: {
-    overview: 'Steeped is a quiet Unity tea-and-focus game set in Uji. I shape its product and story direction, review gameplay and presentation, and direct implementation fixes with build and save-state evidence.',
+    overview: 'Steeped is a quiet Unity tea-and-focus game set in Uji. My development work spans C# session logic, tea interactions, the room interface and persistent player progress.',
     demo: {
       kind: 'video',
       intro: 'This eight-second silent excerpt shows actual r13j tea gameplay. It is a small interaction sample; the focus session and wider story need their own playthrough.',
@@ -17,19 +17,19 @@ export const CREATIVE_GUIDES = {
       { title: 'Return to your progress', text: 'Saved session, cup and story state let the experience continue. The approved rebuild connects work, breaks, tea and story; deeper arcs remain in development.' },
     ],
     technical: [
-      { title: 'Unity and C#', text: 'The scene, interaction logic and saved state support the same experience. My review connects what the player sees with the behaviour recorded by the build.' },
+      { title: 'Unity and C#', text: 'Session, tea and guest state connect the room interface to the gameplay logic. Checkpoints preserve the progress needed to resume interrupted interactions.' },
       { title: 'Interrupted interactions', text: 'Recovery checks exercise partial tea preparation and story transitions. Existing saves are preserved while fixes are qualified on an exact local candidate.' },
       { title: 'Physical feedback', text: 'A spoon repair measured whole-tool clearance and powder landing after a simpler orientation check missed the visible problem.' },
     ],
     built: [
-      'I shape the tea ritual, visits, keepsakes and focus experience, and review implementation against that direction.',
-      'I direct gameplay and save-recovery fixes, preserving existing progress through local checks.',
-      'I review the local Mac and iPhone/iPad Simulator evidence, including a real half-hour focus session.',
+      { area: 'Unity & C# gameplay', text: 'I implemented focus-session timers, pause/resume, break transitions and guest-arrival logic, with persisted progress and an incense-timer interface.' },
+      { area: 'Tea interaction & feedback', text: 'I implemented pointer and assisted tea preparation, staged pouring and whisking, cup completion rules, and mesh-based spoon clearance with powder-landing feedback.' },
+      { area: 'Save & recovery', text: 'I implemented validated JSON checkpoints for partial cups and visits, atomic save replacement, backup recovery and protection against loading newer save versions.' },
     ],
     status: 'A tested local owner preview is available. Story, acting, listening and physical-device acceptance remain open. Store release is pending. This public gameplay excerpt is intentionally silent.',
   },
   'princess-of-alemio': {
-    overview: 'Princess of Alemio is my romantic-fantasy story, developed as a visual novel and a separate audio drama. I lead the writing and product direction, reviewing scene presentation, performances, delivery and implementation evidence.',
+    overview: 'Princess of Alemio is my romantic-fantasy story, developed as a visual novel and a separate audio drama. I write the story and build its Ren’Py reading experience, choice state and scene/audio delivery.',
     demo: {
       kind: 'image',
       intro: 'The main image is an actual visual-novel development scene. The separate 2-minute-58-second audio player presents the opening of the fixed Part One drama.',
@@ -51,9 +51,9 @@ export const CREATIVE_GUIDES = {
       { title: 'Distinct media delivery', text: 'The VN uses scene-aligned audio cuts. The fixed drama has its own complete chapter files, transcript and credits, with source preservation and package checks.' },
     ],
     built: [
-      'I write and direct the opening story, character presentation and investigation-order choice.',
-      'I review implementation of reading controls and save/load, with checks for both opening routes.',
-      'I produce and review the separate Part One audio edition, transcript, credits and delivery package.',
+      { area: 'Ren’Py narrative logic', text: 'I implemented the voiced opening, one investigation-order choice, two converging routes and evidence states that distinguish observed facts from a character’s account.' },
+      { area: 'Reading interface & saves', text: 'I built custom dialogue and choice screens, Back, History, Evidence, manual save/load, auto-read, skip-read, text-size and reduced-motion controls.' },
+      { area: 'Scene & audio pipeline', text: 'I prepared scene-aligned artwork and voiced opening units, generated route data and source-hash checks, and produced the separate audio chapters, transcript, credits and delivery package.' },
     ],
     status: 'The full visual novel is in development; the current proof is local. VN creative and physical-device acceptance remain open. Audio publication is recorded separately; sales and buyer playback are unverified.',
   },

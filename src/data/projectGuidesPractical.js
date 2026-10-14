@@ -21,9 +21,10 @@ export const PRACTICAL_GUIDES = {
       { title: "Safe retries", text: "Durable action references and server receipts help resolve a lost response without creating a second record. Conflicting changes recover the newer household state." },
     ],
     built: [
-      "I define and refine the joining, household-role, chore, shopping and money workflows.",
-      "I coordinate implementation and review calculations, conflicting saves, recovery and device-layout evidence.",
-      "I prepare the narrated demonstration, user guide and release materials around the verified product behaviour.",
+      { area: "Frontend", text: "I built the React and TypeScript chore, shopping and bill interfaces: My day, the house board, quick shopping capture, and forms that preserve unfinished input." },
+      { area: "Backend", text: "I implemented household joining, invitations and owner/admin/member permissions through Supabase Edge APIs and PostgreSQL, with membership and record-version checks on shared changes." },
+      { area: "Money & recurring work", text: "I implemented expense splits, repayments and scheduled-bill recording, including exact-cent allocation, duplicate-occurrence protection and review when a housemate leaves." },
+      { area: "Data & recovery", text: "I added durable save references and transactional server receipts, so an uncertain save can be checked, retried or cancelled without creating duplicate household records." },
     ],
     status: "The free web app is public; native iOS and Android public releases remain pending. Shared-web checks cover a two-account household. Further testing with households and physical devices remains in progress.",
   },
@@ -31,7 +32,7 @@ export const PRACTICAL_GUIDES = {
     overview: "LandLIT connects property records, contracts, rent, utilities and monthly reporting for small rental operators. Its workflow makes balances and unresolved decisions traceable to the records behind them.",
     demo: {
       kind: "image",
-      intro: "This is a still image of the Philippine fictional-data dashboard. The linked public demo lets visitors explore sample records; this image is not a recording of the full application.",
+      intro: "A screenshot of the Philippine fictional-data dashboard. Open the interactive demo below to explore sample records and try its receipt workflow. Changes reset on reload; no money or message is sent.",
       steps: [
         { title: "Read the snapshot", text: "Compare recorded receipts with the remaining balance. The sample dashboard keeps those figures separate from tenancies and items awaiting review." },
         { title: "Find the exception", text: "The next-decisions area highlights a partial receipt, an unconfirmed processing state and a held account. Each points to a different review need." },
@@ -50,10 +51,11 @@ export const PRACTICAL_GUIDES = {
       { title: "Recovery evidence", text: "Local verification includes persistence, authenticated access, encrypted inactive restore and document/export integrity. That evidence is kept separate from hosted activation and genuine operator use." },
     ],
     built: [
-      "I shape the connected contract, rent, utility, ledger and monthly-review workflows.",
-      "I coordinate implementation and review reconciliation, permissions, correction and recovery checks using fictional cases.",
-      "I direct the red architectural identity, readable dashboard and explanatory public demonstration.",
+      { area: "Frontend", text: "I built the Next.js, React and TypeScript workspace for properties, tenancies, contracts, utilities, the rent ledger and monthly review, with forms that explain pending decisions and preserve failed edits." },
+      { area: "Backend", text: "I implemented authenticated workspace APIs, email verification and account recovery. Membership, session assurance and revision checks protect stored records and changes." },
+      { area: "Financial data", text: "I implemented reviewed rent and utility charges, receipt allocation, credit and linked corrections, preserving original records and keeping confirmed cash separate from pending claims." },
+      { area: "Storage & recovery", text: "I implemented managed PostgreSQL persistence and encrypted recovery, plus original-document uploads and frozen monthly evidence. Cloud activation and final verification of the new document flow are in progress." },
     ],
-    status: "A fictional public showcase and a protected Philippine manual-beta deployment exist. Signup is closed; real customer intake and live rent collection remain pending. New document-storage and recovery work is locally verified and awaits its separate cloud activation.",
+    status: "A fictional public showcase and a protected Philippine manual-beta deployment exist. Signup is closed; real customer intake and live rent collection remain pending. Cloud document-storage and recovery verification is in progress.",
   },
 };

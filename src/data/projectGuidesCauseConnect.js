@@ -20,9 +20,9 @@ export const CAUSECONNECT_GUIDE = {
     { title: 'Rules enforced by the server', text: 'Authenticated creation assigns the owner and pending status. Photo access follows campaign visibility. Version checks prevent older edits or review decisions from silently overwriting newer changes.' },
   ],
   built: [
-    'React campaign forms, validation, My campaigns, review screens and shared API/session handling.',
-    'Node.js/Express campaign submission and supporting APIs for photos, owner changes, participation, enquiries and admin controls, building on team backend work.',
-    'MySQL persistence, backend/integration checks and AWS deployment support.',
+    { area: 'Frontend', text: 'I developed React campaign forms, photo upload feedback, My campaigns, editing and resubmission, participation history, enquiry inboxes and admin review screens, connected through shared API/session handling.' },
+    { area: 'Backend & data', text: 'I implemented supporting Node.js/Express APIs and MySQL persistence for images, owner changes, participation, enquiries and admin controls, with ownership checks, private photo access and saved-version conflicts, building on the team’s backend.' },
+    { area: 'Testing & deployment', text: 'I added frontend, backend and HTTP/MySQL integration coverage, deployed the application to AWS EC2, and verified the hosted photo submission, private review, approval and public-display journey.' },
   ],
-  status: 'As of 14 October 2026, the community submission, private review and public photo-display journey is deployed and browser-verified. Business posting still depends on business-profile APIs. Independent team testing, final manuals and the demonstration video remain open; later review fixes are local work awaiting release.',
+  status: 'As of 14 October 2026, the community submission, private review and public photo-display journey and subsequent hardening are deployed. Business posting still depends on business-profile APIs. Independent team testing, final manuals and the demonstration video remain open.',
 }

@@ -14,6 +14,8 @@ export default function ProjectGuide({ project, children }) {
   const workflowRef = useRef(null)
   const builtRef = useRef(null)
   const { guide } = project
+  const hasVideo = Boolean(project.demo?.src)
+  const previewLabel = hasVideo ? (project.id === 'steeped' ? 'Recorded gameplay' : 'Demo video') : project.audioPreview ? 'Scene & audio preview' : 'Interface preview'
   const jumpTo = ref => {
     ref.current?.focus({ preventScroll: true })
     ref.current?.scrollIntoView({ block: 'start', behavior: 'auto' })
@@ -21,22 +23,22 @@ export default function ProjectGuide({ project, children }) {
 
   return <div className="pf-project-guide">
     <nav className="pf-guide-nav" aria-label={`${project.title} guide sections`}>
-      <button type="button" onClick={() => jumpTo(demoRef)}>Demo &amp; preview <span aria-hidden="true">↓</span></button>
+      <button type="button" onClick={() => jumpTo(demoRef)}>{previewLabel} <span aria-hidden="true">↓</span></button>
       <button type="button" onClick={() => jumpTo(workflowRef)}>How it works <span aria-hidden="true">↓</span></button>
       <button type="button" onClick={() => jumpTo(builtRef)}>What I built <span aria-hidden="true">↓</span></button>
     </nav>
 
     <section className="pf-guide-section" aria-labelledby={`${project.id}-guide-demo`}>
-      <h3 id={`${project.id}-guide-demo`} ref={demoRef} tabIndex={-1}>Demo &amp; preview</h3>
+      <h3 id={`${project.id}-guide-demo`} ref={demoRef} tabIndex={-1}>{previewLabel}</h3>
       <p>{guide.demo.intro}</p>
       {children}
-      <h4 className="pf-guide-walkthrough-title">Follow the walkthrough</h4>
-      <GuideSteps steps={guide.demo.steps} />
+      {project.links.live && <a className="pf-guide-preview-link" href={project.links.live} target="_blank" rel="noopener noreferrer">{project.id === 'landlit' ? 'Open the fictional-data demo' : project.id === 'princess-of-alemio' ? 'Explore the editions at ONQST' : project.id === 'steeped' ? 'Explore the development site' : 'Try the web app'} <span aria-hidden="true">↗</span></a>}
+      {hasVideo && <><h4 className="pf-guide-walkthrough-title">What to notice</h4><GuideSteps steps={guide.demo.steps} /></>}
     </section>
 
     <section className="pf-guide-section" aria-labelledby={`${project.id}-guide-built`}>
       <h3 id={`${project.id}-guide-built`} ref={builtRef} tabIndex={-1}>What I built</h3>
-      <ul className="pf-guide-built">{guide.built.map(item => <li key={item}>{item}</li>)}</ul>
+      <dl className="pf-guide-built">{guide.built.map(item => <div key={item.area}><dt>{item.area}</dt><dd>{item.text}</dd></div>)}</dl>
     </section>
 
     <section className="pf-guide-section" aria-labelledby={`${project.id}-guide-workflow`}>

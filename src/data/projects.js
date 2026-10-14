@@ -101,7 +101,7 @@ export const PROJECTS = [
     },
     "caseStudy": {
       "challenge": "Help housemates coordinate work and money without confusing permissions or shared updates.",
-      "contribution": "I direct the product flows and AI-assisted implementation of invitations, member permissions, chores, shopping and shared bills.",
+      "contribution": "I built React/TypeScript chore, shopping and bill interfaces, Supabase Edge household APIs, PostgreSQL membership and save-receipt logic, and expense/repayment and recurrence rules.",
       "decision": "Household membership and money calculations need explicit rules; accessible feedback must explain a failed or conflicting update.",
       "evidence": "Regression coverage checks bill calculations, conflicting edits and keyboard-accessible interactions. The public web app is available to try.",
       "result": "Public web access is available. Native iOS and Android releases remain pending."
@@ -145,9 +145,9 @@ export const PROJECTS = [
     },
     "caseStudy": {
       "challenge": "Keep contracts, rent records, utility allocations and monthly exports connected rather than scattered across separate documents.",
-      "contribution": "I shape the workflows and AI-assisted implementation of a property-operations prototype, including linked records and reviewable exports.",
+      "contribution": "I built the Next.js/React/TypeScript property workspace, authenticated APIs, PostgreSQL financial records, utility allocation and correction logic, and document/export recovery features.",
       "decision": "A recorded receipt is not the same as a processed payment. Demo data, prepared actions and real customer operations stay clearly separated.",
-      "evidence": "Checks cover linked financial records, workspace permissions, persistence and encrypted recovery. The public showcase uses fictional data and does not transact; newer document-storage work remains local.",
+      "evidence": "Checks cover linked financial records, workspace permissions, persistence and encrypted recovery. The public showcase uses fictional data and does not transact; final cloud document-storage and recovery verification remains in progress.",
       "result": "A fictional public showcase and protected Philippine manual-beta deployment exist. Signup is closed; onboarding for real customers remains pending."
     },
     "image": "/projects/landlit-ph-demo.webp",
@@ -181,7 +181,7 @@ export const PROJECTS = [
     },
     "caseStudy": {
       "challenge": "Make a quiet reflection flow usable with or without a camera, and keep saved journals scoped to the right account.",
-      "contribution": "I direct AI-assisted product development, interaction review and release preparation. The production billing API migrated from Railway to AWS Lambda and API Gateway with the public domain preserved.",
+      "contribution": "I built the React/Capacitor reading interface, account-scoped Supabase journal and optional camera interactions. The production billing API migrated from Railway to AWS Lambda and API Gateway with the public domain preserved.",
       "decision": "Touch is the default, gestures are optional, and current readings use included reflection text. Camera recognition asks for confirmation rather than pretending certainty.",
       "evidence": "Account-scoped persistence and billing failure/recovery checks accompany the release. The web frontend now runs on private S3/CloudFront; billing remains on Lambda/API Gateway.",
       "result": "The web app is public. Native iOS review remains pending. Legacy RAG code is not the current ordinary reading flow."
@@ -213,7 +213,7 @@ export const PROJECTS = [
     },
     "caseStudy": {
       "challenge": "Keep focus sessions, tea interactions and story progress consistent when players stop, return or recover from an interrupted interaction.",
-      "contribution": "I direct AI-assisted development and review of gameplay, save-state recovery and bounded fixes, with existing saves preserved through the checks.",
+      "contribution": "I implemented Unity/C# focus-session and tea-interaction logic, cup/visit checkpoints, atomic JSON save replacement and backup recovery, preserving existing progress through the fixes.",
       "decision": "Qualify the exact build and its save behaviour before expanding release claims; scripted checks and creative acceptance answer different questions.",
       "evidence": "The tested local r13j owner preview has Mac and simulator checks covering sessions, recovery and story state. Physical-device and owner creative acceptance remain separate.",
       "result": "A tested local preview is available for owner review. Public game release and store acceptance remain pending."
@@ -240,6 +240,7 @@ export const PROJECTS = [
     "description": "One story world explored through an interactive visual novel and a separate audio drama.",
     "stack": [
       "Interactive narrative",
+      "Ren’Py",
       "AI-assisted production",
       "Media delivery"
     ],
@@ -252,7 +253,7 @@ export const PROJECTS = [
     },
     "caseStudy": {
       "challenge": "Translate a story into two different experiences while keeping their format, scope and availability clear.",
-      "contribution": "I direct the AI-assisted story and product work, reviewing narrative presentation and preparing distinct visual-novel and audio editions.",
+      "contribution": "I write the story and build the Ren’Py dialogue, choice, evidence, history and save/load interfaces, along with scene/audio preparation and the separate audio edition’s transcript, credits and delivery package.",
       "decision": "The visual novel is a development prototype. Part One audio is a separate released edition, with its own preview, content and download route.",
       "evidence": "The studio presents actual development imagery and an audio sample. The audio edition includes nine English chapters and an illustrated transcript/guide; it ends on a cliffhanger.",
       "result": "The visual novel remains in development. Part One audio is available on Etsy; Part Two is not included."
