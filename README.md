@@ -13,6 +13,7 @@ The journal contains actual project screenshots, personal contribution, decision
 - `src/data/forestNodes.js`: six scene projects and portrait root, derived from shared project facts.
 - `src/data/forestNavigation.js`: URL/deep-link resolution and guide-reference mapping.
 - `src/data/projects.js` and `lib/portfolioData.js`: shared cases, experience and bounded guide knowledge.
+- `src/data/projectGuides*.js` and `src/components/ui/ProjectGuide.jsx`: six public project explanations, demo walkthroughs, attributed contribution and workflow steps distilled from current product documentation. Local guide shortcuts retain the case URL and keyboard focus; optional technical details keep the first read concise.
 - `src/data/memories.js`: six connected career chapters with context, reflection and writing references inside the root’s journal.
 - `src/data/writing.js`: selected published article titles, dates, links and public-opening descriptions; shared with the guide.
 

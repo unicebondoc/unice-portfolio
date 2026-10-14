@@ -1,3 +1,5 @@
+import { PROJECT_GUIDES } from './projectGuides.js'
+
 const TRANSCRIPT_FLATSYNC = [
   "Always the one reminding the house?",
   "Make it a team thing with FlatSync.",
@@ -66,10 +68,10 @@ export const PROJECTS = [
     },
     "caseStudy": {
       "challenge": "Turn campaign data into clear homepage, detail and account-related journeys while coordinating with a team.",
-      "contribution": "I contributed React interfaces and Node.js/Express APIs for public-user campaign submission, including category retrieval, input validation, authenticated creation and MySQL persistence.",
+      "contribution": "I contributed React interfaces and Node.js/Express APIs for authenticated creation, photo access, owner changes, participation, enquiries and admin controls, with MySQL persistence and validation, building on the team's backend work.",
       "decision": "The server assigns campaign ownership and pending status; client input cannot override them.",
-      "evidence": "My merged contribution includes backend and integration checks for authenticated creation, server-owned fields, pending-campaign privacy and invalid input.",
-      "result": "Campaign-submission work is merged into the team repository. The preview shown here uses sample data. This is a team contribution, not sole ownership of the application."
+      "evidence": "Merged and deployed work includes backend/integration checks and a verified browser journey from community submission through private review to approved public photo display.",
+      "result": "Community workflows are merged into the team repository and deployed. The preview shown here uses sample data. This is a team contribution, not sole ownership of the application. Business posting still needs profile integration; final team testing, manuals and video remain open."
     },
     "image": "/projects/causeconnect-sample.webp",
     "imageAlt": "Actual CauseConnect hosted homepage with fictional campaign data",
@@ -132,7 +134,7 @@ export const PROJECTS = [
       "Next.js",
       "React",
       "TypeScript",
-      "Drizzle"
+      "PostgreSQL"
     ],
     "color": "#f29b83",
     "flagship": true,
@@ -145,8 +147,8 @@ export const PROJECTS = [
       "challenge": "Keep contracts, rent records, utility allocations and monthly exports connected rather than scattered across separate documents.",
       "contribution": "I shape the workflows and AI-assisted implementation of a property-operations prototype, including linked records and reviewable exports.",
       "decision": "A recorded receipt is not the same as a processed payment. Demo data, prepared actions and real customer operations stay clearly separated.",
-      "evidence": "Local checks cover persistence, controlled registration and encrypted restore. The public demonstration uses fictional data and does not transact.",
-      "result": "A working prototype with a public fictional-data demo. Deployment for real customers remains pending."
+      "evidence": "Checks cover linked financial records, workspace permissions, persistence and encrypted recovery. The public showcase uses fictional data and does not transact; newer document-storage work remains local.",
+      "result": "A fictional public showcase and protected Philippine manual-beta deployment exist. Signup is closed; onboarding for real customers remains pending."
     },
     "image": "/projects/landlit-ph-demo.webp",
     "imageAlt": "Actual LandLIT Philippine fictional-data demo dashboard",
@@ -366,4 +368,4 @@ export const PROJECTS = [
     "glow": "#f59e0b",
     "glowSoft": "#f59e0b33"
   }
-]
+].map(project => PROJECT_GUIDES[project.id] ? { ...project, guide: PROJECT_GUIDES[project.id] } : project)
