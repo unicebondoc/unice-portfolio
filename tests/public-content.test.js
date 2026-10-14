@@ -142,10 +142,14 @@ test('Legacy case links and browser navigation resolve inside the same forest', 
   assert.equal(MEMORIES.find(memory => memory.id === 'orb-root').isFuture, false)
 })
 
-test('Metadata and preview image align with professional positioning on every entry', () => {
+test('Entry metadata distinguishes the writing page and preserves professional identity', () => {
   for (const path of ['index.html', 'work/index.html', 'about/index.html', 'writing/index.html']) {
     const html = read(path)
-    assert.match(html, /Software Developer \| AI &amp; Automation/)
+    if (path === 'writing/index.html') {
+      assert.match(html, /<title>Unice Bondoc — Writing &amp; Stories<\/title>/)
+      assert.match(html, /rel="canonical" href="https:\/\/www\.unicebondoc\.com\/writing\/"/)
+      assert.match(html, /<h2>Selected writing<\/h2>/)
+    } else assert.match(html, /Software Developer \| AI &amp; Automation/)
     assert.match(html, /Sydney software developer/)
     assert.match(html, /og-image.jpg/)
     assert.doesNotMatch(html, /og-image.png/)
