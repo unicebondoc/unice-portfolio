@@ -123,6 +123,14 @@ html.pf-document, body.pf-document { width:100%; height:100%; min-width:0; overf
 .pf-case-actions>a:not(.pf-button) { display:inline-flex; align-items:center; min-height:44px; color:#e0eee7; font-size:1rem; text-decoration:none; }
 .pf-button { display:inline-flex; justify-content:center; align-items:center; min-height:44px; padding:9px 14px; border:1px solid #b5cfbb63; border-radius:2px; color:#e5efdf; background:linear-gradient(135deg,#304d394f,#1130375c); font-size:1rem; font-weight:600; text-decoration:none; }
 .pf-work-index { margin-top:22px; }
+.pf-work-group { margin-top:32px; }
+.pf-work-group>h3 { font:500 23px/1.4 'Cinzel',Georgia,serif; color:#f2f0e4; }
+.pf-editing-sample { padding:22px 0; border-bottom:1px solid #b8d3cb30; }
+.pf-editing-sample h3 { margin:10px 0; font:500 23px/1.4 'Cinzel',Georgia,serif; }
+.pf-editing-sample p { font-size:17px; line-height:1.75; }
+.pf-editing-sample .pf-button { cursor:pointer; font:500 16px/1.5 system-ui,sans-serif; margin:12px 12px 0 0; min-height:44px; }
+.pf-original-video { display:inline-flex; align-items:center; min-height:44px; margin-top:8px; font-size:16px; text-underline-offset:4px; }
+.pf-external-player iframe { display:block; width:100%; min-height:200px; aspect-ratio:16/9; border:0; background:#020a10; margin-top:16px; }
 .pf-work-entry { display:grid; grid-template-columns:28px minmax(0,1fr) 15px; align-items:start; gap:12px; padding:20px 0; color:#e6eee3; text-decoration:none; border-top:1px solid #b8d3cb22; }
 .pf-entry-number { padding-top:3px; color:var(--pf-memory-color); font:500 .875rem/1.5 'Cinzel',Georgia,serif; }
 .pf-work-entry strong { display:block; font:500 21px/1.3 'Cinzel',Georgia,serif; letter-spacing:-.02em; }

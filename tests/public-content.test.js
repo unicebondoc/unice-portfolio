@@ -149,8 +149,8 @@ test('Entry metadata distinguishes the writing page and preserves professional i
       assert.match(html, /<title>Unice Bondoc — Writing &amp; Stories<\/title>/)
       assert.match(html, /rel="canonical" href="https:\/\/www\.unicebondoc\.com\/writing\/"/)
       assert.match(html, /<h2>Selected writing<\/h2>/)
-    } else assert.match(html, /Software Developer \| AI &amp; Automation/)
-    assert.match(html, /Sydney software developer/)
+    } else assert.match(html, /Creative Developer &amp; Multimedia Creator/)
+    assert.match(html, /Sydney creative developer/)
     assert.match(html, /og-image.jpg/)
     assert.doesNotMatch(html, /og-image.png/)
     const fallback = html.match(/<noscript>([\s\S]*?)<\/noscript>/)[1]
@@ -176,7 +176,7 @@ test('Public copy omits private relationships, unsupported metrics and unselecte
 test('Public positioning leads professional contributions without career-level labels', () => {
   const surfaces = [JSON.stringify(PORTFOLIO_DATA.identity), JSON.stringify(MEMORIES), read('src/pages/ForestPortfolio.jsx'), ...cvPaths.map(read), ...['index.html','work/index.html','about/index.html','writing/index.html'].map(read)].join('\n')
   assert.doesNotMatch(surfaces, /\bgraduate\b|\bjunior\b|entry.level/i)
-  assert.match(PORTFOLIO_DATA.identity.headline, /Software Developer/)
+  assert.match(PORTFOLIO_DATA.identity.headline, /^Creative Developer.*Digital Products.*AI Workflows.*Founder of ONQST$/)
   assert.ok(PORTFOLIO_DATA.education.some(entry => entry.qualification === 'Master of Information and Communications Technology'))
   assert.ok(PORTFOLIO_DATA.experience[0].company.includes('ACS WIL Internship'))
 })
@@ -224,4 +224,18 @@ test('Full narrated demos retain approved captions, credits and edition boundari
   assert.match(audio.attribution, /Scott Buckley.*CC BY 4.0/)
   assert.match(read(`public${audio.credits}`), /Sword Clash 2/)
   assert.ok(audio.transcript.some(line => line.startsWith('Alicia:')))
+})
+
+
+test('Creative positioning keeps independent editing, concrete software and separate CV routes', () => {
+  const edit = project('video-editing')
+  assert.equal(edit.group, 'media')
+  assert.equal(edit.mediaSamples.length, 2)
+  assert.ok(edit.mediaSamples.every(sample => /^https:\/\/www\.youtube\.com\/watch\?v=/.test(sample.url)))
+  assert.match(edit.caseStudy.contribution, /personally edited/)
+  assert.match(edit.caseStudy.result, /Independent.*no paid-client/)
+  assert.doesNotMatch(edit.stack.join(' '), /Premiere|After Effects|expert|mastery/i)
+  assert.match(read('src/pages/ForestPortfolio.jsx'), /Unice_Bondoc_CV_Creative_Media.pdf/)
+  for (const extension of ['html', 'pdf']) assert.ok(existsSync(new URL(`../public/resume/Unice_Bondoc_CV_Creative_Media.${extension}`, import.meta.url)))
+  assert.match(JSON.stringify(PORTFOLIO_DATA.experience), /Node\.js\/Express APIs.*MySQL persistence/)
 })

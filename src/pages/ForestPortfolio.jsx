@@ -11,11 +11,13 @@ import ProjectDemo, { AudioEdition } from '../components/ui/ProjectDemo.jsx'
 import ProjectGuide from '../components/ui/ProjectGuide.jsx'
 import AnimatedTyche from '../components/ui/AnimatedTyche.jsx'
 import JourneyWorkMedia from '../components/ui/JourneyWorkMedia.jsx'
+import EditingSamples from '../components/ui/EditingSamples.jsx'
 import '../styles/forest-portfolio.css'
 
 const ForestScene = lazy(() => import('../components/scene/PortfolioForestScene.jsx'))
 const ChatBot = lazy(() => import('../components/ui/ChatBot.jsx'))
 const CV_MAIN = '/resume/Unice_Bondoc_Resume.pdf'
+const CV_CREATIVE = '/resume/Unice_Bondoc_CV_Creative_Media.pdf'
 const CV_SOFTWARE = '/resume/Unice_Bondoc_CV_Software_Development.pdf'
 const JOURNAL_NAMES = { work: 'The work', journey: 'The story at the roots', experience: 'Experience', about: 'A curious mind', writing: 'In my own words', cv: 'The CV', contact: 'Let’s make something useful' }
 const NAVIGATION = [['work', 'Work'], ['journey', 'My journey'], ['experience', 'Experience'], ['about', 'About'], ['writing', 'Writing']]
@@ -64,6 +66,7 @@ function LoopPreview({ src, poster, label, reducedMotion }) {
 
 function ProjectCase({ project, navigate, reducedMotion }) {
   const preview = <>
+    {project.mediaSamples && <EditingSamples samples={project.mediaSamples} />}
     {project.demo ? <ProjectDemo demo={project.demo} title={project.title} poster={project.image} /> : project.image && <figure className={`pf-case-image pf-case-image-${project.video ? 'video' : project.imageKind || 'wide'}`} >{project.video ? <LoopPreview src={project.video} poster={project.image} label={`${project.title} actual project recording`} reducedMotion={reducedMotion} /> : <a href={project.image} target="_blank" rel="noopener noreferrer" aria-label={`Open ${project.title} image`}><img src={project.image} alt={project.imageAlt} width="680" height="430" /></a>}<figcaption>{(project.video ? project.videoCaption : project.imageCaption) || 'Project image'}</figcaption></figure>}
     {project.secondaryImage && <figure className="pf-case-image"><img src={project.secondaryImage} alt="Princess of Alemio separate audio edition" width="680" height="430" /><figcaption>Audio is a separate edition from the visual novel</figcaption></figure>}
     {project.audioPreview && <AudioEdition audio={project.audioPreview} title={project.title} />}
@@ -82,8 +85,15 @@ function ProjectCase({ project, navigate, reducedMotion }) {
 }
 
 function WorkIndex({ navigate }) {
-  const selected = PROJECTS.filter(item => ['experience', 'featured', 'interactive'].includes(item.group))
-  return <div><p className="pf-journal-lede">Applications, connected workflows and stories you can step inside. Each case explains what I contributed and where the work stands.</p><div className="pf-work-index">{selected.map((project, index) => <a href={forestTarget({ kind: 'project', id: project.id })} onClick={event => { event.preventDefault(); navigate({ kind: 'project', id: project.id }) }} className="pf-work-entry" key={project.id} style={{ '--pf-memory-color': project.color }}><span className="pf-entry-number">{String(index + 1).padStart(2, '0')}</span><span><strong>{project.title}</strong><small>{project.subtitle}</small><p>{project.description}</p></span><span className="pf-entry-arrow" aria-hidden>↗</span></a>)}</div><p className="pf-eyebrow pf-support-heading">OTHER THREADS</p><div className="pf-other-work">{PROJECTS.filter(item => ['support', 'forest'].includes(item.group)).map(project => <a key={project.id} href={forestTarget({ kind: 'project', id: project.id })} onClick={event => { event.preventDefault(); navigate({ kind: 'project', id: project.id }) }}><strong>{project.id === 'core-memories' ? 'How this forest was built' : project.title}</strong><small>{project.subtitle}</small><span aria-hidden>↗</span></a>)}</div></div>
+  const groups = [
+    ['Product films & demonstrations', ['flatsync', 'landlit']],
+    ['Interactive worlds & stories', ['core-memories', 'steeped', 'princess-of-alemio']],
+    ['Software & team delivery', ['what-was-drawn', 'causeconnect']],
+  ]
+  return <div><p className="pf-journal-lede">I build products and create ways to understand them through film, motion and interaction. Explore a product demonstration, a story or game, and the interfaces and systems underneath.</p>{groups.map(([title, ids]) => <section className="pf-work-group" key={title}><h3>{title}</h3><div className="pf-work-index">{ids.map((id, index) => {
+    const project = PROJECTS.find(item => item.id === id)
+    return <a href={forestTarget({ kind: 'project', id })} onClick={event => { event.preventDefault(); navigate({ kind: 'project', id }) }} className="pf-work-entry" key={id} style={{ '--pf-memory-color': project.color }}><span className="pf-entry-number">{String(index + 1).padStart(2, '0')}</span><span><strong>{project.title}</strong><small>{project.subtitle}</small><p>{project.description}</p></span><span className="pf-entry-arrow" aria-hidden>↗</span></a>
+  })}</div></section>)}<p className="pf-eyebrow pf-support-heading">OTHER THREADS</p><div className="pf-other-work">{PROJECTS.filter(item => item.group === 'support').map(project => <a key={project.id} href={forestTarget({ kind: 'project', id: project.id })} onClick={event => { event.preventDefault(); navigate({ kind: 'project', id: project.id }) }}><strong>{project.title}</strong><small>{project.subtitle}</small><span aria-hidden>↗</span></a>)}</div></div>
 }
 
 function WritingCard({ writing, compact = false }) {
@@ -132,11 +142,11 @@ function Journey({ initialChapter, navigate }) {
 }
 
 function Experience({ navigate }) {
-  return <div><p className="pf-journal-lede">Team delivery, product direction and software work—with the role and contribution made clear.</p><div className="pf-experience">{PORTFOLIO_DATA.experience.slice(0, 3).map(role => <article key={role.company}><p className="pf-stage">{role.dates}{role.type === 'Internship' ? ' · Internship' : ''}</p><h3>{role.title}</h3><p className="pf-role-company">{role.company}</p><ul>{role.highlights.map(text => <li key={text}>{text}</li>)}</ul>{role.company.includes('ACS') && <button className="pf-inline-link" type="button" onClick={() => navigate({ kind: 'project', id: 'causeconnect' })}>See my CauseConnect contribution ↗</button>}</article>)}</div><details className="pf-earlier"><summary>Earlier experience · RCBC</summary><p>SME Account & Loan Operations Manager · September 2019–September 2022.</p><p>{PORTFOLIO_DATA.experience[3].highlights[0]}</p></details></div>
+  return <div><p className="pf-journal-lede">Making, implementation and team delivery, with the role and contribution made clear.</p><div className="pf-experience">{PORTFOLIO_DATA.experience.slice(0, 3).map(role => <article key={role.company}><p className="pf-stage">{role.dates}{role.type === 'Internship' ? ' · Internship' : ''}</p><h3>{role.title}</h3><p className="pf-role-company">{role.company}</p><ul>{role.highlights.map(text => <li key={text}>{text}</li>)}</ul>{role.company.includes('ACS') && <button className="pf-inline-link" type="button" onClick={() => navigate({ kind: 'project', id: 'causeconnect' })}>See my CauseConnect contribution ↗</button>}</article>)}</div><details className="pf-earlier"><summary>Earlier experience · RCBC</summary><p>SME Account & Loan Operations Manager · September 2019–September 2022.</p><p>{PORTFOLIO_DATA.experience[3].highlights[0]}</p></details></div>
 }
 
 function About({ navigate }) {
-  return <div><div className="pf-about-identity"><img src="/profile-unice-approved.webp" alt="Unice Bondoc" width="768" height="768" /><div><p className="pf-eyebrow">UNICE BONDOC · SYDNEY</p><h3>Software, with a sense of wonder.</h3><p>Software Developer · AI Automation, Apps & Games<br />Founder of ONQST</p></div></div><p className="pf-journal-lede">{PORTFOLIO_DATA.identity.summary}</p><p>I like making complex things feel clear, useful and a little unexpected. My background in communication helps me connect the experience people see with the systems underneath.</p><div className="pf-education">{PORTFOLIO_DATA.education.map(item => <article key={item.qualification}><h3>{item.qualification}</h3><p>{item.institution} · {item.dates || item.status}</p>{item.research && <p>{item.research}</p>}</article>)}</div><button type="button" className="pf-inline-link" onClick={() => navigate({ kind: 'project', id: 'core-memories' })}>How this forest was built ↗</button><ContactLinks /></div>
+  return <div><div className="pf-about-identity"><img src="/profile-unice-approved.webp" alt="Unice Bondoc" width="768" height="768" /><div><p className="pf-eyebrow">UNICE BONDOC · SYDNEY</p><h3>Stories, made tangible.</h3><p>Creative Developer &amp; Multimedia Creator<br />Founder of ONQST</p></div></div><p className="pf-journal-lede">{PORTFOLIO_DATA.identity.summary}</p><p>I like giving an idea a form someone can watch, hear or explore. Broadcasting gave me a foundation in story and audience; ICT lets me build the interaction and the systems underneath.</p><div className="pf-education">{PORTFOLIO_DATA.education.map(item => <article key={item.qualification}><h3>{item.qualification}</h3><p>{item.institution} · {item.dates || item.status}</p>{item.research && <p>{item.research}</p>}</article>)}</div><button type="button" className="pf-inline-link" onClick={() => navigate({ kind: 'project', id: 'core-memories' })}>How this forest was built ↗</button><ContactLinks /></div>
 }
 
 function Writing() {
@@ -144,7 +154,7 @@ function Writing() {
 }
 
 function CV() {
-  return <div><p className="pf-journal-lede">Two focused versions, each two pages. ACS team experience, ONQST and the UNIKRE Software Engineer internship lead the story.</p><div className="pf-cv-choices">{[[CV_MAIN, 'Automation & systems', 'Workflow, implementation and business systems roles'], [CV_SOFTWARE, 'Software development', 'Applications and interactive product roles']].map(([href, title, description]) => <article key={href}><p className="pf-eyebrow">PDF · TWO PAGES</p><h3>{title}</h3><p>{description}</p><div><a className="pf-button" href={href} target="_blank" rel="noopener noreferrer">Open CV ↗</a><a href={href} download>Download ↓</a></div></article>)}</div><p className="pf-cv-note">View or download directly. Your place in the forest stays here.</p><ContactLinks /></div>
+  return <div><p className="pf-journal-lede">Choose the version for the role. The combined CV brings digital products, video, motion and AI workflows together. Technical versions retain specific frontend, backend and team contributions.</p><div className="pf-cv-choices">{[[CV_CREATIVE, 'Creative development & multimedia', 'Digital products, video, motion and AI workflows'], [CV_SOFTWARE, 'Software development', 'Frontend, backend, applications and interactive products'], [CV_MAIN, 'Automation & systems', 'Workflow, implementation and business systems roles']].map(([href, title, description]) => <article key={href}><p className="pf-eyebrow">PDF · TWO PAGES</p><h3>{title}</h3><p>{description}</p><div><a className="pf-button" href={href} target="_blank" rel="noopener noreferrer">Open CV ↗</a><a href={href} download>Download ↓</a></div></article>)}</div><p className="pf-cv-note">View or download directly. Your place in the forest stays here.</p><ContactLinks /></div>
 }
 
 function Journal({ panel, navigate, onClose, reducedMotion }) {
@@ -157,7 +167,7 @@ function Journal({ panel, navigate, onClose, reducedMotion }) {
     const keydown = event => {
       if (event.key === 'Escape') { event.preventDefault(); onClose() }
       if (event.key !== 'Tab') return
-      const items = [...journalRef.current.querySelectorAll('button, a[href], summary, video, audio, [tabindex="0"]')].filter(element => !element.disabled && element.getClientRects().length)
+      const items = [...journalRef.current.querySelectorAll('button, a[href], summary, video, audio, iframe, [tabindex="0"]')].filter(element => !element.disabled && element.getClientRects().length)
       const first = items[0], last = items.at(-1)
       if (event.shiftKey && (document.activeElement === first || document.activeElement === headingRef.current)) { event.preventDefault(); last?.focus() }
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus() }
@@ -166,17 +176,17 @@ function Journal({ panel, navigate, onClose, reducedMotion }) {
     return () => window.removeEventListener('keydown', keydown)
   }, [onClose])
   useEffect(() => { scrollRef.current.scrollTop = 0; journalRef.current.scrollTop = 0; headingRef.current?.focus({ preventScroll: true }) }, [panel.kind, panel.id])
-  return <div className="pf-journal-layer"><button type="button" className="pf-journal-backdrop" aria-label="Close journal and return to the forest" tabIndex={-1} onClick={onClose} /><section ref={journalRef} className="pf-journal" role="dialog" aria-modal="true" aria-labelledby="pf-journal-title" style={{ '--pf-memory-color': project?.color || '#b9e6db' }}><header className="pf-journal-header"><div><p className="pf-eyebrow">THE FIELD JOURNAL <span aria-hidden>/</span> {project ? 'PROJECT MEMORY' : 'UNICE’S WORLD'}</p><h2 id="pf-journal-title" ref={headingRef} tabIndex={-1}>{title}</h2></div><button type="button" className="pf-journal-close" aria-label="Close journal" onClick={onClose}><span aria-hidden>×</span></button></header><nav className="pf-journal-tabs" aria-label="Journal sections">{[['work', 'Work'], ['journey', 'Journey'], ['experience', 'Experience'], ['writing', 'Writing'], ['cv', 'CV']].map(([kind, label]) => <button key={kind} type="button" aria-current={panel.kind === kind || (kind === 'work' && panel.kind === 'project') ? 'page' : undefined} onClick={() => navigate({ kind })}>{label}</button>)}</nav><div className="pf-journal-scroll" ref={scrollRef}>{project ? <ProjectCase project={project} navigate={navigate} reducedMotion={reducedMotion} /> : panel.kind === 'work' ? <WorkIndex navigate={navigate} /> : panel.kind === 'journey' ? <Journey initialChapter={panel.chapter} navigate={navigate} /> : panel.kind === 'experience' ? <Experience navigate={navigate} /> : panel.kind === 'about' ? <About navigate={navigate} /> : panel.kind === 'writing' ? <Writing /> : panel.kind === 'cv' ? <CV /> : <><p className="pf-journal-lede">Software development, AI automation and systems implementation · Sydney.</p><ContactLinks /></>}</div><footer className="pf-journal-foot"><span aria-hidden>✧</span><span>The forest stays with you.</span><button type="button" onClick={onClose}>Return to the world ↙</button></footer></section></div>
+  return <div className="pf-journal-layer"><button type="button" className="pf-journal-backdrop" aria-label="Close journal and return to the forest" tabIndex={-1} onClick={onClose} /><section ref={journalRef} className="pf-journal" role="dialog" aria-modal="true" aria-labelledby="pf-journal-title" style={{ '--pf-memory-color': project?.color || '#b9e6db' }}><header className="pf-journal-header"><div><p className="pf-eyebrow">THE FIELD JOURNAL <span aria-hidden>/</span> {project ? 'PROJECT MEMORY' : 'UNICE’S WORLD'}</p><h2 id="pf-journal-title" ref={headingRef} tabIndex={-1}>{title}</h2></div><button type="button" className="pf-journal-close" aria-label="Close journal" onClick={onClose}><span aria-hidden>×</span></button></header><nav className="pf-journal-tabs" aria-label="Journal sections">{[['work', 'Work'], ['journey', 'Journey'], ['experience', 'Experience'], ['writing', 'Writing'], ['cv', 'CV']].map(([kind, label]) => <button key={kind} type="button" aria-current={panel.kind === kind || (kind === 'work' && panel.kind === 'project') ? 'page' : undefined} onClick={() => navigate({ kind })}>{label}</button>)}</nav><div className="pf-journal-scroll" ref={scrollRef}>{project ? <ProjectCase project={project} navigate={navigate} reducedMotion={reducedMotion} /> : panel.kind === 'work' ? <WorkIndex navigate={navigate} /> : panel.kind === 'journey' ? <Journey initialChapter={panel.chapter} navigate={navigate} /> : panel.kind === 'experience' ? <Experience navigate={navigate} /> : panel.kind === 'about' ? <About navigate={navigate} /> : panel.kind === 'writing' ? <Writing /> : panel.kind === 'cv' ? <CV /> : <><p className="pf-journal-lede">Digital products, video, motion and AI workflows · Sydney.</p><ContactLinks /></>}</div><footer className="pf-journal-foot"><span aria-hidden>✧</span><span>The forest stays with you.</span><button type="button" onClick={onClose}>Return to the world ↙</button></footer></section></div>
 }
 
 export default function ForestPortfolio() {
   const [panel, setPanel] = useState(() => resolveForestLocation(window.location))
   useEffect(() => {
     const isWriting = panel?.kind === 'writing'
-    const title = isWriting ? 'Unice Bondoc — Writing & Stories' : 'Unice Bondoc — Software Developer | AI & Automation'
+    const title = isWriting ? 'Unice Bondoc — Writing & Stories' : 'Unice Bondoc — Creative Developer & Multimedia Creator'
     const description = isWriting
-      ? 'Personal essays, product stories and technical notes by Unice Bondoc, a Sydney software developer and founder of ONQST. Read the stories behind the work.'
-      : 'Sydney software developer and founder of ONQST, building applications, workflows and interactive products. Explore the work, writing and journey.'
+      ? 'Personal essays, product stories and technical notes by Unice Bondoc, a Sydney creative developer, multimedia creator and founder of ONQST. Read the stories behind the work.'
+      : 'Sydney creative developer and multimedia creator building digital products, video, motion and AI workflows. Explore working interfaces, APIs, interactive stories and role-focused CVs.'
     const canonical = `https://www.unicebondoc.com${window.location.pathname}`
     document.title = title
     document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonical)
@@ -263,7 +273,7 @@ export default function ForestPortfolio() {
       <div className="pf-ambient-shade" aria-hidden />
       <a className="pf-skip" href={forestTarget({ kind: 'work' })} onClick={event => { event.preventDefault(); navigate({ kind: 'work' }) }}>Go straight to work and CV</a>
       <header className="pf-header">
-        <a className="pf-brand" href="/#world" onClick={event => { event.preventDefault(); navigate(null) }} aria-label="Unice Bondoc — the world"><span className="pf-brand-mark" aria-hidden>U</span><span><strong>Unice Bondoc</strong><small>SOFTWARE · SYSTEMS · STORIES</small></span></a>
+        <a className="pf-brand" href="/#world" onClick={event => { event.preventDefault(); navigate(null) }} aria-label="Unice Bondoc — the world"><span className="pf-brand-mark" aria-hidden>U</span><span><strong>Unice Bondoc</strong><small>VIDEO · MOTION · INTERACTIVE MEDIA</small></span></a>
         <div className="pf-header-tools">
           <nav className="pf-desktop-nav" aria-label="Portfolio navigation">
             <a href="/#world" aria-current={!panel ? 'page' : undefined} onClick={event => { event.preventDefault(); navigate(null) }}>World</a>
@@ -280,7 +290,7 @@ export default function ForestPortfolio() {
           {menuOpen && <nav id="pf-mobile-menu" className="pf-mobile-menu" aria-label="Mobile portfolio navigation"><p className="pf-menu-heading">Explore the world</p>{NAVIGATION.map(([kind, label]) => <a key={kind} href={forestTarget({ kind })} aria-current={panel?.kind === kind ? 'page' : undefined} onClick={event => { event.preventDefault(); worldRef.current?.querySelector('.pf-menu-toggle')?.focus(); navigate({ kind }) }}><span>{label}</span><span aria-hidden>↗</span></a>)}<div className="pf-menu-links"><a href="/#cv" onClick={event => { event.preventDefault(); worldRef.current?.querySelector('.pf-menu-toggle')?.focus(); navigate({ kind: 'cv' }) }}>CV ↗</a><a href="/#contact" onClick={event => { event.preventDefault(); worldRef.current?.querySelector('.pf-menu-toggle')?.focus(); navigate({ kind: 'contact' }) }}>Contact ↗</a></div><MotionPreference reducedMotion={reducedMotion} prefersReducedMotion={prefersReducedMotion} onToggle={() => setMotionPaused(value => !value)} descriptionId="pf-menu-motion-description" /></nav>}
         </div>
       </header>
-      <main className="pf-introduction" aria-label="Unice Bondoc interactive portfolio"><p className="pf-eyebrow">SYDNEY · FOUNDER OF ONQST</p><h1>Follow a spark.<br /><em>Find a world.</em></h1><p className="pf-identity-line">Software Developer<br /><span>AI Automation, Apps & Games</span></p></main>
+      <main className="pf-introduction" aria-label="Unice Bondoc interactive portfolio"><p className="pf-eyebrow">SYDNEY · FOUNDER OF ONQST</p><h1>Follow a spark.<br /><em>Find a world.</em></h1><p className="pf-identity-line">Creative Developer &amp; Multimedia Creator<br /><span>Digital Products · Video &amp; Motion · AI Workflows</span></p></main>
       <footer className="pf-world-footer"><div className="pf-world-hint" role="status"><span className="pf-small-compass" aria-hidden>✧</span><span>{graphicsError ? 'Choose a memory, or go straight to the journal.' : ready ? 'Choose a glowing memory. The forest will follow.' : 'The forest is waking. Your journal is ready.'}<small>{seen.length ? `${seen.length} of 6 project memories explored this visit` : 'Click or Tab to explore · CV and work always within reach'}</small></span></div><div className="pf-footer-actions"><a className="pf-mobile-shortcut" href="/#work" onClick={event => { event.preventDefault(); navigate({ kind: 'work' }) }}>Work</a><a className="pf-mobile-shortcut" href="/#cv" onClick={event => { event.preventDefault(); navigate({ kind: 'cv' }) }}>CV</a><a href="/#contact" onClick={event => { event.preventDefault(); navigate({ kind: 'contact' }) }}>Contact ↗</a><div className="pf-guide-slot"><button type="button" className="pf-tyche" aria-label={chatOpen ? 'Close chat with Tyche' : 'Ask Tyche about Unice’s work'} aria-expanded={chatOpen} onClick={() => { setGuideOpened(true); setActivePanel(chatOpen ? null : { type: 'chat' }) }}><span>{chatOpen ? 'Close chat' : 'Ask Tyche'}</span><AnimatedTyche reducedMotion={reducedMotion} /></button></div></div></footer>
       {guideOpened && <Suspense fallback={null}><ChatBot nativeCursor /></Suspense>}
     </div>

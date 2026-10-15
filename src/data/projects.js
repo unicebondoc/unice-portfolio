@@ -1,4 +1,5 @@
 import { PROJECT_GUIDES } from './projectGuides.js'
+import { EDITING_SAMPLES } from './editingSamples.js'
 
 const TRANSCRIPT_FLATSYNC = [
   "Always the one reminding the house?",
@@ -55,6 +56,26 @@ const TRANSCRIPT_ALEMIO = [
 
 // Shared public facts for the hiring page, forest and AI guide.
 export const PROJECTS = [
+  {
+    id: 'video-editing',
+    title: 'Unicey & Kretchy · Video Editing',
+    subtitle: 'Personally edited published videos · Independent channel work',
+    description: 'Short video stories shaped through editing, alongside my broadcasting and interactive-media practice.',
+    stack: ['Video editing', 'CapCut'],
+    color: '#f2c997',
+    flagship: false,
+    group: 'media',
+    links: { live: 'https://www.youtube.com/@uniceyandkretchy', github: null },
+    linkLabel: 'Visit the channel',
+    mediaSamples: EDITING_SAMPLES,
+    caseStudy: {
+      challenge: 'Turn an outing into a short, coherent video with a point of view and an enjoyable sequence.',
+      contribution: 'I personally edited these Unicey & Kretchy videos in CapCut. These original channel edits are distinct from the AI-assisted studio demos elsewhere in this portfolio.',
+      decision: 'Give the viewer a clear subject and a sense of progression. The original published videos let you assess the editing directly.',
+      evidence: 'Two selected public videos are linked here, alongside the original channel. My Bachelor of Communication in Broadcasting provides the educational foundation for this work.',
+      result: 'Independent published editing samples. They are personal portfolio work, with no paid-client or studio-employment claim.',
+    },
+  },
   {
     "id": "causeconnect",
     "title": "CauseConnect",

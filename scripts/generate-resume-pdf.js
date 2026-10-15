@@ -6,7 +6,7 @@ import puppeteer from 'puppeteer'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const root = path.resolve(__dirname, '..')
-const resumes = ['Unice_Bondoc_Resume', 'Unice_Bondoc_CV_Software_Development']
+const resumes = ['Unice_Bondoc_Resume', 'Unice_Bondoc_CV_Software_Development', 'Unice_Bondoc_CV_Creative_Media']
 
 const browserCandidates = [
   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',

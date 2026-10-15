@@ -8,21 +8,22 @@
 <style>
 @page { size: A4; margin: 0; }
 * { box-sizing: border-box; }
-body { margin: 0; color: #202d35; background: #fff; font-family: Arial, Helvetica, sans-serif; font-size: 10pt; line-height: 13.5pt; }
+body { margin: 0; color: #202d35; background: #fff; font-family: Arial, Helvetica, sans-serif; font-size: 11pt; line-height: 15pt; }
 .page { width: 210mm; height: 297mm; padding: 36pt 42pt 48pt; position: relative; }
 .page + .page { break-before: page; }
-h1, .continued { font-size: 23pt; line-height: 27pt; color: #183a47; margin: 0 0 4pt; font-weight: 700; }
+h1 { font-size: 23pt; line-height: 27pt; color: #183a47; margin: 0 0 4pt; font-weight: 700; }
 .headline { font-weight: 700; font-size: 11pt; line-height: 14pt; color: #183a47; margin: 0 0 5pt; }
-.contact { color: #52656e; font-size: 9pt; line-height: 12pt; margin: 0 0 2pt; }
-h2 { color: #183a47; font-size: 10.5pt; line-height: 14pt; text-transform: uppercase; margin: 12pt 0 6pt; break-after: avoid; }
-h3 { color: #202d35; font-size: 10.5pt; line-height: 14pt; margin: 7pt 0 2pt; break-after: avoid; }
+.contact { color: #52656e; font-size: 10pt; line-height: 13pt; margin: 0 0 2pt; }
+h2 { color: #183a47; font-size: 11.5pt; line-height: 15.5pt; text-transform: uppercase; margin: 12pt 0 6pt; break-after: avoid; }
+h3 { color: #202d35; font-size: 11pt; line-height: 15pt; margin: 7pt 0 2pt; break-after: avoid; }
 p { margin: 0 0 5pt; }
-.meta { color: #52656e; font-size: 9pt; line-height: 12pt; margin: 0 0 4pt; break-after: avoid; }
+.meta { color: #52656e; font-size: 10pt; line-height: 13pt; margin: 0 0 4pt; break-after: avoid; }
 ul { margin: 0; padding-left: 10pt; list-style-type: "- "; }
 li { margin: 0 0 4pt; }
 a { color: #183a47; text-decoration: none; }
 .entry { break-inside: avoid; }
-footer { position: absolute; bottom: 23pt; left: 42pt; right: 42pt; border-top: .5pt solid #bacbd0; padding-top: 6pt; color: #52656e; font-size: 8pt; line-height: 10pt; display: flex; justify-content: space-between; }
+footer { position: absolute; bottom: 23pt; left: 42pt; right: 42pt; border-top: .5pt solid #bacbd0; padding-top: 6pt; color: #52656e; font-size: 9pt; line-height: 11.5pt; display: flex; justify-content: space-between; }
+.page-one-footer { justify-content: flex-end; }
 @media screen { body { background: #e9eef0; } .page { background: white; margin: 20px auto; box-shadow: 0 3px 20px #183a4720; } }
 </style>
 </head>
@@ -33,77 +34,72 @@ footer { position: absolute; bottom: 23pt; left: 42pt; right: 42pt; border-top: 
 <p class="contact">Sydney, Australia | <a href="mailto:uniceabondoc@gmail.com">uniceabondoc@gmail.com</a></p>
 <p class="contact"><a href="https://unicebondoc.com">unicebondoc.com</a> | <a href="https://linkedin.com/in/unicebondoc">linkedin.com/in/unicebondoc</a> | <a href="https://github.com/unicebondoc">github.com/unicebondoc</a></p>
 <h2>Profile</h2>
-<p>Software developer and founder of ONQST, delivering AI-assisted applications, automation and interactive products. I connect product requirements with usable workflows, interfaces, testing and release documentation, alongside software delivery in a ten-person ACS WIL team. My work includes household collaboration, reflection tools, property operations and Mac-hosted automation, with clear distinctions between tested features and public releases.</p>
-<h2>Relevant strengths</h2>
-<ul>
-<li><strong>Business and delivery:</strong> stakeholder coordination, operational documentation, product requirements, workflow improvement and user-focused testing.</li>
-<li><strong>AI and automation:</strong> ChatGPT/Codex, Claude, Hermes, API-connected workflows and human approval steps for consequential actions.</li>
-<li><strong>Project technologies:</strong> Python, JavaScript, React, TypeScript, SQL, Supabase, Git and AWS. Used in AI-assisted project delivery; examples below.</li>
-</ul>
+<p>Software developer and founder of ONQST with a Master of ICT, building applications, connected workflows and Mac-hosted automation. I implement React/TypeScript interfaces, Node.js/Express and Python APIs, SQL data rules and recovery paths. Experience includes team software delivery through ACS WIL and practical business workflows for household collaboration, billing and property operations.</p>
 <h2>Relevant experience</h2>
 <article class="entry" data-project="developer-programmer-acs-wil-internship-causeconnect"><h3>Developer / Programmer - ACS WIL Internship (CauseConnect)</h3>
 <p class="meta">July 2026 - Present | Internship team of 10</p>
 <ul>
-<li>Contribute campaign homepage, detail and account-related interface work to a team application for discovering social-awareness campaigns.</li>
-<li>Prepare regression checks, setup guidance and demonstration documentation; coordinate with teammates responsible for backend and authentication services.</li>
-<li>Test frontend and local integration behaviour while documenting that the hosted demonstration uses sample data and cloud API integration remains in progress.</li>
+<li>Implemented React campaign interfaces and Node.js/Express APIs for category retrieval and authenticated public-user campaign submission, backed by MySQL.</li>
+<li>Added input validation, server-owned creator/pending status and backend/integration checks for ownership and pending-campaign privacy.</li>
+<li>Prepared regression coverage, API/setup guidance and demo documentation in a ten-person team; contributed to review and EC2 deployment checks.</li>
 </ul>
 </article>
 <article class="entry" data-project="founder-product-engineer-onqst"><h3>Founder &amp; Builder - ONQST</h3>
 <p class="meta">Mar 2026 - Present | Independent product studio | <a href="https://onqst.com">onqst.com</a></p>
 <ul>
-<li>Direct product scope, user journeys and release preparation for web applications and interactive experiences, using AI-assisted development tools.</li>
-<li>Translate everyday needs into features such as household invitations, permissions, shared bills, reflection journals and account recovery.</li>
-<li>Coordinate implementation, review test results and prepare release documentation, distinguishing prototypes, tested features and public releases.</li>
+<li>Built web applications with React/TypeScript, Next.js and SQL-backed APIs, turning product requirements into interfaces, data rules and tested features.</li>
+<li>Implemented permissions, financial-record workflows and recovery paths across FlatSync and LandLIT; documented failure cases, release stages and deployment handoffs.</li>
+<li>Delivered What Was Drawn's Python billing API on AWS Lambda/API Gateway and private S3/CloudFront web hosting, preserving the existing domain and integrations.</li>
 </ul>
 </article>
 <article class="entry" data-project="software-engineer-unikre-trading"><h3>Software Engineer (Internship) - UNIKRE Trading</h3>
 <p class="meta">Nov 2024 - Jan 2025 | Western Sydney University capstone-linked internship</p>
 <ul>
-<li>Compared AI-generated and human-written storefront content using Python-based analysis in a Shopify commerce setting.</li>
+<li>Used Python to compare AI-generated and human-written storefront content in a Shopify commerce capstone-linked internship.</li>
+</ul>
+</article>
+<h2>Technical skills and working methods</h2>
+<ul>
+<li><strong>Workflow implementation:</strong> Hermes, API-connected tasks and schedules, documented recovery and human approval boundaries.</li>
+<li><strong>Interfaces, APIs and data:</strong> React, TypeScript, JavaScript, Python, Node.js/Express, SQL, PostgreSQL, MySQL and Supabase.</li>
+<li><strong>Delivery and quality:</strong> Git, Vitest, Playwright, AWS Lambda/API Gateway, S3/CloudFront, CloudFormation/SAM and technical documentation.</li>
+<li><strong>Working method:</strong> AI-assisted implementation using ChatGPT/Codex and Claude, with source review, automated checks and explicit release stages.</li>
+</ul>
+</div><footer class="page-one-footer"><span>Page 1 of 2</span></footer></section>
+<section class="page"><div class="page-content">
+<h2>Selected projects</h2>
+<article class="entry" data-project="ninja-clan-hermes-personal-automation"><h3>Ninja Clan / Hermes - Personal Automation</h3>
+<p class="meta">Personal project | Mac-hosted system</p>
+<ul>
+<li><strong>Automation:</strong> Configured API-connected workflows across TickTick, Google Calendar, Telegram and curated Obsidian project knowledge.</li>
+<li><strong>Reliability:</strong> Moved the working environment from Linux/VPS to Mac; documented schedules, recovery, action boundaries and approval steps for consequential actions.</li>
+</ul>
+</article>
+<article class="entry" data-project="what-was-drawn-reflection-web-app"><h3>What Was Drawn - Reflection Web App</h3>
+<p class="meta">Public web app; iOS review pending | <a href="https://whatwasdrawn.com">whatwasdrawn.com</a></p>
+<ul>
+<li><strong>Frontend:</strong> Built React/Capacitor card-reading interfaces, optional MediaPipe interactions and account-scoped journal screens.</li>
+<li><strong>Backend &amp; cloud:</strong> Implemented Python billing APIs on AWS Lambda/API Gateway and Supabase journal persistence; migrated web hosting to private S3/CloudFront with failure/recovery checks.</li>
+</ul>
+</article>
+<article class="entry" data-project="flatsync-shared-household-app"><h3>FlatSync - Shared-Household App</h3>
+<p class="meta">Public web app; native releases pending | <a href="https://flatsync.onqst.com">flatsync.onqst.com</a></p>
+<ul>
+<li><strong>Frontend:</strong> Built React/TypeScript chore, shopping and bill interfaces, with household joining and invitation flows.</li>
+<li><strong>Backend &amp; data:</strong> Implemented Supabase APIs/PostgreSQL permissions, exact-cent expense splits, repayments, recurring bills and transactional save recovery.</li>
+</ul>
+</article>
+<article class="entry" data-project="landlit-property-operations-prototype"><h3>LandLIT - Property Operations Prototype</h3>
+<p class="meta">Prototype; fictional public demo; customer intake pending | <a href="https://landlit-preview.vercel.app/#demo">landlit-preview.vercel.app</a></p>
+<ul>
+<li><strong>Frontend:</strong> Built the Next.js/React/TypeScript workspace for properties, tenancies, contracts, rent, utilities and monthly review.</li>
+<li><strong>Backend &amp; data:</strong> Implemented authenticated, revision-checked APIs and PostgreSQL receipt allocation, credit, linked corrections and encrypted recovery.</li>
 </ul>
 </article>
 <h2>Education</h2>
 <p><strong>Master of Information and Communications Technology</strong> - Western Sydney University | 2023 - 2025</p>
 <p><strong>Professional Year (ICT), ACS Accredited</strong> - Performance Education | In progress</p>
 <p><strong>Bachelor of Communication (Broadcasting)</strong> - Bicol University, Philippines | 2012 - 2016</p>
-</div><footer><span>13 October 2026</span><span>Unice Bondoc | 1 / 2</span></footer></section>
-<section class="page"><div class="page-content">
-<div class="continued">UNICE BONDOC</div>
-<p class="headline">Project evidence and supporting experience</p>
-<h2>Selected projects</h2>
-<article class="entry" data-project="ninja-clan-hermes-personal-automation"><h3>Ninja Clan / Hermes - Personal Automation</h3>
-<p class="meta">Personal project | Mac-hosted system</p>
-<ul>
-<li>Configured workflows connecting TickTick tasks, Google Calendar, Telegram and curated Obsidian project knowledge.</li>
-<li>Defined where actions, schedules and durable notes belong, with human approval before consequential external actions.</li>
-<li>Moved the working environment from earlier Linux/VPS infrastructure to a Mac, documenting operating boundaries and continuity for AI-assisted work.</li>
-</ul>
-</article>
-<article class="entry" data-project="what-was-drawn-reflection-web-app"><h3>What Was Drawn - Reflection Web App</h3>
-<p class="meta">Public web app | <a href="https://whatwasdrawn.com">whatwasdrawn.com</a></p>
-<ul>
-<li>Delivered an AI-assisted product build with touch-based card draws, included reflection text, optional gestures and an account-scoped journal.</li>
-<li>Coordinated the production billing API migration to AWS Lambda/API Gateway and the web hosting move to private S3/CloudFront, with release checks and the public domain preserved.</li>
-<li>Technologies: React, Capacitor, Supabase, MediaPipe, Python and AWS. Native iOS release remains pending.</li>
-</ul>
-</article>
-<article class="entry" data-project="flatsync-shared-household-app"><h3>FlatSync - Shared-Household App</h3>
-<p class="meta">Public web app | <a href="https://flatsync.onqst.com">flatsync.onqst.com</a></p>
-<ul>
-<li>Developed a shared-home experience using AI-assisted tools, covering invitations, member permissions, chores, shopping and shared bills.</li>
-<li>Prepared regression coverage for bill calculations, conflicting edits and accessible interactions. Web access is available; native releases remain pending.</li>
-<li>Technologies: React, TypeScript, Capacitor, Supabase and PostgreSQL.</li>
-</ul>
-</article>
-<article class="entry" data-project="landlit-property-operations-prototype"><h3>LandLIT - Property Operations Prototype</h3>
-<p class="meta">Working prototype and public fictional-data demo | <a href="https://landlit-preview.vercel.app">landlit-preview.vercel.app</a></p>
-<ul>
-<li>Built an AI-assisted property-operations prototype connecting contracts, rent records, utilities and monthly exports.</li>
-<li>Verified local persistence, controlled registration and encrypted restore. The public demo uses fictional data; deployment for real customers remains pending.</li>
-<li>Technologies: Next.js, React, TypeScript and Drizzle.</li>
-</ul>
-</article>
 <h2>Earlier operations experience</h2>
 <article class="entry" data-project="sme-account-loan-operations-manager-rcbc"><h3>SME Account &amp; Loan Operations Manager - RCBC</h3>
 <p class="meta">Sep 2019 - Sep 2022 | Philippines</p>
@@ -111,6 +107,6 @@ footer { position: absolute; bottom: 23pt; left: 42pt; right: 42pt; border-top: 
 <li>Coordinated small-business account and loan operations across relationship managers, compliance teams, documentation and external stakeholders.</li>
 </ul>
 </article>
-</div><footer><span>13 October 2026</span><span>Unice Bondoc | 2 / 2</span></footer></section>
+</div><footer><span>Unice Bondoc</span><span>Page 2 of 2</span></footer></section>
 </body>
 </html>
