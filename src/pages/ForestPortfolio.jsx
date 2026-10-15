@@ -64,6 +64,25 @@ function LoopPreview({ src, poster, label, reducedMotion }) {
   return <video ref={videoRef} src={src} poster={poster} muted loop playsInline controls preload="none" aria-label={label} />
 }
 
+function TycheImplementation() {
+  const steps = [
+    ['Visitor question', 'A question about my work, skills or story.'],
+    ['React chat', 'The interface sends the conversation to /api/chat.'],
+    ['Server endpoint', 'The endpoint combines recent messages with curated portfolio information.'],
+    ['Context + language model', 'The model receives project facts, contribution boundaries and response instructions.'],
+    ['Reply + project references', 'The response returns readable text and memory IDs used to highlight relevant forest memories.'],
+  ]
+  return <section className="pf-tyche-implementation" aria-labelledby="core-memories-tyche">
+    <h3 id="core-memories-tyche">Tyche, the portfolio guide</h3>
+    <p>I built Tyche’s React chat, server endpoint and curated portfolio context. Replies carry project-reference metadata used to highlight relevant memories in the forest; each memory opens its project case or journey chapter.</p>
+    <figure className="pf-implementation-map">
+      <figcaption>How a question moves through Tyche</figcaption>
+      <ol>{steps.map(([title, description], index) => <li key={title}><span className="pf-flow-number" aria-hidden="true">{index + 1}</span><div><strong>{title}</strong><p>{description}</p></div></li>)}</ol>
+    </figure>
+    <p className="pf-implementation-note">Curated project facts and contribution boundaries guide the replies. The diagram describes the implemented request and response flow.</p>
+  </section>
+}
+
 function ProjectCase({ project, navigate, reducedMotion }) {
   const preview = <>
     {project.mediaSamples && <EditingSamples samples={project.mediaSamples} />}
@@ -75,7 +94,9 @@ function ProjectCase({ project, navigate, reducedMotion }) {
     <p className="pf-stage"><span aria-hidden>◈</span>{project.subtitle}</p>
     <p className="pf-case-purpose">{project.guide?.overview || project.description}</p>
     {project.guide ? <ProjectGuide key={project.id} project={project}>{preview}</ProjectGuide> : <>
+    {project.id === 'core-memories' && <p className="pf-media-role"><strong>My role</strong> React/Three.js experience, navigation and media integration; Tyche’s chat interface, backend endpoint and portfolio context.</p>}
     {preview}
+    {project.id === 'core-memories' && <TycheImplementation />}
     <div className="pf-contribution"><p className="pf-eyebrow">MY CONTRIBUTION</p><p>{project.caseStudy.contribution}</p></div>
     <dl className="pf-case-facts"><div><dt>The problem</dt><dd>{project.caseStudy.challenge}</dd></div><div><dt>A decision that mattered</dt><dd>{project.caseStudy.decision}</dd></div><div><dt>Evidence</dt><dd>{project.caseStudy.evidence}</dd></div><div><dt>Where it stands</dt><dd>{project.caseStudy.result}</dd></div></dl>
     </>}
@@ -90,7 +111,8 @@ function WorkIndex({ navigate }) {
     ['Interactive worlds & stories', ['core-memories', 'steeped', 'princess-of-alemio']],
     ['Software & team delivery', ['what-was-drawn', 'causeconnect']],
   ]
-  return <div><p className="pf-journal-lede">I build the interfaces and systems people use, and the video, sound and interaction that bring an idea to life. Open a project to see the work, what I built and its current stage.</p>{groups.map(([title, ids]) => <section className="pf-work-group" key={title}><h3>{title}</h3><div className="pf-work-index">{ids.map((id, index) => {
+  const startingPoints = [['Software', 'FlatSync', 'flatsync'], ['Story & audio', 'Princess of Alemio', 'princess-of-alemio'], ['AI integration', 'Core Memories / Tyche', 'core-memories']]
+  return <div><p className="pf-journal-lede">I build the interfaces and systems people use, and the video, sound and interaction that bring an idea to life. Open a project to see the work, what I built and its current stage.</p><nav className="pf-work-start" aria-label="Start with selected work"><p className="pf-eyebrow">START HERE</p><div>{startingPoints.map(([area, label, id]) => <a key={id} href={forestTarget({ kind: 'project', id })} onClick={event => { event.preventDefault(); navigate({ kind: 'project', id }) }}><small>{area}</small><strong>{label} <span aria-hidden="true">↗</span></strong></a>)}</div></nav>{groups.map(([title, ids]) => <section className="pf-work-group" key={title}><h3>{title}</h3><div className="pf-work-index">{ids.map((id, index) => {
     const project = PROJECTS.find(item => item.id === id)
     return <a href={forestTarget({ kind: 'project', id })} onClick={event => { event.preventDefault(); navigate({ kind: 'project', id }) }} className="pf-work-entry" key={id} style={{ '--pf-memory-color': project.color }}><span className="pf-entry-number">{String(index + 1).padStart(2, '0')}</span><span><strong>{project.title}</strong><small>{project.subtitle}</small><p>{project.description}</p></span><span className="pf-entry-arrow" aria-hidden>↗</span></a>
   })}</div></section>)}<p className="pf-eyebrow pf-support-heading">OTHER THREADS</p><div className="pf-other-work">{PROJECTS.filter(item => item.group === 'support').map(project => <a key={project.id} href={forestTarget({ kind: 'project', id: project.id })} onClick={event => { event.preventDefault(); navigate({ kind: 'project', id: project.id }) }}><strong>{project.title}</strong><small>{project.subtitle}</small><span aria-hidden>↗</span></a>)}</div></div>
@@ -269,7 +291,6 @@ export default function ForestPortfolio() {
   return <div className={`pf-portfolio ${panel ? 'pf-journal-open' : ''} ${ready ? 'pf-world-ready' : ''} ${reducedMotion ? 'pf-motion-paused' : ''}`} data-graphics-error={graphicsError || undefined}>
     <div className="pf-world-layer" aria-hidden={panel ? true : undefined} inert={panel ? true : undefined} ref={worldRef}>
       <div className="pf-world-backdrop" aria-hidden />
-      <div className="pf-canvas-layer"><Suspense fallback={null}><ForestScene nodes={FOREST_NODES} journalOpen={Boolean(panel)} selectedId={selectedId} pulseId={pulseId} onSelect={selectNode} reducedMotion={reducedMotion} onReady={onReady} onError={onError} /></Suspense></div>
       <div className="pf-ambient-shade" aria-hidden />
       <a className="pf-skip" href={forestTarget({ kind: 'work' })} onClick={event => { event.preventDefault(); navigate({ kind: 'work' }) }}>Go straight to work and CV</a>
       <header className="pf-header">
@@ -291,6 +312,7 @@ export default function ForestPortfolio() {
         </div>
       </header>
       <main className="pf-introduction" aria-label="Unice Bondoc interactive portfolio"><p className="pf-eyebrow">SYDNEY · FOUNDER OF ONQST</p><h1>Follow a spark.<br /><em>Find a world.</em></h1><p className="pf-identity-line">Software Developer &amp; Multimedia Creator<br /><span>Interactive Products · AI Workflows · Video &amp; Motion</span></p></main>
+      <div className="pf-canvas-layer"><Suspense fallback={null}><ForestScene nodes={FOREST_NODES} journalOpen={Boolean(panel)} selectedId={selectedId} pulseId={pulseId} onSelect={selectNode} reducedMotion={reducedMotion} onReady={onReady} onError={onError} /></Suspense></div>
       <footer className="pf-world-footer"><div className="pf-world-hint" role="status"><span className="pf-small-compass" aria-hidden>✧</span><span>{graphicsError ? 'Choose a memory, or go straight to the journal.' : ready ? 'Choose a glowing memory. The forest will follow.' : 'The forest is waking. Your journal is ready.'}<small>{seen.length ? `${seen.length} of 6 project memories explored this visit` : 'Click or Tab to explore · CV and work always within reach'}</small></span></div><div className="pf-footer-actions"><a className="pf-mobile-shortcut" href="/#work" onClick={event => { event.preventDefault(); navigate({ kind: 'work' }) }}>Work</a><a className="pf-mobile-shortcut" href="/#cv" onClick={event => { event.preventDefault(); navigate({ kind: 'cv' }) }}>CV</a><a href="/#contact" onClick={event => { event.preventDefault(); navigate({ kind: 'contact' }) }}>Contact ↗</a><div className="pf-guide-slot"><button type="button" className="pf-tyche" aria-label={chatOpen ? 'Close chat with Tyche' : 'Ask Tyche about Unice’s work'} aria-expanded={chatOpen} onClick={() => { setGuideOpened(true); setActivePanel(chatOpen ? null : { type: 'chat' }) }}><span>{chatOpen ? 'Close chat' : 'Ask Tyche'}</span><AnimatedTyche reducedMotion={reducedMotion} /></button></div></div></footer>
       {guideOpened && <Suspense fallback={null}><ChatBot nativeCursor /></Suspense>}
     </div>

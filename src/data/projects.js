@@ -102,8 +102,8 @@ export const PROJECTS = [
       "challenge": "Turn campaign data into clear homepage, detail and account-related journeys while coordinating with a team.",
       "contribution": "I contributed React interfaces and Node.js/Express APIs for authenticated creation, photo access, owner changes, participation, enquiries and admin controls, with MySQL persistence and validation, building on the team's backend work.",
       "decision": "The server assigns campaign ownership and pending status; client input cannot override them.",
-      "evidence": "Merged and deployed work includes backend/integration checks and a verified browser journey from community submission through private review to approved public photo display.",
-      "result": "Community workflows are merged into the team repository and deployed. The preview shown here uses sample data. This is a team contribution, not sole ownership of the application. Business posting still needs profile integration; final team testing, manuals and video remain open."
+      "evidence": "Community and business-profile workflows are merged and deployed, with backend/integration and hosted-browser checks covering profile setup, photo submissions, private review, approval, enquiries and owner inboxes.",
+      "result": "Community and business-profile workflows are merged into the team repository and deployed. The preview shown here uses sample data. This is a team contribution, not sole ownership of the application. Independent team testing, final manuals, video and acceptance remain open."
     },
     "image": "/projects/causeconnect-sample.webp",
     "imageAlt": "Actual CauseConnect hosted homepage with fictional campaign data",
@@ -179,8 +179,8 @@ export const PROJECTS = [
       "challenge": "Keep contracts, rent records, utility allocations and monthly exports connected rather than scattered across separate documents.",
       "contribution": "I built the Next.js/React/TypeScript property workspace, authenticated APIs, PostgreSQL financial records, utility allocation and correction logic, and document/export recovery features.",
       "decision": "A recorded receipt is not the same as a processed payment. Demo data, prepared actions and real customer operations stay clearly separated.",
-      "evidence": "Checks cover linked financial records, workspace permissions, persistence and encrypted recovery. The public showcase uses fictional data and does not transact; final cloud document-storage and recovery verification remains in progress.",
-      "result": "A fictional public showcase and protected Philippine manual-beta deployment exist. Signup is closed; onboarding for real customers remains pending."
+      "evidence": "Recorded checks cover linked financial records, workspace permissions, cloud document storage, safe retries, exact downloads and encrypted off-machine recovery for tested cases and backup sets. The public showcase uses fictional data and does not transact.",
+      "result": "A fictional public showcase and separately deployed restricted Philippine pilot exist. Signup is closed; broader onboarding for real customers remains pending. Financial reconciliation and operational acceptance remain separate."
     },
     "demo": {
       "src": "/projects/landlit-demo.mp4",

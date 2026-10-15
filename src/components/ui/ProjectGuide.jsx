@@ -1,5 +1,13 @@
 import { useRef } from 'react'
 
+const MEDIA_ROLES = {
+  flatsync: 'React/TypeScript interfaces, Supabase APIs and household data; narrated demo production.',
+  landlit: 'Next.js workspace, authenticated APIs and financial records; recording, editing and captions for this demo.',
+  causeconnect: 'React interfaces and Node.js/Express APIs with MySQL; a contribution within the ACS WIL team.',
+  steeped: 'Unity/C# tea interactions, focus sessions, room interfaces and saved progress.',
+  'princess-of-alemio': 'Original story, Ren’Py interfaces and narrative logic; scene preparation and separate audio-edition production.',
+}
+
 function GuideSteps({ steps, className = '' }) {
   return <ol className={`pf-guide-steps ${className}`}>
     {steps.map((step, index) => <li key={step.title}>
@@ -10,7 +18,6 @@ function GuideSteps({ steps, className = '' }) {
 }
 
 export default function ProjectGuide({ project, children }) {
-  const demoRef = useRef(null)
   const workflowRef = useRef(null)
   const builtRef = useRef(null)
   const { guide } = project
@@ -22,19 +29,19 @@ export default function ProjectGuide({ project, children }) {
   }
 
   return <div className="pf-project-guide">
-    <nav className="pf-guide-nav" aria-label={`${project.title} guide sections`}>
-      <button type="button" onClick={() => jumpTo(demoRef)}>{previewLabel} <span aria-hidden="true">↓</span></button>
-      <button type="button" onClick={() => jumpTo(workflowRef)}>How it works <span aria-hidden="true">↓</span></button>
-      <button type="button" onClick={() => jumpTo(builtRef)}>What I built <span aria-hidden="true">↓</span></button>
-    </nav>
-
     <section className="pf-guide-section" aria-labelledby={`${project.id}-guide-demo`}>
-      <h3 id={`${project.id}-guide-demo`} ref={demoRef} tabIndex={-1}>{previewLabel}</h3>
-      <p>{guide.demo.intro}</p>
+      <h3 id={`${project.id}-guide-demo`}>{previewLabel}</h3>
+      {MEDIA_ROLES[project.id] && <p className="pf-media-role"><strong>My role</strong> {MEDIA_ROLES[project.id]}</p>}
       {children}
+      <p>{guide.demo.intro}</p>
       {project.links.live && <a className="pf-guide-preview-link" href={project.links.live} target="_blank" rel="noopener noreferrer">{project.id === 'landlit' ? 'Open the fictional-data demo' : project.id === 'princess-of-alemio' ? 'Explore the editions at ONQST' : project.id === 'steeped' ? 'Explore the development site' : 'Try the web app'} <span aria-hidden="true">↗</span></a>}
       {hasVideo && <><h4 className="pf-guide-walkthrough-title">What to notice</h4><GuideSteps steps={guide.demo.steps} /></>}
     </section>
+
+    <nav className="pf-guide-nav" aria-label={`${project.title} guide sections`}>
+      <button type="button" onClick={() => jumpTo(builtRef)}>What I built <span aria-hidden="true">↓</span></button>
+      <button type="button" onClick={() => jumpTo(workflowRef)}>How it works <span aria-hidden="true">↓</span></button>
+    </nav>
 
     <section className="pf-guide-section" aria-labelledby={`${project.id}-guide-built`}>
       <h3 id={`${project.id}-guide-built`} ref={builtRef} tabIndex={-1}>What I built</h3>

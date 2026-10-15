@@ -48,14 +48,14 @@ export const PRACTICAL_GUIDES = {
     technical: [
       { title: "Connected application", text: "Next.js, React and TypeScript support the application. Server-side workspace membership governs records, documents and exports; the public showcase uses separate fictional sample data." },
       { title: "Traceable financial state", text: "Transactional revisions, linked adjustments and separate allocation records preserve original charges and receipts. A payment claim or processing state cannot by itself confirm cash received." },
-      { title: "Recovery evidence", text: "Local verification includes persistence, authenticated access, encrypted inactive restore and document/export integrity. That evidence is kept separate from hosted activation and genuine operator use." },
+      { title: "Recovery evidence", text: "Recorded checks cover cloud document uploads, safe retries, exact downloads and encrypted off-machine recovery, including monthly evidence reconstruction for tested backup sets. These checks remain separate from broader financial reconciliation and operator acceptance." },
     ],
     built: [
       { area: "Frontend", text: "I built the Next.js, React and TypeScript workspace for properties, tenancies, contracts, utilities, the rent ledger and monthly review, with forms that explain pending decisions and preserve failed edits." },
       { area: "Backend", text: "I implemented authenticated workspace APIs, email verification and account recovery. Membership, session assurance and revision checks protect stored records and changes." },
       { area: "Financial data", text: "I implemented reviewed rent and utility charges, receipt allocation, credit and linked corrections, preserving original records and keeping confirmed cash separate from pending claims." },
-      { area: "Storage & recovery", text: "I implemented managed PostgreSQL persistence and encrypted recovery, plus original-document uploads and frozen monthly evidence. Cloud activation and final verification of the new document flow are in progress." },
+      { area: "Storage & recovery", text: "I implemented managed PostgreSQL persistence, original-document cloud uploads, frozen monthly evidence and encrypted recovery. Safe retries, exact downloads and off-machine recovery passed recorded checks for tested cases and backup sets." },
     ],
-    status: "A fictional public showcase and a protected Philippine manual-beta deployment exist. Signup is closed; real customer intake and live rent collection remain pending. Cloud document-storage and recovery verification is in progress.",
+    status: "The public showcase uses fictional data, alongside a separately deployed restricted Philippine pilot with signup closed. Cloud document storage and encrypted off-machine recovery have passed recorded checks for tested cases and backup sets. Broader onboarding, financial reconciliation and operational acceptance remain separate.",
   },
 };

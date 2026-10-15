@@ -82,7 +82,7 @@ function nodeAccessibleLabel(node) {
 
 function NativeFallback({ nodes, selectedId, onSelect }) {
   return (
-    <div className="pf-scene-fallback" role="group" aria-label="Portfolio memories" style={{ position: 'absolute', inset: 0, overflow: 'auto', padding: '210px 24px 110px', background: `linear-gradient(180deg, #03101f55, #03101fc9), url(${BACKGROUND}) center / cover`, display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', alignContent: 'center', gap: 14 }}>
+    <div className="pf-scene-fallback" role="group" aria-label="Portfolio memories">
       {nodes.map((node) => <button key={node.id} type="button" className="pf-node pf-node-fallback" aria-label={nodeAccessibleLabel(node)} aria-pressed={selectedId === node.id} onClick={() => onSelect?.(node.id)} style={{ '--node-color': node.color, minHeight: 150, padding: '12px 8px', border: `1px solid ${node.color || '#7eddf2'}80`, color: '#eef6ee', background: '#041321e6', fontFamily: 'Raleway, sans-serif', cursor: 'pointer', whiteSpace: 'normal' }}><img src={node.image} alt="" width="80" height="80" style={{ display: 'block', width: 80, height: 80, margin: '0 auto 8px', objectFit: 'contain', borderRadius: node.kind === 'journey' ? '50%' : 0 }} /><strong className="pf-node-label">{node.title}</strong><small className="pf-node-kind" style={{ display: 'block', marginTop: 5, color: '#bcd0d4', fontSize: '0.875rem' }}>{node.label || (node.kind === 'journey' ? 'My journey' : 'View project')}</small></button>)}
     </div>
   )
@@ -311,7 +311,7 @@ export default function PortfolioForestScene({ nodes = [], selectedId, pulseId =
     }
   }, [reportFailure])
   return (
-    <div className="pf-forest-scene" style={{ position: 'absolute', inset: 0, overflow: 'hidden', background: `url(${BACKGROUND}) center / cover` }}>
+    <div className="pf-forest-scene" style={{ background: `url(${BACKGROUND}) center / cover` }}>
       {failed ? fallback : <SceneBoundary onError={reportFailure} fallback={fallback}>
         <Canvas
           camera={{ position: [0, 0, CAMERA_Z], fov: CAMERA_FOV, near: 0.1, far: 60 }}

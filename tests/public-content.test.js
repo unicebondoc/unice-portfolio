@@ -176,7 +176,7 @@ test('Public copy omits private relationships, unsupported metrics and unselecte
 test('Public positioning leads professional contributions without career-level labels', () => {
   const surfaces = [JSON.stringify(PORTFOLIO_DATA.identity), JSON.stringify(MEMORIES), read('src/pages/ForestPortfolio.jsx'), ...cvPaths.map(read), ...['index.html','work/index.html','about/index.html','writing/index.html'].map(read)].join('\n')
   assert.doesNotMatch(surfaces, /\bgraduate\b|\bjunior\b|entry.level/i)
-  assert.match(PORTFOLIO_DATA.identity.headline, /^Software Developer & Multimedia Creator.*Interactive Products.*AI Workflows.*Founder of ONQST$/)
+  assert.equal(PORTFOLIO_DATA.identity.headline, 'Software Developer & Multimedia Creator | AI Powered Digital Products | Founder of ONQST')
   assert.ok(PORTFOLIO_DATA.education.some(entry => entry.qualification === 'Master of Information and Communications Technology'))
   assert.ok(PORTFOLIO_DATA.experience[0].company.includes('ACS WIL Internship'))
 })

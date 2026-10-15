@@ -5,6 +5,8 @@ html.pf-document, body.pf-document { width:100%; height:100%; min-width:0; overf
 .pf-world-layer { z-index:1; }
 .pf-world-backdrop { background:linear-gradient(180deg,rgba(2,14,22,.25),rgba(1,9,15,.18)),url('/background-optimized.jpg') center/cover; }
 .pf-canvas-layer { z-index:1; }
+.pf-forest-scene { position:absolute; inset:0; overflow:hidden; }
+.pf-scene-fallback { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
 .pf-header { position:absolute; z-index:30; inset:0 0 auto; min-height:85px; display:flex; align-items:center; justify-content:space-between; gap:20px; padding:18px 28px; isolation:isolate; }
 .pf-header::before { content:''; position:absolute; z-index:-1; inset:0 0 -38px; pointer-events:none; background:linear-gradient(180deg,rgba(2,12,19,.86),rgba(2,12,19,.48) 60%,transparent); }
 .pf-header-tools { position:relative; display:flex; align-items:center; gap:12px; }
@@ -78,8 +80,11 @@ html.pf-document, body.pf-document { width:100%; height:100%; min-width:0; overf
 .pf-stage { display:flex; align-items:center; gap:8px; color:#e2ece8!important; font-size:.875rem!important; font-weight:500; line-height:1.8; }
 .pf-case-purpose { margin-top:13px; }
 .pf-project-guide { max-width:65ch; }
+.pf-project-guide { margin-top:20px; }
 .pf-case .pf-stage { font-size:1rem!important; }
 .pf-project-guide .pf-case-image figcaption { font-size:1rem; }
+.pf-journal-scroll .pf-media-role { margin-top:12px; color:#d5e6df; font-size:1rem; line-height:1.65; }
+.pf-media-role strong { color:#f2f1e7; margin-right:5px; }
 .pf-guide-nav { display:flex; flex-wrap:wrap; gap:4px 22px; margin:18px 0 25px; padding-bottom:8px; border-bottom:1px solid #b3d0ce2b; }
 .pf-guide-nav button { min-height:44px; padding:8px 0; border:0; background:none; color:#e2eee8; font:500 1rem/1.5 system-ui,sans-serif; cursor:pointer; text-align:left; }
 .pf-guide-nav button:hover { color:#fff; text-decoration:underline; text-underline-offset:6px; }
@@ -123,6 +128,25 @@ html.pf-document, body.pf-document { width:100%; height:100%; min-width:0; overf
 .pf-case-actions>a:not(.pf-button) { display:inline-flex; align-items:center; min-height:44px; color:#e0eee7; font-size:1rem; text-decoration:none; }
 .pf-button { display:inline-flex; justify-content:center; align-items:center; min-height:44px; padding:9px 14px; border:1px solid #b5cfbb63; border-radius:2px; color:#e5efdf; background:linear-gradient(135deg,#304d394f,#1130375c); font-size:1rem; font-weight:600; text-decoration:none; }
 .pf-work-index { margin-top:22px; }
+.pf-work-start { margin-top:22px; padding-block:16px; border-block:1px solid #b8d3cb30; }
+.pf-work-start>div { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:8px; }
+.pf-work-start a { display:flex; flex-direction:column; justify-content:center; gap:5px; min-height:60px; padding:6px 0; color:#edf3e9; text-decoration:none; }
+.pf-work-start small { color:#c4dcd5; font-size:.875rem; line-height:1.5; }
+.pf-work-start strong { font:600 1rem/1.5 system-ui,sans-serif; }
+.pf-work-start a:hover strong { text-decoration:underline; text-underline-offset:5px; }
+.pf-work-start a span { color:#a6d9cf; }
+.pf-tyche-implementation { margin:30px 0; }
+.pf-tyche-implementation>h3 { margin-bottom:12px; }
+.pf-implementation-map { margin:20px 0 14px; padding:18px; border:1px solid #90c7ce4a; border-radius:8px; background:#08212b; }
+.pf-implementation-map figcaption { color:#d9eee8; font:600 1rem/1.5 system-ui,sans-serif; }
+.pf-implementation-map ol { list-style:none; padding:0; margin:18px 0 0; }
+.pf-implementation-map li { position:relative; display:grid; grid-template-columns:28px minmax(0,1fr); gap:13px; padding-bottom:20px; }
+.pf-implementation-map li:last-child { padding-bottom:0; }
+.pf-implementation-map li:not(:last-child)::after { content:''; position:absolute; top:31px; bottom:4px; left:13px; width:1px; background:#98d4cc66; }
+.pf-flow-number { display:grid; place-items:center; width:28px; height:28px; border:1px solid #98d4cc80; border-radius:50%; color:#d0eee4; font:600 .875rem/1 system-ui,sans-serif; }
+.pf-implementation-map strong { color:#f1f5e9; font:600 1rem/1.5 system-ui,sans-serif; }
+.pf-journal-scroll .pf-implementation-map p { margin-top:4px; color:#d2e4df; font-size:1rem; line-height:1.6; }
+.pf-journal-scroll .pf-implementation-note { color:#c6ded8; font-size:1rem; line-height:1.65; }
 .pf-work-group { margin-top:32px; }
 .pf-work-group>h3 { font:500 23px/1.4 'Cinzel',Georgia,serif; color:#f2f0e4; }
 .pf-editing-sample { padding:22px 0; border-bottom:1px solid #b8d3cb30; }
@@ -321,6 +345,10 @@ html.pf-document, body.pf-document { width:100%; height:100%; min-width:0; overf
  .pf-about-identity { align-items:flex-start; }
  .pf-about-identity>div { flex-basis:100%; }
  .pf-cv-choices article { padding:20px 15px; }
+ .pf-work-start>div { grid-template-columns:1fr; gap:0; }
+ .pf-work-start a { min-height:60px; padding-block:10px; }
+ .pf-work-start a+a { border-top:1px solid #b8d3cb20; }
+ .pf-implementation-map { padding:14px; }
 }
 /* A scrollable world avoids compressing the orb labels on short phones and
    zoomed narrow windows. The normal journal remains the direct reading view. */
@@ -340,6 +368,29 @@ html.pf-document, body.pf-document { width:100%; height:100%; min-width:0; overf
 }
 @media(max-width:360px) {
  .pf-chapter-list { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+/* A graphics failure gets a complete document flow instead of a fixed canvas
+   overlay. Header, introduction, cards and footer each reserve their own space. */
+.pf-portfolio[data-graphics-error] .pf-world-layer { display:flex; flex-direction:column; overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain; }
+.pf-portfolio[data-graphics-error] .pf-header { position:relative; inset:auto; flex-shrink:0; }
+.pf-portfolio[data-graphics-error] .pf-introduction { position:relative; inset:auto; width:min(1100px,100%); max-width:none; margin:0 auto; padding:22px 24px 26px; flex-shrink:0; }
+.pf-portfolio[data-graphics-error] .pf-introduction::before { display:none; }
+.pf-portfolio[data-graphics-error] .pf-canvas-layer { position:relative; inset:auto; width:min(1100px,100%); min-height:0; margin:0 auto; padding:0 24px; flex-shrink:0; }
+.pf-portfolio[data-graphics-error] .pf-forest-scene { position:relative; inset:auto; overflow:visible; background:none!important; }
+.pf-portfolio[data-graphics-error] .pf-world-footer { position:relative; inset:auto; width:min(1100px,100%); margin:24px auto 0; padding:16px 24px 24px; flex-shrink:0; flex-wrap:wrap; }
+.pf-portfolio[data-graphics-error] .pf-world-hint { display:flex; }
+.pf-portfolio[data-graphics-error] .pf-footer-actions::before { inset:-16px 0; }
+.pf-portfolio[data-graphics-error] .pf-world-backdrop,.pf-portfolio[data-graphics-error] .pf-ambient-shade { position:fixed; min-height:0; }
+.pf-portfolio[data-graphics-error] .pf-world-backdrop { background:linear-gradient(180deg,#020e1699,#01090fba),url('/background-optimized.jpg') center/cover; }
+.pf-portfolio[data-graphics-error] .pf-ambient-shade { display:none; }
+.pf-portfolio[data-graphics-error] .pf-node-fallback { min-width:0; }
+@media(min-width:750px) {
+ .pf-portfolio[data-graphics-error] .pf-scene-fallback { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+@media(max-width:400px) {
+ .pf-portfolio[data-graphics-error] .pf-introduction { padding-inline:16px; }
+ .pf-portfolio[data-graphics-error] .pf-canvas-layer { padding-inline:16px; }
+ .pf-portfolio[data-graphics-error] .pf-world-footer { padding-inline:16px; }
 }
 @media(prefers-reduced-motion:reduce) {
  .pf-portfolio *,.pf-portfolio *::before,.pf-portfolio *::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; }

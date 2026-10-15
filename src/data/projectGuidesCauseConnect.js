@@ -13,7 +13,7 @@ export const CAUSECONNECT_GUIDE = {
     { title: 'Browse approved campaigns', text: 'Visitors can search and open approved campaigns. Pending and rejected submissions stay private.' },
     { title: 'Submit and manage', text: 'A signed-in member submits validated details and an optional photo. My campaigns shows saved status, feedback and edit/resubmission options.' },
     { title: 'Review before publication', text: 'An admin approves or rejects a submission. Approval exposes the campaign and photo publicly; editing approved content returns it to pending.' },
-    { title: 'Keep participation clear', text: 'Members can join, withdraw and see their history. Business enquiries use a private owner inbox; the complete business posting journey still awaits profile integration.' },
+    { title: 'Keep participation clear', text: 'Members can join, withdraw and see their history. Business members complete their profile before posting, and campaign enquiries use a private owner inbox.' },
   ],
   technical: [
     { title: 'Connected application', text: 'React and Vite connect to a Node.js/Express API with MySQL and Sequelize migrations. Nginx serves HTTPS on AWS EC2; database and uploaded files remain private.' },
@@ -24,5 +24,5 @@ export const CAUSECONNECT_GUIDE = {
     { area: 'Backend & data', text: 'I implemented supporting Node.js/Express APIs and MySQL persistence for images, owner changes, participation, enquiries and admin controls, with ownership checks, private photo access and saved-version conflicts, building on the team’s backend.' },
     { area: 'Testing & deployment', text: 'I added frontend, backend and HTTP/MySQL integration coverage, deployed the application to AWS EC2, and verified the hosted photo submission, private review, approval and public-display journey.' },
   ],
-  status: 'As of 14 October 2026, the community submission, private review and public photo-display journey and subsequent hardening are deployed. Business posting still depends on business-profile APIs. Independent team testing, final manuals and the demonstration video remain open.',
+  status: 'As of 15 October 2026, the team’s community and business-profile workflows are merged, deployed and verified through developer and hosted-browser checks. Independent team testing, final manuals, the demonstration video and acceptance remain open.',
 }
