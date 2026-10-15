@@ -6,8 +6,8 @@ import useStore from '../hooks/useStore'
 import { PROJECTS } from '../data/projects'
 import '../styles/fast-track.css'
 
-const PAGE_TITLE = 'Unice Bondoc — Software Developer | AI & Automation'
-const PAGE_DESCRIPTION = 'Sydney software developer building web applications, AI-assisted workflows and interactive products. Explore project contributions, team experience and my CV.'
+const PAGE_TITLE = 'Unice Bondoc — Software Developer & Multimedia Creator'
+const PAGE_DESCRIPTION = 'Sydney software developer, multimedia creator and founder of ONQST. Explore frontend interfaces, backend APIs, AI workflows, video, motion and interactive stories.'
 const CV_SOFTWARE = '/resume/Unice_Bondoc_CV_Software_Development.pdf'
 
 function scrollToSection(id, behavior = 'smooth') {
@@ -51,7 +51,7 @@ function ExperienceSection() {
         <div className="ft-experience-role"><p className="ft-kicker">JULY 2026 – PRESENT</p><h3>Developer / Programmer</h3><p>ACS WIL Internship · CauseConnect</p><span className="ft-stage-tag">Internship team of 10</span><a className="ft-text-link" href={project.links.github} target="_blank" rel="noopener noreferrer">View team repository ↗</a></div>
         <div className="ft-experience-detail"><h4>A social-awareness campaign application</h4><p>{project.description}</p><dl><dt>My contribution</dt><dd>{project.caseStudy.contribution}</dd><dt>Team delivery</dt><dd>{project.caseStudy.result}</dd></dl><p className="ft-proof">React · JavaScript · MySQL · Git · Team documentation</p></div>
       </article>
-      <div className="ft-experience-followup"><div><p className="ft-kicker">MARCH 2026 – PRESENT</p><h3>Founder & Builder · ONQST</h3><p>Independent project work spanning product direction, AI-assisted implementation, testing, release preparation and product presentation.</p></div><a className="ft-button" href="https://onqst.com/" target="_blank" rel="noopener noreferrer">Explore the studio ↗</a></div>
+      <div className="ft-experience-followup"><div><p className="ft-kicker">MARCH 2026 – PRESENT</p><h3>Founder & Builder · ONQST</h3><p>Build frontend interfaces, backend APIs and data workflows, alongside product previews, game interactions and narrative media.</p></div><a className="ft-button" href="https://onqst.com/" target="_blank" rel="noopener noreferrer">Explore the studio ↗</a></div>
       <article className="ft-experience-followup ft-internship-record">
         <div><p className="ft-kicker">NOVEMBER 2024 – JANUARY 2025 · INTERNSHIP</p><h3>Software Engineer · UNIKRE Trading</h3><p>Capstone-linked software engineering internship. I supported Shopify storefront content and product information, used Python to compare AI-generated and human-written e-commerce content, and documented practical findings with the team.</p></div><span className="ft-stage-tag">Software engineering internship</span>
       </article>

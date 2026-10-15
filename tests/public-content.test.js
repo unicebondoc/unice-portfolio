@@ -149,8 +149,8 @@ test('Entry metadata distinguishes the writing page and preserves professional i
       assert.match(html, /<title>Unice Bondoc — Writing &amp; Stories<\/title>/)
       assert.match(html, /rel="canonical" href="https:\/\/www\.unicebondoc\.com\/writing\/"/)
       assert.match(html, /<h2>Selected writing<\/h2>/)
-    } else assert.match(html, /Creative Developer &amp; Multimedia Creator/)
-    assert.match(html, /Sydney creative developer/)
+    } else assert.match(html, /Software Developer &amp; Multimedia Creator/)
+    assert.match(html, /Sydney software developer/)
     assert.match(html, /og-image.jpg/)
     assert.doesNotMatch(html, /og-image.png/)
     const fallback = html.match(/<noscript>([\s\S]*?)<\/noscript>/)[1]
@@ -176,7 +176,7 @@ test('Public copy omits private relationships, unsupported metrics and unselecte
 test('Public positioning leads professional contributions without career-level labels', () => {
   const surfaces = [JSON.stringify(PORTFOLIO_DATA.identity), JSON.stringify(MEMORIES), read('src/pages/ForestPortfolio.jsx'), ...cvPaths.map(read), ...['index.html','work/index.html','about/index.html','writing/index.html'].map(read)].join('\n')
   assert.doesNotMatch(surfaces, /\bgraduate\b|\bjunior\b|entry.level/i)
-  assert.match(PORTFOLIO_DATA.identity.headline, /^Creative Developer.*Digital Products.*AI Workflows.*Founder of ONQST$/)
+  assert.match(PORTFOLIO_DATA.identity.headline, /^Software Developer & Multimedia Creator.*Interactive Products.*AI Workflows.*Founder of ONQST$/)
   assert.ok(PORTFOLIO_DATA.education.some(entry => entry.qualification === 'Master of Information and Communications Technology'))
   assert.ok(PORTFOLIO_DATA.experience[0].company.includes('ACS WIL Internship'))
 })
